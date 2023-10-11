@@ -9,6 +9,7 @@ using UnityEngine;
 
 public class GridTileScript : MonoBehaviour
 {
+    //MAYBE MAKE A DICTIONARY OF ALL TILES. THEN CAN SET RELATIVE COORDS AS KEYS? Might be unnecessary.
 
     //unique identifier among all grid tiles. public get, private set.
     private (int x, int y, int z) coords;
@@ -17,8 +18,15 @@ public class GridTileScript : MonoBehaviour
         private set { coords = value; }
     }
 
+    //A* algorithm things. G is distance from start, H is distance from end, F is the total of both.
+    //distance isn't actual distance, but Manhattan distance (so cardinal directions only)
+    public int G;
+    public int H;
+    public int F { get {return G + H; } }
+    public GridTileScript previous;
+
     //list of adjacent grid tiles, for calculating the path.
-    public List<GameObject> adjacentTiles { get; private set; } 
+    public List<GridTileScript> adjacentTiles { get; private set; } 
 
     public bool walkable = true; //whether an enemy can path through it. False when tower on it or due to unique environment.
     public bool placeable = true; //whether a tower can be placed on it. False while enemies on it or due to unique environment.
@@ -27,8 +35,9 @@ public class GridTileScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        adjacentTiles = new List<GameObject>();
+        adjacentTiles = new List<GridTileScript>();
         Coords = setCoords();
+        //could try waiting half a sec here? Maybe the coords arent all updating before setAdjTiles() happens?
         setAdjTiles();
         writeTileInfo();
     }
@@ -67,7 +76,7 @@ public class GridTileScript : MonoBehaviour
         {
             Debug.Log($"attempting to add col: {col}, gameObj: {col.gameObject}");
             if (col.gameObject != gameObject) 
-                adjacentTiles.Add(col.gameObject);
+                adjacentTiles.Add(col.gameObject.GetComponent<GridTileScript>());
         }
     }
 
@@ -75,8 +84,8 @@ public class GridTileScript : MonoBehaviour
     public void writeTileInfo()
     {
         Debug.Log($"Grid Tile {coords}\n    adjacent tiles:\n");
-        foreach (GameObject a in adjacentTiles)
-            Debug.Log($"      adj tile {a.GetComponent<GridTileScript>().coords}");
+        foreach (GridTileScript a in adjacentTiles)
+            Debug.Log($"      adj tile {a.coords}");
     }
      
 }
