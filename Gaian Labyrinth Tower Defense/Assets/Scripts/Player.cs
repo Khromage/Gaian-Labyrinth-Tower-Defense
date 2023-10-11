@@ -12,8 +12,13 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     private void Update() {
+        playerMove();
+
+    }
+
+    private void playerMove() {
         Vector2 inputVector = new Vector2(0, 0);
-        if (Input.GetKey(KeyCode.W)){
+        if (Input.GetKey(KeyCode.W)) {
             inputVector.y = +1;
         }
         if (Input.GetKey(KeyCode.A)) {
@@ -30,6 +35,5 @@ public class Player : MonoBehaviour
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
         transform.position += moveDir;
         Debug.Log(inputVector);
-
     }
 }
