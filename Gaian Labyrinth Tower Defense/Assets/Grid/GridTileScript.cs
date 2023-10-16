@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//0 3 4
-//1 2 5
-//when tile 3 tries to grab tile 2, it instead adds tile 0 to its adjList, then grabs tiles 4 and 0 as normal
-//when tile 2 tries to grab tile 1, it instead adds tile 0 to its adjList, then grabs tiles 5 and 3 as normal
 
 public class GridTileScript : MonoBehaviour
 {
-    //MAYBE MAKE A DICTIONARY OF ALL TILES. THEN CAN SET RELATIVE COORDS AS KEYS? Might be unnecessary.
+    //Might make a dictionary of all tiles, and use the coords var as key.
         //then can get the spawn tile and goal tile from the dictionary?
 
-    //unique identifier among all grid tiles. public get, private set.
+    //coords = unique identifier among all grid tiles. public get, private set.
     private (int x, int y, int z) coords;
     public (int x, int y, int z) Coords {
         get { return coords; }
@@ -36,15 +32,13 @@ public class GridTileScript : MonoBehaviour
     {
         Coords = setCoords();
         adjacentTiles = new List<GridTileScript>();
-        //could try waiting half a sec here? Maybe the coords arent all updating before setAdjTiles() happens?
-        
+        setAdjTiles();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //setAdjTiles(); //NEEDS TO HAPPEN AFTER ALL HAVE BEEN PLACED
-        //writeTileInfo();
+
     }
 
     // Update is called once per frame
@@ -59,7 +53,7 @@ public class GridTileScript : MonoBehaviour
         if (walkable)
             Gizmos.color = new Color(0f, 1f, .1f, .5f);
         else
-            Gizmos.color = new Color(.4f, .7f, .1f, .5f);
+            Gizmos.color = new Color(.4f, .6f, .1f, .5f);
 
         Gizmos.DrawCube(transform.position - new Vector3(0f, .4f, 0f), new Vector3(1f, .2f, 1f));
     }
