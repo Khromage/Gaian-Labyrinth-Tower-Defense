@@ -24,25 +24,28 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveAlongPath();
+        if (path.Count > 0)
+            moveAlongPath();
+        //then event for reaching the end? reduce lives remaining, and destroy this enemy? after playing an animation, preferably.
     }
 
     void moveAlongPath()
     {
-        //direction = (goalPos + myHeightOffset) - currPos; 
+        //direction = normalize((goalPos + myHeightOffset) - currPos ); 
         //myHeightOffset = my height but rotated to the normal of the goal. Need to set that up. Matrix/vector multiplication
-        //Debug.Log("path[0].pos = " + path[0].transform.position);
+
         Vector3 moveDirNormal = Vector3.Normalize((path[0].transform.position + new Vector3(0f, .5f, 0f)) - transform.position);
 
-        //rotate toward where you're moving
+        //should also rotate toward where you're moving
 
         //movement = direction * speed;
+        //Debug.Log(moveDirNormal);
         transform.position += moveDirNormal * moveSpeed * Time.deltaTime;
-        //Debug.Log("enemy.pos = " + transform.position);
-        //Debug.Log("dist = " + Vector3.Distance(transform.position, path[0].gameObject.transform.position));
+
+        //if reach next tile in path, remove it from path.
         if (Vector3.Distance(transform.position, path[0].gameObject.transform.position) < .8f)
         {
-            //Debug.Log("removing path[0]");
+            //Debug.Log($"removing path[0]: {path[0].Coords}");
             path.RemoveAt(0);
         }
     }
@@ -51,6 +54,7 @@ public class EnemyScript : MonoBehaviour
     {
         //get hit by some projectile
             //lose health
+        //if currentHealth <= 0, Destroy(this)
     }
 
 }

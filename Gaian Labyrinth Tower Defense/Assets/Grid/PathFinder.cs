@@ -29,7 +29,8 @@ public class PathFinder
             //sets each neighbor's F and adds them to the openList
             foreach (GridTileScript adjTile in currentTile.adjacentTiles)
             {
-                Debug.Log("adjTIle " + adjTile);
+                //Debug.Log("adjTile " + adjTile);
+                
                 //if not in the running for next tile on path, nothing happens
                 if (adjTile.walkable && !closedList.Contains(adjTile)) //walkable and not already in path
                 {
