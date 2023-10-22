@@ -28,7 +28,9 @@ public class ThirdPersonCam : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void Update() {
+    private void Update() 
+    {
+        //Swicth Camera style to ADS mode if right mouse button is held down
         if (Input.GetKey(KeyCode.Mouse1)) {
             switchCameraStyle(CameraStyle.Combat);
         }

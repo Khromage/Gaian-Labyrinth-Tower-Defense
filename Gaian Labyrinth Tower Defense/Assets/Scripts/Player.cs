@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
     public float moveSpeed;
     public float groundDrag;
@@ -15,9 +16,11 @@ public class Player : MonoBehaviour
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
 
+    //Variables to be used to check if player is on the ground
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
+    public LayerMask Grid;
     bool grounded;
 
     public Transform orientation;
@@ -28,6 +31,16 @@ public class Player : MonoBehaviour
     Vector3 moveDirection;
     Rigidbody rb;
 
+    public GameObject playerCam;
+
+    //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
+    public playerMode currentMode;
+    public enum playerMode
+    {
+        Combat,
+        Build,
+    }
+
     //Method to be checked on first frame of the game
     public void Start() {
         rb = GetComponent<Rigidbody>();
@@ -36,25 +49,50 @@ public class Player : MonoBehaviour
     }
 
     //Method to be checked on every frame of the game
-    public void Update() {
-        //Checking if player is on the ground
-        grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+    public void Update() 
+     {
+        //Checking which mode the player is currently in
+        if ((Input.GetKeyDown(KeyCode.Tab)) && (currentMode != playerMode.Build))
+        {
+            currentMode = playerMode.Build;
+            Debug.Log("Build");
+        }
+        else if (Input.GetKeyDown(KeyCode.Tab))
+        { 
+            currentMode = playerMode.Combat;
+            Debug.Log("Combat");
+        }
 
-        getUserInput();
+        getUserKeyInput();
         playerSpeedControl();
 
-        //handling drag
+        //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
+        grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        //handling player drag if on the ground
         if (grounded)
             rb.drag = groundDrag;
         else
             rb.drag = 0;
+
+        if (currentMode == playerMode.Combat)
+        {
+            attack();
+        }
+        else if (currentMode == playerMode.Build)
+        {
+            placeTowers();
+        }
     }
 
-    public void FixedUpdate() {
+    //Methods to be executed when user inputs keys
+    public void FixedUpdate() 
+    {
         movePlayer();
     }
 
-    private void getUserInput() {
+    //Getting WASD and jump inputs
+    private void getUserKeyInput() 
+    {
         //Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
@@ -67,7 +105,9 @@ public class Player : MonoBehaviour
         } 
     }
 
-    private void movePlayer() {
+    //Method to move the player on ground and in air 
+    private void movePlayer() 
+    {
         //calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
@@ -80,25 +120,50 @@ public class Player : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 
-    private void playerSpeedControl() {
+    //Method to set a limit to the players velocity
+    private void playerSpeedControl() 
+    {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         //Limit player's movement velocity when reaching max speed
-        if(flatVel.magnitude > moveSpeed) {
+        if(flatVel.magnitude > moveSpeed) 
+        {
             Vector3 limitedVel = flatVel.normalized * moveSpeed; 
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
 
-    private void jump() {
+    private void jump() 
+    {
         //reset Y velocity to prepare for new jump
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
-    private void resetJump() {
+    private void resetJump()
+    {
+        //Reset readytoJump to True so player can jump again
         readyToJump = true;
+    }
+
+    private void attack()
+    {
+        //Empty
+    }
+
+    private void placeTowers()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+
+            if ((Physics.Raycast(ray, out RaycastHit hit, 100f)) && (hit.transform.gameObject.layer == Grid))
+            {
+                Debug.Log("Ground");
+            
+            }
+        }
     }
 
 }
