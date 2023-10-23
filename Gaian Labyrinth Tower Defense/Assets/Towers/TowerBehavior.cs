@@ -22,18 +22,32 @@ public class TowerBehavior : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
 
-
+    public List<GameObject> enemies = new List<GameObject>();
+    SphereCollider detectionZone;
 
     // Call the targeting function twice a second to scan for enemies
     void Start()
     {
+        detectionZone = GetComponent<SphereCollider>();
+        detectionZone.radius = range;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Enemy")
+            enemies.Add(other.gameObject);
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Enemy")
+            enemies.Remove(other.gameObject);
+    }
+
+
     void UpdateTarget()
     {
-        // Creates a list of all game objects with the enemy tag
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
