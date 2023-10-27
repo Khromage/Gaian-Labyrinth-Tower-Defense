@@ -35,11 +35,11 @@ public class TowerBehavior : MonoBehaviour
 
     private void OnEnable()
     {
-        EnemyScript.OnEnemyDeath += removeEnemyFromList;
+        EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
     }
     private void onDisable()
     {
-        EnemyScript.OnEnemyDeath -= removeEnemyFromList;
+        EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
     }
 
     void OnTriggerEnter(Collider other)

@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyScript : MonoBehaviour
+public class EnemyBehavior : MonoBehaviour
 {
     public delegate void EnemyDeath(GameObject deadEnemy);
     public static event EnemyDeath OnEnemyDeath;
 
     private PathFinder pathFinder;
-    public List<GridTileScript> path;    
+    public List<GridTile> path;    
     
     private float moveSpeed = 3f;
     private float maxHealth;

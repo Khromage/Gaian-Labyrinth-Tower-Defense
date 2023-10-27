@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnPointScript : GridTileScript
+public class SpawnPoint : GridTile
 {
     //identifier for this point, for debugging purposes mostly.
     public int spawnPointNumber;
@@ -12,7 +12,7 @@ public class SpawnPointScript : GridTileScript
 
     //Path for enemies that spawn here.
     private PathFinder pathFinder;
-    public List<GridTileScript> path;
+    public List<GridTile> path;
 
     //goal of the path. manually put it into inspector for now. (select the instance on scene, and drag the instance in scene of the goal tile to this instance's inspector)
     [SerializeField]
@@ -28,7 +28,7 @@ public class SpawnPointScript : GridTileScript
         //at start of each wave, re-calculate path (later make it so it recalculates on tower placement on path, or any towers being sold)
         //might want a list or dictionary of every tile, then can grab any with "endpoint" flag or w/e, and pick the closest one for this next line
         //takes scripts of start tile and end tile.
-        path = pathFinder.FindPath(this, endTile.GetComponent<GridTileScript>());
+        path = pathFinder.FindPath(this, endTile.GetComponent<GridTile>());
 
         printPath();
     }
@@ -47,7 +47,7 @@ public class SpawnPointScript : GridTileScript
         for (int i = 0; i < waveSet[waveNum - 1].waveEnemies.Length; i++)
         {
             GameObject currEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position, transform.rotation);
-            currEnemy.GetComponent<EnemyScript>().path = new List<GridTileScript>(path);
+            currEnemy.GetComponent<EnemyBehavior>().path = new List<GridTile>(path);
             Debug.Log($"enemy {i} pos: {currEnemy.transform.position}");
 
             Debug.Log($"stalling in spawnDelay for {timeToWait} sec");
@@ -77,7 +77,7 @@ public class SpawnPointScript : GridTileScript
     private void printPath()
     {
         string pathString = "";
-        foreach (GridTileScript s in path)
+        foreach (GridTile s in path)
         {
             //Debug.Log("pathElement: " + s);
             pathString += " " + s.Coords;

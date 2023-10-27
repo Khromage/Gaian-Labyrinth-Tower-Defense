@@ -38,7 +38,7 @@ public class BulletBehavior : MonoBehaviour
 
     void HitTarget()
     {
-        EnemyScript e = target.gameObject.GetComponent<EnemyScript>();
+        EnemyBehavior e = target.gameObject.GetComponent<EnemyBehavior>();
         e.takeDamage(damage, gameObject);
         Destroy(gameObject);
     }

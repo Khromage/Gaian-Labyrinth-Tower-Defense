@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class GridTileScript : MonoBehaviour
+public class GridTile : MonoBehaviour
 {
     //Might make a dictionary of all tiles, and use the coords var as key.
         //then can get the spawn tile and goal tile from the dictionary?
@@ -20,10 +20,10 @@ public class GridTileScript : MonoBehaviour
     public int G;
     public int H;
     public int F { get {return G + H; } }
-    public GridTileScript previous;
+    public GridTile previous;
 
     //list of adjacent grid tiles, for calculating the path.
-    public List<GridTileScript> adjacentTiles { get; private set; } 
+    public List<GridTile> adjacentTiles { get; private set; } 
 
     public bool walkable = true; //whether an enemy can path through it. False when tower on it or due to unique environment.
     public bool placeable = true; //whether a tower can be placed on it. False while enemies on it or due to unique environment.
@@ -31,7 +31,7 @@ public class GridTileScript : MonoBehaviour
     void Awake()
     {
         Coords = setCoords();
-        adjacentTiles = new List<GridTileScript>();
+        adjacentTiles = new List<GridTile>();
         setAdjTiles();
     }
 
@@ -79,7 +79,7 @@ public class GridTileScript : MonoBehaviour
         {
             //Debug.Log($"attempting to add col: {col}, gameObj: {col.gameObject}");
             if (col.gameObject != gameObject) 
-                adjacentTiles.Add(col.gameObject.GetComponent<GridTileScript>());
+                adjacentTiles.Add(col.gameObject.GetComponent<GridTile>());
         }
     }
 
@@ -87,7 +87,7 @@ public class GridTileScript : MonoBehaviour
     public void writeTileInfo()
     {
         Debug.Log($"Grid Tile {coords}\n    adjacent tiles:\n");
-        foreach (GridTileScript a in adjacentTiles)
+        foreach (GridTile a in adjacentTiles)
             Debug.Log($"      adj tile {a.coords}");
     }
      

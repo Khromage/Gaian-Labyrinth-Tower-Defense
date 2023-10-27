@@ -6,17 +6,17 @@ using UnityEngine;
 public class PathFinder
 {
     
-    public List<GridTileScript> FindPath(GridTileScript start, GridTileScript end)
+    public List<GridTile> FindPath(GridTile start, GridTile end)
     {
-        List<GridTileScript> openList = new List<GridTileScript>();
-        List<GridTileScript> closedList = new List<GridTileScript>();
+        List<GridTile> openList = new List<GridTile>();
+        List<GridTile> closedList = new List<GridTile>();
 
         openList.Add(start);
 
         while (openList.Count > 0)
         {
             //current tile becomes the tile in openList (unvisited adjacents) with the lowest F value (dist from start + dist from end)
-            GridTileScript currentTile = openList.OrderBy(x => x.F).First();
+            GridTile currentTile = openList.OrderBy(x => x.F).First();
 
             openList.Remove(currentTile);
             closedList.Add(currentTile);
@@ -27,7 +27,7 @@ public class PathFinder
             }
 
             //sets each neighbor's F and adds them to the openList
-            foreach (GridTileScript adjTile in currentTile.adjacentTiles)
+            foreach (GridTile adjTile in currentTile.adjacentTiles)
             {
                 //Debug.Log("adjTile " + adjTile);
                 
@@ -50,12 +50,12 @@ public class PathFinder
             }
         }
         //don't care about this return. The important one is when currentTile == end
-        return new List<GridTileScript>();
+        return new List<GridTile>();
     }
 
     //gets the distance assuming we're using purely cardinal directions, no diagonals/shortcuts
     //this might need to be a much more complex calculation. I'm skeptical it will account for dead-ends and such...
-    private int GetManhattanDistance(GridTileScript start, GridTileScript adjTile)
+    private int GetManhattanDistance(GridTile start, GridTile adjTile)
     {
         return Mathf.Abs(start.Coords.x - adjTile.Coords.x)
             + Mathf.Abs(start.Coords.y - adjTile.Coords.y)
@@ -63,11 +63,11 @@ public class PathFinder
     }
 
     //returns the final list of tiles to path through, using the chain of each tile's "previous" value from the end backwards
-    private List<GridTileScript> GetFinishedList(GridTileScript start, GridTileScript end)
+    private List<GridTile> GetFinishedList(GridTile start, GridTile end)
     {
-        List<GridTileScript> finishedList = new List<GridTileScript>();
+        List<GridTile> finishedList = new List<GridTile>();
 
-        GridTileScript currentTile = end;
+        GridTile currentTile = end;
 
         while (currentTile != start)
         {

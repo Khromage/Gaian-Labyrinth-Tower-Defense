@@ -168,7 +168,7 @@ public class Player : MonoBehaviour
             {
                 if ((hit.transform.tag.Equals("GridTile")) )
                 {
-                    GridTileScript currTileScript = hit.transform.GetComponent<GridTileScript>();
+                    GridTile currTileScript = hit.transform.GetComponent<GridTile>();
                     if (currTileScript.placeable) {
 
                         Debug.Log(hit.transform.position.x);

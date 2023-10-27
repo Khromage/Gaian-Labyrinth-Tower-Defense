@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoalTileScript : GridTileScript
+public class GoalTile : GridTile
 {
     //might have event here for when an enemy reaches this kind of tile.
 
