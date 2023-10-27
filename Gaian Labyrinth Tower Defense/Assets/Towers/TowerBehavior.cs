@@ -36,15 +36,27 @@ public class TowerBehavior : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
-            enemies.Add(other.gameObject);
+            {
+                enemies.Add(other.gameObject);
+                EnemyScript.EnemyDeath += removeEnemyFromList;
+            }
     }
 
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
+        {
             enemies.Remove(other.gameObject);
+            EnemyScript.EnemyDeath -= removeEnemyFromList;
+        }
+
     }
 
+    void removeEnemyFromList(GameObject enemyToRemove)
+    {
+        enemies.Remove(enemyToRemove);
+        Debug.Log("enemy removed from list!!!");
+    }
 
     void UpdateTarget()
     {
@@ -93,7 +105,7 @@ public class TowerBehavior : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bulletGO = Instantiate (bulletPrefab, firePoint.position, firePoint.rotation);
+        GameObject bulletGO = Instantiate (bulletPrefab, firePoint.position, firePoint.rotation, gameObject.transform);
         BulletBehavior bullet = bulletGO.GetComponent<BulletBehavior>();
 
         if (bullet != null)

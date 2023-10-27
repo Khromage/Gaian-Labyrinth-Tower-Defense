@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,10 @@ using UnityEngine;
 public class EnemyScript : MonoBehaviour
 {
 
-    private PathFinder pathFinder;
-    public List<GridTileScript> path;
+    public static event Action<GameObject> EnemyDeath;
 
+    private PathFinder pathFinder;
+    public List<GridTileScript> path;    
     private float moveSpeed = 3f;
 
     private float maxHealth;
@@ -27,6 +29,16 @@ public class EnemyScript : MonoBehaviour
         if (path.Count > 0)
             moveAlongPath();
         //then event for reaching the end? reduce lives remaining, and destroy this enemy? after playing an animation, preferably.
+    }
+
+    public void takeDamage(float damage, GameObject damagerBullet)
+    {
+        currentHealth -= damage;
+        if(currentHealth <= 0)
+        {
+            EnemyDeath?.Invoke(gameObject);
+            Destroy(gameObject);
+        }
     }
 
     void moveAlongPath()
