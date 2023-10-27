@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public playerMode currentMode;
+
     //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
     public float moveSpeed;
@@ -31,10 +33,13 @@ public class Player : MonoBehaviour
     Vector3 moveDirection;
     Rigidbody rb;
 
+    [Header("Player Cam")]
     public GameObject playerCam;
 
+    [Header("Build mode")]
+    public GameObject towerPrefab;
+
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
-    public playerMode currentMode;
     public enum playerMode
     {
         Combat,
@@ -55,6 +60,7 @@ public class Player : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Tab)) && (currentMode != playerMode.Build))
         {
             currentMode = playerMode.Build;
+
             Debug.Log("Build");
         }
         else if (Input.GetKeyDown(KeyCode.Tab))
@@ -74,6 +80,7 @@ public class Player : MonoBehaviour
         else
             rb.drag = 0;
 
+        //Actions player can do depending on mode they are in
         if (currentMode == playerMode.Combat)
         {
             attack();
@@ -154,15 +161,26 @@ public class Player : MonoBehaviour
 
     private void placeTowers()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-
-            if ((Physics.Raycast(ray, out RaycastHit hit, 100f)) && (hit.transform.gameObject.layer == Grid))
+            if ((Physics.Raycast(ray, out RaycastHit hit, 100f, Grid))) 
             {
-                Debug.Log("Ground");
-            
-            }
+                if ((hit.transform.tag.Equals("GridTile")) )
+                {
+                    GridTileScript currTileScript = hit.transform.GetComponent<GridTileScript>();
+                    if (currTileScript.placeable) {
+
+                        Debug.Log(hit.transform.position.x);
+                        Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
+                        GameObject currTower = Instantiate(towerPrefab, towerPlacement, transform.rotation);
+                        TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
+
+                        currTileScript.placeable = false;
+                    }
+
+                }
+            }   
         }
     }
 
