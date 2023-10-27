@@ -5,7 +5,6 @@ using UnityEngine;
 public class BulletBehavior : MonoBehaviour
 {
     private Transform target;
-
     public float speed = 50f;
     public float damage  = 5f;
 
@@ -16,13 +15,11 @@ public class BulletBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Bullet Reached Target");
         if(other.gameObject.tag == "Enemy")
         {
             HitTarget();
         }
     }
-    
 
     // Update is called once per frame
     void Update()
@@ -35,15 +32,6 @@ public class BulletBehavior : MonoBehaviour
 
         Vector3 direction = target.position - transform.position;
         float distanceThisFrame = speed * Time.deltaTime;
-
-       /* 
-        if(direction.magnitude <= distanceThisFrame)
-        {
-            HitTarget();
-            return;
-        }
-        */
-
         transform.Translate(direction.normalized * distanceThisFrame, Space.World);
 
     }
@@ -54,5 +42,4 @@ public class BulletBehavior : MonoBehaviour
         e.takeDamage(damage, gameObject);
         Destroy(gameObject);
     }
-
 }

@@ -33,12 +33,20 @@ public class TowerBehavior : MonoBehaviour
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
+    private void OnEnable()
+    {
+        EnemyScript.OnEnemyDeath += removeEnemyFromList;
+    }
+    private void onDisable()
+    {
+        EnemyScript.OnEnemyDeath -= removeEnemyFromList;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
             {
                 enemies.Add(other.gameObject);
-                EnemyScript.EnemyDeath += removeEnemyFromList;
             }
     }
 
@@ -47,15 +55,12 @@ public class TowerBehavior : MonoBehaviour
         if (other.gameObject.tag == "Enemy")
         {
             enemies.Remove(other.gameObject);
-            EnemyScript.EnemyDeath -= removeEnemyFromList;
         }
-
     }
 
-    void removeEnemyFromList(GameObject enemyToRemove)
+    private void removeEnemyFromList(GameObject enemyToRemove)
     {
         enemies.Remove(enemyToRemove);
-        Debug.Log("enemy removed from list!!!");
     }
 
     void UpdateTarget()

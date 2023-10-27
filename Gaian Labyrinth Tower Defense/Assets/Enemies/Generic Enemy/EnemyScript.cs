@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-
-    public static event Action<GameObject> EnemyDeath;
+    public delegate void EnemyDeath(GameObject deadEnemy);
+    public static event EnemyDeath OnEnemyDeath;
 
     private PathFinder pathFinder;
     public List<GridTileScript> path;    
+    
     private float moveSpeed = 3f;
-
     private float maxHealth;
     public float currentHealth;
 
@@ -21,7 +21,6 @@ public class EnemyScript : MonoBehaviour
         maxHealth = 10f;
         currentHealth = maxHealth;
     }
-
 
     // Update is called once per frame
     void Update()
@@ -36,7 +35,7 @@ public class EnemyScript : MonoBehaviour
         currentHealth -= damage;
         if(currentHealth <= 0)
         {
-            EnemyDeath?.Invoke(gameObject);
+            OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
         }
     }
