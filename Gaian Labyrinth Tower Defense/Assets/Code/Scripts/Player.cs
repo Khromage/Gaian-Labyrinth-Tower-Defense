@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public delegate void TowerPlaced(GridTile tileOn);
+    public static event TowerPlaced OnTowerPlaced;
+
     public playerMode currentMode;
 
     //Variables to control and determine player's jumping abiltiy
@@ -39,6 +42,8 @@ public class Player : MonoBehaviour
     [Header("Build mode")]
     public GameObject towerPrefab;
 
+    public int currency;
+
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
     {
@@ -51,6 +56,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
+        currency = 20;
     }
 
     //Method to be checked on every frame of the game
@@ -88,6 +94,7 @@ public class Player : MonoBehaviour
         else if (currentMode == playerMode.Build)
         {
             placeTowers();
+            //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
         }
     }
 
@@ -161,6 +168,8 @@ public class Player : MonoBehaviour
 
     private void placeTowers()
     {
+        //here is where we should display an outline of the currently selected tower, either a green transparent silhouette if placeable, or red.
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
@@ -170,13 +179,26 @@ public class Player : MonoBehaviour
                 {
                     GridTile currTileScript = hit.transform.GetComponent<GridTile>();
                     if (currTileScript.placeable) {
+                        if (currency >= towerPrefab.GetComponent<TowerBehavior>().cost)
+                        {
+                            Debug.Log(hit.transform.position.x);
+                            Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
+                            GameObject currTower = Instantiate(towerPrefab, towerPlacement, transform.rotation);
+                            TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
 
-                        Debug.Log(hit.transform.position.x);
-                        Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
-                        GameObject currTower = Instantiate(towerPrefab, towerPlacement, transform.rotation);
-                        TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
+                            currTileScript.placeable = false;
+                            currTileScript.walkable = false;
 
-                        currTileScript.placeable = false;
+                            Debug.Log($"Currency before tower placement: {currency}");
+                            currency -= tower.cost;
+                            Debug.Log($"Currency after tower placement: {currency}");
+
+                            OnTowerPlaced?.Invoke(currTileScript);
+                        }
+                        else
+                        {
+                            Debug.Log("We require more Vespene Gas");
+                        }
                     }
 
                 }
@@ -184,4 +206,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void GainCurrency(GameObject enemyWhoDied)
+    {
+        currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
+    }
+
+    private void OnEnable()
+    {
+        EnemyBehavior.OnEnemyDeath += GainCurrency;
+    }
+    private void OnDisable()
+    {
+        EnemyBehavior.OnEnemyDeath -= GainCurrency;
+    }
 }

@@ -22,15 +22,23 @@ public class SpawnPoint : GridTile
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log($"spawn point {spawnPointNumber} starting");
         pathFinder = new PathFinder();
 
         //at start of each wave, re-calculate path (later make it so it recalculates on tower placement on path, or any towers being sold)
         //might want a list or dictionary of every tile, then can grab any with "endpoint" flag or w/e, and pick the closest one for this next line
         //takes scripts of start tile and end tile.
-        path = pathFinder.FindPath(this, endTile.GetComponent<GridTile>());
+        calculatePath(this);
 
         printPath();
+    }
+
+    private void calculatePath(GridTile changedTile) //parameter comes from the event invoking it (on tower placement). unused here for now
+    {
+        path = pathFinder.FindPath(this, endTile.GetComponent<GridTile>());
+        if (path == null) // if no path to end, just go straight to it, for now.
+        {
+            path.Add(endTile.GetComponent<GridTile>());
+        }
     }
 
 
@@ -38,7 +46,7 @@ public class SpawnPoint : GridTile
     //instantiates enemies based on the current wave and the listed enemies (added in inspector) for that wave.
     private void WaveStart(int waveNum)
     {
-        Debug.Log("Wave starting in spawnpoint script");
+        Debug.Log($"Wave {waveNum} starting in spawnpoint script");
         StartCoroutine(spawnDelay(1f, waveNum));
     }
 
@@ -47,10 +55,13 @@ public class SpawnPoint : GridTile
         for (int i = 0; i < waveSet[waveNum - 1].waveEnemies.Length; i++)
         {
             GameObject currEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position, transform.rotation);
-            currEnemy.GetComponent<EnemyBehavior>().path = new List<GridTile>(path);
-            Debug.Log($"enemy {i} pos: {currEnemy.transform.position}");
+            EnemyBehavior currEnemyScript = currEnemy.GetComponent<EnemyBehavior>();
+            currEnemyScript.path = new List<GridTile>(path);
+            currEnemyScript.currTile = path[0];
+            currEnemyScript.endTile = endTile.GetComponent<GridTile>();
+            //Debug.Log($"enemy {i} pos: {currEnemy.transform.position}");
 
-            Debug.Log($"stalling in spawnDelay for {timeToWait} sec");
+            //Debug.Log($"stalling in spawnDelay for {timeToWait} sec");
             yield return new WaitForSeconds(timeToWait);
         }
     }
@@ -67,10 +78,12 @@ public class SpawnPoint : GridTile
     private void OnEnable()
     {
         LevelManager.OnWaveStart += WaveStart;
+        Player.OnTowerPlaced += calculatePath;
     }
     private void OnDisable()
     {
         LevelManager.OnWaveStart -= WaveStart;
+        Player.OnTowerPlaced -= calculatePath;
     }
 
     //checking path in console.

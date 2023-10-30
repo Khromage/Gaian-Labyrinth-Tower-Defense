@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
 
     private int currWave = 0;
 
+
     [SerializeField]
     private int remainingLives = 20;
     //maybe an event where an enemy reaches the goal? invoked by the enemy, then in this script adjust remainingLives
@@ -36,7 +37,7 @@ public class LevelManager : MonoBehaviour
     void Update()
     {
         
-        if (currWave < 2) //currWave < # of waves.
+        if (currWave < 3) //currWave < # of waves.
         {
             //Gameplay/design decision: maybe wait to start countdown until wave has been defeated, or just until they've all spawned. 
             waveCountdown -= Time.deltaTime;
@@ -49,4 +50,5 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
+
 }

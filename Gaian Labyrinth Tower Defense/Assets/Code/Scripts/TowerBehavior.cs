@@ -25,12 +25,15 @@ public class TowerBehavior : MonoBehaviour
     public List<GameObject> enemies = new List<GameObject>();
     SphereCollider detectionZone;
 
+    public int cost;
+
     // Call the targeting function twice a second to scan for enemies
     void Start()
     {
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
+
     }
 
     private void OnEnable()
