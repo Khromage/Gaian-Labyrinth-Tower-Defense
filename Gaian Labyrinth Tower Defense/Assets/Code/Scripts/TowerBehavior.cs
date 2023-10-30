@@ -71,14 +71,21 @@ public class TowerBehavior : MonoBehaviour
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
-        foreach(GameObject enemy in enemies)
+        try
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if(distanceToEnemy < shortestDistance)
+            foreach (GameObject enemy in enemies)
             {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy;
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distanceToEnemy < shortestDistance)
+                {
+                    shortestDistance = distanceToEnemy;
+                    nearestEnemy = enemy;
+                }
             }
+        }
+        catch
+        {
+            Debug.Log("Tower trying to target in empty enemy list. Would have sent a MissingReferenceException regarding the foreach (GameObject enemy in enemies)");
         }
         // Verify the closest enemy is within the tower range and assign as target if true
         if(nearestEnemy != null && shortestDistance <= range)

@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
-        currency = 20;
+        currency = 80;
     }
 
     //Method to be checked on every frame of the game
