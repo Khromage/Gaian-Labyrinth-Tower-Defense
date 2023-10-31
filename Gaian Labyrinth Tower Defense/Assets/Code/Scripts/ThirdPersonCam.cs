@@ -18,23 +18,27 @@ public class ThirdPersonCam : MonoBehaviour
     public GameObject combatCam;
 
     public CameraStyle currentStyle;
-    public enum CameraStyle {
+    public enum CameraStyle
+    {
         Basic,
         Combat,
     }
 
-    private void Start() {
+    private void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    private void Update() 
+    private void Update()
     {
         //Swicth Camera style to ADS mode if right mouse button is held down
-        if (Input.GetKey(KeyCode.Mouse1)) {
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
             switchCameraStyle(CameraStyle.Combat);
         }
-        else { switchCameraStyle(CameraStyle.Basic); }
+        else if (Input.GetKeyUp(KeyCode.Mouse1)) 
+            { switchCameraStyle(CameraStyle.Basic); }
 
         //rotate orientation
         Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
@@ -45,7 +49,8 @@ public class ThirdPersonCam : MonoBehaviour
     }
 
 
-    private void switchCameraStyle(CameraStyle newStyle) {
+    private void switchCameraStyle(CameraStyle newStyle)
+    {
         thirdPersonCamera.SetActive(false);
         combatCam.SetActive(false);
 
@@ -55,19 +60,23 @@ public class ThirdPersonCam : MonoBehaviour
         currentStyle = newStyle;
     }
 
-    private void cameraStyleMethods() {
+    private void cameraStyleMethods()
+    {
         //rotate player object
-        if (currentStyle == CameraStyle.Basic) {
+        if (currentStyle == CameraStyle.Basic)
+        {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
             Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-            if (inputDir != Vector3.zero) {
-                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
+            if (inputDir != Vector3.zero)
+            {
+                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, rotationSpeed * Time.deltaTime);
             }
 
         }
-        else if (currentStyle == CameraStyle.Combat) {
+        else if (currentStyle == CameraStyle.Combat)
+        {
             Vector3 dirToCombatLook = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
             orientation.forward = dirToCombatLook.normalized;
 
