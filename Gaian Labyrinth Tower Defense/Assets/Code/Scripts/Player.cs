@@ -78,6 +78,10 @@ public class Player : MonoBehaviour
         { 
             currentMode = playerMode.Combat;
             Debug.Log("Combat");
+            if (tempDisplayHolder != null)
+            {
+                Destroy(this.tempDisplayHolder);
+            }
         }
 
         getUserKeyInput();

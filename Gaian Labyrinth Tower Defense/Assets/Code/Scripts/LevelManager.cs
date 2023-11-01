@@ -37,7 +37,7 @@ public class LevelManager : MonoBehaviour
     void Update()
     {
         
-        if (currWave < 3) //currWave < # of waves.
+        if (currWave < 7) //currWave < # of waves.
         {
             //Gameplay/design decision: maybe wait to start countdown until wave has been defeated, or just until they've all spawned. 
             waveCountdown -= Time.deltaTime;
