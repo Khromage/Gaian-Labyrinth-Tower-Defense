@@ -14,10 +14,11 @@ public class LevelManager : MonoBehaviour
     private float waveTimer = 10f; //total time between waves
     public float waveCountdown; //currently remaining time. Display this.
 
-    private int currWave = 0;
+    public int currWave = 0;
+
 
     [SerializeField]
-    private int remainingLives = 20;
+    public int remainingLives = 20;
     //maybe an event where an enemy reaches the goal? invoked by the enemy, then in this script adjust remainingLives
 
     //spawnPoint list
@@ -36,7 +37,7 @@ public class LevelManager : MonoBehaviour
     void Update()
     {
         
-        if (currWave < 2) //currWave < # of waves.
+        if (currWave < 7) //currWave < # of waves.
         {
             //Gameplay/design decision: maybe wait to start countdown until wave has been defeated, or just until they've all spawned. 
             waveCountdown -= Time.deltaTime;
@@ -49,4 +50,5 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
+
 }

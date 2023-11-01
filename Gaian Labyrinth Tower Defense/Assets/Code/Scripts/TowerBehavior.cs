@@ -25,12 +25,15 @@ public class TowerBehavior : MonoBehaviour
     public List<GameObject> enemies = new List<GameObject>();
     SphereCollider detectionZone;
 
+    public int cost;
+
     // Call the targeting function twice a second to scan for enemies
     void Start()
     {
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
+
     }
 
     private void OnEnable()
@@ -68,14 +71,21 @@ public class TowerBehavior : MonoBehaviour
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
-        foreach(GameObject enemy in enemies)
+        try
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if(distanceToEnemy < shortestDistance)
+            foreach (GameObject enemy in enemies)
             {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy;
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distanceToEnemy < shortestDistance)
+                {
+                    shortestDistance = distanceToEnemy;
+                    nearestEnemy = enemy;
+                }
             }
+        }
+        catch
+        {
+            Debug.Log("Tower trying to target in empty enemy list. Would have sent a MissingReferenceException regarding the foreach (GameObject enemy in enemies)");
         }
         // Verify the closest enemy is within the tower range and assign as target if true
         if(nearestEnemy != null && shortestDistance <= range)

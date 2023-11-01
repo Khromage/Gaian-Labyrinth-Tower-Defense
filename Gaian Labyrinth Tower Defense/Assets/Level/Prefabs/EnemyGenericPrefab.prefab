@@ -152,6 +152,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: []
+  currTile: {fileID: 0}
+  endTile: {fileID: 0}
+  Grid:
+    serializedVersion: 2
+    m_Bits: 8
   currentHealth: 0
 --- !u!135 &5376600795978324578
 SphereCollider:

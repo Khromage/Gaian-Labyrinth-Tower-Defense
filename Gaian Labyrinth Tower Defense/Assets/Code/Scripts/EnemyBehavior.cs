@@ -3,23 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//currentTile
+//goalTile = path.end  (set by spawnPoint when it gives the initial path? but there might not be a path when a wave starts if it's all blocked off...)
+//when a tower is placed
+
 public class EnemyBehavior : MonoBehaviour
 {
     public delegate void EnemyDeath(GameObject deadEnemy);
     public static event EnemyDeath OnEnemyDeath;
 
     private PathFinder pathFinder;
-    public List<GridTile> path;    
+    public List<GridTile> path;
+    public GridTile currTile;
+    public GridTile endTile;
+    public LayerMask Grid;
     
     private float moveSpeed = 3f;
     private float maxHealth;
     public float currentHealth;
 
+    public int worth;
+
+    //public float value? for when it dies
+
     // Start is called before the first frame update
     void Start()
     {
+        worth = 5;
         maxHealth = 10f;
         currentHealth = maxHealth;
+        pathFinder = new PathFinder();
     }
 
     // Update is called once per frame
@@ -40,7 +53,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    void moveAlongPath()
+    private void moveAlongPath()
     {
         //direction = normalize((goalPos + myHeightOffset) - currPos ); 
         //myHeightOffset = my height but rotated to the normal of the goal. Need to set that up. Matrix/vector multiplication
@@ -61,11 +74,37 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    //called by tower placed event in Player. recalculates the A* path using the current tile the enemy is on and the goal tile.
+    private void recalculatePath(GridTile changedTile) //parameter from TowerPlaced event. unused for now
+    {
+        Ray ray = new Ray(this.transform.position, -this.transform.up);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 10f, Grid))
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            currTile = hit.transform.GetComponent<GridTile>();
+        }
+        path = pathFinder.FindPath(currTile, endTile);
+        if (path == null) // if no path to end, just go straight to it, for now.
+        {
+            path.Add(endTile.GetComponent<GridTile>());
+        }
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         //get hit by some projectile
             //lose health
         //if currentHealth <= 0, Destroy(this)
+    }
+
+    private void OnEnable()
+    {
+        Player.OnTowerPlaced += recalculatePath;
+    }
+    private void OnDisable()
+    {
+        Player.OnTowerPlaced -= recalculatePath;
     }
 
 }
