@@ -25,10 +25,16 @@ public class GunDamage : MonoBehaviour
 
     void Update()
     {
+        
+    }
+
+    
+    public void TryToFire()
+    {
         if (Automatic)
         {
             //if mouse held down
-            if(Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0))
             {
                 //if cd is 0 or less
                 if (CurrentCooldown <= 0f)
@@ -51,20 +57,20 @@ public class GunDamage : MonoBehaviour
                 }
             }
         }
-
         //lower the cd
         CurrentCooldown -= Time.deltaTime;
     }
-
 
     // Update is called once per frame
     public void Shoot()
     {
         Ray gunRay = new Ray(transform.position, transform.forward);
-        
+
+        GameObject laserInstance = Instantiate(Laser, transform.position, transform.rotation);
+        Destroy(laserInstance, .2f);
+
         if (Physics.Raycast(gunRay, out RaycastHit hitInfo, BulletRange))
         {
-Instantiate(Laser, transform.position, transform.rotation);
             if (hitInfo.collider.gameObject.tag == "Enemy")
             {
                 EnemyBehavior e = hitInfo.collider.gameObject.GetComponent<EnemyBehavior>();

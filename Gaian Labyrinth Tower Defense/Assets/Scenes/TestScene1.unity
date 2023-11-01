@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -39159,7 +39159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 20
-  BulletRange: 200
+  BulletRange: 40
   Laser: {fileID: 4276113069247697066, guid: eeba0579d3f171044a63673a984dbcd9, type: 3}
   FireCooldown: 0.5
   Automatic: 1
@@ -41723,7 +41723,9 @@ MonoBehaviour:
   orientation: {fileID: 2016914160}
   playerCam: {fileID: 189062905}
   towerPrefab: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
+  towerDisplayPrefab: {fileID: 3248011058118863728, guid: f94bb3fe3267d3545a2495bcc73ce8c9, type: 3}
   currency: 0
+  currentWeapon: {fileID: 1237901261}
 --- !u!54 &1299577099
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -67171,7 +67173,6 @@ GameObject:
   - component: {fileID: 2074368705}
   - component: {fileID: 2074368704}
   - component: {fileID: 2074368708}
-  - component: {fileID: 2074368707}
   m_Layer: 0
   m_Name: gun
   m_TagString: Untagged
@@ -67266,23 +67267,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074368702}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &2074368707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2074368702}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 863d7a3bcbd5d4a488b5d4ac1be23519, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 0
-  BulletRange: 0
-  Laser: {fileID: 0}
-  FireCooldown: 0
-  Automatic: 0
 --- !u!114 &2074368708
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47,6 +47,8 @@ public class Player : MonoBehaviour
 
     public int currency;
 
+    public GameObject currentWeapon;
+
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
     {
@@ -167,6 +169,7 @@ public class Player : MonoBehaviour
     private void attack()
     {
         //Empty
+        currentWeapon.GetComponent<GunDamage>().TryToFire();
     }
 
     private void placeTowers()
