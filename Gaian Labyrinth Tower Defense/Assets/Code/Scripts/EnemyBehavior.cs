@@ -12,6 +12,9 @@ public class EnemyBehavior : MonoBehaviour
     public delegate void EnemyDeath(GameObject deadEnemy);
     public static event EnemyDeath OnEnemyDeath;
 
+    public delegate void EnemyReachedGoal(int harm);
+    public static event EnemyReachedGoal OnEnemyReachedGoal;
+
     private PathFinder pathFinder;
     public List<GridTile> path;
     public GridTile currTile;
@@ -22,13 +25,18 @@ public class EnemyBehavior : MonoBehaviour
     private float maxHealth;
     public float currentHealth;
 
+    //currency gain on death
     public int worth;
+
+    //damage to core/remaining lives
+    public int harm;
 
     //public float value? for when it dies
 
     // Start is called before the first frame update
     void Start()
     {
+        harm = 1;
         worth = 5;
         maxHealth = 10f;
         currentHealth = maxHealth;
@@ -40,6 +48,12 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (path.Count > 0)
             moveAlongPath();
+        else
+        {
+            Debug.Log("reached end, presumably");
+            OnEnemyReachedGoal?.Invoke(harm);
+            Destroy(gameObject);
+        }
         //then event for reaching the end? reduce lives remaining, and destroy this enemy? after playing an animation, preferably.
     }
 

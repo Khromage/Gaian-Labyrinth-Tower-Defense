@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TowerBehavior : MonoBehaviour
 {
+    public delegate void TargetingError(GameObject gameObj);
+    public static event TargetingError OnTargetingError;
+
     public Transform target;
 
     [Header("Tower Stats")]
@@ -86,6 +89,7 @@ public class TowerBehavior : MonoBehaviour
         catch
         {
             Debug.Log("Tower trying to target in empty enemy list. Would have sent a MissingReferenceException regarding the foreach (GameObject enemy in enemies)");
+            OnTargetingError?.Invoke(gameObject);
         }
         // Verify the closest enemy is within the tower range and assign as target if true
         if(nearestEnemy != null && shortestDistance <= range)

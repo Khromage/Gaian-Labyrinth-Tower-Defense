@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
     public int currWave = 0;
 
 
-    [SerializeField]
+    //[SerializeField]
     public int remainingLives = 20;
     //maybe an event where an enemy reaches the goal? invoked by the enemy, then in this script adjust remainingLives
 
@@ -46,9 +46,36 @@ public class LevelManager : MonoBehaviour
             {
                 waveCountdown = waveTimer;
                 currWave++;
+                waveTimer++;
                 OnWaveStart?.Invoke(currWave);
             }
         }
+    }
+
+    private void LoseLives(int harm)
+    {
+        Debug.Log("Losing lives in LevelManager");
+        remainingLives -= harm;
+        Debug.Log(harm);
+        Debug.Log(remainingLives);
+    }
+
+    private void resetTower(GameObject tower)
+    {
+        Debug.Log("resetting tower. set active false and true");
+        tower.SetActive(false);
+        tower.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        EnemyBehavior.OnEnemyReachedGoal += LoseLives;
+        TowerBehavior.OnTargetingError += resetTower;
+    }
+    private void OnDisable()
+    {
+        EnemyBehavior.OnEnemyReachedGoal -= LoseLives;
+        TowerBehavior.OnTargetingError -= resetTower;
     }
 
 }
