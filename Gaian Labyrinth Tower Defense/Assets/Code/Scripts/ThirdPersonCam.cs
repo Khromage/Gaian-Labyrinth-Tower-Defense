@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ThirdPersonCam : MonoBehaviour
 {
+    [Header("KeyBinds")]
+    public KeyCode aDSButton = KeyCode.Mouse1;
+
     [Header("References")]
     public Transform orientation;
     public Transform player;
@@ -33,11 +36,11 @@ public class ThirdPersonCam : MonoBehaviour
     private void Update()
     {
         //Swicth Camera style to ADS mode if right mouse button is held down
-        if (Input.GetKey(KeyCode.Mouse1))
+        if (Input.GetKey(aDSButton))
         {
             switchCameraStyle(CameraStyle.Combat);
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse1)) 
+        else if (Input.GetKeyUp(aDSButton)) 
             { switchCameraStyle(CameraStyle.Basic); }
 
         //rotate orientation

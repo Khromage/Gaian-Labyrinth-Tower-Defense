@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode changeModes = KeyCode.Tab;
 
     //Variables to be used to check if player is on the ground
     [Header("Ground Check")]
@@ -63,13 +64,13 @@ public class Player : MonoBehaviour
     public void Update() 
      {
         //Checking which mode the player is currently in
-        if ((Input.GetKeyDown(KeyCode.Tab)) && (currentMode != playerMode.Build))
+        if ((Input.GetKeyDown(changeModes)) && (currentMode != playerMode.Build))
         {
             currentMode = playerMode.Build;
 
             Debug.Log("Build");
         }
-        else if (Input.GetKeyDown(KeyCode.Tab))
+        else if (Input.GetKeyDown(changeModes))
         { 
             currentMode = playerMode.Combat;
             Debug.Log("Combat");
