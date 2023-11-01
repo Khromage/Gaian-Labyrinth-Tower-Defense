@@ -42,6 +42,8 @@ public class Player : MonoBehaviour
 
     [Header("Build mode")]
     public GameObject towerPrefab;
+    public GameObject towerDisplayPrefab;
+    private GameObject tempDisplayHolder;
 
     public int currency;
 
@@ -169,17 +171,26 @@ public class Player : MonoBehaviour
 
     private void placeTowers()
     {
-        //here is where we should display an outline of the currently selected tower, either a green transparent silhouette if placeable, or red.
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        //destroying the previous frame's green highlight for potential placement of tower
+        if (tempDisplayHolder != null)
         {
-            Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-            if ((Physics.Raycast(ray, out RaycastHit hit, 100f, Grid))) 
+            Destroy(this.tempDisplayHolder);
+        }
+        //here is where we should display an outline of the currently selected tower, either a green transparent silhouette if placeable, or red.
+        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+        if ((Physics.Raycast(ray, out RaycastHit hit, 100f, Grid)))
+        {
+            if ((hit.transform.tag.Equals("GridTile")))
             {
-                if ((hit.transform.tag.Equals("GridTile")) )
+                GridTile currTileScript = hit.transform.GetComponent<GridTile>();
+
+                if (currTileScript.placeable)
                 {
-                    GridTile currTileScript = hit.transform.GetComponent<GridTile>();
-                    if (currTileScript.placeable) {
+                    //displaying the potential placement spot for the tower
+                    tempDisplayHolder = Instantiate(towerDisplayPrefab, new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z), transform.rotation);
+
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
                         if (currency >= towerPrefab.GetComponent<TowerBehavior>().cost)
                         {
                             Debug.Log(hit.transform.position.x);
@@ -200,11 +211,13 @@ public class Player : MonoBehaviour
                         {
                             Debug.Log("We require more Vespene Gas");
                         }
-                    }
 
+
+                    }
                 }
             }   
         }
+        
     }
 
     private void GainCurrency(GameObject enemyWhoDied)
