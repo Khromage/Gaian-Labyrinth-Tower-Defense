@@ -7,7 +7,7 @@ public class TowerBehavior : MonoBehaviour
     public delegate void TargetingError(GameObject gameObj);
     public static event TargetingError OnTargetingError;
 
-    public Transform target;
+    public GameObject target;
 
     [Header("Tower Stats")]
     
@@ -35,7 +35,7 @@ public class TowerBehavior : MonoBehaviour
     {
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        InvokeRepeating("UpdateTarget", 0f, 0.1f);
 
     }
 
@@ -94,7 +94,7 @@ public class TowerBehavior : MonoBehaviour
         // Verify the closest enemy is within the tower range and assign as target if true
         if(nearestEnemy != null && shortestDistance <= range)
         {
-            target = nearestEnemy.transform;
+            target = nearestEnemy;
         } else 
         {
             target = null;
@@ -107,7 +107,7 @@ public class TowerBehavior : MonoBehaviour
             return;
 
         // Generate vector pointing from tower towards target enemy and use it to rotate the tower head 
-        Vector3 direction = target.position - transform.position;
+        Vector3 direction = target.transform.position - transform.position;
         Quaternion targetingRotation = Quaternion.LookRotation(direction);
         // Using Lerp to smooth transition between target swaps instead of snapping to new targets
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
@@ -128,7 +128,7 @@ public class TowerBehavior : MonoBehaviour
         BulletBehavior bullet = bulletGO.GetComponent<BulletBehavior>();
 
         if (bullet != null)
-            bullet.Seek(target);
+            bullet.Seek(target.transform);
     }
 
     // Tower range visualization via gizmos 
