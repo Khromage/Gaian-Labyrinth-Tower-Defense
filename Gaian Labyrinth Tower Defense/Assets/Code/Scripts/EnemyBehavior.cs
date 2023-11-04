@@ -52,6 +52,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(harm);
+            OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
         }
         //then event for reaching the end? reduce lives remaining, and destroy this enemy? after playing an animation, preferably.
