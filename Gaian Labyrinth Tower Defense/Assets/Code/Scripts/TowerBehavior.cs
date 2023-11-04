@@ -10,16 +10,11 @@ public class TowerBehavior : MonoBehaviour
     public GameObject target;
 
     [Header("Tower Stats")]
-<<<<<<< Updated upstream
     
-=======
-
->>>>>>> Stashed changes
     public string targetingMode;
     public float range = 10f;
     public float fireRate = 1f;
     private float fireCountdown = 0f;
-    public int cost;
 
     [Header("Unity Fields")]
 
@@ -34,41 +29,26 @@ public class TowerBehavior : MonoBehaviour
     public List<GameObject> enemies = new List<GameObject>();
     SphereCollider detectionZone;
 
+    public int cost;
 
     // Call the targeting function twice a second to scan for enemies
     void Start()
     {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        detectionZone = GetComponent<SphereCollider>();
-        detectionZone.radius = range;
         InvokeRepeating("UpdateTarget", 0f, 0.1f);
-
-=======
-        InvokeRepeating("UpdateTarget", 0f, 0.1f);
->>>>>>> Stashed changes
-=======
-        InvokeRepeating("UpdateTarget", 0f, 0.1f);
->>>>>>> Stashed changes
     }
 
     private void OnEnable()
     {
-<<<<<<< Updated upstream
-        targetingMode = "Weak";
-=======
         targetingMode = "Close";
->>>>>>> Stashed changes
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
         EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
     }
-    
     private void onDisable()
     {
         EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
     }
-    
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -76,7 +56,7 @@ public class TowerBehavior : MonoBehaviour
                 enemies.Add(other.gameObject);
             }
     }
-    
+
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -84,7 +64,7 @@ public class TowerBehavior : MonoBehaviour
             enemies.Remove(other.gameObject);
         }
     }
-    
+
     private void removeEnemyFromList(GameObject enemyToRemove)
     {
         enemies.Remove(enemyToRemove);
@@ -92,10 +72,7 @@ public class TowerBehavior : MonoBehaviour
 
     void UpdateTarget()
     {
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
         try
         {
@@ -163,20 +140,6 @@ public class TowerBehavior : MonoBehaviour
             Debug.Log("Tower trying to target in empty enemy list. Would have sent a MissingReferenceException regarding the foreach (GameObject enemy in enemies)");
             OnTargetingError?.Invoke(gameObject);
         }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Verify the closest enemy is within the tower range and assign as target if true
-        if(nearestEnemy != null && shortestDistance <= range)
-        {
-            target = nearestEnemy;
-        } else 
-        {
-            target = null;
-        }
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     }
 
     void Update()
