@@ -10,7 +10,11 @@ public class TowerBehavior : MonoBehaviour
     public GameObject target;
 
     [Header("Tower Stats")]
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
     public string targetingMode;
     public float range = 10f;
     public float fireRate = 1f;
@@ -35,6 +39,7 @@ public class TowerBehavior : MonoBehaviour
     void Start()
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
         InvokeRepeating("UpdateTarget", 0f, 0.1f);
@@ -42,11 +47,18 @@ public class TowerBehavior : MonoBehaviour
 =======
         InvokeRepeating("UpdateTarget", 0f, 0.1f);
 >>>>>>> Stashed changes
+=======
+        InvokeRepeating("UpdateTarget", 0f, 0.1f);
+>>>>>>> Stashed changes
     }
 
     private void OnEnable()
     {
+<<<<<<< Updated upstream
         targetingMode = "Weak";
+=======
+        targetingMode = "Close";
+>>>>>>> Stashed changes
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
         EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
@@ -80,7 +92,10 @@ public class TowerBehavior : MonoBehaviour
 
     void UpdateTarget()
     {
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
         try
         {
@@ -149,6 +164,7 @@ public class TowerBehavior : MonoBehaviour
             OnTargetingError?.Invoke(gameObject);
         }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Verify the closest enemy is within the tower range and assign as target if true
         if(nearestEnemy != null && shortestDistance <= range)
         {
@@ -157,6 +173,8 @@ public class TowerBehavior : MonoBehaviour
         {
             target = null;
         }
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     }
