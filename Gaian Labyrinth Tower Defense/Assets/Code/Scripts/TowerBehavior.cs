@@ -11,9 +11,11 @@ public class TowerBehavior : MonoBehaviour
 
     [Header("Tower Stats")]
     
+    public string targetingMode;
     public float range = 10f;
     public float fireRate = 1f;
     private float fireCountdown = 0f;
+    public int cost;
 
     [Header("Unity Fields")]
 
@@ -28,26 +30,33 @@ public class TowerBehavior : MonoBehaviour
     public List<GameObject> enemies = new List<GameObject>();
     SphereCollider detectionZone;
 
-    public int cost;
 
     // Call the targeting function twice a second to scan for enemies
     void Start()
     {
+<<<<<<< Updated upstream
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
 
+=======
+        InvokeRepeating("UpdateTarget", 0f, 0.1f);
+>>>>>>> Stashed changes
     }
 
     private void OnEnable()
     {
+        targetingMode = "Weak";
+        detectionZone = GetComponent<SphereCollider>();
+        detectionZone.radius = range;
         EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
     }
+    
     private void onDisable()
     {
         EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
     }
-
+    
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -55,7 +64,7 @@ public class TowerBehavior : MonoBehaviour
                 enemies.Add(other.gameObject);
             }
     }
-
+    
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -63,7 +72,7 @@ public class TowerBehavior : MonoBehaviour
             enemies.Remove(other.gameObject);
         }
     }
-
+    
     private void removeEnemyFromList(GameObject enemyToRemove)
     {
         enemies.Remove(enemyToRemove);
@@ -71,19 +80,67 @@ public class TowerBehavior : MonoBehaviour
 
     void UpdateTarget()
     {
-        float shortestDistance = Mathf.Infinity;
-        GameObject nearestEnemy = null;
+
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
         try
         {
-            foreach (GameObject enemy in enemies)
+            switch (targetingMode)
             {
-                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-                if (distanceToEnemy < shortestDistance)
-                {
-                    shortestDistance = distanceToEnemy;
-                    nearestEnemy = enemy;
-                }
+                case "Close":
+                    float shortestDistance = Mathf.Infinity;
+                    GameObject nearestEnemy = null;
+                    foreach (GameObject enemy in enemies)
+                    {
+                        float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                        if (distanceToEnemy < shortestDistance)
+                        {
+                            shortestDistance = distanceToEnemy;
+                            nearestEnemy = enemy;
+                        }
+                    }
+                    // Verify the closest enemy is within the tower range and assign as target if true
+                    if(nearestEnemy != null && shortestDistance <= range)
+                    {
+                        target = nearestEnemy;
+                    } else 
+                    {
+                        target = null;
+                    }
+                    break;
+                case "Strong":
+                    float highestHealth = 0;
+                    GameObject strongestEnemy = null;
+                    foreach (GameObject enemy in enemies)
+                    {
+                        float currentEnemyHealth = enemy.GetComponent<EnemyBehavior>().currentHealth;
+                        if (currentEnemyHealth > highestHealth)
+                        {
+                            highestHealth = currentEnemyHealth;
+                            strongestEnemy = enemy;
+                        }
+                    }
+                    if(strongestEnemy != null)
+                    {
+                        target = strongestEnemy;
+                    }
+                    break;
+                case "Weak":
+                    float lowestHealth = Mathf.Infinity;
+                    GameObject weakestEnemy = null;
+                    foreach (GameObject enemy in enemies)
+                    {
+                        float currentEnemyHealth = enemy.GetComponent<EnemyBehavior>().currentHealth;
+                        if (currentEnemyHealth < lowestHealth)
+                        {
+                            lowestHealth = currentEnemyHealth;
+                            weakestEnemy = enemy;
+                        }
+                    }
+                    if(weakestEnemy != null)
+                    {
+                        target = weakestEnemy;
+                    }
+                    break;
             }
         }
         catch
@@ -91,6 +148,7 @@ public class TowerBehavior : MonoBehaviour
             Debug.Log("Tower trying to target in empty enemy list. Would have sent a MissingReferenceException regarding the foreach (GameObject enemy in enemies)");
             OnTargetingError?.Invoke(gameObject);
         }
+<<<<<<< Updated upstream
         // Verify the closest enemy is within the tower range and assign as target if true
         if(nearestEnemy != null && shortestDistance <= range)
         {
@@ -99,6 +157,8 @@ public class TowerBehavior : MonoBehaviour
         {
             target = null;
         }
+=======
+>>>>>>> Stashed changes
     }
 
     void Update()
