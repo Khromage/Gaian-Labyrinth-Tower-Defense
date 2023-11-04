@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode changeModes = KeyCode.Tab;
+    public KeyCode nextWeapon = KeyCode.E;
+    public KeyCode prevWeapon = KeyCode.Q;
 
     //Variables to be used to check if player is on the ground
     [Header("Ground Check")]
@@ -48,6 +50,8 @@ public class Player : MonoBehaviour
     public int currency;
 
     public GameObject currentWeapon;
+    public List<GameObject> weaponList;
+    private int currentWeaponIndex = 0;
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
@@ -126,6 +130,15 @@ public class Player : MonoBehaviour
             jump();
             Invoke(nameof(resetJump), jumpCooldown);
         } 
+
+        if(Input.GetKeyDown(nextWeapon))
+        {
+            SwapWeapon(nextWeapon);
+        }
+        else if (Input.GetKeyDown(prevWeapon))
+        {
+            SwapWeapon(prevWeapon);
+        }
     }
 
     //Method to move the player on ground and in air 
@@ -172,8 +185,45 @@ public class Player : MonoBehaviour
 
     private void attack()
     {
+        Weapon currentWeaponScript = currentWeapon.GetComponent<Weapon>();
+
         //Empty
-        currentWeapon.GetComponent<GunDamage>().TryToFire();
+        
+        if (currentWeaponScript.Automatic && Input.GetMouseButton(0))
+        {
+            currentWeaponScript.TryToFire();
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            currentWeaponScript.TryToFire();
+        }
+    
+    }
+
+    private void SwapWeapon(KeyCode input)
+    {
+
+        if (input == KeyCode.E)
+        {
+            currentWeaponIndex++;
+            if (currentWeaponIndex >= (weaponList.Count))
+                currentWeaponIndex = 0;
+        }
+        if (input == KeyCode.Q)
+        {
+            currentWeaponIndex--;
+            if (currentWeaponIndex < 0)
+                currentWeaponIndex = weaponList.Count - 1;
+        }
+
+
+        Transform cwt = currentWeapon.transform;
+
+        Destroy(currentWeapon);
+
+        currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
+        
+
     }
 
     private void placeTowers()

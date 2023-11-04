@@ -4,41 +4,32 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    private Transform target;
-    public float speed = 50f;
-    public float damage  = 5f;
+    public float speed;
+    public float damage;
 
-    public void Seek (Transform _target)
+    // Update is called once per frame
+    void Start()
     {
-        target = _target;
+        speed = 50f;
+        damage = 5f;
+    }
+
+    void Update()
+    {
+        transform.Translate(transform.forward * speed * Time.deltaTime, Space.World);
     }
 
     void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Enemy")
         {
-            HitTarget();
+            HitTarget(other.gameObject);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void HitTarget(GameObject hitEnemy)
     {
-        if(target == null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Vector3 direction = target.position - transform.position;
-        float distanceThisFrame = speed * Time.deltaTime;
-        transform.Translate(direction.normalized * distanceThisFrame, Space.World);
-
-    }
-
-    void HitTarget()
-    {
-        EnemyBehavior e = target.gameObject.GetComponent<EnemyBehavior>();
+        EnemyBehavior e = hitEnemy.GetComponent<EnemyBehavior>();
         e.takeDamage(damage, gameObject);
         Destroy(gameObject);
     }
