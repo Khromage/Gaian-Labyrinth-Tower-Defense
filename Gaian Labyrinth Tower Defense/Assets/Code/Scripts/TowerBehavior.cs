@@ -185,7 +185,7 @@ public class TowerBehavior : MonoBehaviour
     void Shoot()
     {
         GameObject bulletGO = Instantiate (bulletPrefab, firePoint.position, firePoint.rotation, gameObject.transform);
-        BulletBehavior bullet = bulletGO.GetComponent<BulletBehavior>();
+        TrackingBulletBehavior bullet = bulletGO.GetComponent<TrackingBulletBehavior>();
 
         if (bullet != null)
             bullet.Seek(target.transform);
