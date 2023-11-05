@@ -21,7 +21,7 @@ public class BulletBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy")
         {
             HitTarget(other.gameObject);
         }

@@ -16,6 +16,9 @@ public class LevelManager : MonoBehaviour
 
     public int currWave = 0;
 
+    [SerializeField] private GameObject goalTile;
+    public FlowFieldGenerator flowFieldGenerator;
+
 
     //[SerializeField]
     public int remainingLives = 20;
@@ -29,6 +32,8 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        flowFieldGenerator = new FlowFieldGenerator();
+        flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
         waveCountdown = 1f;
         remainingLives += 5;
     }

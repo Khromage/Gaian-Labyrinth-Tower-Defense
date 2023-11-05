@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class GridTile : MonoBehaviour
 {
-    //Might make a dictionary of all tiles, and use the coords var as key.
-        //then can get the spawn tile and goal tile from the dictionary?
 
     //coords = unique identifier among all grid tiles. public get, private set.
     private (int x, int y, int z) coords;
@@ -15,21 +13,32 @@ public class GridTile : MonoBehaviour
         private set { coords = value; }
     }
 
+    //distance from goal
+    public int goalDist;
+
+    //list of adjacent grid tiles, for calculating the path.
+    public List<GridTile> adjacentTiles { get; private set; }
+
+    public GridTile successor;
+    public List<GridTile> predecessorList;
+
+
     //A* algorithm things. G is distance from start, H is distance from end, F is the total of both.
     //distance isn't actual distance, but Manhattan distance (so cardinal directions only)
     public int G;
     public int H;
-    public int F { get {return G + H; } }
+    public int F { get { return G + H; } }
     public GridTile previous;
 
-    //list of adjacent grid tiles, for calculating the path.
-    public List<GridTile> adjacentTiles { get; private set; } 
 
     public bool walkable = true; //whether an enemy can path through it. False when tower on it or due to unique environment.
     public bool placeable = true; //whether a tower can be placed on it. False while enemies on it or due to unique environment.
 
+
+
     void Awake()
     {
+        goalDist = 999;
         Coords = setCoords();
         adjacentTiles = new List<GridTile>();
         setAdjTiles();

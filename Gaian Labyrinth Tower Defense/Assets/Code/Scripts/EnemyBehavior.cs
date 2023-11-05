@@ -70,56 +70,37 @@ public class EnemyBehavior : MonoBehaviour
 
     private void moveAlongPath()
     {
-        //direction = normalize((goalPos + myHeightOffset) - currPos ); 
-        //myHeightOffset = my height but rotated to the normal of the goal. Need to set that up. Matrix/vector multiplication
-
-        Vector3 moveDirNormal = Vector3.Normalize((path[0].transform.position + new Vector3(0f, .5f, 0f)) - transform.position);
-
-        //should also rotate toward where you're moving
-
-        //movement = direction * speed;
-        //Debug.Log(moveDirNormal);
-        transform.position += moveDirNormal * moveSpeed * Time.deltaTime;
-
-        //if reach next tile in path, remove it from path.
-        if (Vector3.Distance(transform.position, path[0].gameObject.transform.position) < .8f)
-        {
-            //Debug.Log($"removing path[0]: {path[0].Coords}");
-            path.RemoveAt(0);
-        }
-    }
-
-    //called by tower placed event in Player. recalculates the A* path using the current tile the enemy is on and the goal tile.
-    private void recalculatePath(GridTile changedTile) //parameter from TowerPlaced event. unused for now
-    {
+        //get current tile. Might adjust this to check less often than on every frame.
         Ray ray = new Ray(this.transform.position, -this.transform.up);
-
         if (Physics.Raycast(ray, out RaycastHit hit, 10f, Grid))
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            Debug.Log("hitting tile");
             currTile = hit.transform.GetComponent<GridTile>();
         }
-        path = pathFinder.FindPath(currTile, endTile);
-        if (path == null) // if no path to end, just go straight to it, for now.
-        {
-            path.Add(endTile.GetComponent<GridTile>());
-        }
+
+        //direction = normalize((successorPos + myHeightOffset) - currPos ); 
+        //myHeightOffset = my height but rotated to the normal of the goal. Need to set that up. Matrix/vector multiplication
+        Vector3 posToMoveToward = currTile.successor.transform.position;
+        Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
+
+        transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);
+
+        //should also rotate toward where you're moving
     }
+
 
     void OnCollisionEnter(Collision collision)
     {
-        //get hit by some projectile
-            //lose health
-        //if currentHealth <= 0, Destroy(this)
+
     }
 
     private void OnEnable()
     {
-        Player.OnTowerPlaced += recalculatePath;
+        //Player.OnTowerPlaced += recalculatePath;
     }
     private void OnDisable()
     {
-        Player.OnTowerPlaced -= recalculatePath;
+        //Player.OnTowerPlaced -= recalculatePath;
     }
 
 }

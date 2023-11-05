@@ -57,7 +57,7 @@ public class SpawnPoint : GridTile
             GameObject currEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position, transform.rotation);
             EnemyBehavior currEnemyScript = currEnemy.GetComponent<EnemyBehavior>();
             currEnemyScript.path = new List<GridTile>(path);
-            currEnemyScript.currTile = path[0];
+            currEnemyScript.currTile = this.GetComponent<GridTile>();
             currEnemyScript.endTile = endTile.GetComponent<GridTile>();
             //Debug.Log($"enemy {i} pos: {currEnemy.transform.position}");
 
