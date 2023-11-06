@@ -11,7 +11,7 @@ public class BulletBehavior : MonoBehaviour
     public virtual void Start()
     {
         speed = 50f;
-        damage = 5f;
+        damage = 1f;
     }
 
     public virtual void Update()

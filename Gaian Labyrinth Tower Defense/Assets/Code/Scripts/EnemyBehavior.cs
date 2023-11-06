@@ -15,10 +15,8 @@ public class EnemyBehavior : MonoBehaviour
     public delegate void EnemyReachedGoal(int harm);
     public static event EnemyReachedGoal OnEnemyReachedGoal;
 
-    private PathFinder pathFinder;
-    public List<GridTile> path;
     public GridTile currTile;
-    public GridTile endTile;
+    public GridTile successorTile;
     public LayerMask Grid;
     
     private float moveSpeed = 3f;
@@ -38,24 +36,24 @@ public class EnemyBehavior : MonoBehaviour
     {
         harm = 1;
         worth = 5;
-        maxHealth = 10f;
+        maxHealth = 12f;
         currentHealth = maxHealth;
-        pathFinder = new PathFinder();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (path.Count > 0)
-            moveAlongPath();
-        else
+
+        updateCurrTile();
+        moveAlongPath();
+        
+        if (currTile is GoalTile)
         {
             Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(harm);
             OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
         }
-        //then event for reaching the end? reduce lives remaining, and destroy this enemy? after playing an animation, preferably.
     }
 
     public void takeDamage(float damage, GameObject damagerBullet)
@@ -70,17 +68,13 @@ public class EnemyBehavior : MonoBehaviour
 
     private void moveAlongPath()
     {
-        //get current tile. Might adjust this to check less often than on every frame.
-        Ray ray = new Ray(this.transform.position, -this.transform.up);
-        if (Physics.Raycast(ray, out RaycastHit hit, 10f, Grid))
-        {
-            Debug.Log("hitting tile");
-            currTile = hit.transform.GetComponent<GridTile>();
-        }
-
         //direction = normalize((successorPos + myHeightOffset) - currPos ); 
         //myHeightOffset = my height but rotated to the normal of the goal. Need to set that up. Matrix/vector multiplication
-        Vector3 posToMoveToward = currTile.successor.transform.position;
+        Vector3 posToMoveToward = transform.position;
+        if (successorTile != null)
+            posToMoveToward = successorTile.transform.position;
+        else
+            Debug.Log("enemy no successor to move toward");
         Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
 
         transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);
@@ -88,19 +82,17 @@ public class EnemyBehavior : MonoBehaviour
         //should also rotate toward where you're moving
     }
 
-
-    void OnCollisionEnter(Collision collision)
+    private void updateCurrTile()
     {
-
-    }
-
-    private void OnEnable()
-    {
-        //Player.OnTowerPlaced += recalculatePath;
-    }
-    private void OnDisable()
-    {
-        //Player.OnTowerPlaced -= recalculatePath;
+        //get current tile. Might adjust this to check less often than on every frame.
+        Ray ray = new Ray(this.transform.position, -this.transform.up);
+        if (Physics.Raycast(ray, out RaycastHit hit, 10f, Grid))
+        {
+            //Debug.Log("hitting tile");
+            currTile = hit.transform.GetComponent<GridTile>();
+            successorTile = currTile.successor;
+            currTile.enemyOnTile = true;
+        }
     }
 
 }

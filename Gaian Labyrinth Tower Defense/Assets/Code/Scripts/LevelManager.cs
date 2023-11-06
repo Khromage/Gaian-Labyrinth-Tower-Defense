@@ -34,6 +34,7 @@ public class LevelManager : MonoBehaviour
     {
         flowFieldGenerator = new FlowFieldGenerator();
         flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
+        
         waveCountdown = 1f;
         remainingLives += 5;
     }
@@ -65,22 +66,50 @@ public class LevelManager : MonoBehaviour
         Debug.Log(remainingLives);
     }
 
-    private void resetTower(GameObject tower)
+
+    //currently does a full Field Generation. Maybe can be made more efficient
+    private void recalcFlowField_NewTower(GridTile towerTile)
     {
-        Debug.Log("resetting tower. set active false and true");
-        tower.SetActive(false);
-        tower.SetActive(true);
+        Debug.Log("tower placed event in level manager. recalcing field");
+
+        flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
+
+        /*
+        thinking of doing A* from the tower tile's predecessor until it finds tiles with lower goalDist than the tower tile,
+        then from there GenerateField on part of the map.
+        Would have to re-generate from a minimum any time you come across a shorter distance though? Any time you come across a distance more than 1 shorter.
+        imagine A* to goal, but we stop once we find a tile with a shorter goalDist than the tile the tower was placed on
+        then from there we GenerateField over part of the map flowing from there
+        Any time we come across a better route (so any adj tiles with >1 goalDist shorter than currTile we're on at the frontier), that better route/tile starts a new GenerateField
+        so potentially several GenerateFields over part of the map, or potentially just one. That on top of partway A* to start, maybe not much better than a full GenerateField
+        */
     }
+
+    //does a partial Field Generation, starting from the opening created by the absent tower, rather than a full Field Generation
+    private void recalcFlowField_NewTile(GridTile newTile)
+    {
+        GridTile recalcTile = newTile;
+        foreach (GridTile adjTile in newTile.adjacentTiles)
+            if (adjTile.goalDist < recalcTile.goalDist)
+                recalcTile = adjTile;
+        flowFieldGenerator.GenerateField(recalcTile, recalcTile.goalDist);
+    }
+    
 
     private void OnEnable()
     {
         EnemyBehavior.OnEnemyReachedGoal += LoseLives;
-        TowerBehavior.OnTargetingError += resetTower;
+
+        Player.OnTowerPlaced += recalcFlowField_NewTower;
+        Player.OnTowerSold += recalcFlowField_NewTile;
     }
+
     private void OnDisable()
     {
         EnemyBehavior.OnEnemyReachedGoal -= LoseLives;
-        TowerBehavior.OnTargetingError -= resetTower;
+        
+        Player.OnTowerPlaced -= recalcFlowField_NewTower;
+        Player.OnTowerSold -= recalcFlowField_NewTile;
     }
 
 }

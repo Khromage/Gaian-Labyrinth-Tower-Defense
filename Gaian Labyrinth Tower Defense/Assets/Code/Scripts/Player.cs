@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     public delegate void TowerPlaced(GridTile tileOn);
     public static event TowerPlaced OnTowerPlaced;
 
+    public delegate void TowerSold(GridTile tileOn);
+    public static event TowerSold OnTowerSold;
+
     public playerMode currentMode;
 
     //Variables to control and determine player's jumping abiltiy
@@ -241,7 +244,7 @@ public class Player : MonoBehaviour
             {
                 GridTile currTileScript = hit.transform.GetComponent<GridTile>();
 
-                if (currTileScript.placeable)
+                if (currTileScript.placeable && !currTileScript.enemyOnTile)
                 {
                     //displaying the potential placement spot for the tower
                     tempDisplayHolder = Instantiate(towerDisplayPrefab, new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z), transform.rotation);
@@ -257,6 +260,7 @@ public class Player : MonoBehaviour
 
                             currTileScript.placeable = false;
                             currTileScript.walkable = false;
+                            currTileScript.towerOnTile = true;
 
                             Debug.Log($"Currency before tower placement: {currency}");
                             currency -= tower.cost;
@@ -272,9 +276,23 @@ public class Player : MonoBehaviour
 
                     }
                 }
+                else if (!currTileScript.towerOnTile)
+                {
+                    //displaying the potential placement spot for the tower, red when disallowed
+                    tempDisplayHolder = Instantiate(towerDisplayPrefab, new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z), transform.rotation);
+                    // Call SetColor using the shader property name "_Color" and setting the color to red
+                    tempDisplayHolder.transform.Find("Body").GetComponent<Renderer>().material.SetColor("_Color", new Color(.9f, .1f, .1f, .2f));
+                }
             }   
         }
         
+    }
+
+    private void sellTower()
+    {
+        GridTile tileOn = null;
+        //invoke this event with the tile the tower was on.
+        OnTowerSold?.Invoke(tileOn);
     }
 
     private void GainCurrency(GameObject enemyWhoDied)

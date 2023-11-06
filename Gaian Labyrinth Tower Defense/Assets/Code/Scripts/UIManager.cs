@@ -9,8 +9,11 @@ public class UIManager : MonoBehaviour
     public TMP_Text WavesText; 
     public TMP_Text TimeText;
     public TMP_Text LivesText;
+    public TMP_Text CurrencyText;
     [SerializeField]
     private GameObject levelManager;
+    [SerializeField]
+    private GameObject player;
 
     //private int counter = 0;
 
@@ -25,6 +28,7 @@ public class UIManager : MonoBehaviour
         WavesText.text = "Wave: " + levelManager.GetComponent<LevelManager>().currWave.ToString();
         TimeText.text = "Time to next wave: " + ((int)levelManager.GetComponent<LevelManager>().waveCountdown).ToString();
         LivesText.text = "Lives: " + levelManager.GetComponent<LevelManager>().remainingLives.ToString();
+        CurrencyText.text = "$" + player.GetComponent<Player>().currency.ToString();
         //LivesText.text = "hey " + counter;
         //counter++;
     }

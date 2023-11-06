@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class TowerBehavior : MonoBehaviour
 {
-    public delegate void TargetingError(GameObject gameObj);
-    public static event TargetingError OnTargetingError;
 
     public GameObject target;
 
@@ -138,7 +136,9 @@ public class TowerBehavior : MonoBehaviour
         catch
         {
             Debug.Log("Tower trying to target in empty enemy list. Would have sent a MissingReferenceException regarding the foreach (GameObject enemy in enemies)");
-            OnTargetingError?.Invoke(gameObject);
+            detectionZone.enabled = false;
+            enemies.Clear();
+            detectionZone.enabled = true;
         }
     }
 

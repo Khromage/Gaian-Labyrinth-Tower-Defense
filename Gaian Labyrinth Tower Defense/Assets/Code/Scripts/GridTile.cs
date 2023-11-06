@@ -21,6 +21,7 @@ public class GridTile : MonoBehaviour
 
     public GridTile successor;
     public List<GridTile> predecessorList;
+    public bool fielded;
 
 
     //A* algorithm things. G is distance from start, H is distance from end, F is the total of both.
@@ -33,12 +34,13 @@ public class GridTile : MonoBehaviour
 
     public bool walkable = true; //whether an enemy can path through it. False when tower on it or due to unique environment.
     public bool placeable = true; //whether a tower can be placed on it. False while enemies on it or due to unique environment.
-
-
+    public bool enemyOnTile = false;
+    public bool towerOnTile = false;
 
     void Awake()
     {
         goalDist = 999;
+        fielded = false;
         Coords = setCoords();
         adjacentTiles = new List<GridTile>();
         setAdjTiles();
@@ -53,7 +55,7 @@ public class GridTile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        enemyOnTile = false;
     }
 
     void OnDrawGizmos()
@@ -90,6 +92,19 @@ public class GridTile : MonoBehaviour
             if (col.gameObject != gameObject) 
                 adjacentTiles.Add(col.gameObject.GetComponent<GridTile>());
         }
+    }
+
+    public GridTile recalcSuccessor()
+    {
+        GridTile newSuccessor = successor;
+        
+        foreach (GridTile adjTile in adjacentTiles)
+            if (adjTile.walkable && adjTile.goalDist < newSuccessor.goalDist)
+                newSuccessor = adjTile;
+        //if nothing changed and the successor was unwalkable
+        if (!successor.walkable && newSuccessor == successor)
+            newSuccessor = null;
+        return newSuccessor;
     }
 
     //displays the tile's coords and adjacent tile coords

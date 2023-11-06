@@ -66,5 +66,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b4dea737211934c867b05e640ab94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goalDist: 0
+  successor: {fileID: 0}
+  predecessorList: []
+  fielded: 0
+  G: 0
+  H: 0
+  previous: {fileID: 0}
   walkable: 1
   placeable: 1
