@@ -11,7 +11,7 @@ public class BulletBehavior : MonoBehaviour
     public virtual void Start()
     {
         speed = 50f;
-        damage = 5f;
+        damage = 1f;
     }
 
     public virtual void Update()
@@ -21,7 +21,7 @@ public class BulletBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy")
         {
             HitTarget(other.gameObject);
         }

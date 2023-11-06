@@ -6,6 +6,12 @@ public class GoalTile : GridTile
 {
     //might have event here for when an enemy reaches this kind of tile.
 
+    void Start()
+    {
+        goalDist = 0;
+        placeable = false;
+    }
+
     void OnDrawGizmos()
     {
         // Draw a semitransparent blue box at the transforms position
