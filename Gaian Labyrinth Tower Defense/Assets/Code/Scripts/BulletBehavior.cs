@@ -8,13 +8,13 @@ public class BulletBehavior : MonoBehaviour
     public float damage;
 
     // Update is called once per frame
-    void Start()
+    public virtual void Start()
     {
         speed = 50f;
         damage = 5f;
     }
 
-    void Update()
+    public virtual void Update()
     {
         transform.Translate(transform.forward * speed * Time.deltaTime, Space.World);
     }
@@ -27,7 +27,7 @@ public class BulletBehavior : MonoBehaviour
         }
     }
 
-    void HitTarget(GameObject hitEnemy)
+    public virtual void HitTarget(GameObject hitEnemy)
     {
         EnemyBehavior e = hitEnemy.GetComponent<EnemyBehavior>();
         e.takeDamage(damage, gameObject);
