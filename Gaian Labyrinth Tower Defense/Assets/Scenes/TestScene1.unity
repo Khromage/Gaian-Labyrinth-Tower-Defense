@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7647,7 +7647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189062905}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13714321, y: 0.000000028263951, z: -0.0000000039131836, w: 0.9905513}
+  m_LocalRotation: {x: 0.13714321, y: -0.000000028263948, z: 0.000000003913183, w: 0.9905513}
   m_LocalPosition: {x: 1.2264403, y: 4.659394, z: -15.196116}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -41953,9 +41953,11 @@ MonoBehaviour:
   jumpCooldown: 0.25
   airMultiplier: 0.4
   jumpKey: 32
-  changeModes: 9
   nextWeapon: 101
   prevWeapon: 113
+  tower1: 49
+  tower2: 50
+  tower3: 51
   playerHeight: 0
   whatIsGround:
     serializedVersion: 2
@@ -41972,6 +41974,11 @@ MonoBehaviour:
   weaponList:
   - {fileID: 5926663804712910904, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
   - {fileID: 5926663804712910904, guid: 1cc1147431a6d404fb6acfa7af10157e, type: 3}
+  currentTower: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
+  towerList:
+  - {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
+  - {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
+  - {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
 --- !u!54 &1299577099
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -48524,7 +48531,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478073242}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11571274, y: -0.000000024265319, z: 0.000000008793656, w: 0.9932828}
+  m_LocalRotation: {x: 0.11571274, y: -0.0000000404422, z: 0.000000014656093, w: 0.9932828}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -53252,7 +53259,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618123025}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.021723755, y: -0.000000009757322, z: 0.0000000025271139, w: 0.9997641}
+  m_LocalRotation: {x: 0.021723755, y: -0.000000056869823, z: 0.000000014729097, w: 0.9997641}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -56292,7 +56299,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724848852}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06942034, y: -0.000000049295636, z: 0.00000001531262, w: 0.99758756}
+  m_LocalRotation: {x: 0.06942034, y: -0.000000016431882, z: 0.000000005104207, w: 0.99758756}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
