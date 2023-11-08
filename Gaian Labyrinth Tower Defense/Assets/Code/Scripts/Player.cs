@@ -350,6 +350,13 @@ public class Player : MonoBehaviour
         
     }
 
+    private void sellTower()
+    {
+        GridTile tileOn = null;
+        //invoke this event with the tile the tower was on.
+        OnTowerSold?.Invoke(tileOn);
+    }
+
     private void GainCurrency(GameObject enemyWhoDied)
     {
         currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
