@@ -23,9 +23,11 @@ public class Player : MonoBehaviour
 
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
-    public KeyCode changeModes = KeyCode.Tab;
     public KeyCode nextWeapon = KeyCode.E;
     public KeyCode prevWeapon = KeyCode.Q;
+    public KeyCode tower1 = KeyCode.Alpha1;
+    public KeyCode tower2 = KeyCode.Alpha2;
+    public KeyCode tower3 = KeyCode.Alpha3;
 
     //Variables to be used to check if player is on the ground
     [Header("Ground Check")]
@@ -52,9 +54,14 @@ public class Player : MonoBehaviour
 
     public int currency;
 
+    [Header("Weapon List")]
     public GameObject currentWeapon;
     public List<GameObject> weaponList;
     private int currentWeaponIndex = 0;
+
+    [Header("Tower List")]
+    public GameObject currentTower;
+    public List<GameObject> towerList;
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
@@ -74,23 +81,7 @@ public class Player : MonoBehaviour
     //Method to be checked on every frame of the game
     public void Update() 
      {
-        //Checking which mode the player is currently in
-        if ((Input.GetKeyDown(changeModes)) && (currentMode != playerMode.Build))
-        {
-            currentMode = playerMode.Build;
-
-            Debug.Log("Build");
-        }
-        else if (Input.GetKeyDown(changeModes))
-        { 
-            currentMode = playerMode.Combat;
-            Debug.Log("Combat");
-            if (tempDisplayHolder != null)
-            {
-                Destroy(this.tempDisplayHolder);
-            }
-        }
-
+        checkCurrentMode();
         getUserKeyInput();
         playerSpeedControl();
 
@@ -114,27 +105,82 @@ public class Player : MonoBehaviour
         }
     }
 
-    //Methods to be executed when user inputs keys
+    //Methods to be executed when user inputs movement keys
+    //Executed on a fixed interval
     public void FixedUpdate() 
     {
         movePlayer();
     }
 
-    //Getting WASD and jump inputs
-    private void getUserKeyInput() 
+    //Checking which mode the player is currently in
+    private void checkCurrentMode()
     {
+        if (enteringBuildMode())
+        {
+            currentMode = playerMode.Build;
+
+            Debug.Log("Build");
+        }
+        else if (enteringCombatMode())
+        {
+            currentMode = playerMode.Combat;
+            Debug.Log("Combat");
+            if (tempDisplayHolder != null)
+            {
+                Destroy(this.tempDisplayHolder);
+            }
+        }
+    }
+
+    private bool enteringBuildMode()
+    {
+        //Sets tower immediatley to whichever key is pressed 
+        //then returns true to place player into build mode
+        if (Input.GetKeyDown(tower1))
+        { 
+                return true;
+        }
+        if (Input.GetKeyDown(tower2))
+        {
+                return true;
+        }
+        if (Input.GetKeyDown(tower2))
+        {
+                return true;
+        }
+        return false;
+    }
+
+    private bool enteringCombatMode()
+    {
+        if (Input.GetKeyDown(prevWeapon))
+        {
+            return true;
+        }
+        if (Input.GetKeyDown(nextWeapon))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    //Getting WASD and jump inputs
+    private void getUserKeyInput()
+    { 
         //Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
         //Player wants to jump
-        if(Input.GetKey(jumpKey) && readyToJump && grounded) {
+        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        {
             readyToJump = false;
             jump();
             Invoke(nameof(resetJump), jumpCooldown);
-        } 
+        }
 
-        if(Input.GetKeyDown(nextWeapon))
+        //Getting weapon selected
+        if (Input.GetKeyDown(nextWeapon))
         {
             SwapWeapon(nextWeapon);
         }
@@ -142,6 +188,21 @@ public class Player : MonoBehaviour
         {
             SwapWeapon(prevWeapon);
         }
+
+        //Change current selected tower
+        if (Input.GetKeyDown(tower1))
+        {
+            currentTower = towerList[0];
+        }
+        if (Input.GetKeyDown(tower2))
+        {
+            currentTower = towerList[1];
+        }
+        if (Input.GetKeyDown(tower2))
+        {
+            currentTower = towerList[2];
+        }
+
     }
 
     //Method to move the player on ground and in air 
@@ -206,13 +267,13 @@ public class Player : MonoBehaviour
     private void SwapWeapon(KeyCode input)
     {
 
-        if (input == KeyCode.E)
+        if (input == nextWeapon)
         {
             currentWeaponIndex++;
             if (currentWeaponIndex >= (weaponList.Count))
                 currentWeaponIndex = 0;
         }
-        if (input == KeyCode.Q)
+        if (input == prevWeapon)
         {
             currentWeaponIndex--;
             if (currentWeaponIndex < 0)
@@ -228,6 +289,7 @@ public class Player : MonoBehaviour
         
 
     }
+
 
     private void placeTowers()
     {
@@ -251,11 +313,11 @@ public class Player : MonoBehaviour
 
                     if (Input.GetKeyDown(KeyCode.Mouse0))
                     {
-                        if (currency >= towerPrefab.GetComponent<TowerBehavior>().cost)
+                        if (currency >= currentTower.GetComponent<TowerBehavior>().cost)
                         {
                             Debug.Log(hit.transform.position.x);
                             Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
-                            GameObject currTower = Instantiate(towerPrefab, towerPlacement, transform.rotation);
+                            GameObject currTower = Instantiate(currentTower, towerPlacement, transform.rotation);
                             TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
 
                             currTileScript.placeable = false;
