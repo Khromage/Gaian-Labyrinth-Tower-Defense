@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : UnitBehavior
 {
     public delegate void TowerPlaced(GridTile tileOn);
     public static event TowerPlaced OnTowerPlaced;
@@ -71,9 +71,13 @@ public class Player : MonoBehaviour
     }
 
     //Method to be checked on first frame of the game
-    public void Start() {
+    public void Start()
+    {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
+
         readyToJump = true;
         currency = 80;
     }
@@ -110,6 +114,7 @@ public class Player : MonoBehaviour
     public void FixedUpdate() 
     {
         movePlayer();
+        rotateToSurface();
     }
 
     //Checking which mode the player is currently in
@@ -231,6 +236,18 @@ public class Player : MonoBehaviour
             Vector3 limitedVel = flatVel.normalized * moveSpeed; 
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+    }
+
+    private void rotateToSurface()
+    {
+        //interpolate my rotation to my rotation with the x and z axis replaced by the surface's
+
+        //or rotateToward quaternion formed by Euler of my y and the surface's x and z
+        //Vector3 diffInRotation = Vector3.Angle(-transform.up, GetComponent<ConstantForce>().force);
+        
+        Quaternion goalRotation = Quaternion.FromToRotation(-transform.up, GetComponent<ConstantForce>().force);
+        Vector3 newOrientation = Quaternion.Lerp(rb.rotation, goalRotation, Time.deltaTime * 10f).eulerAngles;
+        rb.rotation = Quaternion.Euler(newOrientation.x, rb.rotation.y, newOrientation.z);
     }
 
     private void jump() 

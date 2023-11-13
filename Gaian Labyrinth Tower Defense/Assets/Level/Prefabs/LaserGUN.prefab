@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1092918631619901869}
   - component: {fileID: 6725638320382200413}
   - component: {fileID: 5173524772818683227}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: gunBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1530731673657303156}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4359979704163435200}
   - component: {fileID: 1441799654010830658}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LaserGUN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,6 +188,7 @@ MonoBehaviour:
   BulletRange: 0
   FireCooldown: 0
   Automatic: 0
+  CurrentCooldown: 0
   Beam: {fileID: 4276113069247697066, guid: eeba0579d3f171044a63673a984dbcd9, type: 3}
 --- !u!1 &8748752840513755790
 GameObject:
@@ -201,7 +202,7 @@ GameObject:
   - component: {fileID: 5599284013345637238}
   - component: {fileID: 8766049759278331594}
   - component: {fileID: 3011751793413727280}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}

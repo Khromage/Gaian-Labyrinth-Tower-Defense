@@ -32,11 +32,15 @@ public class SpawnPoint : GridTile
 
     IEnumerator spawnDelay(float timeToWait, int waveNum)
     {
+        Vector3 offset = new Vector3(0f, .2f, 0f);
+
         for (int i = 0; i < waveSet[waveNum - 1].waveEnemies.Length; i++)
         {
-            GameObject currEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position, transform.rotation);
+            GameObject currEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position + offset, transform.rotation);
             EnemyBehavior currEnemyScript = currEnemy.GetComponent<EnemyBehavior>();
             currEnemyScript.currTile = this.GetComponent<GridTile>();
+            Vector3 dirToNextTile = Vector3.Normalize(successor.transform.position - transform.position);
+            //currEnemy.GetComponent<Rigidbody>().AddForce(dirToNextTile * currEnemy.GetComponent<EnemyBehavior>().moveSpeed * 5f, ForceMode.Impulse);
 
             yield return new WaitForSeconds(timeToWait);
         }

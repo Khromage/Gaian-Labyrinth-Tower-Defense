@@ -50,9 +50,9 @@ public class TowerBehavior : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
-            {
-                enemies.Add(other.gameObject);
-            }
+        {
+            enemies.Add(other.gameObject);
+        }
     }
 
     void OnTriggerExit(Collider other)

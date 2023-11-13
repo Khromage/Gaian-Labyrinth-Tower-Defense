@@ -7,7 +7,7 @@ using UnityEngine;
 //goalTile = path.end  (set by spawnPoint when it gives the initial path? but there might not be a path when a wave starts if it's all blocked off...)
 //when a tower is placed
 
-public class EnemyBehavior : MonoBehaviour
+public class EnemyBehavior : UnitBehavior
 {
     public delegate void EnemyDeath(GameObject deadEnemy);
     public static event EnemyDeath OnEnemyDeath;
@@ -19,7 +19,7 @@ public class EnemyBehavior : MonoBehaviour
     public GridTile successorTile;
     public LayerMask Grid;
     
-    private float moveSpeed = 3f;
+    public float moveSpeed = 3f;
     private float maxHealth;
     public float currentHealth;
 
@@ -29,11 +29,16 @@ public class EnemyBehavior : MonoBehaviour
     //damage to core/remaining lives
     public int harm;
 
-    //public float value? for when it dies
+    Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
+        rb.drag = 1f;
+
         harm = 1;
         worth = 5;
         maxHealth = 12f;
@@ -45,7 +50,6 @@ public class EnemyBehavior : MonoBehaviour
     {
 
         updateCurrTile();
-        moveAlongPath();
         
         if (currTile is GoalTile)
         {
@@ -54,6 +58,15 @@ public class EnemyBehavior : MonoBehaviour
             OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
         }
+        if (currentHealth <= 0)
+        {
+            OnEnemyDeath?.Invoke(gameObject);
+            Destroy(gameObject);
+        }
+    }
+    void FixedUpdate()
+    {
+        moveAlongPath();
     }
 
     public void takeDamage(float damage, GameObject damagerBullet)
@@ -77,7 +90,12 @@ public class EnemyBehavior : MonoBehaviour
             Debug.Log("enemy no successor to move toward");
         Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
 
-        transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);
+        //Debug.Log(moveDirNormal * moveSpeed * 5f);
+        if (rb.velocity.magnitude < moveSpeed)
+            rb.AddForce(moveDirNormal * moveSpeed * 10f, ForceMode.Force);
+        //rb.drag = rb.velocity.magnitude / moveSpeed;
+        //Debug.Log($"currDrag: {rb.drag}");
+        //transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);
 
         //should also rotate toward where you're moving
     }

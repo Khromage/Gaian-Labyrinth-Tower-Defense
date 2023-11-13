@@ -23,7 +23,7 @@ public class BulletBehavior : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            HitTarget(other.gameObject);
+            HitTarget(other.gameObject.transform.parent.gameObject);
         }
     }
 
