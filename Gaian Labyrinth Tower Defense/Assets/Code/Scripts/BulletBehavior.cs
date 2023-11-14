@@ -25,12 +25,13 @@ public class BulletBehavior : MonoBehaviour
         {
             HitTarget(other.gameObject);
         }
+        Destroy(gameObject);
     }
 
     public virtual void HitTarget(GameObject hitEnemy)
     {
         EnemyBehavior e = hitEnemy.GetComponent<EnemyBehavior>();
         e.takeDamage(damage, gameObject);
-        Destroy(gameObject);
+
     }
 }
