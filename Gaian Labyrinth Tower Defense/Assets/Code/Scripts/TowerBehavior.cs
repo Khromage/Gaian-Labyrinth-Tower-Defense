@@ -29,6 +29,8 @@ public class TowerBehavior : MonoBehaviour
 
     public int cost;
 
+    public GridTile gridLocation;
+
     // Call the targeting function twice a second to scan for enemies
     void Start()
     {

@@ -28,12 +28,14 @@ public class Player : MonoBehaviour
     public KeyCode tower1 = KeyCode.Alpha1;
     public KeyCode tower2 = KeyCode.Alpha2;
     public KeyCode tower3 = KeyCode.Alpha3;
+    public KeyCode deleteTower = KeyCode.Alpha0;
 
     //Variables to be used to check if player is on the ground
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
     public LayerMask Grid;
+    public LayerMask towerBuilding;
     bool grounded;
 
     public Transform orientation;
@@ -100,7 +102,10 @@ public class Player : MonoBehaviour
         }
         else if (currentMode == playerMode.Build)
         {
-            placeTowers();
+            if (currentTower == null)
+                sellTower();
+            else
+                placeTowers();
             //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
         }
     }
@@ -147,6 +152,10 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(tower2))
         {
                 return true;
+        }
+        if (Input.GetKeyDown(deleteTower))
+        {
+            return true;
         }
         return false;
     }
@@ -201,6 +210,10 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(tower2))
         {
             currentTower = towerList[2];
+        }
+        if (Input.GetKeyDown(deleteTower))
+        {
+            currentTower = null;
         }
 
     }
@@ -315,10 +328,11 @@ public class Player : MonoBehaviour
                     {
                         if (currency >= currentTower.GetComponent<TowerBehavior>().cost)
                         {
-                            Debug.Log(hit.transform.position.x);
+                            Debug.Log("Placing Tower");
                             Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
                             GameObject currTower = Instantiate(currentTower, towerPlacement, transform.rotation);
                             TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
+                            tower.gridLocation = currTileScript;
 
                             currTileScript.placeable = false;
                             currTileScript.walkable = false;
@@ -352,9 +366,28 @@ public class Player : MonoBehaviour
 
     private void sellTower()
     {
-        GridTile tileOn = null;
-        //invoke this event with the tile the tower was on.
-        OnTowerSold?.Invoke(tileOn);
+            Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+            if  ((Physics.Raycast(ray, out RaycastHit hit, 100f, towerBuilding)))
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    Debug.Log("Hit Tower");
+                    GridTile towerTile = (hit.transform.gameObject.GetComponent<TowerBehavior>()).gridLocation;
+                    towerTile.placeable = true;
+                    towerTile.walkable = true;
+                    towerTile.towerOnTile = false;
+
+                    //invoke this event with the tile the tower was on.
+
+                    OnTowerSold?.Invoke(towerTile);
+                
+                    currency += 10;
+                    Destroy(hit.transform.gameObject);
+                }
+            
+            }
+
+
     }
 
     private void GainCurrency(GameObject enemyWhoDied)

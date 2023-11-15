@@ -41958,6 +41958,7 @@ MonoBehaviour:
   tower1: 49
   tower2: 50
   tower3: 51
+  deleteTower: 48
   playerHeight: 0
   whatIsGround:
     serializedVersion: 2
@@ -41965,6 +41966,9 @@ MonoBehaviour:
   Grid:
     serializedVersion: 2
     m_Bits: 8
+  towerBuilding:
+    serializedVersion: 2
+    m_Bits: 128
   orientation: {fileID: 2016914160}
   playerCam: {fileID: 189062905}
   towerPrefab: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}

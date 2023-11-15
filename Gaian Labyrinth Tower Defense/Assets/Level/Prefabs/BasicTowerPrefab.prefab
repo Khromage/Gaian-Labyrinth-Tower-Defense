@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6561215891072590701}
   - component: {fileID: 5246249724988905885}
   - component: {fileID: 6505466437564927404}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BasicTowerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 2998621264439701038}
   - component: {fileID: 123835239397818000}
   - component: {fileID: 4492089313911881620}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 7946373403899203871}
   - component: {fileID: 8152406478359893022}
   - component: {fileID: 8694447963529714360}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Base Plate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6788566222244839869}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -363,7 +363,7 @@ GameObject:
   - component: {fileID: 2679723995649476897}
   - component: {fileID: 3932476418329747657}
   - component: {fileID: 388479658870093757}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -470,7 +470,7 @@ GameObject:
   - component: {fileID: 3920980160578859521}
   - component: {fileID: 56857613248604278}
   - component: {fileID: 6236447236188755794}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
