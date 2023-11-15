@@ -5,7 +5,11 @@ using UnityEngine;
 public class ExplodingBulletBehavior : TrackingBulletBehavior
 {
     public float blastRadius;
-    
+
+    [Header("Unity Fields")]
+    public GameObject explosionPrefab;
+
+
     public override void Start()
     {
         speed = 50f;
@@ -23,6 +27,10 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
                     e.takeDamage(damage, gameObject);
                 }
             }
+            
+            Debug.Log("EXUUUPLOOOOSION");
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
+            explosion.GetComponent<ParticleSystem>().Play();
             Destroy(gameObject);
         }
 }
