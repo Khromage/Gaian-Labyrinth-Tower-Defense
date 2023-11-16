@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,7 +31,9 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
             
             Debug.Log("EXUUUPLOOOOSION");
             GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
-            explosion.GetComponent<ParticleSystem>().Play();
+            ParticleSystem explosionVFX = explosion.GetComponent<ParticleSystem>();
+            explosionVFX.Play(true);
+            Destroy(explosion, 1);
             Destroy(gameObject);
         }
 }
