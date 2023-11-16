@@ -28,8 +28,6 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
                     e.takeDamage(damage, gameObject);
                 }
             }
-            
-            Debug.Log("EXUUUPLOOOOSION");
             GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
             ParticleSystem explosionVFX = explosion.GetComponent<ParticleSystem>();
             explosionVFX.Play(true);
