@@ -18,6 +18,7 @@ public class GravityController : MonoBehaviour
         {
             Debug.Log($"changing someone's direction of gravity: {thisForceDir}");
             other.gameObject.transform.parent.gameObject.GetComponent<UnitBehavior>().UpdateGravity(thisForceDir);
+            other.gameObject.transform.parent.gameObject.GetComponent<Player>().rotateToSurface();
 
         }
     }

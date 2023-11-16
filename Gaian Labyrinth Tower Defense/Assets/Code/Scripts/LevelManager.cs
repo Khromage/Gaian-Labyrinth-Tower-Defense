@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject goalTile;
     public FlowFieldGenerator flowFieldGenerator;
 
+    private GameObject[] goalTileSet;
 
     //[SerializeField]
     public int remainingLives = 20;
@@ -32,9 +33,12 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        goalTileSet = getGoalTiles();
+
         flowFieldGenerator = new FlowFieldGenerator();
-        flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
-        
+        flowFieldGenerator.GenerateField(goalTileSet[0].GetComponent<GridTile>(), 0);
+
+
         waveCountdown = 1f;
         remainingLives += 5;
     }
@@ -95,6 +99,11 @@ public class LevelManager : MonoBehaviour
         flowFieldGenerator.GenerateField(recalcTile, recalcTile.goalDist);
     }
     
+    private GameObject[] getGoalTiles()
+    {
+        return GameObject.FindGameObjectsWithTag("goalTile");
+    }
+
 
     private void OnEnable()
     {

@@ -673,8 +673,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Gaian Labyrinth Tower Defense
-  metroPackageVersion: 
+  metroPackageName: GaianLabyrinthTowerDefense
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -682,7 +682,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: Gaian Labyrinth Tower Defense
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: Gaian Labyrinth Tower Defense
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

@@ -74,7 +74,9 @@ public class Player : UnitBehavior
     public void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        //rb.freezeRotation = false;
+
+        Debug.Log($"is rotation frozen: {rb.freezeRotation}");
 
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
 
@@ -88,9 +90,10 @@ public class Player : UnitBehavior
         checkCurrentMode();
         getUserKeyInput();
         playerSpeedControl();
+        Debug.Log($"Player velocity {rb.velocity}");
 
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
-        grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), -transform.up, playerHeight * 0.5f + 0.3f, whatIsGround);
         //handling player drag if on the ground
         if (grounded)
             rb.drag = groundDrag;
@@ -114,7 +117,7 @@ public class Player : UnitBehavior
     public void FixedUpdate() 
     {
         movePlayer();
-        rotateToSurface();
+        //rotateToSurface();
     }
 
     //Checking which mode the player is currently in
@@ -228,6 +231,9 @@ public class Player : UnitBehavior
     //Method to set a limit to the players velocity
     private void playerSpeedControl() 
     {
+        //flatVel = my velocity - velocity in direction of gravity (we only care about lateral movement)
+        // = my velocity - myVel * cos(angle between the myVel and gravDir)
+
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         //Limit player's movement velocity when reaching max speed
@@ -238,16 +244,24 @@ public class Player : UnitBehavior
         }
     }
 
-    private void rotateToSurface()
+    //orient the player when on a surface with different directi on of gravity
+    public void rotateToSurface()
     {
         //interpolate my rotation to my rotation with the x and z axis replaced by the surface's
 
+        Vector3 gravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+
         //or rotateToward quaternion formed by Euler of my y and the surface's x and z
-        //Vector3 diffInRotation = Vector3.Angle(-transform.up, GetComponent<ConstantForce>().force);
-        
+        float diffInRotation = Vector3.Angle(-transform.up, gravDir);
+
+        /*
         Quaternion goalRotation = Quaternion.FromToRotation(-transform.up, GetComponent<ConstantForce>().force);
         Vector3 newOrientation = Quaternion.Lerp(rb.rotation, goalRotation, Time.deltaTime * 10f).eulerAngles;
         rb.rotation = Quaternion.Euler(newOrientation.x, rb.rotation.y, newOrientation.z);
+        */
+
+        Vector3 axisToRotateAround = Vector3.Cross(-transform.up, gravDir);
+        transform.RotateAround(transform.position, axisToRotateAround, diffInRotation);
     }
 
     private void jump() 
