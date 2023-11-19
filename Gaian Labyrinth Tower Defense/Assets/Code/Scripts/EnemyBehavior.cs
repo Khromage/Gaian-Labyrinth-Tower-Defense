@@ -31,6 +31,8 @@ public class EnemyBehavior : MonoBehaviour
 
     //public float value? for when it dies
 
+    public AudioSource EnemyHurtSFX;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +40,7 @@ public class EnemyBehavior : MonoBehaviour
         worth = 5;
         maxHealth = 12f;
         currentHealth = maxHealth;
+        EnemyHurtSFX = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -59,11 +62,13 @@ public class EnemyBehavior : MonoBehaviour
     public void takeDamage(float damage, GameObject damagerBullet)
     {
         currentHealth -= damage;
+        EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
             OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
         }
+        
     }
 
     private void moveAlongPath()
