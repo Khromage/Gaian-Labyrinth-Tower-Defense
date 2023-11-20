@@ -66,7 +66,8 @@ public class GridTile : MonoBehaviour
         else
             Gizmos.color = new Color(.4f, .6f, .1f, .5f);
 
-        Gizmos.DrawCube(transform.position - new Vector3(0f, .4f, 0f), new Vector3(1f, .2f, 1f));
+        //Gizmos.DrawCube(transform.position - new Vector3(0f, .4f, 0f), new Vector3(1f, .2f, 1f));
+        Gizmos.DrawSphere(transform.position - .4f * transform.up, .6f);
     }
 
     

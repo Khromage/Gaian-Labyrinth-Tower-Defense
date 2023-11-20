@@ -12,9 +12,13 @@ public class Player : UnitBehavior
 
     public playerMode currentMode;
 
+    private Transform playerBody;
+
     //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
     public float moveSpeed;
+    private Vector3 lateralVelocityComponent;
+    private Vector3 verticalVelocityComponent;
     public float groundDrag;
     public float jumpForce;
     public float jumpCooldown;
@@ -44,8 +48,14 @@ public class Player : UnitBehavior
     Vector3 moveDirection;
     Rigidbody rb;
 
+    private Vector3 axisToRotateAround;
+    private float diffInRotation;
+    //private float amountToRotate;
+    //private float numRotFrames;
+
     [Header("Player Cam")]
     public GameObject playerCam;
+    public GameObject newCameraHolder;
 
     [Header("Build mode")]
     public GameObject towerPrefab;
@@ -73,9 +83,16 @@ public class Player : UnitBehavior
     //Method to be checked on first frame of the game
     public void Start()
     {
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+
+        playerBody = transform.Find("Body");
         rb = GetComponent<Rigidbody>();
         //rb.freezeRotation = false;
 
+        axisToRotateAround = Vector3.Cross(-transform.up, transform.forward);
+        diffInRotation = 0f;
+        //amountToRotate = 0f;
         Debug.Log($"is rotation frozen: {rb.freezeRotation}");
 
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
@@ -87,10 +104,31 @@ public class Player : UnitBehavior
     //Method to be checked on every frame of the game
     public void Update() 
      {
+        verticalVelocityComponent = rb.velocity.normalized * Vector3.Dot(rb.velocity, Vector3.Normalize(GetComponent<ConstantForce>().force));
+        lateralVelocityComponent = rb.velocity - verticalVelocityComponent;
+
         checkCurrentMode();
         getUserKeyInput();
         playerSpeedControl();
-        Debug.Log($"Player velocity {rb.velocity}");
+        //Debug.Log($"Player velocity {rb.velocity}");
+
+
+        if (diffInRotation > 0)
+        {
+            //to do a smooth lerp: https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
+            //can I do Vector3.Slerp? between transform.up and 
+            //can set transform.up directly.... transform.up = -gravDir? or something a bit more involved than that 
+            transform.RotateAround(transform.position, axisToRotateAround, diffInRotation);
+            //cameraHolder.transform.RotateAround(playerCam.transform.position, axisToRotateAround, diffInRotation);
+            diffInRotation = 0;
+        }
+        //transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+
+        //Debug.Log($"diffInRotation: {diffInRotation}");
+        //Debug.Log($"current rotation: {transform.rotation.eulerAngles}");
+        //Debug.Log($"amount left to rotate: {amountToRotate}");
+
+
 
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
         grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), -transform.up, playerHeight * 0.5f + 0.3f, whatIsGround);
@@ -117,7 +155,6 @@ public class Player : UnitBehavior
     public void FixedUpdate() 
     {
         movePlayer();
-        //rotateToSurface();
     }
 
     //Checking which mode the player is currently in
@@ -217,7 +254,8 @@ public class Player : UnitBehavior
     private void movePlayer() 
     {
         //calculate movement direction
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        //moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
+        moveDirection = Vector3.Cross(newCameraHolder.transform.right, playerBody.up) * verticalInput + newCameraHolder.transform.right * horizontalInput;
 
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
@@ -233,14 +271,13 @@ public class Player : UnitBehavior
     {
         //flatVel = my velocity - velocity in direction of gravity (we only care about lateral movement)
         // = my velocity - myVel * cos(angle between the myVel and gravDir)
-
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        // ^ calculated in Update() because we also use it in jump()
 
         //Limit player's movement velocity when reaching max speed
-        if(flatVel.magnitude > moveSpeed) 
+        if(lateralVelocityComponent.magnitude > moveSpeed) 
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed; 
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            Vector3 limitedVel = lateralVelocityComponent.normalized * moveSpeed; 
+            rb.velocity = limitedVel + verticalVelocityComponent;
         }
     }
 
@@ -252,7 +289,7 @@ public class Player : UnitBehavior
         Vector3 gravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
 
         //or rotateToward quaternion formed by Euler of my y and the surface's x and z
-        float diffInRotation = Vector3.Angle(-transform.up, gravDir);
+        diffInRotation = Vector3.Angle(-transform.up, gravDir);
 
         /*
         Quaternion goalRotation = Quaternion.FromToRotation(-transform.up, GetComponent<ConstantForce>().force);
@@ -260,14 +297,15 @@ public class Player : UnitBehavior
         rb.rotation = Quaternion.Euler(newOrientation.x, rb.rotation.y, newOrientation.z);
         */
 
-        Vector3 axisToRotateAround = Vector3.Cross(-transform.up, gravDir);
-        transform.RotateAround(transform.position, axisToRotateAround, diffInRotation);
+        axisToRotateAround = Vector3.Cross(-transform.up, gravDir);
+        //amountToRotate = diffInRotation;
+        //numRotFrames = 30f;
     }
 
     private void jump() 
     {
         //reset Y velocity to prepare for new jump
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        //rb.velocity = lateralVelocityComponent;
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }

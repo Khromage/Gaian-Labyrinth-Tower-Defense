@@ -42,7 +42,12 @@ public class FlowFieldGenerator
                 {
                     //current tile becomes a successor of the adjacent tile
                     adjTile.successor = currentTile;
-                    
+                    if (adjTile is SpawnPoint)
+                    {
+                        Debug.Log("spawn point being worked on...");
+                        Debug.Log($"spawn point successor: {adjTile.successor}");
+                        Debug.Log($"{adjTile.successor}'s successor: {adjTile.successor.successor}");
+                    }
                     /*
                     //current tile becomes a successor of the adjacent tile
                     if (initDist == 0)
@@ -77,7 +82,9 @@ public class FlowFieldGenerator
         }
         Debug.Log($"Sorted tile list length: {sortedTileList.Count}");
         Debug.Log($"end queue: {printQueue(frontierQueue)}");
-        determineBottlenecks(sortedTileList);
+        Debug.Log($"end list of tiles: {printQueue(sortedTileList)}");
+        Debug.Log($"count: {count}");
+        //determineBottlenecks(sortedTileList);
     }
 
     //Adjustment

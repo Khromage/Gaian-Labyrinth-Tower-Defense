@@ -103,7 +103,7 @@ public class EnemyBehavior : UnitBehavior
     private void updateCurrTile()
     {
         //get current tile. Might adjust this to check less often than on every frame.
-        Ray ray = new Ray(this.transform.position, -this.transform.up);
+        Ray ray = new Ray(this.transform.position + this.transform.up, -this.transform.up);
         if (Physics.Raycast(ray, out RaycastHit hit, 10f, Grid))
         {
             //Debug.Log("hitting tile");

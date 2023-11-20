@@ -12,8 +12,8 @@ public class SpawnPoint : GridTile
 
 
     //goal of the path. manually put it into inspector for now. (select the instance on scene, and drag the instance in scene of the goal tile to this instance's inspector)
-    [SerializeField]
-    private GameObject endTile;
+    //[SerializeField]
+    //private GameObject endTile;
 
 
     // Start is called before the first frame update

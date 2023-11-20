@@ -74,7 +74,8 @@ public class ThirdPersonCam : MonoBehaviour
 
             if (inputDir != Vector3.zero)
             {
-                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, rotationSpeed * Time.deltaTime);
+                //commented out because it was constantly stopping/overwriting the rotation due to gravity; not accounting for different gravity directions.
+                //playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, rotationSpeed * Time.deltaTime);
             }
 
         }
@@ -83,6 +84,8 @@ public class ThirdPersonCam : MonoBehaviour
             Vector3 dirToCombatLook = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
             orientation.forward = dirToCombatLook.normalized;
 
+            //this should rotate the body around the y axis, as it does now because the rigidbody's rotation is frozen on the x and z axes
+            //To add: should also rotate the weapon + head of the player around the y and x? axes, to follow the exact direction of the camera.
             playerObj.forward = dirToCombatLook.normalized;
         }
 
