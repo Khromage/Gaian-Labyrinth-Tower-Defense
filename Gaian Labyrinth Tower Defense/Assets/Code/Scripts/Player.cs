@@ -30,12 +30,13 @@ public class Player : MonoBehaviour
     public KeyCode tower3 = KeyCode.Alpha3;
     public KeyCode deleteTower = KeyCode.Alpha0;
 
-    //Variables to be used to check if player is on the ground
-    [Header("Ground Check")]
-    public float playerHeight;
+    [Header("Layer Variables")]
     public LayerMask whatIsGround;
     public LayerMask Grid;
     public LayerMask towerBuilding;
+
+    [Header("Ground Check")]
+    public float playerHeight;
     bool grounded;
 
     public Transform orientation;
@@ -77,7 +78,6 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
-        currency = 80;
     }
 
     //Method to be checked on every frame of the game
@@ -102,16 +102,16 @@ public class Player : MonoBehaviour
         }
         else if (currentMode == playerMode.Build)
         {
-            if (currentTower == null)
-                sellTower();
-            else
-                placeTowers();
             //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
+            if (currentTower == null) {
+                destoryTempHolder();
+                sellTower();
+            } else {
+                placeTowers();
+            }
         }
     }
 
-    //Methods to be executed when user inputs movement keys
-    //Executed on a fixed interval
     public void FixedUpdate() 
     {
         movePlayer();
@@ -130,10 +130,7 @@ public class Player : MonoBehaviour
         {
             currentMode = playerMode.Combat;
             Debug.Log("Combat");
-            if (tempDisplayHolder != null)
-            {
-                Destroy(this.tempDisplayHolder);
-            }
+            destoryTempHolder();
         }
     }
 
@@ -256,15 +253,12 @@ public class Player : MonoBehaviour
 
     private void resetJump()
     {
-        //Reset readytoJump to True so player can jump again
         readyToJump = true;
     }
 
     private void attack()
     {
         Weapon currentWeaponScript = currentWeapon.GetComponent<Weapon>();
-
-        //Empty
         
         if (currentWeaponScript.Automatic && Input.GetMouseButton(0))
         {
@@ -293,27 +287,21 @@ public class Player : MonoBehaviour
                 currentWeaponIndex = weaponList.Count - 1;
         }
 
-
         Transform cwt = currentWeapon.transform;
 
         Destroy(currentWeapon);
 
         currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
-        
-
     }
 
 
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
-        if (tempDisplayHolder != null)
-        {
-            Destroy(this.tempDisplayHolder);
-        }
+        destoryTempHolder();
         //here is where we should display an outline of the currently selected tower, either a green transparent silhouette if placeable, or red.
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-        if ((Physics.Raycast(ray, out RaycastHit hit, 100f, Grid)))
+        if ((Physics.Raycast(ray, out RaycastHit hit, 50f, Grid)))
         {
             if ((hit.transform.tag.Equals("GridTile")))
             {
@@ -328,7 +316,6 @@ public class Player : MonoBehaviour
                     {
                         if (currency >= currentTower.GetComponent<TowerBehavior>().cost)
                         {
-                            Debug.Log("Placing Tower");
                             Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
                             GameObject currTower = Instantiate(currentTower, towerPlacement, transform.rotation);
                             TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
@@ -338,9 +325,7 @@ public class Player : MonoBehaviour
                             currTileScript.walkable = false;
                             currTileScript.towerOnTile = true;
 
-                            Debug.Log($"Currency before tower placement: {currency}");
                             currency -= tower.cost;
-                            Debug.Log($"Currency after tower placement: {currency}");
 
                             OnTowerPlaced?.Invoke(currTileScript);
                         }
@@ -348,8 +333,6 @@ public class Player : MonoBehaviour
                         {
                             Debug.Log("We require more Vespene Gas");
                         }
-
-
                     }
                 }
                 else if (!currTileScript.towerOnTile)
@@ -364,30 +347,27 @@ public class Player : MonoBehaviour
         
     }
 
-    private void sellTower()
-    {
-            Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-            if  ((Physics.Raycast(ray, out RaycastHit hit, 100f, towerBuilding)))
-            {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                {
-                    Debug.Log("Hit Tower");
-                    GridTile towerTile = (hit.transform.gameObject.GetComponent<TowerBehavior>()).gridLocation;
-                    towerTile.placeable = true;
-                    towerTile.walkable = true;
-                    towerTile.towerOnTile = false;
+    private void sellTower() {
+        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+        if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
+            Debug.Log("Tower Hit for delete");
+            if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                GameObject towerToDestroy = hit.transform.gameObject;
+                TowerBehavior towerBehavior = towerToDestroy.GetComponent<TowerBehavior>();
 
-                    //invoke this event with the tile the tower was on.
+                GridTile towerTile = towerBehavior.gridLocation;
+                currency += towerBehavior.cost;
+                towerTile.placeable = true;
+                towerTile.walkable = true;
+                towerTile.towerOnTile = false;
+                /*
+                //invoke this event with the tile the tower was on.
+                OnTowerSold?.Invoke(towerTile);
+                */
 
-                    OnTowerSold?.Invoke(towerTile);
-                
-                    currency += 10;
-                    Destroy(hit.transform.gameObject);
-                }
-            
+                Destroy(towerToDestroy);
             }
-
-
+        }
     }
 
     private void GainCurrency(GameObject enemyWhoDied)
@@ -399,8 +379,17 @@ public class Player : MonoBehaviour
     {
         EnemyBehavior.OnEnemyDeath += GainCurrency;
     }
+
     private void OnDisable()
     {
         EnemyBehavior.OnEnemyDeath -= GainCurrency;
     }
+
+    private void destoryTempHolder() 
+    {
+        if (tempDisplayHolder != null) {
+            Destroy(this.tempDisplayHolder);
+        }
+    }
+
 }

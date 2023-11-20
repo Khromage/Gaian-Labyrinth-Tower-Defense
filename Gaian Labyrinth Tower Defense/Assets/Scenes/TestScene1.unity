@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7666,7 +7666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc42ff33fb120c84c8cd9afa1d09f6f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aDSButton: 324
+  aDSButton: 323
   orientation: {fileID: 2016914160}
   player: {fileID: 1299577100}
   playerObj: {fileID: 1513391537}
@@ -41959,7 +41959,6 @@ MonoBehaviour:
   tower2: 50
   tower3: 51
   deleteTower: 48
-  playerHeight: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -41969,11 +41968,12 @@ MonoBehaviour:
   towerBuilding:
     serializedVersion: 2
     m_Bits: 128
+  playerHeight: 0
   orientation: {fileID: 2016914160}
   playerCam: {fileID: 189062905}
   towerPrefab: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerDisplayPrefab: {fileID: 3248011058118863728, guid: f94bb3fe3267d3545a2495bcc73ce8c9, type: 3}
-  currency: 0
+  currency: 80
   currentWeapon: {fileID: 1212722250}
   weaponList:
   - {fileID: 5926663804712910904, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
@@ -43307,6 +43307,10 @@ PrefabInstance:
     - target: {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
       propertyPath: m_Name
       value: ExplodingTower
+      objectReference: {fileID: 0}
+    - target: {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7746743253069209908, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
       propertyPath: m_LocalPosition.x
