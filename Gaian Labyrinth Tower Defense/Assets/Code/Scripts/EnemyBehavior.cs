@@ -72,7 +72,7 @@ public class EnemyBehavior : MonoBehaviour
     public void takeDamage(float damage, GameObject damagerBullet)
     {
         currentHealth -= damage;
-        HealthBar.SetHealth(currentHealth / maxHealth, 4);
+        HealthBar.SetHealth(currentHealth / maxHealth, 3);
 
         if(currentHealth <= 0)
         {

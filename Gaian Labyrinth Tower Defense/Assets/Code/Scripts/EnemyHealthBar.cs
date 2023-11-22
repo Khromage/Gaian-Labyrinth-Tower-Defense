@@ -27,14 +27,14 @@ public class EnemyHealthBar : MonoBehaviour
     }
 
     // Default Health Bar update without speed parameter, uses default speed of 1f
-    public void SetHealth(float Health)
+    public void SetHealth(float newHealth)
     {
-        SetHealth(Health, DefaultSpeed);
+        SetHealth(newHealth, DefaultSpeed);
     }
     // Overloaded Health Bar update with speed parameter
     public void SetHealth(float Health, float Speed)
     {
-        if(Health < 0 || Health > 1)
+        if(/*Health < 0 || */Health > 1)
         {
             Debug.LogWarning("Health passed was not between 0 and 1. Clamping");
             Health = Mathf.Clamp01(Health);
