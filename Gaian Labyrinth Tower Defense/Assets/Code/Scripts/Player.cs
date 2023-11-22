@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode nextWeapon = KeyCode.E;
     public KeyCode prevWeapon = KeyCode.Q;
+    public KeyCode buildMode = KeyCode.Tab;
     public KeyCode tower1 = KeyCode.Alpha1;
     public KeyCode tower2 = KeyCode.Alpha2;
     public KeyCode tower3 = KeyCode.Alpha3;
@@ -84,7 +85,7 @@ public class Player : MonoBehaviour
     public void Update() 
      {
         checkCurrentMode();
-        getUserKeyInput();
+        getUserKey();
         playerSpeedControl();
 
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
@@ -106,6 +107,7 @@ public class Player : MonoBehaviour
             if (currentTower == null) {
                 destoryTempHolder();
                 sellTower();
+                upgradeTower();
             } else {
                 placeTowers();
             }
@@ -171,7 +173,7 @@ public class Player : MonoBehaviour
     }
 
     //Getting WASD and jump inputs
-    private void getUserKeyInput()
+    private void getUserKey()
     { 
         //Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
@@ -208,7 +210,8 @@ public class Player : MonoBehaviour
         {
             currentTower = towerList[2];
         }
-        if (Input.GetKeyDown(deleteTower))
+        if ((Input.GetKeyDown(deleteTower))
+            || (Input.GetKeyDown(buildMode)))
         {
             currentTower = null;
         }
@@ -350,7 +353,6 @@ public class Player : MonoBehaviour
     private void sellTower() {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
-            Debug.Log("Tower Hit for delete");
             if (Input.GetKeyDown(KeyCode.Mouse0)) {
                 GameObject towerToDestroy = hit.transform.gameObject;
                 TowerBehavior towerBehavior = towerToDestroy.GetComponent<TowerBehavior>();
@@ -389,6 +391,16 @@ public class Player : MonoBehaviour
     {
         if (tempDisplayHolder != null) {
             Destroy(this.tempDisplayHolder);
+        }
+    }
+
+    private void upgradeTower()
+    {
+        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+        if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
+            if (Input.GetKeyDown(KeyCode.Tab)) {
+                
+            }
         }
     }
 
