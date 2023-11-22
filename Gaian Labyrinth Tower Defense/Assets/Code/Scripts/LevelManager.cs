@@ -60,10 +60,8 @@ public class LevelManager : MonoBehaviour
 
     private void LoseLives(int harm)
     {
-        Debug.Log("Losing lives in LevelManager");
+        Debug.Log($"Losing {harm} lives in LevelManager. Remaining lives: {remainingLives}");
         remainingLives -= harm;
-        Debug.Log(harm);
-        Debug.Log(remainingLives);
     }
 
 

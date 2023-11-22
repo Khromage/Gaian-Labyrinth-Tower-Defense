@@ -323,6 +323,10 @@ public class Player : MonoBehaviour
                             currTileScript.placeable = false;
                             currTileScript.walkable = false;
                             currTileScript.towerOnTile = true;
+                            currTileScript.goalDist = int.MaxValue;
+
+                            //currTileScript.goalDistText.text = $"{currTileScript.goalDist}";
+                            //Debug.Log($"CurrTile dist {currTileScript.goalDist}");
 
                             Debug.Log($"Currency before tower placement: {currency}");
                             currency -= tower.cost;
