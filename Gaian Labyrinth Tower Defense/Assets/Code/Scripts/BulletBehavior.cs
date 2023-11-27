@@ -10,7 +10,7 @@ public class BulletBehavior : MonoBehaviour
     // Update is called once per frame
     public virtual void Start()
     {
-        speed = 50f;
+        speed = 100f;
         damage = 1f;
         Destroy(gameObject, 5);
     }
