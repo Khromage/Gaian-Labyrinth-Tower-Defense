@@ -12,11 +12,13 @@ public class BulletBehavior : MonoBehaviour
     {
         speed = 50f;
         damage = 1f;
+        Destroy(gameObject, 5);
     }
 
     public virtual void Update()
     {
         transform.Translate(transform.forward * speed * Time.deltaTime, Space.World);
+        
     }
 
     void OnTriggerEnter(Collider other)
@@ -25,6 +27,7 @@ public class BulletBehavior : MonoBehaviour
         {
             HitTarget(other.gameObject);
         }
+        
     }
 
     public virtual void HitTarget(GameObject hitEnemy)
