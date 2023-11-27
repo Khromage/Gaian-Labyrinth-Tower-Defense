@@ -55,7 +55,7 @@ public class EnemyBehavior : MonoBehaviour
         if (currTile is GoalTile)
         {
             Debug.Log("reached end, presumably");
-            OnEnemyReachedGoal?.Invoke(harm);
+            OnEnemyReachedGoal?.Invoke(gameObject);
             OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
