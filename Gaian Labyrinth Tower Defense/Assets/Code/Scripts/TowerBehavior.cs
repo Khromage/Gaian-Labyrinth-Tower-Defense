@@ -28,6 +28,8 @@ public class TowerBehavior : MonoBehaviour
     SphereCollider detectionZone;
 
     public int cost;
+    public bool isUpgradable = true;
+    public int upgradeStage = 1;
 
     public GridTile gridLocation;
 
@@ -180,4 +182,27 @@ public class TowerBehavior : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+
+    public void upgradeTower()
+    {
+        upgradeStage++;
+        switch(upgradeStage) {
+        
+            case 2:
+                //generic tower upgrade stats
+                Debug.Log("Tower upgraded to stage 2");
+                range = 12f;
+                fireRate = 100f;
+                break;
+            case 3:
+                range = 20f;
+                fireRate = 2f;
+                break;
+            case 4:
+                range = 25f;
+                fireRate = 2.5f;
+                break;
+        }
+    }
+    
 }

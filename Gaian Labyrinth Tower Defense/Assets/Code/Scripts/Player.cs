@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     public KeyCode tower2 = KeyCode.Alpha2;
     public KeyCode tower3 = KeyCode.Alpha3;
     public KeyCode deleteTower = KeyCode.Alpha0;
+    public KeyCode upgradeCurrentTower = KeyCode.V;
 
     [Header("Layer Variables")]
     public LayerMask whatIsGround;
@@ -106,7 +107,6 @@ public class Player : MonoBehaviour
             //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
             if (currentTower == null) {
                 destoryTempHolder();
-                sellTower();
                 upgradeTower();
             } else {
                 placeTowers();
@@ -354,9 +354,19 @@ public class Player : MonoBehaviour
         
     }
 
-    private void sellTower() {
+    private void sellTower() 
+    {
+        /*
+        Camera currentCam = getCurrentCamera();
+        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        Ray ray = currentCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+        //Gonna be updated when new camera is pushed to ry a different raycast method
+        */
+
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
+            Debug.Log("Sell");
             if (Input.GetKeyDown(KeyCode.Mouse0)) {
                 GameObject towerToDestroy = hit.transform.gameObject;
                 TowerBehavior towerBehavior = towerToDestroy.GetComponent<TowerBehavior>();
@@ -402,10 +412,27 @@ public class Player : MonoBehaviour
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
-            if (Input.GetKeyDown(KeyCode.Tab)) {
-                
-            }
+                Debug.Log("Upgrade");
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    GameObject towerToUpgrade = hit.transform.gameObject;
+                    TowerBehavior towerBehavior = towerToUpgrade.GetComponent<TowerBehavior>();
+                    int towerCost = towerBehavior.cost;
+
+                    if((towerBehavior.isUpgradable) && currency > towerCost)
+                    {
+                        towerBehavior.upgradeTower();
+                        currency -= towerCost;
+                    }
+                }
+            
         }
+    }
+
+    private Camera getCurrentCamera()
+    {
+        return playerCam.transform.Find("ThirdPersonCam").GetComponent<Camera>();
+
     }
 
 }
