@@ -24,6 +24,8 @@ public class TowerBehavior : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
 
+    float currentDamage = 1f;
+
     public List<GameObject> enemies = new List<GameObject>();
     SphereCollider detectionZone;
 
@@ -170,6 +172,9 @@ public class TowerBehavior : MonoBehaviour
     void Shoot()
     {
         GameObject bulletGO = Instantiate (bulletPrefab, firePoint.position, firePoint.rotation, gameObject.transform);
+        BulletBehavior bulletBehavior = bulletGO.GetComponent<BulletBehavior>();
+        bulletBehavior.damage = currentDamage;
+
         TrackingBulletBehavior bullet = bulletGO.GetComponent<TrackingBulletBehavior>();
 
         if (bullet != null)
@@ -183,24 +188,28 @@ public class TowerBehavior : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    public void upgradeTower()
+    public void upgradeTower(int updateStage)
     {
-        upgradeStage++;
-        switch(upgradeStage) {
+        switch(updateStage) {
         
             case 2:
                 //generic tower upgrade stats
                 Debug.Log("Tower upgraded to stage 2");
+                BulletBehavior bulletToUpgrade = bulletPrefab.GetComponent<BulletBehavior>();
+                currentDamage = 2000f;
+
                 range = 12f;
-                fireRate = 100f;
+                fireRate = 12f;
+                cost = 20;
+
                 break;
             case 3:
-                range = 20f;
-                fireRate = 2f;
+                cost = 100;
                 break;
             case 4:
-                range = 25f;
-                fireRate = 2.5f;
+                break;
+            default:
+                Debug.Log("Tower upgrade stage not found");
                 break;
         }
     }

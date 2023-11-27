@@ -418,10 +418,12 @@ public class Player : MonoBehaviour
                     GameObject towerToUpgrade = hit.transform.gameObject;
                     TowerBehavior towerBehavior = towerToUpgrade.GetComponent<TowerBehavior>();
                     int towerCost = towerBehavior.cost;
+                    int upgradeStage = towerBehavior.upgradeStage;
 
                     if((towerBehavior.isUpgradable) && currency > towerCost)
                     {
-                        towerBehavior.upgradeTower();
+                        upgradeStage++;
+                        towerBehavior.upgradeTower(upgradeStage);
                         currency -= towerCost;
                     }
                 }
