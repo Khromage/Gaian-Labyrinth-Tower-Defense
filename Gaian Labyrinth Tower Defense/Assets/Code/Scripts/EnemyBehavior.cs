@@ -12,7 +12,7 @@ public class EnemyBehavior : MonoBehaviour
     public delegate void EnemyDeath(GameObject deadEnemy);
     public static event EnemyDeath OnEnemyDeath;
 
-    public delegate void EnemyReachedGoal(int harm);
+    public delegate void EnemyReachedGoal(GameObject enemy);
     public static event EnemyReachedGoal OnEnemyReachedGoal;
 
     public GridTile currTile;
@@ -53,8 +53,8 @@ public class EnemyBehavior : MonoBehaviour
         if (currTile is GoalTile)
         {
             Debug.Log("reached end, presumably");
-            OnEnemyReachedGoal?.Invoke(harm);
-            OnEnemyDeath?.Invoke(gameObject);
+            OnEnemyReachedGoal?.Invoke(gameObject);
+            //OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
         }
     }

@@ -41,10 +41,12 @@ public class TowerBehavior : MonoBehaviour
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
         EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
+        EnemyBehavior.OnEnemyReachedGoal += removeEnemyFromList;
     }
     private void onDisable()
     {
         EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
+        EnemyBehavior.OnEnemyReachedGoal -= removeEnemyFromList;
     }
 
     void OnTriggerEnter(Collider other)

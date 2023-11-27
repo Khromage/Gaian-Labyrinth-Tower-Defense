@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
@@ -15,6 +16,7 @@ public class GridTile : MonoBehaviour
 
     //distance from goal
     public int goalDist;
+    public TMP_Text goalDistText;
 
     //list of adjacent grid tiles, for calculating the path.
     public List<GridTile> adjacentTiles { get; private set; }
@@ -39,7 +41,7 @@ public class GridTile : MonoBehaviour
 
     void Awake()
     {
-        goalDist = 999;
+        goalDist = int.MaxValue;
         fielded = false;
         Coords = setCoords();
         adjacentTiles = new List<GridTile>();
@@ -56,6 +58,8 @@ public class GridTile : MonoBehaviour
     void Update()
     {
         enemyOnTile = false;
+        //goalDistText.text = $"{goalDist.ToString()}";
+        //goalDist++;
     }
 
     void OnDrawGizmos()
@@ -66,7 +70,7 @@ public class GridTile : MonoBehaviour
         else
             Gizmos.color = new Color(.4f, .6f, .1f, .5f);
 
-        Gizmos.DrawCube(transform.position - new Vector3(0f, .4f, 0f), new Vector3(1f, .2f, 1f));
+        //Gizmos.DrawCube(transform.position - new Vector3(0f, .4f, 0f), new Vector3(1f, .2f, 1f));
     }
 
     
