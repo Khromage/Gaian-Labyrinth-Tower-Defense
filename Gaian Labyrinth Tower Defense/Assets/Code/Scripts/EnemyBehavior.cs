@@ -12,7 +12,7 @@ public class EnemyBehavior : MonoBehaviour
     public delegate void EnemyDeath(GameObject deadEnemy);
     public static event EnemyDeath OnEnemyDeath;
 
-    public delegate void EnemyReachedGoal(int harm);
+    public delegate void EnemyReachedGoal(GameObject enemy);
     public static event EnemyReachedGoal OnEnemyReachedGoal;
 
     public GridTile currTile;
@@ -33,6 +33,8 @@ public class EnemyBehavior : MonoBehaviour
 
     //public float value? for when it dies
 
+    public AudioSource EnemyHurtSFX;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +42,7 @@ public class EnemyBehavior : MonoBehaviour
         worth = 5;
         maxHealth = 12f;
         currentHealth = maxHealth;
+        EnemyHurtSFX = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -54,9 +57,8 @@ public class EnemyBehavior : MonoBehaviour
             Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(harm);
             OnEnemyDeath?.Invoke(gameObject);
-            float destroyDelay = UnityEngine.Random.value;
-            Destroy(gameObject, destroyDelay);
-            Destroy(HealthBar.gameObject, destroyDelay);
+            Destroy(gameObject);
+            Destroy(HealthBar.gameObject);
         }
     }
 
@@ -74,6 +76,7 @@ public class EnemyBehavior : MonoBehaviour
         currentHealth -= damage;
         HealthBar.SetHealth(currentHealth / maxHealth, 3);
 
+        EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
             OnEnemyDeath?.Invoke(gameObject);
@@ -82,6 +85,7 @@ public class EnemyBehavior : MonoBehaviour
             Destroy(gameObject, destroyDelay);
             Destroy(HealthBar.gameObject, destroyDelay);
         }
+        
     }
 
     private void moveAlongPath()

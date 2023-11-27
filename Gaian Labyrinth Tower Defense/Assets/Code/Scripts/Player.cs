@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
-        currency = 80;
+        currency = 800;
     }
 
     //Method to be checked on every frame of the game
@@ -323,6 +323,10 @@ public class Player : MonoBehaviour
                             currTileScript.placeable = false;
                             currTileScript.walkable = false;
                             currTileScript.towerOnTile = true;
+                            currTileScript.goalDist = int.MaxValue;
+
+                            //currTileScript.goalDistText.text = $"{currTileScript.goalDist}";
+                            //Debug.Log($"CurrTile dist {currTileScript.goalDist}");
 
                             Debug.Log($"Currency before tower placement: {currency}");
                             currency -= tower.cost;

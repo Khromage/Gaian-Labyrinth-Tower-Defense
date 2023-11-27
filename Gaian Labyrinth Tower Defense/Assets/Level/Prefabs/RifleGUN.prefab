@@ -184,10 +184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d24638375fbb7f4a8f6e40cea7da486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 0
-  BulletRange: 0
-  FireCooldown: 0
-  Automatic: 0
+  Damage: 10
+  BulletRange: 500
+  FireCooldown: 0.2
+  Automatic: 1
   CurrentCooldown: 0
   Bullet: {fileID: 5460506940467439282, guid: 63c95c92c9e2b5047bf1ea9838289fc3, type: 3}
 --- !u!1 &8748752840513755790
