@@ -58,8 +58,9 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void LoseLives(int harm)
+    private void LoseLives(GameObject enemy)
     {
+        int harm = enemy.GetComponent<EnemyBehavior>().harm;
         Debug.Log($"Losing {harm} lives in LevelManager. Remaining lives: {remainingLives}");
         remainingLives -= harm;
     }

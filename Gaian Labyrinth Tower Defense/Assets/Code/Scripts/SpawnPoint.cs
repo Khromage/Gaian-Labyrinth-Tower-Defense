@@ -10,11 +10,17 @@ public class SpawnPoint : GridTile
     //2D array [wave number, enemies to spawn in that wave]
     public WaveStruct[] waveSet;
 
-
     //goal of the path. manually put it into inspector for now. (select the instance on scene, and drag the instance in scene of the goal tile to this instance's inspector)
     [SerializeField]
     private GameObject endTile;
 
+    //Passing in player camera to direct enemy health bars towards 
+    [SerializeField]
+    private Camera Camera;
+
+    //Single canvas that all enemy health bars are drawn to
+    [SerializeField]
+    private Canvas EnemyHealthBarCanvas;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +43,7 @@ public class SpawnPoint : GridTile
             GameObject currEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position, transform.rotation);
             EnemyBehavior currEnemyScript = currEnemy.GetComponent<EnemyBehavior>();
             currEnemyScript.currTile = this.GetComponent<GridTile>();
+            currEnemyScript.SetupHealthBar(EnemyHealthBarCanvas, Camera);
 
             yield return new WaitForSeconds(timeToWait);
         }

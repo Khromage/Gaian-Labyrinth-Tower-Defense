@@ -12,14 +12,16 @@ public class EnemyBehavior : MonoBehaviour
     public delegate void EnemyDeath(GameObject deadEnemy);
     public static event EnemyDeath OnEnemyDeath;
 
-    public delegate void EnemyReachedGoal(int harm);
+    public delegate void EnemyReachedGoal(GameObject enemy);
     public static event EnemyReachedGoal OnEnemyReachedGoal;
 
     public GridTile currTile;
     public GridTile successorTile;
     public LayerMask Grid;
-    
     private float moveSpeed = 3f;
+
+    [SerializeField]
+    private EnemyHealthBar HealthBar;
     private float maxHealth;
     public float currentHealth;
 
@@ -53,20 +55,35 @@ public class EnemyBehavior : MonoBehaviour
         if (currTile is GoalTile)
         {
             Debug.Log("reached end, presumably");
-            OnEnemyReachedGoal?.Invoke(harm);
+            OnEnemyReachedGoal?.Invoke(gameObject);
             OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
+            Destroy(HealthBar.gameObject);
+        }
+    }
+
+    public void SetupHealthBar(Canvas Canvas, Camera Camera)
+    {
+        HealthBar.transform.SetParent(Canvas.transform);
+        if(HealthBar.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
+        {
+            faceCamera.Camera = Camera;
         }
     }
 
     public void takeDamage(float damage, GameObject damagerBullet)
     {
         currentHealth -= damage;
+        HealthBar.SetHealth(currentHealth / maxHealth, 3);
+
         EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
             OnEnemyDeath?.Invoke(gameObject);
-            Destroy(gameObject);
+            
+            float destroyDelay = UnityEngine.Random.value;
+            Destroy(gameObject, destroyDelay);
+            Destroy(HealthBar.gameObject, destroyDelay);
         }
         
     }

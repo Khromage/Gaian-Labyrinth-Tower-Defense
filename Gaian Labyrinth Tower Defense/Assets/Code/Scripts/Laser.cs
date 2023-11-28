@@ -7,6 +7,7 @@ public class Laser : Weapon
     RaycastHit hit;
     public GameObject Beam;
     private Transform PlayerCamera;
+    public AudioSource LaserFireSFX;
 
    
     void Start()
@@ -16,6 +17,7 @@ public class Laser : Weapon
         Automatic = true;
         Damage = 20;
         BulletRange = 500;
+        LaserFireSFX = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -31,6 +33,7 @@ public class Laser : Weapon
     {
         Ray gunRay = new Ray(transform.position, transform.forward);
         Transform FirePoint = transform.Find("FirePoint");
+        LaserFireSFX.Play();
 
         GameObject laserInstance = Instantiate(Beam, FirePoint.position, transform.rotation);
         Destroy(laserInstance, .2f);
