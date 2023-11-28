@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -42645,16 +42645,22 @@ MonoBehaviour:
   jumpKey: 32
   nextWeapon: 101
   prevWeapon: 113
+  buildMode: 9
   tower1: 49
   tower2: 50
   tower3: 51
-  playerHeight: 0
+  deleteTower: 48
+  upgradeCurrentTower: 118
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
   Grid:
     serializedVersion: 2
     m_Bits: 8
+  towerBuilding:
+    serializedVersion: 2
+    m_Bits: 128
+  playerHeight: 0
   orientation: {fileID: 2016914160}
   playerCam: {fileID: 189062905}
   towerPrefab: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
@@ -49164,7 +49170,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478073242}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.032047227, y: 0.11638771, z: -0.031459536, w: 0.99218804}
+  m_LocalRotation: {x: 0.032047227, y: 0.11638767, z: -0.031459525, w: 0.99218804}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

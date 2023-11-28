@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    public float speed;
-    public float damage;
+    public float speed = 50f;
+    public float damage = 1f;
 
     // Update is called once per frame
     public virtual void Start()
     {
-        speed = 50f;
-        damage = 1f;
         Destroy(gameObject, 5);
     }
 
@@ -34,6 +32,7 @@ public class BulletBehavior : MonoBehaviour
     {
         EnemyBehavior e = hitEnemy.GetComponent<EnemyBehavior>();
         e.takeDamage(damage, gameObject);
+        Debug.Log("Applied damage: " + damage);
         Destroy(gameObject);
     }
 }

@@ -174,12 +174,10 @@ public class TowerBehavior : MonoBehaviour
     void Shoot()
     {
         GameObject bulletGO = Instantiate (bulletPrefab, firePoint.position, firePoint.rotation, gameObject.transform);
-        BulletBehavior bulletBehavior = bulletGO.GetComponent<BulletBehavior>();
-        bulletBehavior.damage = currentDamage;
-
         TrackingBulletBehavior bullet = bulletGO.GetComponent<TrackingBulletBehavior>();
 
         if (bullet != null)
+            bullet.damage = currentDamage;
             bullet.Seek(target.transform);
     }
 
@@ -198,10 +196,9 @@ public class TowerBehavior : MonoBehaviour
                 //generic tower upgrade stats
                 Debug.Log("Tower upgraded to stage 2");
                 BulletBehavior bulletToUpgrade = bulletPrefab.GetComponent<BulletBehavior>();
-                currentDamage = 2000f;
-
-                range = 12f;
-                fireRate = 12f;
+                currentDamage = 10.2f;
+                range = 10.1f;
+                fireRate = 3f;
                 cost = 20;
 
                 break;
