@@ -19,6 +19,7 @@ public class ThirdPersonCam : MonoBehaviour
 
     public GameObject thirdPersonCamera;
     public GameObject combatCam;
+    public GameObject currentCam;
 
     public CameraStyle currentStyle;
     public enum CameraStyle
@@ -27,8 +28,10 @@ public class ThirdPersonCam : MonoBehaviour
         Combat,
     }
 
+
     private void Start()
     {
+        currentCam = thirdPersonCamera;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -57,8 +60,16 @@ public class ThirdPersonCam : MonoBehaviour
         thirdPersonCamera.SetActive(false);
         combatCam.SetActive(false);
 
-        if (newStyle == CameraStyle.Basic) { thirdPersonCamera.SetActive(true); }
-        if (newStyle == CameraStyle.Combat) { combatCam.SetActive(true); }
+        if (newStyle == CameraStyle.Basic) 
+        { 
+            thirdPersonCamera.SetActive(true);
+            currentCam = thirdPersonCamera;
+        }
+        if (newStyle == CameraStyle.Combat) 
+        { 
+            combatCam.SetActive(true);
+            currentCam = combatCam;
+        }
 
         currentStyle = newStyle;
     }
@@ -70,7 +81,7 @@ public class ThirdPersonCam : MonoBehaviour
         {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
-            Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+            Vector3 inputDir = Vector3.Cross(thirdPersonCamera.transform.right, player.up) * verticalInput + Vector3.Cross(player.up, thirdPersonCamera.transform.forward) * horizontalInput;
 
             if (inputDir != Vector3.zero)
             {

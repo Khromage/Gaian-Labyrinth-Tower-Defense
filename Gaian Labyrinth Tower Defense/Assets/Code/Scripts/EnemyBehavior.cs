@@ -29,7 +29,7 @@ public class EnemyBehavior : UnitBehavior
     //damage to core/remaining lives
     public int harm;
 
-    Rigidbody rb;
+    //Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()

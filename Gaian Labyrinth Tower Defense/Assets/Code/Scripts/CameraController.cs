@@ -46,10 +46,20 @@ public class CameraController : MonoBehaviour
     {
         yaw += speedH * Input.GetAxis("Mouse X");
         pitch -= speedV * Input.GetAxis("Mouse Y");
-        roll += 0f; //something based on the difference between player.transform.up and transform.up
+        roll += 1f; //something based on the difference between player.transform.up and transform.up
+
+        //Mathf.Arcsin(.5)
 
         transform.eulerAngles = new Vector3(pitch, yaw, 0f);
+        //also update this when gravity changes. add a bunch to pitch and yaw based on the change? and add to the roll?
+        //
 
+        //match the angle the camera's right forms with the world's up? or the world's right
+
+        //match the gravity's angle with the world's up
+        //match the angle the camera's right makes with the gravity's plane
+        //either add the difference between them ( the angle made on each frame)
+        //or always just set its roll to the 
 
         if (Input.GetKey(ADS_button))
         {

@@ -17,8 +17,6 @@ public class Player : UnitBehavior
     //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
     public float moveSpeed;
-    private Vector3 lateralVelocityComponent;
-    private Vector3 verticalVelocityComponent;
     public float groundDrag;
     public float jumpForce;
     public float jumpCooldown;
@@ -46,10 +44,10 @@ public class Player : UnitBehavior
     float verticalInput;
 
     Vector3 moveDirection;
-    Rigidbody rb;
+    //Rigidbody rb;
 
     private Vector3 axisToRotateAround;
-    private float diffInRotation;
+    //private float diffInRotation;
     //private float amountToRotate;
     //private float numRotFrames;
 
@@ -58,6 +56,7 @@ public class Player : UnitBehavior
     [Header("Player Cam")]
     public GameObject playerCam;
     public GameObject newCameraHolder;
+    public GameObject currentCam;
 
     [Header("Build mode")]
     public GameObject towerPrefab;
@@ -88,12 +87,15 @@ public class Player : UnitBehavior
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
 
+        //playerCam.GetComponent<ThirdPersonCam>().currentCam = playerCam.GetComponent<ThirdPersonCam>().thirdPersonCamera;
+        currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
+
         playerBody = transform.Find("Body");
         rb = GetComponent<Rigidbody>();
         //rb.freezeRotation = false;
 
         axisToRotateAround = Vector3.Cross(-transform.up, transform.forward);
-        diffInRotation = 0f;
+        //diffInRotation = 0f;
         //amountToRotate = 0f;
         Debug.Log($"is rotation frozen: {rb.freezeRotation}");
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
@@ -107,8 +109,7 @@ public class Player : UnitBehavior
     //Method to be checked on every frame of the game
     public void Update() 
      {
-        verticalVelocityComponent = rb.velocity.normalized * Vector3.Dot(rb.velocity, Vector3.Normalize(GetComponent<ConstantForce>().force));
-        lateralVelocityComponent = rb.velocity - verticalVelocityComponent;
+        setVelocityComponents();
 
         checkCurrentMode();
         getUserKeyInput();
@@ -276,8 +277,13 @@ public class Player : UnitBehavior
     {
         //calculate movement direction
         //moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
-        //
+        
+        //non-cinemachine
         moveDirection = Vector3.Cross(newCameraHolder.transform.right, -currGravDir) * verticalInput + Vector3.Cross(-currGravDir, newCameraHolder.transform.forward) * horizontalInput;
+        //cinemachine wip
+        //moveDirection = Vector3.Cross(currentCam.transform.right, -currGravDir) * verticalInput + Vector3.Cross(-currGravDir, currentCam.transform.forward) * horizontalInput;
+
+
 
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
@@ -286,6 +292,14 @@ public class Player : UnitBehavior
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         else if (!grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+    }
+
+    public override void setGravityDir()
+    {
+        base.setGravityDir();
+        Debug.Log($"camera holder transform up: {newCameraHolder.transform.up}");
+        //newCameraHolder.transform.up = currGravDir;
+        //Debug.Log($"camera holder new transform up: {newCameraHolder.transform.up}");
     }
 
     //Method to set a limit to the players velocity
