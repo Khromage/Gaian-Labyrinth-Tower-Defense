@@ -425,7 +425,7 @@ public class Player : MonoBehaviour
                     if((towerBehavior.isUpgradable) && currency > towerCost)
                     {
                         upgradeStage++;
-                        towerBehavior.upgradeTower(upgradeStage);
+                        towerBehavior.upgradeTower(upgradeStage, towerToUpgrade);
                         currency -= towerCost;
                     }
                 }

@@ -13,6 +13,7 @@ public class TowerBehavior : MonoBehaviour
     public float range = 10f;
     public float fireRate = 1f;
     private float fireCountdown = 0f;
+    float currentDamage = 1f;
 
     [Header("Unity Fields")]
 
@@ -23,8 +24,6 @@ public class TowerBehavior : MonoBehaviour
 
     public GameObject bulletPrefab;
     public Transform firePoint;
-
-    float currentDamage = 1f;
 
     public List<GameObject> enemies = new List<GameObject>();
     SphereCollider detectionZone;
@@ -188,7 +187,7 @@ public class TowerBehavior : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    public void upgradeTower(int updateStage)
+    public void upgradeTower(int updateStage, GameObject currentTower)
     {
         switch(updateStage) {
         
@@ -196,10 +195,14 @@ public class TowerBehavior : MonoBehaviour
                 //generic tower upgrade stats
                 Debug.Log("Tower upgraded to stage 2");
                 BulletBehavior bulletToUpgrade = bulletPrefab.GetComponent<BulletBehavior>();
-                currentDamage = 10.2f;
-                range = 10.1f;
+                GameObject upgradeSphere = currentTower.transform.GetChild(0).gameObject;
+                upgradeSphere.SetActive(true);
+                currentTower.SetActive(true);
+                currentDamage = 5f; 
+                range = 10.2f;
                 fireRate = 3f;
                 cost = 20;
+
 
                 break;
             case 3:

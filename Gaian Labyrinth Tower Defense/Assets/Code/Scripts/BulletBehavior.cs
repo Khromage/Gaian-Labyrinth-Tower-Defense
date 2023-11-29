@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    public float speed = 50f;
-    public float damage = 1f;
+    public float speed;
+    public float damage;
 
     // Update is called once per frame
     public virtual void Start()
     {
         Destroy(gameObject, 5);
+        speed = 50f;
     }
 
     public virtual void Update()
