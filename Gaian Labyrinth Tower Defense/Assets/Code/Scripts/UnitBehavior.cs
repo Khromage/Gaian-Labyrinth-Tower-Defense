@@ -14,5 +14,17 @@ public class UnitBehavior : MonoBehaviour
         gameObject.GetComponent<ConstantForce>().force = gravityDir * mass * gravityConstant;
 
     }
+    
+    public void setGravityDir()
+    {
+        RaycastHit hitInfo = new RaycastHit();
+        bool hit = Physics.Raycast(transform.position, -transform.up, out hitInfo, 1f);
+        //also ^ layermask for gravity-affecting surfaces
+        if (hit)
+        {
+            transform.up = hitInfo.normal;
+            gameObject.GetComponent<ConstantForce>().force = -hitInfo.normal * GetComponent<Rigidbody>().mass * gravityConstant;
+        }
+    }
 
 }

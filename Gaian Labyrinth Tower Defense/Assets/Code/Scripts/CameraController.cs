@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour
 
     private float yaw = 0f;
     private float pitch = 0f;
+    private float roll = 0f;
 
     public CameraStyle currentStyle;
     public enum CameraStyle
@@ -45,6 +46,7 @@ public class CameraController : MonoBehaviour
     {
         yaw += speedH * Input.GetAxis("Mouse X");
         pitch -= speedV * Input.GetAxis("Mouse Y");
+        roll += 0f; //something based on the difference between player.transform.up and transform.up
 
         transform.eulerAngles = new Vector3(pitch, yaw, 0f);
 
@@ -91,12 +93,13 @@ public class CameraController : MonoBehaviour
         {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
-            Vector3 inputDir = Vector3.Cross(transform.right, playerBody.up) * verticalInput + transform.right * horizontalInput;
+            Vector3 inputDir = Vector3.Cross(transform.right, player.up) * verticalInput + Vector3.Cross(player.up, transform.forward) * horizontalInput;
+            //transform.right
 
             if (inputDir != Vector3.zero)
             {
                 //Debug.Log($"body forward: {playerBody.forward}");
-                playerBody.forward = Vector3.Slerp(playerBody.forward, inputDir.normalized, bodyRotationSpeed * Time.deltaTime);
+                //playerBody.forward = Vector3.Slerp(playerBody.forward, inputDir.normalized, bodyRotationSpeed * Time.deltaTime);
             }
 
         }
@@ -108,6 +111,9 @@ public class CameraController : MonoBehaviour
             //this should rotate the body around the y axis, as it does now because the rigidbody's rotation is frozen on the x and z axes
             //To add: should also rotate the weapon + head of the player around the y and x? axes, to follow the exact direction of the camera.
             //playerObj.forward = dirToCombatLook.normalized;
+
+            //player.forward = transform.forward
+            //player's y rotation based on this camera's forward?
         }
 
     }

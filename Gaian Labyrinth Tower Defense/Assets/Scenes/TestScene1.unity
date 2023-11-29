@@ -33250,7 +33250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &974312332
 Transform:
   m_ObjectHideFlags: 0
@@ -44707,7 +44707,7 @@ MonoBehaviour:
     m_Bits: 8
   orientation: {fileID: 2016914160}
   playerCam: {fileID: 189062905}
-  newCameraHolder: {fileID: 0}
+  newCameraHolder: {fileID: 1757773640}
   towerPrefab: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerDisplayPrefab: {fileID: 3248011058118863728, guid: f94bb3fe3267d3545a2495bcc73ce8c9, type: 3}
   currency: 0

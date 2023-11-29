@@ -53,6 +53,8 @@ public class Player : UnitBehavior
     //private float amountToRotate;
     //private float numRotFrames;
 
+    private Vector3 currGravDir;
+
     [Header("Player Cam")]
     public GameObject playerCam;
     public GameObject newCameraHolder;
@@ -94,6 +96,7 @@ public class Player : UnitBehavior
         diffInRotation = 0f;
         //amountToRotate = 0f;
         Debug.Log($"is rotation frozen: {rb.freezeRotation}");
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
 
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
 
@@ -110,9 +113,13 @@ public class Player : UnitBehavior
         checkCurrentMode();
         getUserKeyInput();
         playerSpeedControl();
+        //Nov 28
+        setGravityDir();
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
         //Debug.Log($"Player velocity {rb.velocity}");
 
 
+        /*
         if (diffInRotation > 0)
         {
             //to do a smooth lerp: https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
@@ -122,6 +129,20 @@ public class Player : UnitBehavior
             //cameraHolder.transform.RotateAround(playerCam.transform.position, axisToRotateAround, diffInRotation);
             diffInRotation = 0;
         }
+        */
+
+        /* Nov 27
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+        diffInRotation = Vector3.Angle(-transform.up, currGravDir);
+        axisToRotateAround = Vector3.Cross(-transform.up, currGravDir);
+        transform.RotateAround(transform.position, axisToRotateAround, 1f);
+        Debug.Log(transform.rotation);
+        Debug.Log(playerBody.rotation);
+        */
+
+        //Debug.DrawRay(newCameraHolder.transform.position, newCameraHolder.transform.up, Color.white);
+        //Debug.DrawRay(newCameraHolder.transform.position, newCameraHolder.transform.right, Color.yellow);
+
         //transform.rotation = Quaternion.Euler(0f, 0f, 90f);
 
         //Debug.Log($"diffInRotation: {diffInRotation}");
@@ -255,7 +276,8 @@ public class Player : UnitBehavior
     {
         //calculate movement direction
         //moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
-        moveDirection = Vector3.Cross(newCameraHolder.transform.right, playerBody.up) * verticalInput + newCameraHolder.transform.right * horizontalInput;
+        //
+        moveDirection = Vector3.Cross(newCameraHolder.transform.right, -currGravDir) * verticalInput + Vector3.Cross(-currGravDir, newCameraHolder.transform.forward) * horizontalInput;
 
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
@@ -286,10 +308,13 @@ public class Player : UnitBehavior
     {
         //interpolate my rotation to my rotation with the x and z axis replaced by the surface's
 
-        Vector3 gravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+        //Vector3 gravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+        //diffInRotation = Vector3.Angle(-transform.up, gravDir);
+        //axisToRotateAround = Vector3.Cross(-transform.up, gravDir);
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
 
         //or rotateToward quaternion formed by Euler of my y and the surface's x and z
-        diffInRotation = Vector3.Angle(-transform.up, gravDir);
+        
 
         /*
         Quaternion goalRotation = Quaternion.FromToRotation(-transform.up, GetComponent<ConstantForce>().force);
@@ -297,7 +322,6 @@ public class Player : UnitBehavior
         rb.rotation = Quaternion.Euler(newOrientation.x, rb.rotation.y, newOrientation.z);
         */
 
-        axisToRotateAround = Vector3.Cross(-transform.up, gravDir);
         //amountToRotate = diffInRotation;
         //numRotFrames = 30f;
     }
