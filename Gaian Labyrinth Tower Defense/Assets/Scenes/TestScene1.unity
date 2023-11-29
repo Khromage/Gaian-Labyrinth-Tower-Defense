@@ -37233,6 +37233,7 @@ MonoBehaviour:
   LivesText: {fileID: 982388257}
   CurrencyText: {fileID: 596479698}
   CountText: {fileID: 567551491}
+  levelManager: {fileID: 1748067187}
   player: {fileID: 1299577097}
 --- !u!4 &1143071468
 Transform:
