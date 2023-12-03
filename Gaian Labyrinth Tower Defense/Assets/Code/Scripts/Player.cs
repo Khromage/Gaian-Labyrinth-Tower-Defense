@@ -59,6 +59,9 @@ public class Player : MonoBehaviour
 
     public int currency;
 
+    bool colerable = false;
+    private GameObject towerHitByRaycast;
+
     [Header("Weapon List")]
     public GameObject currentWeapon;
     public List<GameObject> weaponList;
@@ -73,6 +76,8 @@ public class Player : MonoBehaviour
     {
         Combat,
         Build,
+        Upgrade,
+        Sell,
     }
 
     //Method to be checked on first frame of the game
@@ -85,8 +90,8 @@ public class Player : MonoBehaviour
     }
 
     //Method to be checked on every frame of the game
-    public void Update() 
-     {
+    public void Update()
+    {
         checkCurrentMode();
         getUserKey();
         playerSpeedControl();
@@ -100,16 +105,19 @@ public class Player : MonoBehaviour
             rb.drag = 0;
 
         //Actions player can do depending on mode they are in
-        if (currentMode == playerMode.Combat)
-        {
+        if (currentMode == playerMode.Combat) {
             attack();
-        }
-        else if (currentMode == playerMode.Build)
-        {
-            //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
-            if (currentTower == null) {
+        } else {
+            if (currentMode != playerMode.Build) {
+                //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
                 destoryTempHolder();
-                upgradeTower();
+                if (currentMode == playerMode.Sell) {
+                    sellTower();
+                    changeTowerColor();
+                } else if (currentMode == playerMode.Upgrade) {
+                    upgradeTower();
+                    changeTowerColor();
+                }
             } else {
                 placeTowers();
             }
@@ -121,57 +129,27 @@ public class Player : MonoBehaviour
         movePlayer();
     }
 
-    //Checking which mode the player is currently in
     private void checkCurrentMode()
     {
-        if (enteringBuildMode())
-        {
-            currentMode = playerMode.Build;
-
-            Debug.Log("Build");
-        }
-        else if (enteringCombatMode())
-        {
+        if (Input.GetKeyDown(prevWeapon) ||
+           Input.GetKeyDown(nextWeapon)) {
             currentMode = playerMode.Combat;
-            Debug.Log("Combat");
-            destoryTempHolder();
         }
-    }
 
-    private bool enteringBuildMode()
-    {
-        //Sets tower immediatley to whichever key is pressed 
-        //then returns true to place player into build mode
-        if (Input.GetKeyDown(tower1))
-        { 
-                return true;
+        if (Input.GetKeyDown(tower1) ||
+           Input.GetKeyDown(tower2) ||
+           Input.GetKeyDown(tower3)) {
+            currentMode = playerMode.Build;
         }
-        if (Input.GetKeyDown(tower2))
-        {
-                return true;
-        }
-        if (Input.GetKeyDown(tower2))
-        {
-                return true;
-        }
-        if (Input.GetKeyDown(deleteTower))
-        {
-            return true;
-        }
-        return false;
-    }
 
-    private bool enteringCombatMode()
-    {
-        if (Input.GetKeyDown(prevWeapon))
-        {
-            return true;
+        if (Input.GetKeyDown(deleteTower)) {
+            currentMode = playerMode.Sell;
         }
-        if (Input.GetKeyDown(nextWeapon))
-        {
-            return true;
+
+        if (Input.GetKeyDown(upgradeCurrentTower) ||
+            Input.GetKeyDown(buildMode)) {
+            currentMode = playerMode.Upgrade;
         }
-        return false;
     }
 
     //Getting WASD and jump inputs
@@ -363,15 +341,16 @@ public class Player : MonoBehaviour
         Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
         Ray ray = currentCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
-        //Gonna be updated when new camera is pushed to ry a different raycast method
+        //Gonna be updated when new camera is pushed to try a different raycast method
         */
 
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
             Debug.Log("Sell");
+            colerable = true;
+            towerHitByRaycast = hit.transform.gameObject;
             if (Input.GetKeyDown(KeyCode.Mouse0)) {
-                GameObject towerToDestroy = hit.transform.gameObject;
-                TowerBehavior towerBehavior = towerToDestroy.GetComponent<TowerBehavior>();
+                TowerBehavior towerBehavior = towerHitByRaycast.GetComponent<TowerBehavior>();
 
                 GridTile towerTile = towerBehavior.gridLocation;
                 currency += towerBehavior.cost;
@@ -382,11 +361,14 @@ public class Player : MonoBehaviour
                 //invoke this event with the tile the tower was on.
                 OnTowerSold?.Invoke(towerTile);
                 */
+                Destroy(towerHitByRaycast);
+                colerable = false;
 
-                Destroy(towerToDestroy);
             }
+        } else {
+            colerable = false;
         }
-    }
+    }   
 
     private void GainCurrency(GameObject enemyWhoDied)
     {
@@ -414,22 +396,23 @@ public class Player : MonoBehaviour
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
-                Debug.Log("Upgrade");
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                {
-                    GameObject towerToUpgrade = hit.transform.gameObject;
-                    TowerBehavior towerBehavior = towerToUpgrade.GetComponent<TowerBehavior>();
-                    int towerCost = towerBehavior.cost;
-                    int upgradeStage = towerBehavior.upgradeStage;
+            Debug.Log("Upgrade");
+            colerable = true;
+            towerHitByRaycast = hit.transform.gameObject;
+            if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                TowerBehavior towerBehavior = towerHitByRaycast.GetComponent<TowerBehavior>();
+                int towerCost = towerBehavior.cost;
+                int upgradeStage = towerBehavior.upgradeStage;
 
-                    if((towerBehavior.isUpgradable) && currency > towerCost)
-                    {
-                        upgradeStage++;
-                        towerBehavior.upgradeTower(upgradeStage, towerToUpgrade);
-                        currency -= towerCost;
-                    }
+                if ((towerBehavior.isUpgradable) && currency > towerCost) {
+                    colerable = false;
+                    upgradeStage++;
+                    towerBehavior.upgradeTower(upgradeStage, towerHitByRaycast);
+                    currency -= towerCost;
                 }
-            
+            }
+        } else {
+        colerable = false;
         }
     }
 
@@ -437,6 +420,19 @@ public class Player : MonoBehaviour
     {
         return playerCam.transform.Find("ThirdPersonCam").GetComponent<Camera>();
 
+    }
+
+    private void changeTowerColor()
+    {
+        if (towerHitByRaycast == null) {
+            return;
+        }
+        if (colerable) {
+            towerHitByRaycast.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(.1f, .9f, .1f, .2f));
+        } else if (!colerable) {
+
+            towerHitByRaycast.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,0,0));
+        }
     }
 
 }
