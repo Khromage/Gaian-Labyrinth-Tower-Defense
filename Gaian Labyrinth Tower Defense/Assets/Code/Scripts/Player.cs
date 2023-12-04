@@ -239,6 +239,10 @@ public class Player : MonoBehaviour
         readyToJump = true;
     }
 
+    /***
+        Methods for player weapon usage
+    ***/
+
     private void attack()
     {
         Weapon currentWeaponScript = currentWeapon.GetComponent<Weapon>();
@@ -277,6 +281,9 @@ public class Player : MonoBehaviour
         currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
     }
 
+    /***
+        Methods for Build and Upgrade Modes
+    ***/
 
     private void placeTowers()
     {
@@ -370,28 +377,6 @@ public class Player : MonoBehaviour
         }
     }   
 
-    private void GainCurrency(GameObject enemyWhoDied)
-    {
-        currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
-    }
-
-    private void OnEnable()
-    {
-        EnemyBehavior.OnEnemyDeath += GainCurrency;
-    }
-
-    private void OnDisable()
-    {
-        EnemyBehavior.OnEnemyDeath -= GainCurrency;
-    }
-
-    private void destoryTempHolder() 
-    {
-        if (tempDisplayHolder != null) {
-            Destroy(this.tempDisplayHolder);
-        }
-    }
-
     private void upgradeTower()
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
@@ -416,6 +401,28 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void GainCurrency(GameObject enemyWhoDied)
+    {
+        currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
+    }
+
+    private void OnEnable()
+    {
+        EnemyBehavior.OnEnemyDeath += GainCurrency;
+    }
+
+    private void OnDisable()
+    {
+        EnemyBehavior.OnEnemyDeath -= GainCurrency;
+    }
+
+    private void destoryTempHolder() 
+    {
+        if (tempDisplayHolder != null) {
+            Destroy(this.tempDisplayHolder);
+        }
+    }
+
     private Camera getCurrentCamera()
     {
         return playerCam.transform.Find("ThirdPersonCam").GetComponent<Camera>();
@@ -431,7 +438,7 @@ public class Player : MonoBehaviour
             towerHitByRaycast.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(.1f, .9f, .1f, .2f));
         } else if (!colerable) {
 
-            towerHitByRaycast.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,0,0));
+            towerHitByRaycast.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(1,1,1,1));
         }
     }
 
