@@ -129,6 +129,8 @@ public class TowerBehavior : MonoBehaviour
 
         if (bullet != null)
             bullet.Seek(target.transform);
+
+        bullet.targeting = targetingMode;
     }
 
     // Tower range visualization via gizmos 
