@@ -56,7 +56,7 @@ MonoBehaviour:
   enemyTag: Enemy
   partToRotate: {fileID: 576702084041083807}
   turnSpeed: 5
-  bulletPrefab: {fileID: 5460506940467439282, guid: 348358a1c08fa1a40b16b7937d20e68e, type: 3}
+  projectilePrefab: {fileID: -3075206357820888942, guid: 348358a1c08fa1a40b16b7937d20e68e, type: 3}
   firePoint: {fileID: 6788566222244839869}
   enemies: []
   cost: 10
