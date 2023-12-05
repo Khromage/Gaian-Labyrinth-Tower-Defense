@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
         //int cw;
         //cw = levelManager.GetComponent<LevelManager>().currWave;
         WavesText.text = "Wave: " + levelManager.GetComponent<LevelManager>().currWave.ToString();
-        TimeText.text = "Time to next wave: " + ((int)levelManager.GetComponent<LevelManager>().waveCountdown).ToString();
+        TimeText.text = "Next Wave: " + ((int)levelManager.GetComponent<LevelManager>().waveCountdown).ToString();
         LivesText.text = "Lives: " + levelManager.GetComponent<LevelManager>().remainingLives.ToString();
         CurrencyText.text = "$" + player.GetComponent<Player>().currency.ToString();
         //LivesText.text = "hey " + counter;

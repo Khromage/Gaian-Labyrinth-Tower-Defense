@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 //currentTile
@@ -24,6 +25,10 @@ public class EnemyBehavior : MonoBehaviour
     private EnemyHealthBar HealthBar;
     private float maxHealth;
     public float currentHealth;
+
+    public GameObject damageIndicator;
+
+    private Camera cameraToWatch;
 
     //currency gain on death
     public int worth;
@@ -62,6 +67,11 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    public void setCamera(Camera camera)
+    {
+        cameraToWatch = camera;
+        SetupHealthBar(camera);
+    }
     public void SetupHealthBar(Camera Camera)
     {
         if(HealthBar.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
@@ -73,6 +83,23 @@ public class EnemyBehavior : MonoBehaviour
     public void takeDamage(float damage, GameObject damagerBullet)
     {
         currentHealth -= damage;
+
+        GameObject dmgInd = Instantiate(damageIndicator, gameObject.transform);
+        Destroy(dmgInd, 2f);
+        TMP_Text dmgIndText = dmgInd.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        //dmgInd.GetComponent<ConstantForce>.force = currGravDir;
+        dmgIndText.text = damage.ToString();
+
+        if (damage >= 5)
+            dmgIndText.color = Color.yellow;
+
+        if (dmgIndText.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
+            faceCamera.Camera = cameraToWatch;
+
+        //dmgInd.GetComponent<Rigidbody>().AddForce(new Vector3(Vector3.Dot(Vector3.right, transform.right) * UnityEngine.Random.value, 10f, Vector3.Dot(Vector3.forward, transform.forward) * UnityEngine.Random.value), ForceMode.Impulse);
+        dmgInd.GetComponent<Rigidbody>().AddForce(new Vector3(UnityEngine.Random.value * 3f - .5f, 12f, UnityEngine.Random.value * 3f - .5f), ForceMode.Impulse);
+
+
         HealthBar.SetHealth(currentHealth / maxHealth, 3);
 
         EnemyHurtSFX.Play();
