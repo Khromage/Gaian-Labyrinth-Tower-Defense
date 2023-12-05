@@ -48,7 +48,7 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //setGravityDir();
         updateCurrTile();
         moveAlongPath();
         
@@ -99,6 +99,8 @@ public class EnemyBehavior : MonoBehaviour
         Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
 
         transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);
+        //if (rb.velocity.magnitude < moveSpeed)
+        //    rb.AddForce(moveDirNormal * moveSpeed * 10f, ForceMode.Force);
 
         //should also rotate toward where you're moving
     }

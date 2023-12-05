@@ -12,7 +12,7 @@ public class TowerBehavior : MonoBehaviour
     public string targetingMode;
     public float range = 10f;
     public float fireRate = 1f;
-    private float fireCountdown = 0f;
+    public float fireCountdown = 0f;
 
     [Header("Unity Fields")]
 
@@ -25,7 +25,7 @@ public class TowerBehavior : MonoBehaviour
     public Transform firePoint;
 
     public List<GameObject> enemies = new List<GameObject>();
-    SphereCollider detectionZone;
+    public SphereCollider detectionZone;
 
     public int cost;
 

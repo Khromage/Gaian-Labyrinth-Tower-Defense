@@ -91,7 +91,7 @@ public class FlowFieldGenerator
         foreach (GridTile t in sortedTileList)
         {
             t.fielded = false;
-            Debug.Log($"tile goal dist pre increment: {t.goalDist}");
+            //Debug.Log($"tile goal dist pre increment: {t.goalDist}");
             //t.goalDist += useCounter;
             //Debug.Log($"tile goal dist post increment: {t.goalDist}");
             t.goalDistText.text = $"{t.goalDist.ToString()}";

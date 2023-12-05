@@ -20,6 +20,8 @@ public class ThirdPersonCam : MonoBehaviour
     public GameObject thirdPersonCamera;
     public GameObject combatCam;
 
+    public GameObject currentCam;
+
     public CameraStyle currentStyle;
     public enum CameraStyle
     {
@@ -31,6 +33,7 @@ public class ThirdPersonCam : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        currentCam = thirdPersonCamera;
     }
 
     private void Update()
@@ -46,6 +49,8 @@ public class ThirdPersonCam : MonoBehaviour
         //rotate orientation
         Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
         orientation.forward = viewDir.normalized;
+        
+        //player.transform.RotateAround(player.transform.position, player.transform.up, 90 - Vector3.Angle(player.transform.forward, orientation.right)); 
 
         //Method to call Camera Style Operations
         cameraStyleMethods();
@@ -57,8 +62,16 @@ public class ThirdPersonCam : MonoBehaviour
         thirdPersonCamera.SetActive(false);
         combatCam.SetActive(false);
 
-        if (newStyle == CameraStyle.Basic) { thirdPersonCamera.SetActive(true); }
-        if (newStyle == CameraStyle.Combat) { combatCam.SetActive(true); }
+        if (newStyle == CameraStyle.Basic) 
+        { 
+            thirdPersonCamera.SetActive(true);
+            currentCam = thirdPersonCamera;
+        }
+        if (newStyle == CameraStyle.Combat) 
+        { 
+            combatCam.SetActive(true);
+            currentCam = combatCam;
+        }
 
         currentStyle = newStyle;
     }
@@ -70,7 +83,10 @@ public class ThirdPersonCam : MonoBehaviour
         {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
-            Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+            //Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+            Vector3 inputDir = Vector3.Cross(thirdPersonCamera.transform.right, player.up) * verticalInput 
+                + Vector3.Cross(player.up, thirdPersonCamera.transform.forward) * horizontalInput;
 
             if (inputDir != Vector3.zero)
             {

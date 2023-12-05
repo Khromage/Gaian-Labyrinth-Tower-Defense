@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -910,7 +910,7 @@ MonoBehaviour:
     m_RecenteringTime: 2
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
-  m_BindingMode: 4
+  m_BindingMode: 3
   m_SplineCurvature: 0.2
   m_Orbits:
   - m_Height: 6
@@ -7675,6 +7675,7 @@ MonoBehaviour:
   combatLookAt: {fileID: 536682489}
   thirdPersonCamera: {fileID: 26025568}
   combatCam: {fileID: 1767413111}
+  currentCam: {fileID: 0}
   currentStyle: 0
 --- !u!114 &189062908
 MonoBehaviour:
@@ -18932,7 +18933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 4
+  m_BindingMode: 3
   m_FollowOffset: {x: 0, y: 3, z: -6}
   m_XDamping: 1
   m_YDamping: 1
@@ -37831,7 +37832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 4
+  m_BindingMode: 3
   m_FollowOffset: {x: 0, y: 3, z: -6}
   m_XDamping: 1
   m_YDamping: 1
@@ -43004,6 +43005,7 @@ GameObject:
   - component: {fileID: 1299577100}
   - component: {fileID: 1299577099}
   - component: {fileID: 1299577098}
+  - component: {fileID: 1299577101}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -43023,10 +43025,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26a1dc56332a3b4f837211cb37dd4bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravityConstant: 30
+  defaultGravityDir: {x: 0, y: -1, z: 0}
+  lateralVelocityComponent: {x: 0, y: 0, z: 0}
+  verticalVelocityComponent: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
   currentMode: 0
   moveSpeed: 7
   groundDrag: 5
-  jumpForce: 12
+  jumpForce: 18
   jumpCooldown: 0.25
   airMultiplier: 0.4
   jumpKey: 32
@@ -43044,6 +43051,7 @@ MonoBehaviour:
     m_Bits: 8
   orientation: {fileID: 2016914160}
   playerCam: {fileID: 189062905}
+  currentCam: {fileID: 0}
   towerPrefab: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerDisplayPrefab: {fileID: 3248011058118863728, guid: f94bb3fe3267d3545a2495bcc73ce8c9, type: 3}
   currency: 0
@@ -43055,7 +43063,7 @@ MonoBehaviour:
   towerList:
   - {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   - {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
-  - {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
+  - {fileID: 8666906952646496308, guid: 3dce8eea952c9904a8aa493f256f1810, type: 3}
 --- !u!54 &1299577099
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -43100,6 +43108,18 @@ Transform:
   - {fileID: 2016914160}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!75 &1299577101
+ConstantForce:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299577097}
+  m_Enabled: 1
+  m_Force: {x: 0, y: 0, z: 0}
+  m_RelativeForce: {x: 0, y: 0, z: 0}
+  m_Torque: {x: 0, y: 0, z: 0}
+  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1001 &1299944353
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49551,7 +49571,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478073242}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.032047227, y: 0.11638771, z: -0.031459536, w: 0.99218804}
+  m_LocalRotation: {x: 0.032047227, y: 0.11638767, z: -0.031459525, w: 0.99218804}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -50712,7 +50732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 4
+  m_BindingMode: 3
   m_FollowOffset: {x: 0, y: 3, z: -6}
   m_XDamping: 1
   m_YDamping: 1

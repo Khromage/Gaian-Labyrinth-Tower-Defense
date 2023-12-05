@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : UnitBehavior
 {
     public delegate void TowerPlaced(GridTile tileOn);
     public static event TowerPlaced OnTowerPlaced;
@@ -42,10 +42,13 @@ public class Player : MonoBehaviour
     float verticalInput;
 
     Vector3 moveDirection;
-    Rigidbody rb;
+    // rb rigidbody is declared in UnitBehavior
+
+    private Vector3 currGravDir;
 
     [Header("Player Cam")]
     public GameObject playerCam;
+    public GameObject currentCam;
 
     [Header("Build mode")]
     public GameObject towerPrefab;
@@ -76,16 +79,27 @@ public class Player : MonoBehaviour
         rb.freezeRotation = true;
         readyToJump = true;
         currency = 800;
+
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+        gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
+
+        currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
     }
 
     //Method to be checked on every frame of the game
     public void Update() 
      {
+        setVelocityComponents();
+
         checkCurrentMode();
         getUserKeyInput();
         playerSpeedControl();
 
+        setGravityDir();
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
+        //Vector3.down was the 2nd parameter here, originally
         grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
         //handling player drag if on the ground
         if (grounded)
@@ -144,7 +158,7 @@ public class Player : MonoBehaviour
         {
                 return true;
         }
-        if (Input.GetKeyDown(tower2))
+        if (Input.GetKeyDown(tower3))
         {
                 return true;
         }
@@ -198,7 +212,7 @@ public class Player : MonoBehaviour
         {
             currentTower = towerList[1];
         }
-        if (Input.GetKeyDown(tower2))
+        if (Input.GetKeyDown(tower3))
         {
             currentTower = towerList[2];
         }
@@ -209,7 +223,15 @@ public class Player : MonoBehaviour
     private void movePlayer() 
     {
         //calculate movement direction
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        //moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        
+        //non-cinemachine
+        //moveDirection = Vector3.Cross(newCameraHolder.transform.right, -currGravDir) * verticalInput 
+        //    + Vector3.Cross(-currGravDir, newCameraHolder.transform.forward) * horizontalInput;
+
+        //cinemachine 3d movement
+        moveDirection = Vector3.Cross(orientation.right, -currGravDir) * verticalInput 
+            + Vector3.Cross(-currGravDir, orientation.forward) * horizontalInput;
 
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
@@ -223,20 +245,18 @@ public class Player : MonoBehaviour
     //Method to set a limit to the players velocity
     private void playerSpeedControl() 
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
         //Limit player's movement velocity when reaching max speed
-        if(flatVel.magnitude > moveSpeed) 
+        if (lateralVelocityComponent.magnitude > moveSpeed)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed; 
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            Vector3 limitedVel = lateralVelocityComponent.normalized * moveSpeed;
+            rb.velocity = limitedVel + verticalVelocityComponent;
         }
     }
 
     private void jump() 
     {
         //reset Y velocity to prepare for new jump
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.velocity = lateralVelocityComponent;
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
@@ -360,6 +380,15 @@ public class Player : MonoBehaviour
         //invoke this event with the tile the tower was on.
         OnTowerSold?.Invoke(tileOn);
     }
+
+
+
+    public void rotateToSurface()
+    {
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+    }
+
+
 
     private void GainCurrency(GameObject enemyWhoDied)
     {
