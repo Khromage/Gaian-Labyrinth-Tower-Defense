@@ -62,9 +62,8 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    public void SetupHealthBar(Canvas Canvas, Camera Camera)
+    public void SetupHealthBar(Camera Camera)
     {
-        HealthBar.transform.SetParent(Canvas.transform);
         if(HealthBar.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
         {
             faceCamera.Camera = Camera;
