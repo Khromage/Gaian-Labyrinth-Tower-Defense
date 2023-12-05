@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//set the camera's rotation based on the orientation rotation?
+// mouse x  RotateAround the up of orientation
+// mouse y  RotateAround the right of the orientation
+// can the camera RotateAround the forward of the orientation? to match the xz plane of the surface/player
+
 public class CameraController : MonoBehaviour
 {
     [Header("KeyBinds")]

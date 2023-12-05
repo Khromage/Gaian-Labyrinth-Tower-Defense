@@ -21,10 +21,10 @@ public class UnitBehavior : MonoBehaviour
     
     public virtual void setGravityDir()
     {
-        Vector3 movementOffset = lateralVelocityComponent.normalized * .3f;
+        Vector3 movementOffset = Vector3.zero; //lateralVelocityComponent.normalized * .3f;
 
         RaycastHit hitInfo = new RaycastHit();
-        bool hit = Physics.Raycast(transform.position + movementOffset, -transform.up, out hitInfo, 1f);
+        bool hit = Physics.Raycast(transform.position + movementOffset, -transform.up, out hitInfo, 1f, 1 << 6); //1 << 6 bitshifted to layer 6, whatIsGround
         //also ^ layermask for gravity-affecting surfaces
         if (hit)
         {

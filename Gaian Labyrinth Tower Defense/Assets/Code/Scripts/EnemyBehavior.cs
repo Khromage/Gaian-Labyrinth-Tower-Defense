@@ -50,6 +50,7 @@ public class EnemyBehavior : UnitBehavior
     {
 
         updateCurrTile();
+        setGravityDir();
         
         if (currTile is GoalTile)
         {
@@ -88,7 +89,7 @@ public class EnemyBehavior : UnitBehavior
             posToMoveToward = successorTile.transform.position;
         else
             Debug.Log("enemy no successor to move toward");
-        Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
+        Vector3 moveDirNormal = Vector3.Normalize(posToMoveToward - transform.position);
 
         //Debug.Log(moveDirNormal * moveSpeed * 5f);
         if (rb.velocity.magnitude < moveSpeed)
