@@ -14,8 +14,8 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
     public override void Start()
     {
         speed = 50f;
-        damage = 5f;
-        blastRadius = 10f;
+        damage = 3f;
+        blastRadius = 3f;
     }
     public override void HitTarget(GameObject hitEnemy)
         {
