@@ -92,6 +92,8 @@ public class EnemyBehavior : MonoBehaviour
 
         if (damage >= 5)
             dmgIndText.color = Color.yellow;
+        if (damage >= 10)
+            dmgIndText.color = Color.red;
 
         if (dmgIndText.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
             faceCamera.Camera = cameraToWatch;

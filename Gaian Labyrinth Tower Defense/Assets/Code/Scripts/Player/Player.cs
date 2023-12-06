@@ -320,7 +320,7 @@ public class Player : UnitBehavior
         }
         //here is where we should display an outline of the currently selected tower, either a green transparent silhouette if placeable, or red.
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-        if ((Physics.Raycast(ray, out RaycastHit hit, 100f, Grid)))
+        if ((Physics.Raycast(ray, out RaycastHit hit, 30f, Grid)))
         {
             if ((hit.transform.tag.Equals("GridTile")))
             {
