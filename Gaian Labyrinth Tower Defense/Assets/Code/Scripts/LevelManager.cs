@@ -19,6 +19,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject goalTile;
     public FlowFieldGenerator flowFieldGenerator;
 
+    public Material visibleSquare;
+
 
     //[SerializeField]
     public int remainingLives = 20;
@@ -33,6 +35,7 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         flowFieldGenerator = new FlowFieldGenerator();
+        flowFieldGenerator.visibleSquare = visibleSquare;
         flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
         
         waveCountdown = 1f;

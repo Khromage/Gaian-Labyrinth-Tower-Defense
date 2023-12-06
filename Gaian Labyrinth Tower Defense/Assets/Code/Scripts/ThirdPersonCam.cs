@@ -47,10 +47,18 @@ public class ThirdPersonCam : MonoBehaviour
             { switchCameraStyle(CameraStyle.Basic); }
 
         //rotate orientation
-        Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
-        orientation.forward = viewDir.normalized;
-        
+        //Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
+        //orientation.forward = viewDir.normalized;
+        //playerObj.transform.forward = orientation.forward;
+
+        //other attempts
         //player.transform.RotateAround(player.transform.position, player.transform.up, 90 - Vector3.Angle(player.transform.forward, orientation.right)); 
+        //orientation.forward = Vector3.forward;
+
+        Vector3 dirToCombatLook = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
+        orientation.forward = dirToCombatLook.normalized;
+
+        playerObj.forward = dirToCombatLook.normalized;
 
         //Method to call Camera Style Operations
         cameraStyleMethods();
@@ -90,16 +98,16 @@ public class ThirdPersonCam : MonoBehaviour
 
             if (inputDir != Vector3.zero)
             {
-                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, rotationSpeed * Time.deltaTime);
+                //playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, rotationSpeed * Time.deltaTime);
             }
 
         }
         else if (currentStyle == CameraStyle.Combat)
         {
-            Vector3 dirToCombatLook = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
-            orientation.forward = dirToCombatLook.normalized;
+            //Vector3 dirToCombatLook = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
+            //orientation.forward = dirToCombatLook.normalized;
 
-            playerObj.forward = dirToCombatLook.normalized;
+            //playerObj.forward = dirToCombatLook.normalized;
         }
 
     }

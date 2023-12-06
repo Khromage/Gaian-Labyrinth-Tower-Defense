@@ -39,7 +39,6 @@ public class GridTile : MonoBehaviour
     public bool enemyOnTile = false;
     public bool towerOnTile = false;
 
-    public Material visibleSquare;
 
     void Awake()
     {
@@ -53,14 +52,7 @@ public class GridTile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (goalDist < int.MaxValue)
-        {
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = transform.position - new Vector3(0f, .4f, 0f);
-            cube.transform.localScale = new Vector3(.9f, .1f, .9f);
-            cube.GetComponent<MeshRenderer>().material = visibleSquare;
-            cube.GetComponent<Collider>().enabled = false;
-        }
+        
     }
 
     // Update is called once per frame

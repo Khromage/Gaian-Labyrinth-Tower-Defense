@@ -118,7 +118,6 @@ GameObject:
   - component: {fileID: 1102599525182750561}
   - component: {fileID: 8524468329408580060}
   - component: {fileID: 712387096705502415}
-  - component: {fileID: 2587517224098750207}
   m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
@@ -217,20 +216,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}
---- !u!114 &2587517224098750207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1670472527504762127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5c0d0c265f8ac942b9a076f52741463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 7792443051793761538}
-  Offset: {x: 0, y: 1.25, z: 0}
 --- !u!1 &2921004111766893944
 GameObject:
   m_ObjectHideFlags: 0

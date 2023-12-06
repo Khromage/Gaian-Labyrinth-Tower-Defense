@@ -61,7 +61,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(gameObject);
-            OnEnemyDeath?.Invoke(gameObject);
+            //OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
         }
@@ -84,23 +84,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         currentHealth -= damage;
 
-        GameObject dmgInd = Instantiate(damageIndicator, gameObject.transform);
-        Destroy(dmgInd, 2f);
-        TMP_Text dmgIndText = dmgInd.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
-        //dmgInd.GetComponent<ConstantForce>.force = currGravDir;
-        dmgIndText.text = damage.ToString();
-
-        if (damage >= 5)
-            dmgIndText.color = Color.yellow;
-        if (damage >= 10)
-            dmgIndText.color = Color.red;
-
-        if (dmgIndText.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
-            faceCamera.Camera = cameraToWatch;
-
-        //dmgInd.GetComponent<Rigidbody>().AddForce(new Vector3(Vector3.Dot(Vector3.right, transform.right) * UnityEngine.Random.value, 10f, Vector3.Dot(Vector3.forward, transform.forward) * UnityEngine.Random.value), ForceMode.Impulse);
-        dmgInd.GetComponent<Rigidbody>().AddForce(new Vector3(UnityEngine.Random.value * 3f - .5f, 12f, UnityEngine.Random.value * 3f - .5f), ForceMode.Impulse);
-
+        deployDamageIndicator(damage);
 
         HealthBar.SetHealth(currentHealth / maxHealth, 3);
 
@@ -114,6 +98,26 @@ public class EnemyBehavior : MonoBehaviour
             Destroy(HealthBar.gameObject, destroyDelay);
         }
         
+    }
+
+    private void deployDamageIndicator(float damage)
+    {
+        GameObject dmgInd = Instantiate(damageIndicator, gameObject.transform);
+        Destroy(dmgInd, 2f);
+        TMP_Text dmgIndText = dmgInd.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        //dmgInd.GetComponent<ConstantForce>.force = currGravDir;
+        dmgIndText.text = damage.ToString();
+
+        if (damage >= 3)
+            dmgIndText.color = Color.yellow;
+        if (damage >= 10)
+            dmgIndText.color = Color.red;
+
+        if (dmgIndText.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
+            faceCamera.Camera = cameraToWatch;
+
+        //dmgInd.GetComponent<Rigidbody>().AddForce(new Vector3(Vector3.Dot(Vector3.right, transform.right) * UnityEngine.Random.value, 10f, Vector3.Dot(Vector3.forward, transform.forward) * UnityEngine.Random.value), ForceMode.Impulse);
+        dmgInd.GetComponent<Rigidbody>().AddForce(new Vector3(UnityEngine.Random.value * 3f - .5f, 12f, UnityEngine.Random.value * 3f - .5f), ForceMode.Impulse);
     }
 
     private void moveAlongPath()
