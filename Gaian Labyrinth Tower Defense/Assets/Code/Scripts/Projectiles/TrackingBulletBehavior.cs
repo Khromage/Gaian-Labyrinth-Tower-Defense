@@ -5,14 +5,9 @@ using UnityEngine;
 public class TrackingBulletBehavior : BulletBehavior
 {
     private Transform target;
-    public string targeting;
+    //public string targeting;
     public List<GameObject> enemies = new List<GameObject>();
-
-    void Start()
-    {
-        speed = 50f;
-        damage = 5f;
-    }
+    public float range = 5f;
 
     public override void SetTarget(Transform _target)
     {
@@ -22,23 +17,43 @@ public class TrackingBulletBehavior : BulletBehavior
     // Update is called once per frame
     public override void Update()
     {
-
-        Vector3 direction = target.position - transform.position;
-        float distanceThisFrame = speed * Time.deltaTime;
-        transform.Translate(direction.normalized * distanceThisFrame, Space.World);
+        if (target != null)
+        {
+            Vector3 direction = target.position - transform.position;
+            float distanceThisFrame = speed * Time.deltaTime;
+            transform.Translate(direction.normalized * distanceThisFrame, Space.World);
+        }
+        else
+        {
+            UpdateTarget();
+            if (target == null)
+                Destroy(gameObject);
+        }
+        
         
     }
+
+    public bool AlreadyHit(GameObject enemy)
+    {
+        foreach (var e in HitEnemies)
+        {
+            if (enemy == e.gameObject)
+                return true;
+        }
+        return false;
+    }
+
 
     public void ScanForEnemies()
     {
         enemies.Clear();
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
         foreach (var hitCollider in hitColliders)
         {
-            if (other.gameObject.tag == "Enemy")
+            if (hitCollider.gameObject.tag == "Enemy")
             {
-                enemies.Add(other.gameObject);
+                enemies.Add(hitCollider.gameObject);
             }
         }
     }
@@ -57,7 +72,7 @@ public class TrackingBulletBehavior : BulletBehavior
                     foreach (GameObject enemy in enemies)
                     {
                         float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-                        if (distanceToEnemy < shortestDistance)
+                        if (distanceToEnemy < shortestDistance && !AlreadyHit(enemy))
                         {
                             shortestDistance = distanceToEnemy;
                             nearestEnemy = enemy;
@@ -66,7 +81,7 @@ public class TrackingBulletBehavior : BulletBehavior
                     // Verify the closest enemy is within the tower range and assign as target if true
                     if(nearestEnemy != null && shortestDistance <= range)
                     {
-                        target = nearestEnemy;
+                        target = nearestEnemy.transform;
                     } else 
                     {
                         target = null;
@@ -78,7 +93,7 @@ public class TrackingBulletBehavior : BulletBehavior
                     foreach (GameObject enemy in enemies)
                     {
                         float currentEnemyHealth = enemy.GetComponent<EnemyBehavior>().currentHealth;
-                        if (currentEnemyHealth > highestHealth)
+                        if (currentEnemyHealth > highestHealth && !AlreadyHit(enemy))
                         {
                             highestHealth = currentEnemyHealth;
                             strongestEnemy = enemy;
@@ -86,7 +101,7 @@ public class TrackingBulletBehavior : BulletBehavior
                     }
                     if(strongestEnemy != null)
                     {
-                        target = strongestEnemy;
+                        target = strongestEnemy.transform;
                     }
                     break;
                 case "Weak":
@@ -95,7 +110,7 @@ public class TrackingBulletBehavior : BulletBehavior
                     foreach (GameObject enemy in enemies)
                     {
                         float currentEnemyHealth = enemy.GetComponent<EnemyBehavior>().currentHealth;
-                        if (currentEnemyHealth < lowestHealth)
+                        if (currentEnemyHealth < lowestHealth && !AlreadyHit(enemy))
                         {
                             lowestHealth = currentEnemyHealth;
                             weakestEnemy = enemy;
@@ -103,21 +118,18 @@ public class TrackingBulletBehavior : BulletBehavior
                     }
                     if(weakestEnemy != null)
                     {
-                        target = weakestEnemy;
+                        target = weakestEnemy.transform;
                     }
                     break;
             }
         }
         catch
         {
-            Debug.Log("Tower trying to target in empty enemy list. Would have sent a MissingReferenceException regarding the foreach (GameObject enemy in enemies)");
-            detectionZone.enabled = false;
-            enemies.Clear();
-            detectionZone.enabled = true;
+
         }
     }
 
-    override void GetTargetInfo()
+    public override void GetTargetInfo()
     {
         ScanForEnemies();
         UpdateTarget();

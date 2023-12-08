@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ProjectileBehavior : MonoBehaviour
 {
+    public string targeting;
+
     public virtual void SetTarget(Transform _target)
     {
     }
