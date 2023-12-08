@@ -16,7 +16,7 @@ public class BulletBehavior : MonoBehaviour
         damage = 5f;
 =======
         damage = 1f;
-        pierceAMT = 2;
+        pierceAMT = 1;
         Destroy(gameObject, 5);
 >>>>>>> Stashed changes
     }
@@ -39,9 +39,15 @@ public class BulletBehavior : MonoBehaviour
         EnemyBehavior e = hitEnemy.GetComponent<EnemyBehavior>();
         e.takeDamage(damage, gameObject);
         pierceAMT -= 1;
-        ScanForEnemies();
-        UpdateTarget();
-        if (pierceAMT <= 0)
+
+        if (pierceAMT < 0)
             Destroy(gameObject);
+
+        GetTargetInfo();
+    }
+
+    virtual void GetTargetInfo()
+    {
+
     }
 }

@@ -13,7 +13,7 @@ public class TrackingBulletBehavior : BulletBehavior
         damage = 5f;
     }
 =======
-    private string targeting;
+    public string targeting;
     public List<GameObject> enemies = new List<GameObject>();
 >>>>>>> Stashed changes
 
@@ -39,6 +39,8 @@ public class TrackingBulletBehavior : BulletBehavior
 =======
     public void ScanForEnemies()
     {
+        enemies.Clear();
+
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5f);
         foreach (var hitCollider in hitColliders)
         {
@@ -55,7 +57,7 @@ public class TrackingBulletBehavior : BulletBehavior
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
         try
         {
-            switch (targetingMode)
+            switch (targeting)
             {
                 case "Close":
                     float shortestDistance = Mathf.Infinity;
@@ -121,6 +123,12 @@ public class TrackingBulletBehavior : BulletBehavior
             enemies.Clear();
             detectionZone.enabled = true;
         }
+    }
+
+    override void GetTargetInfo()
+    {
+        ScanForEnemies();
+        UpdateTarget();
     }
 >>>>>>> Stashed changes
 }
