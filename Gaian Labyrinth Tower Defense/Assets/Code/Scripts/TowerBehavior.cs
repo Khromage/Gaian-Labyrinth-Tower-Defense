@@ -168,9 +168,11 @@ public class TowerBehavior : MonoBehaviour
     void Shoot()
     {
         ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation, gameObject.transform) as ProjectileBehavior;
-
         if (projectile != null)
             projectile.SetTarget(target.transform);
+
+        projectile.targeting = targetingMode;
+
     }
 
     // Tower range visualization via gizmos 

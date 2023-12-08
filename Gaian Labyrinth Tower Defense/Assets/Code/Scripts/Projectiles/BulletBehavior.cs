@@ -6,13 +6,16 @@ public class BulletBehavior : ProjectileBehavior
 {
     public float speed;
     public float damage;
+    public float pierceAMT;
 
     // Update is called once per frame
     public virtual void Start()
     {
         speed = 50f;
         damage = 1f;
+        pierceAMT = 1;
         Destroy(gameObject, 5);
+
     }
 
     public virtual void Update()
@@ -34,6 +37,16 @@ public class BulletBehavior : ProjectileBehavior
     {
         EnemyBehavior e = hitEnemy.GetComponent<EnemyBehavior>();
         e.takeDamage(damage, gameObject);
-        Destroy(gameObject);
+        pierceAMT -= 1;
+
+        if (pierceAMT < 0)
+            Destroy(gameObject);
+
+        GetTargetInfo();
+    }
+
+    virtual void GetTargetInfo()
+    {
+
     }
 }
