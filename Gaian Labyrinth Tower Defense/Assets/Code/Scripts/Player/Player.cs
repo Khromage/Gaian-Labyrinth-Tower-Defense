@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Interface implemented by any object, tower, npc, etc that the player can interact with
+public interface Interactable
+{
+    public void Interact();
+    public void ShowInteractButton();
+    public void HideInteractButton();
+}
 public class Player : UnitBehavior
 {
     public delegate void TowerPlaced(GridTile tileOn);
@@ -23,6 +30,7 @@ public class Player : UnitBehavior
 
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode interactKey = KeyCode.F;
     public KeyCode nextWeapon = KeyCode.E;
     public KeyCode prevWeapon = KeyCode.Q;
     public KeyCode tower1 = KeyCode.Alpha1;
@@ -54,8 +62,12 @@ public class Player : UnitBehavior
     public GameObject towerPrefab;
     public GameObject towerDisplayPrefab;
     private GameObject tempDisplayHolder;
-
     public int currency;
+
+    [Header("Player Interaction")]
+    public float InteractRange;
+    public Interactable InteractionTarget;
+    public GameObject Body;
 
     [Header("Weapon List")]
     public GameObject currentWeapon;
@@ -79,6 +91,7 @@ public class Player : UnitBehavior
         rb.freezeRotation = true;
         readyToJump = true;
         currency = 200;
+        InteractRange = 3f;
 
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
@@ -92,6 +105,7 @@ public class Player : UnitBehavior
         setVelocityComponents();
 
         checkCurrentMode();
+        checkInteractable();
         getUserKeyInput();
         playerSpeedControl();
 
@@ -145,7 +159,6 @@ public class Player : UnitBehavior
             }
         }
     }
-
     private bool enteringBuildMode()
     {
         //Sets tower immediatley to whichever key is pressed 
@@ -164,7 +177,6 @@ public class Player : UnitBehavior
         }
         return false;
     }
-
     private bool enteringCombatMode()
     {
         if (Input.GetKeyDown(prevWeapon))
@@ -193,6 +205,12 @@ public class Player : UnitBehavior
             Invoke(nameof(resetJump), jumpCooldown);
         }
 
+        //Player wants to interact
+        if(Input.GetKeyDown(interactKey))
+        {
+            Interact();
+        }
+
         //Getting weapon selected
         if (Input.GetKeyDown(nextWeapon))
         {
@@ -215,8 +233,45 @@ public class Player : UnitBehavior
         if (Input.GetKeyDown(tower3))
         {
             currentTower = towerList[2];
-        }
+        } 
 
+    }
+
+    private void checkInteractable()
+    {
+        Ray interactRay = new Ray(Body.transform.position, Body.transform.forward);
+        Debug.DrawLine(Body.transform.position, Body.transform.position + Body.transform.forward * InteractRange, Color.red, 2f);
+        
+        if(Physics.Raycast(interactRay, out RaycastHit hit, InteractRange))
+        {
+            Interactable interactable = hit.collider.gameObject.GetComponentInParent<Interactable>();
+            if(interactable != null)
+            {
+                if(InteractionTarget != null && InteractionTarget != interactable)
+                {
+                    InteractionTarget.HideInteractButton(); // Hide previous interactable's button
+                }
+                
+                InteractionTarget = interactable; // Update current interaction target
+                InteractionTarget.ShowInteractButton();
+                Debug.Log("Showing Interact Button");
+            }
+            else if(InteractionTarget != null)
+            {
+                InteractionTarget.HideInteractButton();
+                InteractionTarget = null; // Reset last interactable
+            }
+        }
+        else if(InteractionTarget != null)
+        {
+                InteractionTarget.HideInteractButton();
+                InteractionTarget = null; // Reset last interactable
+        }
+    }
+
+    private void Interact()
+    {
+        InteractionTarget.Interact();
     }
 
     //Method to move the player on ground and in air 
@@ -252,7 +307,6 @@ public class Player : UnitBehavior
             rb.velocity = limitedVel + verticalVelocityComponent;
         }
     }
-
     private void jump() 
     {
         //reset Y velocity to prepare for new jump
@@ -260,13 +314,11 @@ public class Player : UnitBehavior
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
-
     private void resetJump()
     {
         //Reset readytoJump to True so player can jump again
         readyToJump = true;
     }
-
     private void attack()
     {
         Weapon currentWeaponScript = currentWeapon.GetComponent<Weapon>();
@@ -283,7 +335,6 @@ public class Player : UnitBehavior
         }
     
     }
-
     private void SwapWeapon(KeyCode input)
     {
 
@@ -309,8 +360,6 @@ public class Player : UnitBehavior
         
 
     }
-
-
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
@@ -373,28 +422,20 @@ public class Player : UnitBehavior
         }
         
     }
-
     private void sellTower()
     {
         GridTile tileOn = null;
         //invoke this event with the tile the tower was on.
         OnTowerSold?.Invoke(tileOn);
     }
-
-
-
     public void rotateToSurface()
     {
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
     }
-
-
-
     private void GainCurrency(GameObject enemyWhoDied)
     {
         currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
     }
-
     private void OnEnable()
     {
         EnemyBehavior.OnEnemyDeath += GainCurrency;

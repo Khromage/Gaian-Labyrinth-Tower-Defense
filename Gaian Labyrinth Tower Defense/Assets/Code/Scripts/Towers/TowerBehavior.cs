@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerBehavior : MonoBehaviour
+public class TowerBehavior : MonoBehaviour, Interactable
 {
 
     public GameObject target;
@@ -17,6 +17,7 @@ public class TowerBehavior : MonoBehaviour
     [Header("Unity Fields")]
 
     public string enemyTag = "Enemy";
+    public GameObject InteractionIndicator;
 
     public Transform partToRotate;
     public float turnSpeed = 5f;
@@ -42,13 +43,13 @@ public class TowerBehavior : MonoBehaviour
         detectionZone.radius = range;
         EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
         EnemyBehavior.OnEnemyReachedGoal += removeEnemyFromList;
+        HideInteractButton();
     }
     private void OnDisable()
     {
         EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
         EnemyBehavior.OnEnemyReachedGoal -= removeEnemyFromList;
     }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -56,7 +57,6 @@ public class TowerBehavior : MonoBehaviour
                 enemies.Add(other.gameObject);
             }
     }
-
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -64,12 +64,10 @@ public class TowerBehavior : MonoBehaviour
             enemies.Remove(other.gameObject);
         }
     }
-
     private void removeEnemyFromList(GameObject enemyToRemove)
     {
         enemies.Remove(enemyToRemove);
     }
-
     void UpdateTarget()
     {
 
@@ -143,7 +141,6 @@ public class TowerBehavior : MonoBehaviour
             detectionZone.enabled = true;
         }
     }
-
     void Update()
     {
         if(target == null)
@@ -164,7 +161,6 @@ public class TowerBehavior : MonoBehaviour
 
         fireCountdown -= Time.deltaTime;
     }
-
     void Shoot()
     {
         ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation, gameObject.transform) as ProjectileBehavior;
@@ -174,7 +170,30 @@ public class TowerBehavior : MonoBehaviour
         projectile.targeting = targetingMode;
 
     }
+    public void Interact()
+    {
+        OpenTowerUI();
+    }
+    public void ShowInteractButton()
+    {
+        if (InteractionIndicator != null)
+        {
+            InteractionIndicator.SetActive(true); // Show the indicator
+        }
+    }
+    public void HideInteractButton()
+    {
+        if (InteractionIndicator != null)
+        {
+            InteractionIndicator.SetActive(false); // Hide the indicator
+        }
+    }
 
+    void OpenTowerUI()
+    {
+        // display ui in screen space
+    }
+    
     // Tower range visualization via gizmos 
     void OnDrawGizmosSelected()
     {

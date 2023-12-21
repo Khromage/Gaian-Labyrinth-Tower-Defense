@@ -66,20 +66,6 @@ public class EnemyBehavior : MonoBehaviour
             Destroy(HealthBar.gameObject);
         }
     }
-
-    public void setCamera(Camera camera)
-    {
-        cameraToWatch = camera;
-        SetupHealthBar(camera);
-    }
-    public void SetupHealthBar(Camera Camera)
-    {
-        if(HealthBar.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
-        {
-            faceCamera.Camera = Camera;
-        }
-    }
-
     public void takeDamage(float damage, GameObject damagerBullet)
     {
         currentHealth -= damage;
