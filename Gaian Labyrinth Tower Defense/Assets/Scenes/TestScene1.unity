@@ -7647,7 +7647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189062905}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0016134112, y: 0.9563937, z: 0.29202843, w: -0.0052839257}
+  m_LocalRotation: {x: 0.001613411, y: 0.9563937, z: 0.29202843, w: -0.0052839248}
   m_LocalPosition: {x: 0.46708882, y: 1.6654911, z: -14.217482}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44140,7 +44140,7 @@ MonoBehaviour:
   towerDisplayPrefab: {fileID: 3248011058118863728, guid: f94bb3fe3267d3545a2495bcc73ce8c9, type: 3}
   currency: 0
   InteractRange: 0
-  Body: {fileID: 1513391536}
+  Hand: {fileID: 2074497830}
   currentWeapon: {fileID: 1212722250}
   weaponList:
   - {fileID: 5926663804712910904, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
@@ -55571,7 +55571,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618123025}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.07774501, y: 0.8580504, z: 0.4466572, w: 0.24125195}
+  m_LocalRotation: {x: -0.077745005, y: 0.8580504, z: 0.4466572, w: 0.24125192}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -58726,7 +58726,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724848852}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.037171572, y: 0.9196313, z: 0.30005264, w: 0.25072908}
+  m_LocalRotation: {x: -0.03717158, y: 0.9196313, z: 0.30005264, w: 0.2507291}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
