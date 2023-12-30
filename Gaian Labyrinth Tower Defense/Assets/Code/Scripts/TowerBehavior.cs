@@ -22,7 +22,7 @@ public class TowerBehavior : MonoBehaviour
     public Transform partToRotate;
     public float turnSpeed = 5f;
 
-    public GameObject bulletPrefab;
+    public ProjectileBehavior projectilePrefab;
     public Transform firePoint;
 
     public List<GameObject> enemies = new List<GameObject>();
@@ -48,7 +48,7 @@ public class TowerBehavior : MonoBehaviour
         EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
         EnemyBehavior.OnEnemyReachedGoal += removeEnemyFromList;
     }
-    private void onDisable()
+    private void OnDisable()
     {
         EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
         EnemyBehavior.OnEnemyReachedGoal -= removeEnemyFromList;
@@ -172,12 +172,12 @@ public class TowerBehavior : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bulletGO = Instantiate (bulletPrefab, firePoint.position, firePoint.rotation, gameObject.transform);
-        TrackingBulletBehavior bullet = bulletGO.GetComponent<TrackingBulletBehavior>();
+        ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation, gameObject.transform) as ProjectileBehavior;
 
-        if (bullet != null)
-            bullet.damage = currentDamage;
-            bullet.Seek(target.transform);
+        if (projectile != null){
+            projectile.damage = currentDamage; 
+            projectile.SetTarget(target.transform);
+        }
     }
 
     // Tower range visualization via gizmos 

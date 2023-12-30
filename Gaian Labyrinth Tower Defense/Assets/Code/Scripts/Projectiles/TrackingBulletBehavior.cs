@@ -6,7 +6,7 @@ public class TrackingBulletBehavior : BulletBehavior
 {
     private Transform target;
 
-    public void Seek (Transform _target)
+    public override void SetTarget(Transform _target)
     {
         target = _target;
     }

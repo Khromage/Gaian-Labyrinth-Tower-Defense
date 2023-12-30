@@ -19,8 +19,8 @@ public class SpawnPoint : GridTile
     private Camera Camera;
 
     //Single canvas that all enemy health bars are drawn to
-    [SerializeField]
-    private Canvas EnemyHealthBarCanvas;
+    //[SerializeField]
+    //private Canvas EnemyHealthBarCanvas;
 
     // Start is called before the first frame update
     void Start()
@@ -43,13 +43,11 @@ public class SpawnPoint : GridTile
             GameObject currEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position, transform.rotation);
             EnemyBehavior currEnemyScript = currEnemy.GetComponent<EnemyBehavior>();
             currEnemyScript.currTile = this.GetComponent<GridTile>();
-            currEnemyScript.SetupHealthBar(EnemyHealthBarCanvas, Camera);
+            currEnemyScript.SetupHealthBar(Camera);
 
             yield return new WaitForSeconds(timeToWait);
         }
     }
-
-
 
     void OnDrawGizmos()
     {
