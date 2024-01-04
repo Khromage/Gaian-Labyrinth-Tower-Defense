@@ -17,6 +17,9 @@ public class Player : UnitBehavior
     public delegate void TowerSold(GridTile tileOn);
     public static event TowerSold OnTowerSold;
 
+    public delegate void AdjustMana(float diff, bool animate);
+    public static event AdjustMana OnAdjustMana;
+
     public playerMode currentMode;
 
     //Variables to control and determine player's jumping abiltiy
@@ -53,6 +56,11 @@ public class Player : UnitBehavior
     // rb rigidbody is declared in UnitBehavior
 
     private Vector3 currGravDir;
+
+    [Header("Mana")]
+    public float maxMana;
+    public float mana;
+    public float manaRegenRate;
 
     [Header("Player Cam")]
     public GameObject playerCam;
@@ -97,11 +105,17 @@ public class Player : UnitBehavior
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
 
         currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
+
+        maxMana = 100f;
+        mana = maxMana;
+        manaRegenRate = 30f;
+
     }
 
     //Method to be checked on every frame of the game
     public void Update() 
      {
+
         setVelocityComponents();
 
         checkCurrentMode();
@@ -135,8 +149,9 @@ public class Player : UnitBehavior
 
     //Methods to be executed when user inputs movement keys
     //Executed on a fixed interval
-    public void FixedUpdate() 
+    public void FixedUpdate()
     {
+        regenMana();
         movePlayer();
     }
 
@@ -274,6 +289,40 @@ public class Player : UnitBehavior
         InteractionTarget.Interact();
     }
 
+
+    private void regenMana()
+    {
+        float regenAmount = manaRegenRate * Time.fixedDeltaTime;
+        changeMana(regenAmount, false); //not animated regen of mana
+    }
+    public void spentMana(float amount)
+    {
+        //amount should be negative. (the call in Weapon has parameter (-manaCost))
+        changeMana(amount, true); //animated loss of mana
+    }
+    public void changeMana(float changeAmount, bool animated)
+    {
+
+        if (mana + changeAmount > maxMana) //if we'd exceed max mana
+        {
+            changeAmount = maxMana - (mana - changeAmount);
+            mana = maxMana;
+        }
+        else if (mana + changeAmount < 0) //if we'd dip below 0 mana
+        {
+            changeAmount = mana;
+            Debug.LogWarning("mana changed to less than 0. something wrong... setting to 0");
+            mana = 0;
+        }
+        else //normal change
+        {
+            mana += changeAmount;
+        }
+
+        if (Mathf.Abs(changeAmount) > 0)
+            OnAdjustMana?.Invoke(changeAmount / maxMana, animated);
+    }
+
     //Method to move the player on ground and in air 
     private void movePlayer() 
     {
@@ -327,11 +376,11 @@ public class Player : UnitBehavior
         
         if (currentWeaponScript.Automatic && Input.GetMouseButton(0))
         {
-            currentWeaponScript.TryToFire();
+            currentWeaponScript.TryToFire(mana);
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            currentWeaponScript.TryToFire();
+            currentWeaponScript.TryToFire(mana);
         }
     
     }
@@ -439,9 +488,11 @@ public class Player : UnitBehavior
     private void OnEnable()
     {
         EnemyBehavior.OnEnemyDeath += GainCurrency;
+        Weapon.OnFire += spentMana;
     }
     private void OnDisable()
     {
         EnemyBehavior.OnEnemyDeath -= GainCurrency;
+        Weapon.OnFire -= spentMana;
     }
 }

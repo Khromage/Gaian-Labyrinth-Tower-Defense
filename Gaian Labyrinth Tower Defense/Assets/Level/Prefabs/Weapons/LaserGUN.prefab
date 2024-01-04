@@ -187,11 +187,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 20
   BulletRange: 500
+  manaCost: 0
   FireCooldown: 0.5
   Automatic: 1
   CurrentCooldown: 0
   Beam: {fileID: 4276113069247697066, guid: eeba0579d3f171044a63673a984dbcd9, type: 3}
-  LaserFireSFX: {fileID: 0}
+  LaserFireSFX: {fileID: 3853284518516146763}
 --- !u!82 &3853284518516146763
 AudioSource:
   m_ObjectHideFlags: 0

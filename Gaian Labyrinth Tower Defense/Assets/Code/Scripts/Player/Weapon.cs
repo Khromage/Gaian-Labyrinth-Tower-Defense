@@ -3,14 +3,17 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-   // [Header("Poggers")]
+    // [Header("Poggers")]
 
-   // public UnityEvent OnGunShoot;
+    // public UnityEvent OnGunShoot;
+
+    public delegate void Fired(float manaSpent);
+    public static event Fired OnFire; 
 
     public int Damage;
     public float BulletRange;
 
-    
+    public float manaCost;
     
     
     public float FireCooldown;
@@ -33,14 +36,19 @@ public class Weapon : MonoBehaviour
         
     }
 
-    public void TryToFire()
+    public void TryToFire(float currMana)
     {
 
-        if (CurrentCooldown <= 0)
+        if (CurrentCooldown <= 0 && manaCost <= currMana)
         {
             Fire();
+            OnFire?.Invoke(-manaCost);
             CurrentCooldown = FireCooldown;
             
+        }
+        else if (CurrentCooldown <= 0 && manaCost > currMana)
+        {
+            Debug.Log("Insufficient mana to fire current weapon.");
         }
 
     }
