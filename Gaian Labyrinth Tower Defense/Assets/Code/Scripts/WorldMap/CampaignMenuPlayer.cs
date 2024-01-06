@@ -24,11 +24,14 @@ public class CampaignMenuPlayer : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 inputDir = new Vector3(horizontalInput, 0f, verticalInput);
 
-        rb.AddForce(inputDir * 20f);
-
-
         Vector3 lateralVelocityComponent = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         Vector3 verticalVelocityComponent = new Vector3(0f, rb.velocity.y, 0f);
+
+        
+        if (inputDir.magnitude > 0f)
+            rb.AddForce(inputDir * 40f);
+
+
 
         if (lateralVelocityComponent.magnitude > moveSpeed)
         {
