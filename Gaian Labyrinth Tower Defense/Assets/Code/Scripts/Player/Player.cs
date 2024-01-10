@@ -76,6 +76,7 @@ public class Player : UnitBehavior
     public float InteractRange;
     public Interactable InteractionTarget;
     public GameObject Body;
+    public GameObject InteractionPoint;
 
     [Header("Weapon List")]
     public GameObject currentWeapon;
@@ -99,7 +100,7 @@ public class Player : UnitBehavior
         rb.freezeRotation = true;
         readyToJump = true;
         currency = 200;
-        InteractRange = 3f;
+        InteractRange = 5f;
 
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
@@ -254,8 +255,9 @@ public class Player : UnitBehavior
 
     private void checkInteractable()
     {
-        Ray interactRay = new Ray(Body.transform.position, Body.transform.forward);
-        Debug.DrawLine(Body.transform.position, Body.transform.position + Body.transform.forward * InteractRange, Color.red, 2f);
+        
+        Ray interactRay = new Ray(InteractionPoint.transform.position, InteractionPoint.transform.forward * InteractRange);
+        Debug.DrawLine(InteractionPoint.transform.position, InteractionPoint.transform.position + InteractionPoint.transform.forward * InteractRange, Color.red, 2f);
         
         if(Physics.Raycast(interactRay, out RaycastHit hit, InteractRange))
         {
