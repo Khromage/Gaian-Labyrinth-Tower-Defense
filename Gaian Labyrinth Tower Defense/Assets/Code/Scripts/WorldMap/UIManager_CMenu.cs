@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+//ctrl+f SSS for thing to do (saving animation, etc)
 
 //I'm going to stick with SetActive instead of doing prefab instantiation
 
@@ -10,12 +12,19 @@ using UnityEngine;
 
 public class UIManager_CMenu : MonoBehaviour
 {
+    public PlayerInfo savedData;
+    private bool changedData = false;
+
+    //need a name for this currency
+    public int metaCurrency = 0;
+    private string[] activeTowerSet = { "", "", "", "", "", "" };
+    private string[] activeWeaponSet = { "", "", ""};
+
     public GameObject ActivePanel;
 
+    /*
     [SerializeField]
     private GameObject towerListPanel;
-    [SerializeField]
-    private GameObject towerInfoPanel;
     [SerializeField]
     private GameObject weaponListPanel;
     [SerializeField]
@@ -26,20 +35,32 @@ public class UIManager_CMenu : MonoBehaviour
     private GameObject techListPanel;
 
     private Dictionary<GameObject, Vector2> panelDictionary = new Dictionary<GameObject, Vector2>();
+    */
 
+    [SerializeField] 
+    private GameObject activeTowerPanel;
+
+    [SerializeField]
+    private GameObject towerInfoPanel;
     private bool towerInfoPanelIsOpen = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        savedData = new PlayerInfo();
+        LoadSavedData();
+
         ActivePanel = null;
 
+        /*
         panelDictionary.Add(towerListPanel, new Vector2(0, -1));
         panelDictionary.Add(towerInfoPanel, new Vector2(-1, 0));
         panelDictionary.Add(weaponListPanel, new Vector2(0, 1));
         panelDictionary.Add(encyclopediaListPanel, new Vector2(1, 0));
         panelDictionary.Add(levelListPanel, new Vector2(-1, 0));
         panelDictionary.Add(techListPanel, new Vector2(0, 1));
+        */
     }
 
     // Update is called once per frame
@@ -91,25 +112,42 @@ public class UIManager_CMenu : MonoBehaviour
         //if (ActivePanel != null)
         //{
             //close already-active panel
-            if (ActivePanel != null && ActivePanel != panel)
+        if (ActivePanel != null && ActivePanel != panel)
+        {
+            ActivePanel.GetComponent<Animator>().SetFloat("Closing", 1f);
+            if (changedData)
             {
-                ActivePanel.GetComponent<Animator>().SetFloat("Closing", 1f);
+                //SSS begin saving animation
+                //SaveData();
+                changedData = false;
             }
+        }
 
-            //if not closing, start closing, else stop closing.
-            if (panel.GetComponent<Animator>().GetFloat("Closing") < .5f)
+        //if not closing, start closing, else stop closing.
+        if (panel.GetComponent<Animator>().GetFloat("Closing") < .5f)
+        {
+            Debug.Log($"closing panel: {panel}");
+            panel.GetComponent<Animator>().SetFloat("Closing", 1f);
+            if (changedData)
             {
-                Debug.Log($"closing panel: {panel}");
-                panel.GetComponent<Animator>().SetFloat("Closing", 1f);
+                //SSS begin saving animation
+                //SaveData();
+                changedData = false;
             }
-            else
-            {
-                Debug.Log($"opening panel: {panel}");
-                panel.GetComponent<Animator>().SetFloat("Closing", 0f);
-            }
+        }
+        else
+        {
+            Debug.Log($"opening panel: {panel}");
+            panel.GetComponent<Animator>().SetFloat("Closing", 0f);
+            panel.transform.SetAsLastSibling(); //moves to front
+        }
         //}
 
         ActivePanel = panel;
+
+        //this only needs to happen when tower info panel was open, so when the tower list was the active panel
+        if (towerInfoPanel.activeSelf)
+            CloseTowerInfoPanel();
 
         /*
 
@@ -147,6 +185,7 @@ public class UIManager_CMenu : MonoBehaviour
         */
     }
 
+    /*
     private void OpenActivePanel()
     {
         //instantiate ActivePanel?
@@ -190,28 +229,59 @@ public class UIManager_CMenu : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
+    */
 
 
-
-    public void DisplayTowerInfo()
+    public void DisplayTowerInfo(string type)
     {
         if (!towerInfoPanelIsOpen)
         {
             OpenTowerInfoPanel();
         }
 
+        Debug.Log("Fill out tower info panel here");
+        switch (type)
+        {
+            case "arcane":
+                Debug.Log("populate info panel with arcane tower class's description and buttons/images");
+                towerInfoPanel.transform.GetChild(0).GetComponent<Image>().color = new Color(.2f, 0f, .8f, .8f);
+                break;
+            case "fire":
+                Debug.Log("populate info panel with fire tower class's description and buttons/images");
+                towerInfoPanel.transform.GetChild(0).GetComponent<Image>().color = new Color(.6f, 0f, .4f, .8f);
+                break;
+            default:
+                towerInfoPanel.transform.GetChild(0).GetComponent<Image>().color = new Color(.1f, .1f, .8f, .8f);
+                break;
+        }
         //switch case "fire" "arcane" "ice" etc
         //populate the 5 buttons on the background image, and title+description+picture/gif
         //each button will change the active picture/gif and description (maybe also make the title a button to give default/general description)
 
-        //close panel if we close the tower selection panel, or if we hit exit button on info panel
+        //close panel if we close the tower selection panel, or if we hit exit button on info panel, or if press the same tower button again?
+    }
+
+    //called by the buttons on the tower info panel (the pictures of each tower level)
+    public void ChangeTowerInfoDescription(int lvl)
+    {
+        //using an array of strings belonging to the tower type's class, change the text in the info panel
     }
     private void OpenTowerInfoPanel()
     {
-        //FlyIn
+        towerInfoPanel.SetActive(true);
+        towerInfoPanelIsOpen = true;
+        //play open animation
+        towerInfoPanel.GetComponent<Animator>().SetFloat("Closing", 0f);
+    }
+    public void CloseTowerInfoPanel()
+    {
+        towerInfoPanelIsOpen = false;
+        //play close animation
+        towerInfoPanel.GetComponent<Animator>().SetFloat("Closing", 1f);
     }
 
 
+    /*
 
     private bool PanelIsOffscreen(KeyValuePair<GameObject, Vector2> panelEntry, Vector2 pos)
     {
@@ -252,16 +322,92 @@ public class UIManager_CMenu : MonoBehaviour
     }
 
 
+    */
+
+    public void UpdateActiveTowerSet(string type, int indexOfChange)
+    {
+        //if any slots already have the type of tower being added, then swap slot of the type with the new slot indexOfChange
+        for (int i = 0; i < 6; i++)
+        {
+            if (activeTowerSet[i] == type && type != "")
+            {
+                activeTowerSet[i] = activeTowerSet[indexOfChange];
+                activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Tower.GetIcon(activeTowerSet[indexOfChange]);
+            }
+        }
+        activeTowerSet[indexOfChange] = type;
+        Debug.Log("new tower of type " + type + ": {" + activeTowerSet[indexOfChange] + "} at " + indexOfChange);
+
+        //if type is null/empty (which will be set up for dragging out of the slot), then set the index's string to empty
+
+        string printStr = "";
+        for (int i = 0; i < 6; i++)
+        {
+            if (activeTowerSet[i] != "")
+                printStr += activeTowerSet[i] + ", ";
+            else
+                printStr += "___, ";
+        }
+        Debug.Log("tower set: " + printStr);
+
+        savedData.ActiveTowers = activeTowerSet;
+        changedData = true;
+    }
+
+    public void UpdateActiveWeaponSet(string type, int indexOfChange)
+    {
+
+        savedData.ActiveWeapons = activeWeaponSet;
+        changedData = true;
+    }
 
 
 
+    public void LoadSavedData()
+    {
+        string jsonData = PlayerPrefs.GetString("MyProgress");
+        //Convert to Class but don't create new Save Object. Re-use loadedData and overwrite old data in it
+        JsonUtility.FromJsonOverwrite(jsonData, savedData);
+
+        activeTowerSet = savedData.ActiveTowers;
+        activeWeaponSet = savedData.ActiveWeapons;
+        metaCurrency = savedData.metaCurrency;
+
+
+        //fill in the active tower slots with their respective tower icons...
+        for (int i = 0; i < activeTowerSet.Length; i++)
+        {
+            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Tower.GetIcon(activeTowerSet[i]);
+        }
+
+        //fill in the active weapon slots with their respective weapon icons...
+        for(int i = 0; i < activeWeaponSet.Length; i++)
+        {
+            //SSS fill in the active weapon slots with their respective weapon icons...
+        }
+    }
+    public void SaveData()
+    {
+        string jsonData = JsonUtility.ToJson(savedData);
+        //Save Json string
+        PlayerPrefs.SetString("MyProgress", jsonData);
+        PlayerPrefs.Save();
+
+        //SSS finish saving animation
+    }
+     
 
     private void OnEnable()
     {
-        LevelMarker.OnLevelInvestigate += RemoveActivePanel;
+        //LevelMarker.OnLevelInvestigate += RemoveActivePanel;
+        UIDragDrop.OnActiveTowerChange += UpdateActiveTowerSet;
+
     }
     private void OnDisable()
     {
-        LevelMarker.OnLevelInvestigate -= RemoveActivePanel;
+        //LevelMarker.OnLevelInvestigate -= RemoveActivePanel;
+        UIDragDrop.OnActiveTowerChange -= UpdateActiveTowerSet;
+
+        SaveData();
     }
 }

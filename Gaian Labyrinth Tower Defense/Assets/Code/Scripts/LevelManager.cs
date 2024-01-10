@@ -9,7 +9,13 @@ public class LevelManager : MonoBehaviour
     //Wave start event. Invoked on every new wave. SpawnPoints (and potentially other classes) will use the event.
     public delegate void WaveStart(int waveNum);
     public static event WaveStart OnWaveStart;
+
+    public delegate void LoadData(string[] towerSet, string[] weaponSet);
+    public static event LoadData OnLoadData;
     
+    public PlayerInfo savedData;
+
+
     //Timer
     private float waveTimer = 10f; //total time between waves
     public float waveCountdown; //currently remaining time. Display this.
@@ -34,6 +40,10 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        savedData = new PlayerInfo();
+        LoadSavedData();
+
+
         flowFieldGenerator = new FlowFieldGenerator();
         flowFieldGenerator.visibleSquare = visibleSquare;
         flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
@@ -96,7 +106,27 @@ public class LevelManager : MonoBehaviour
                 recalcTile = adjTile;
         flowFieldGenerator.GenerateField(recalcTile, recalcTile.goalDist);
     }
-    
+
+
+
+
+    public void LoadSavedData()
+    {
+        string jsonData = PlayerPrefs.GetString("MyProgress");
+        //Convert to Class but don't create new Save Object. Re-use loadedData and overwrite old data in it
+        JsonUtility.FromJsonOverwrite(jsonData, savedData);
+
+        OnLoadData?.Invoke(savedData.ActiveTowers, savedData.ActiveWeapons);
+    }
+    public void SaveData()
+    {
+        string jsonData = JsonUtility.ToJson(savedData);
+        //Save Json string
+        PlayerPrefs.SetString("MyProgress", jsonData);
+        PlayerPrefs.Save();
+
+        //SSS finish saving animation
+    }
 
     private void OnEnable()
     {
@@ -112,6 +142,8 @@ public class LevelManager : MonoBehaviour
         
         Player.OnTowerPlaced -= recalcFlowField_NewTower;
         Player.OnTowerSold -= recalcFlowField_NewTile;
+
+        SaveData();
     }
 
 }

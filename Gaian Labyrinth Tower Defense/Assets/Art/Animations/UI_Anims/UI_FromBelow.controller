@@ -32,7 +32,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ExitRight
+  m_Name: ExitBelow
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -46,7 +46,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 8b36ae8c3a76267468685eb3f85ba737, type: 2}
+  m_Motion: {fileID: 7400000, guid: 38ce99697c40bed4e9a7fab07832fb6e, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -63,13 +63,13 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 3299900786291534575}
-    m_Position: {x: 150, y: 150, z: 0}
+    m_Position: {x: 130, y: 220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6930848478366828848}
-    m_Position: {x: 150, y: 350, z: 0}
+    m_Position: {x: 110, y: 440, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4020586362108260774}
-    m_Position: {x: 400, y: 160, z: 0}
+    m_Position: {x: 430, y: 190, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -136,7 +136,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI_FromRight
+  m_Name: UI_FromBelow
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: activated
@@ -171,7 +171,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnterRight
+  m_Name: EnterBelow
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -186,7 +186,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 9f2076b9fac2d4f428a715d133264973, type: 2}
+  m_Motion: {fileID: 7400000, guid: c46686a3d3e5baf40a4ddadac7eb4105, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

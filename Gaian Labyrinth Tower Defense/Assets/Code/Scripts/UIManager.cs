@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+//using static System.Net.Mime.MediaTypeNames;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,7 +13,6 @@ public class UIManager : MonoBehaviour
     public TMP_Text LivesText;
     public TMP_Text CurrencyText;
     [SerializeField]
-
     public TMP_Text CountText;
     [SerializeField]
     private GameObject levelManager;
@@ -20,8 +20,14 @@ public class UIManager : MonoBehaviour
     private GameObject player;
 
     [SerializeField]
+    private GameObject textboxPrefab;
+
+    [SerializeField]
     private Image manaBar;
     private Coroutine manaBarAnimCoroutine;
+
+    [SerializeField]
+    private GameObject activeTowerPanel;
 
     //private int counter = 0;
 
@@ -118,12 +124,92 @@ public class UIManager : MonoBehaviour
     }
 
 
+    private void player_selectTower(int towerIndex, GameObject towerObj)
+    {
+        if (towerObj != null)
+        {
+            //set highlight on UI
+        }
+        else
+        {
+            noTowerInSlot_Indicator(towerIndex);
+        }
+    }
+    private void noTowerInSlot_Indicator(int towerIndex)
+    {
+        //instantiate text box
+        //coroutine of it fading
+        GameObject noTowerText = Instantiate(textboxPrefab, GameObject.Find("ActiveTower_Panel").transform);
+        noTowerText.name = "noTowerTextbox";
+
+        TMP_Text text = noTowerText.GetComponent<TMP_Text>();
+        text.text = "No Tower assigned to this position";
+        text.fontSize = 32;
+
+        // Text position
+        RectTransform rectTransform = text.GetComponent<RectTransform>();
+        rectTransform.localPosition = noTowerText.transform.parent.GetChild(0).GetChild(towerIndex).GetComponent<RectTransform>().localPosition + new Vector3(0f, 30f, 0f); ;
+        rectTransform.sizeDelta = new Vector2(400, 200);
+        StartCoroutine(fadingNoTowerText(noTowerText));
+    }
+    private IEnumerator fadingNoTowerText(GameObject noTowerText)
+    {
+        RectTransform rectTransform = noTowerText.GetComponent<TMP_Text>().GetComponent<RectTransform>();
+        float timeElapsed = 0f;
+        while (timeElapsed < 1f)
+        {
+            rectTransform.localPosition = rectTransform.localPosition + new Vector3(0f, 15f * Time.deltaTime, 0f);
+            noTowerText.GetComponent<TMP_Text>().color = new Color(1f, 1f, 1f, 1f - Time.deltaTime);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(noTowerText);
+    }
+
+    private void player_enterCombatMode(int weaponIndex)
+    {
+        //SSS remove tower highlight
+        //emphasize weapon set
+        //highlight/enlarge selected weapon
+    }
+
+    private void player_swapWeapon(int newWeaponIndex)
+    {
+        //change weapon highlight/enlargement
+    }
+
+
+    private void level_LoadData(string[] towerSet, string[] weaponSet)
+    {
+        //fill in the active tower slots with their respective tower icons
+        for (int i = 0; i < towerSet.Length; i++)
+        {
+            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Tower.GetIcon(towerSet[i]);
+        }
+
+        //fill in the active weapon slots with their respective weapon icons
+        for (int i = 0; i < weaponSet.Length; i++)
+        {
+            //SSS fill in the active weapon slots with their respective weapon icons...
+        }
+    }
+
     private void OnEnable()
     {
         Player.OnAdjustMana += player_updateManaBar;
+        Player.OnTowerSelect += player_selectTower;
+        Player.OnEnterCombatMode += player_enterCombatMode;
+        Player.OnSwapWeapon += player_swapWeapon;
+
+        LevelManager.OnLoadData += level_LoadData;
     }
     private void OnDisable()
     {
         Player.OnAdjustMana -= player_updateManaBar;
+        Player.OnTowerSelect -= player_selectTower;
+        Player.OnEnterCombatMode -= player_enterCombatMode;
+        Player.OnSwapWeapon -= player_swapWeapon;
+
+        LevelManager.OnLoadData -= level_LoadData;
     }
 }

@@ -27,4 +27,6 @@ public class PlayerSettings
 
     //KEYBINDINGS
     //control scheme. dictionary?
+
+    //toggle: resume combat mode after placing tower
 }

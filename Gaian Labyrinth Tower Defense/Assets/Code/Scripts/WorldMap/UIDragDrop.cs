@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    public delegate void ActiveTowerChange(string newType, int slotIndex);
+    public static event ActiveTowerChange OnActiveTowerChange;
+
+    [SerializeField]
+    private string sourceType;
+
     CanvasGroup canvasGroup;
     public string dropSlotTag = "ActiveTowerSlot";
 
@@ -35,7 +41,7 @@ public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             return;
 
 
-        dragIcon = new GameObject("icon");
+        dragIcon = new GameObject("dragIcon");
 
         dragIcon.transform.SetParent(canvas.transform, false);
         dragIcon.transform.SetAsLastSibling();
@@ -60,25 +66,24 @@ public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
         RaycastResult raycastResult = eventData.pointerCurrentRaycast;
         Debug.Log($"raycastResult: {raycastResult}");
+
         if (raycastResult.gameObject?.tag == dropSlotTag)
         {
-            //maybe instead, Destroy(dragIcon) and then replace the raycastResult.gameObject.GetComponent<Image>().sprite with a filled version
-
             Debug.Log($"Dropping on {dropSlotTag}");
-            
-            //place icon in slot and change transparency
-            dragIcon.transform.position = raycastResult.gameObject.transform.position;
 
-            GameObject temp = Instantiate(new GameObject("tempActiveTowerIcon"), raycastResult.gameObject.transform.position, raycastResult.gameObject.transform.rotation, raycastResult.gameObject.transform.GetChild(0));
-            temp.transform.SetSiblingIndex(1);
-            temp.AddComponent<Image>().sprite = dragIcon.GetComponent<Image>().sprite;
-            
+            //GameObject temp = Instantiate(new GameObject("tempActiveTowerIcon"), raycastResult.gameObject.transform.position, raycastResult.gameObject.transform.rotation, raycastResult.gameObject.transform.GetChild(0));
+            //temp.transform.SetSiblingIndex(1);
+            //temp.AddComponent<Image>().sprite = dragIcon.GetComponent<Image>().sprite;
 
-            //var image = dragIcon.GetComponent<Image>();
-            //image.color = new Color(image.color.r, image.color.g, image.color.b, 1f);
+            Debug.Log(raycastResult.gameObject.transform.GetChild(0).GetChild(1).GetComponent<Image>().sprite);
+            //changes the towerIcon child's sprite in the active tower slot button to the sprite of the tower type dragged in.
+            raycastResult.gameObject.transform.GetChild(0).GetChild(1).GetComponent<Image>().sprite = Tower.GetIcon(sourceType);
+
             canvasGroup.alpha = 1f;
 
-            //ACTIVE TOWER SLOT CHANGED. maybe make an event
+
+            //ACTIVE TOWER SLOT CHANGED
+            OnActiveTowerChange?.Invoke(sourceType, raycastResult.gameObject.transform.GetSiblingIndex());
         }
         Destroy(dragIcon);
     }

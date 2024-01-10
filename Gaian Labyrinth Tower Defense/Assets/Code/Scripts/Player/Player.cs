@@ -20,6 +20,15 @@ public class Player : UnitBehavior
     public delegate void AdjustMana(float diff, bool animate);
     public static event AdjustMana OnAdjustMana;
 
+    public delegate void TowerSelect(int index, GameObject towerObj);
+    public static event TowerSelect OnTowerSelect;
+
+    public delegate void EnterCombatMode(int weaponIndex);
+    public static event EnterCombatMode OnEnterCombatMode;
+
+    public delegate void SwapWeaponEvent(int newIndex);
+    public static event SwapWeaponEvent OnSwapWeapon;
+
     public playerMode currentMode;
 
     //Variables to control and determine player's jumping abiltiy
@@ -39,6 +48,9 @@ public class Player : UnitBehavior
     public KeyCode tower1 = KeyCode.Alpha1;
     public KeyCode tower2 = KeyCode.Alpha2;
     public KeyCode tower3 = KeyCode.Alpha3;
+    public KeyCode tower4 = KeyCode.Alpha4;
+    public KeyCode tower5 = KeyCode.Alpha5;
+    public KeyCode tower6 = KeyCode.Alpha6;
 
     //Variables to be used to check if player is on the ground
     [Header("Ground Check")]
@@ -84,7 +96,7 @@ public class Player : UnitBehavior
 
     [Header("Tower List")]
     public GameObject currentTower;
-    public List<GameObject> towerList;
+    public GameObject[] towerSet = new GameObject[6];
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
@@ -172,23 +184,17 @@ public class Player : UnitBehavior
             {
                 Destroy(this.tempDisplayHolder);
             }
+            OnEnterCombatMode?.Invoke(currentWeaponIndex);
         }
     }
     private bool enteringBuildMode()
     {
         //Sets tower immediatley to whichever key is pressed 
         //then returns true to place player into build mode
-        if (Input.GetKeyDown(tower1))
+        if (Input.GetKeyDown(tower1) || Input.GetKeyDown(tower2) || Input.GetKeyDown(tower3) 
+            || Input.GetKeyDown(tower4) || Input.GetKeyDown(tower5) || Input.GetKeyDown(tower6))
         { 
-                return true;
-        }
-        if (Input.GetKeyDown(tower2))
-        {
-                return true;
-        }
-        if (Input.GetKeyDown(tower3))
-        {
-                return true;
+            return true;
         }
         return false;
     }
@@ -239,16 +245,40 @@ public class Player : UnitBehavior
         //Change current selected tower
         if (Input.GetKeyDown(tower1))
         {
-            currentTower = towerList[0];
+            if (towerSet[0] != null)
+                currentTower = towerSet[0];
+            OnTowerSelect?.Invoke(0, towerSet[0]);
         }
         if (Input.GetKeyDown(tower2))
         {
-            currentTower = towerList[1];
+            if (towerSet[1] != null)
+                currentTower = towerSet[1];
+            OnTowerSelect?.Invoke(1, towerSet[1]);
         }
         if (Input.GetKeyDown(tower3))
         {
-            currentTower = towerList[2];
-        } 
+            if (towerSet[2] != null)
+                currentTower = towerSet[2];
+            OnTowerSelect?.Invoke(2, towerSet[2]);
+        }
+        if (Input.GetKeyDown(tower4))
+        {
+            if (towerSet[3] != null)
+                currentTower = towerSet[3];
+            OnTowerSelect?.Invoke(3, towerSet[3]);
+        }
+        if (Input.GetKeyDown(tower5))
+        {
+            if (towerSet[4] != null)
+                currentTower = towerSet[4];
+            OnTowerSelect?.Invoke(4, towerSet[4]);
+        }
+        if (Input.GetKeyDown(tower6))
+        {
+            if (towerSet[5] != null)
+            currentTower = towerSet[5];
+            OnTowerSelect?.Invoke(5, towerSet[5]);
+        }
 
     }
 
@@ -406,7 +436,7 @@ public class Player : UnitBehavior
         Destroy(currentWeapon);
 
         currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
-        
+        OnSwapWeapon?.Invoke(currentWeaponIndex);
 
     }
     private void placeTowers()
@@ -485,14 +515,34 @@ public class Player : UnitBehavior
     {
         currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
     }
+
+
+    //set towers + their order, and weapons + their order
+    private void level_LoadData(string[] givenTowerSet, string[] weaponSet)
+    {
+        //fill in the tower set from save data
+        for (int i = 0; i < towerSet.Length; i++)
+        {
+            towerSet[i] = Tower.GetPrefab(givenTowerSet[i]);
+        }
+
+        //fill in the active weapon slots with their respective weapon icons...
+        for (int i = 0; i < weaponList.Count; i++)
+        {
+            //SSS fill in the weapons from save data
+        }
+    }
+
     private void OnEnable()
     {
         EnemyBehavior.OnEnemyDeath += GainCurrency;
         Weapon.OnFire += spentMana;
+        LevelManager.OnLoadData += level_LoadData;
     }
     private void OnDisable()
     {
         EnemyBehavior.OnEnemyDeath -= GainCurrency;
         Weapon.OnFire -= spentMana;
+        LevelManager.OnLoadData -= level_LoadData;
     }
 }
