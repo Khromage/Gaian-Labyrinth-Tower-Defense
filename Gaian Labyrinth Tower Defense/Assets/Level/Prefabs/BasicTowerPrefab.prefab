@@ -54,6 +54,8 @@ MonoBehaviour:
   targetingMode: 
   range: 10
   fireRate: 1
+  currentDamage: 1
+  multiPathUpgrade: 0
   enemyTag: Enemy
   partToRotate: {fileID: 576702084041083807}
   turnSpeed: 5

@@ -22,15 +22,22 @@ public class Player : MonoBehaviour
     bool readyToJump;
 
     [Header("KeyBinds")]
+    //Movement
     public KeyCode jumpKey = KeyCode.Space;
+    //Combat
     public KeyCode nextWeapon = KeyCode.E;
     public KeyCode prevWeapon = KeyCode.Q;
+    //Build Mode
     public KeyCode buildMode = KeyCode.Tab;
     public KeyCode tower1 = KeyCode.Alpha1;
     public KeyCode tower2 = KeyCode.Alpha2;
     public KeyCode tower3 = KeyCode.Alpha3;
     public KeyCode deleteTower = KeyCode.Alpha0;
     public KeyCode upgradeCurrentTower = KeyCode.V;
+    public KeyCode upgradePath1 = KeyCode.J;
+    public KeyCode upgradePath2 = KeyCode.K;
+    public KeyCode upgradePath3 = KeyCode.L;
+
 
     [Header("Layer Variables")]
     public LayerMask whatIsGround;
@@ -240,7 +247,9 @@ public class Player : MonoBehaviour
     }
 
     /***
+    ****
         Methods for player weapon usage
+    ****
     ***/
 
     private void attack()
@@ -282,14 +291,15 @@ public class Player : MonoBehaviour
     }
 
     /***
+    ****
         Methods for Build and Upgrade Modes
+    ****
     ***/
 
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
         destoryTempHolder();
-        //here is where we should display an outline of the currently selected tower, either a green transparent silhouette if placeable, or red.
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, Grid)))
         {
@@ -343,14 +353,6 @@ public class Player : MonoBehaviour
 
     private void sellTower() 
     {
-        /*
-        Camera currentCam = getCurrentCamera();
-        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-        Ray ray = currentCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-
-        //Gonna be updated when new camera is pushed to try a different raycast method
-        */
-
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
             Debug.Log("Sell");
@@ -384,21 +386,40 @@ public class Player : MonoBehaviour
             Debug.Log("Upgrade");
             colerable = true;
             towerHitByRaycast = hit.transform.gameObject;
-            if (Input.GetKeyDown(KeyCode.Mouse0)) {
-                TowerBehavior towerBehavior = towerHitByRaycast.GetComponent<TowerBehavior>();
-                int towerCost = towerBehavior.cost;
-                int upgradeStage = towerBehavior.upgradeStage;
 
-                if ((towerBehavior.isUpgradable) && currency > towerCost) {
-                    colerable = false;
-                    upgradeStage++;
-                    towerBehavior.upgradeTower(upgradeStage, towerHitByRaycast);
-                    currency -= towerCost;
+            TowerBehavior towerBehavior = towerHitByRaycast.GetComponent<TowerBehavior>();
+            bool upgradeMultiPath = towerBehavior.multiPathUpgrade;
+            int upgradeStage = towerBehavior.upgradeStage;
+            int towerCost = towerBehavior.cost;
+
+            if ((towerBehavior.isUpgradable) && (currency > towerCost)){
+                if (upgradeMultiPath == false) {
+                    if (Input.GetKeyDown(upgradeCurrentTower)) {
+                        goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
+                    }
+                }else if (upgradeMultiPath == true){
+                    if (Input.GetKeyDown(upgradePath1)){
+                        upgradeStage = 9;
+                        goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
+                    }else if (Input.GetKeyDown(upgradePath2)){
+                        upgradeStage = 19;
+                        goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
+                    }else if (Input.GetKeyDown(upgradePath3)){
+                        upgradeStage = 29;
+                        goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
+                    }
                 }
             }
         } else {
         colerable = false;
         }
+    }
+
+    private void goToUpgrade(int upgradeStage, GameObject towerHitByRaycast, TowerBehavior towerBehavior, int towerCost){
+        colerable = false;
+        upgradeStage++;
+        towerBehavior.upgradeTower(upgradeStage, towerHitByRaycast);
+        currency -= towerCost;
     }
 
     private void GainCurrency(GameObject enemyWhoDied)
@@ -423,12 +444,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private Camera getCurrentCamera()
-    {
-        return playerCam.transform.Find("ThirdPersonCam").GetComponent<Camera>();
-
-    }
-
+//Should highlight the tower that the player is looking at (Only changes tower color rn)
     private void changeTowerColor()
     {
         if (towerHitByRaycast == null) {

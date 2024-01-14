@@ -13,7 +13,9 @@ public class TowerBehavior : MonoBehaviour
     public float range = 10f;
     public float fireRate = 1f;
     private float fireCountdown = 0f;
-    float currentDamage = 1f;
+    public float currentDamage = 1f;
+
+    public bool multiPathUpgrade = false;
 
     [Header("Unity Fields")]
 
@@ -175,7 +177,9 @@ public class TowerBehavior : MonoBehaviour
         ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation, gameObject.transform) as ProjectileBehavior;
 
         if (projectile != null){
-            projectile.damage = currentDamage; 
+            /* Have to sort out damage
+            projectile.damage = currentDamage;
+            */ 
             projectile.SetTarget(target.transform);
         }
     }
@@ -187,10 +191,60 @@ public class TowerBehavior : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    public void upgradeTower(int updateStage, GameObject currentTower)
-    {
-        towerUpgrade currentTowerUpgrade = GameObject.GetComponent<TowerUpgrade>();
-        currentTowerUpgrade.upgradeTower(updateStage, currentTower);
+//Tower Upgrade Functions work when upgrade placed manually here, 
+//need to figure out why they don't work when placed in the BasicTowerUpgrades script
+    public void upgradeTower(int updateStage, GameObject currentTower){
+        switch(updateStage) {
+        
+            case 2:
+                //generic tower upgrade stats
+                Debug.Log("Tower upgraded to stage 2");
+                BulletBehavior bulletToUpgrade = projectilePrefab.GetComponent<BulletBehavior>();
+
+                //Placeholder Visual to change model, should actually change model here
+                GameObject upgradeSphere = currentTower.transform.GetChild(0).gameObject;
+                upgradeSphere.SetActive(true);
+                currentTower.SetActive(true);
+
+                currentDamage = 5f; 
+                range = 10.2f;
+                fireRate = 3f;
+                cost = 200;
+                multiPathUpgrade = true;
+
+                break;
+
+            case 10:
+                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
+
+                multiPathUpgrade = false;
+                cost = 100;
+                currentDamage = 10f;
+                fireRate = 1f;
+                break;
+
+            case 20:
+                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,100,0, .1f));
+
+                multiPathUpgrade = false;
+                cost = 100;
+                currentDamage = 2f;
+                fireRate = 6f;
+                break;
+
+            case 30:
+                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,100, .1f));
+
+                multiPathUpgrade = false;
+                cost = 100;
+                currentDamage = 7f;
+                fireRate = 7f;
+                break;
+
+            default:
+                Debug.Log("Tower upgrade stage not found");
+                break;
+        }
     }
     
 }
