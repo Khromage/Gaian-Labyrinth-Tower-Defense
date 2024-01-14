@@ -39,6 +39,7 @@ public class GridTile : MonoBehaviour
     public bool enemyOnTile = false;
     public bool towerOnTile = false;
 
+
     void Awake()
     {
         goalDist = int.MaxValue;
@@ -51,7 +52,7 @@ public class GridTile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -70,7 +71,7 @@ public class GridTile : MonoBehaviour
         else
             Gizmos.color = new Color(.4f, .6f, .1f, .5f);
 
-        //Gizmos.DrawCube(transform.position - new Vector3(0f, .4f, 0f), new Vector3(1f, .2f, 1f));
+        Gizmos.DrawCube(transform.position - new Vector3(0f, .4f, 0f), new Vector3(1f, .2f, 1f));
     }
 
     

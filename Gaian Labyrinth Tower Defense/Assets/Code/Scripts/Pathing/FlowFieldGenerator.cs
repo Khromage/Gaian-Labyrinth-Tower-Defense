@@ -8,9 +8,11 @@ public class FlowFieldGenerator
     private List<GridTile> prevBottlenecks = new List<GridTile>();
 
     private GameObject[] fullTileSet = GameObject.FindGameObjectsWithTag("GridTile");
+    private List<GameObject> tileSquares = new List<GameObject>();
 
     private int useCounter = 0;
 
+    public Material visibleSquare;
 
     //Calculate distance from goal of each tile, as well as setting their predecessor and successor tiles, starting from the goal tile itself.
     //initDist is 0 when we are doing an initial calculation from the goal, and a different int if we are recalculating somewhere else in the map
@@ -19,6 +21,11 @@ public class FlowFieldGenerator
         List<GridTile> frontierQueue = new List<GridTile>();
         //list of calculated tiles, sorted by their distance from the goal.
         List<GridTile> sortedTileList = new List<GridTile>();
+
+        foreach (GameObject s in tileSquares)
+        {
+            GameObject.Destroy(s);
+        }
 
         for (int i = 0; i < fullTileSet.Length; i++)
         {
@@ -91,10 +98,16 @@ public class FlowFieldGenerator
         foreach (GridTile t in sortedTileList)
         {
             t.fielded = false;
-            Debug.Log($"tile goal dist pre increment: {t.goalDist}");
-            //t.goalDist += useCounter;
-            //Debug.Log($"tile goal dist post increment: {t.goalDist}");
-            t.goalDistText.text = $"{t.goalDist.ToString()}";
+            //t.goalDistText.text = $"{t.goalDist.ToString()}";
+            if (t.goalDist < int.MaxValue)
+            {
+                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.position = t.transform.position - new Vector3(0f, .4f, 0f);
+                cube.transform.localScale = new Vector3(.9f, .1f, .9f);
+                cube.GetComponent<MeshRenderer>().material = visibleSquare;
+                cube.GetComponent<Collider>().enabled = false;
+                tileSquares.Add(cube);
+            }
         }
         Debug.Log($"generated use counter {useCounter}");
         useCounter++;

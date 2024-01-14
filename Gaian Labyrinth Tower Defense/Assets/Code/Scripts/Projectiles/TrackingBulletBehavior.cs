@@ -5,6 +5,9 @@ using UnityEngine;
 public class TrackingBulletBehavior : BulletBehavior
 {
     private Transform target;
+    //public string targeting;
+    public List<GameObject> enemies = new List<GameObject>();
+    public float range = 5f;
 
     public override void SetTarget(Transform _target)
     {
@@ -14,15 +17,121 @@ public class TrackingBulletBehavior : BulletBehavior
     // Update is called once per frame
     public override void Update()
     {
-        if(target == null)
+        if (target != null)
         {
-            Destroy(gameObject);
-            return;
+            Vector3 direction = target.position - transform.position;
+            float distanceThisFrame = speed * Time.deltaTime;
+            transform.Translate(direction.normalized * distanceThisFrame, Space.World);
         }
-
-        Vector3 direction = target.position - transform.position;
-        float distanceThisFrame = speed * Time.deltaTime;
-        transform.Translate(direction.normalized * distanceThisFrame, Space.World);
+        else
+        {
+            UpdateTarget();
+            if (target == null)
+                Destroy(gameObject);
+        }
         
+        
+    }
+
+    public bool AlreadyHit(GameObject enemy)
+    {
+        foreach (var e in HitEnemies)
+        {
+            if (enemy == e.gameObject)
+                return true;
+        }
+        return false;
+    }
+
+
+    public void ScanForEnemies()
+    {
+        enemies.Clear();
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.tag == "Enemy")
+            {
+                enemies.Add(hitCollider.gameObject);
+            }
+        }
+    }
+
+    void UpdateTarget()
+    {
+
+        // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
+        try
+        {
+            switch (targeting)
+            {
+                case "Close":
+                    float shortestDistance = Mathf.Infinity;
+                    GameObject nearestEnemy = null;
+                    foreach (GameObject enemy in enemies)
+                    {
+                        float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                        if (distanceToEnemy < shortestDistance && !AlreadyHit(enemy))
+                        {
+                            shortestDistance = distanceToEnemy;
+                            nearestEnemy = enemy;
+                        }
+                    }
+                    // Verify the closest enemy is within the tower range and assign as target if true
+                    if(nearestEnemy != null && shortestDistance <= range)
+                    {
+                        target = nearestEnemy.transform;
+                    } else 
+                    {
+                        target = null;
+                    }
+                    break;
+                case "Strong":
+                    float highestHealth = 0;
+                    GameObject strongestEnemy = null;
+                    foreach (GameObject enemy in enemies)
+                    {
+                        float currentEnemyHealth = enemy.GetComponent<EnemyBehavior>().currentHealth;
+                        if (currentEnemyHealth > highestHealth && !AlreadyHit(enemy))
+                        {
+                            highestHealth = currentEnemyHealth;
+                            strongestEnemy = enemy;
+                        }
+                    }
+                    if(strongestEnemy != null)
+                    {
+                        target = strongestEnemy.transform;
+                    }
+                    break;
+                case "Weak":
+                    float lowestHealth = Mathf.Infinity;
+                    GameObject weakestEnemy = null;
+                    foreach (GameObject enemy in enemies)
+                    {
+                        float currentEnemyHealth = enemy.GetComponent<EnemyBehavior>().currentHealth;
+                        if (currentEnemyHealth < lowestHealth && !AlreadyHit(enemy))
+                        {
+                            lowestHealth = currentEnemyHealth;
+                            weakestEnemy = enemy;
+                        }
+                    }
+                    if(weakestEnemy != null)
+                    {
+                        target = weakestEnemy.transform;
+                    }
+                    break;
+            }
+        }
+        catch
+        {
+
+        }
+    }
+
+    public override void GetTargetInfo()
+    {
+        ScanForEnemies();
+        UpdateTarget();
     }
 }

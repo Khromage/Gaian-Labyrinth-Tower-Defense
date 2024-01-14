@@ -2,13 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+//Interface implemented by any object, tower, npc, etc that the player can interact with
+public interface Interactable
+{
+    public void Interact();
+    public void ShowInteractButton();
+    public void HideInteractButton();
+}
+public class Player : UnitBehavior
 {
     public delegate void TowerPlaced(GridTile tileOn);
     public static event TowerPlaced OnTowerPlaced;
 
     public delegate void TowerSold(GridTile tileOn);
     public static event TowerSold OnTowerSold;
+
+    public delegate void AdjustMana(float diff, bool animate);
+    public static event AdjustMana OnAdjustMana;
+
+    public delegate void TowerSelect(int index, GameObject towerObj);
+    public static event TowerSelect OnTowerSelect;
+
+    public delegate void EnterCombatMode(int weaponIndex);
+    public static event EnterCombatMode OnEnterCombatMode;
+
+    public delegate void SwapWeaponEvent(int newIndex);
+    public static event SwapWeaponEvent OnSwapWeapon;
 
     public playerMode currentMode;
 
@@ -25,18 +44,25 @@ public class Player : MonoBehaviour
     //Movement
     public KeyCode jumpKey = KeyCode.Space;
     //Combat
+    public KeyCode interactKey = KeyCode.F;
     public KeyCode nextWeapon = KeyCode.E;
     public KeyCode prevWeapon = KeyCode.Q;
     //Build Mode
     public KeyCode buildMode = KeyCode.Tab;
+
     public KeyCode tower1 = KeyCode.Alpha1;
     public KeyCode tower2 = KeyCode.Alpha2;
     public KeyCode tower3 = KeyCode.Alpha3;
+    public KeyCode tower4 = KeyCode.Alpha4;
+    public KeyCode tower5 = KeyCode.Alpha5;
+    public KeyCode tower6 = KeyCode.Alpha6;
+
     public KeyCode deleteTower = KeyCode.Alpha0;
     public KeyCode upgradeCurrentTower = KeyCode.V;
     public KeyCode upgradePath1 = KeyCode.J;
     public KeyCode upgradePath2 = KeyCode.K;
     public KeyCode upgradePath3 = KeyCode.L;
+
 
 
     [Header("Layer Variables")]
@@ -54,20 +80,31 @@ public class Player : MonoBehaviour
     float verticalInput;
 
     Vector3 moveDirection;
-    Rigidbody rb;
+    // rb rigidbody is declared in UnitBehavior
+
+    private Vector3 currGravDir;
+
+    [Header("Mana")]
+    public float maxMana;
+    public float mana;
+    public float manaRegenRate;
 
     [Header("Player Cam")]
     public GameObject playerCam;
+    public GameObject currentCam;
 
     [Header("Build mode")]
     public GameObject towerPrefab;
     public GameObject towerDisplayPrefab;
     private GameObject tempDisplayHolder;
-
     public int currency;
 
     bool colerable = false;
     private GameObject towerHitByRaycast;
+    [Header("Player Interaction")]
+    public float InteractRange;
+    public Interactable InteractionTarget;
+    public GameObject Body;
 
     [Header("Weapon List")]
     public GameObject currentWeapon;
@@ -76,7 +113,7 @@ public class Player : MonoBehaviour
 
     [Header("Tower List")]
     public GameObject currentTower;
-    public List<GameObject> towerList;
+    public GameObject[] towerSet = new GameObject[6];
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
@@ -92,18 +129,36 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
-        currency = 800;
+        currency = 200;
+        InteractRange = 3f;
+
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+        gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
+
+        currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
+
+        maxMana = 100f;
+        mana = maxMana;
+        manaRegenRate = 30f;
 
     }
 
     //Method to be checked on every frame of the game
-    public void Update()
-    {
+    public void Update() 
+     {
+
+        setVelocityComponents();
+
         checkCurrentMode();
+        checkInteractable();
         getUserKey();
         playerSpeedControl();
 
+        setGravityDir();
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
+        //Vector3.down was the 2nd parameter here, originally
         grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
         //handling player drag if on the ground
         if (grounded)
@@ -131,8 +186,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void FixedUpdate() 
+    public void FixedUpdate()
     {
+        regenMana();
         movePlayer();
     }
 
@@ -141,16 +197,30 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(prevWeapon) ||
            Input.GetKeyDown(nextWeapon)) {
             currentMode = playerMode.Combat;
+            Debug.Log("Combat");
+            if (tempDisplayHolder != null)
+            {
+                Destroy(this.tempDisplayHolder);
+            }
+            OnEnterCombatMode?.Invoke(currentWeaponIndex);
         }
-
-        if (Input.GetKeyDown(tower1) ||
-           Input.GetKeyDown(tower2) ||
-           Input.GetKeyDown(tower3)) {
-            currentMode = playerMode.Build;
+    }
+    private bool enteringBuildMode()
+    {
+        //Sets tower immediatley to whichever key is pressed 
+        //then returns true to place player into build mode
+        if (Input.GetKeyDown(tower1) || Input.GetKeyDown(tower2) || Input.GetKeyDown(tower3) 
+            || Input.GetKeyDown(tower4) || Input.GetKeyDown(tower5) || Input.GetKeyDown(tower6))
+        { 
+            return true;
         }
-
-        if (Input.GetKeyDown(deleteTower)) {
-            currentMode = playerMode.Sell;
+        return false;
+    }
+    private bool enteringCombatMode()
+    {
+        if (Input.GetKeyDown(prevWeapon))
+        {
+            return true;
         }
 
         if (Input.GetKeyDown(upgradeCurrentTower) ||
@@ -174,6 +244,12 @@ public class Player : MonoBehaviour
             Invoke(nameof(resetJump), jumpCooldown);
         }
 
+        //Player wants to interact
+        if(Input.GetKeyDown(interactKey))
+        {
+            Interact();
+        }
+
         //Getting weapon selected
         if (Input.GetKeyDown(nextWeapon))
         {
@@ -187,15 +263,39 @@ public class Player : MonoBehaviour
         //Change current selected tower
         if (Input.GetKeyDown(tower1))
         {
-            currentTower = towerList[0];
+            if (towerSet[0] != null)
+                currentTower = towerSet[0];
+            OnTowerSelect?.Invoke(0, towerSet[0]);
         }
         if (Input.GetKeyDown(tower2))
         {
-            currentTower = towerList[1];
+            if (towerSet[1] != null)
+                currentTower = towerSet[1];
+            OnTowerSelect?.Invoke(1, towerSet[1]);
         }
-        if (Input.GetKeyDown(tower2))
+        if (Input.GetKeyDown(tower3))
         {
-            currentTower = towerList[2];
+            if (towerSet[2] != null)
+                currentTower = towerSet[2];
+            OnTowerSelect?.Invoke(2, towerSet[2]);
+        }
+        if (Input.GetKeyDown(tower4))
+        {
+            if (towerSet[3] != null)
+                currentTower = towerSet[3];
+            OnTowerSelect?.Invoke(3, towerSet[3]);
+        }
+        if (Input.GetKeyDown(tower5))
+        {
+            if (towerSet[4] != null)
+                currentTower = towerSet[4];
+            OnTowerSelect?.Invoke(4, towerSet[4]);
+        }
+        if (Input.GetKeyDown(tower6))
+        {
+            if (towerSet[5] != null)
+            currentTower = towerSet[5];
+            OnTowerSelect?.Invoke(5, towerSet[5]);
         }
         if ((Input.GetKeyDown(deleteTower))
             || (Input.GetKeyDown(buildMode)))
@@ -205,11 +305,90 @@ public class Player : MonoBehaviour
 
     }
 
+    private void checkInteractable()
+    {
+        Ray interactRay = new Ray(Body.transform.position, Body.transform.forward);
+        Debug.DrawLine(Body.transform.position, Body.transform.position + Body.transform.forward * InteractRange, Color.red, 2f);
+        
+        if(Physics.Raycast(interactRay, out RaycastHit hit, InteractRange))
+        {
+            Interactable interactable = hit.collider.gameObject.GetComponentInParent<Interactable>();
+            if(interactable != null)
+            {
+                if(InteractionTarget != null && InteractionTarget != interactable)
+                {
+                    InteractionTarget.HideInteractButton(); // Hide previous interactable's button
+                }
+                
+                InteractionTarget = interactable; // Update current interaction target
+                InteractionTarget.ShowInteractButton();
+                Debug.Log("Showing Interact Button");
+            }
+            else if(InteractionTarget != null)
+            {
+                InteractionTarget.HideInteractButton();
+                InteractionTarget = null; // Reset last interactable
+            }
+        }
+        else if(InteractionTarget != null)
+        {
+                InteractionTarget.HideInteractButton();
+                InteractionTarget = null; // Reset last interactable
+        }
+    }
+
+    private void Interact()
+    {
+        InteractionTarget.Interact();
+    }
+
+
+    private void regenMana()
+    {
+        float regenAmount = manaRegenRate * Time.fixedDeltaTime;
+        changeMana(regenAmount, false); //not animated regen of mana
+    }
+    public void spentMana(float amount)
+    {
+        //amount should be negative. (the call in Weapon has parameter (-manaCost))
+        changeMana(amount, true); //animated loss of mana
+    }
+    public void changeMana(float changeAmount, bool animated)
+    {
+
+        if (mana + changeAmount > maxMana) //if we'd exceed max mana
+        {
+            changeAmount = maxMana - (mana - changeAmount);
+            mana = maxMana;
+        }
+        else if (mana + changeAmount < 0) //if we'd dip below 0 mana
+        {
+            changeAmount = mana;
+            Debug.LogWarning("mana changed to less than 0. something wrong... setting to 0");
+            mana = 0;
+        }
+        else //normal change
+        {
+            mana += changeAmount;
+        }
+
+        if (Mathf.Abs(changeAmount) > 0)
+            OnAdjustMana?.Invoke(changeAmount / maxMana, animated);
+    }
+
     //Method to move the player on ground and in air 
     private void movePlayer() 
     {
         //calculate movement direction
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        //moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        
+        //non-cinemachine
+        //moveDirection = Vector3.Cross(newCameraHolder.transform.right, -currGravDir) * verticalInput 
+        //    + Vector3.Cross(-currGravDir, newCameraHolder.transform.forward) * horizontalInput;
+
+        //cinemachine 3d movement
+        moveDirection = Vector3.Cross(orientation.right, -currGravDir) * verticalInput 
+            + Vector3.Cross(-currGravDir, orientation.forward) * horizontalInput;
 
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
@@ -223,24 +402,20 @@ public class Player : MonoBehaviour
     //Method to set a limit to the players velocity
     private void playerSpeedControl() 
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
         //Limit player's movement velocity when reaching max speed
-        if(flatVel.magnitude > moveSpeed) 
+        if (lateralVelocityComponent.magnitude > moveSpeed)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed; 
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            Vector3 limitedVel = lateralVelocityComponent.normalized * moveSpeed;
+            rb.velocity = limitedVel + verticalVelocityComponent;
         }
     }
-
     private void jump() 
     {
         //reset Y velocity to prepare for new jump
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.velocity = lateralVelocityComponent;
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
-
     private void resetJump()
     {
         readyToJump = true;
@@ -258,15 +433,14 @@ public class Player : MonoBehaviour
         
         if (currentWeaponScript.Automatic && Input.GetMouseButton(0))
         {
-            currentWeaponScript.TryToFire();
+            currentWeaponScript.TryToFire(mana);
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            currentWeaponScript.TryToFire();
+            currentWeaponScript.TryToFire(mana);
         }
     
     }
-
     private void SwapWeapon(KeyCode input)
     {
 
@@ -288,6 +462,7 @@ public class Player : MonoBehaviour
         Destroy(currentWeapon);
 
         currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
+        OnSwapWeapon?.Invoke(currentWeaponIndex);
     }
 
     /***
@@ -295,13 +470,12 @@ public class Player : MonoBehaviour
         Methods for Build and Upgrade Modes
     ****
     ***/
-
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
         destoryTempHolder();
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-        if ((Physics.Raycast(ray, out RaycastHit hit, 50f, Grid)))
+        if ((Physics.Raycast(ray, out RaycastHit hit, 30f, Grid)))
         {
             if ((hit.transform.tag.Equals("GridTile")))
             {
@@ -350,8 +524,8 @@ public class Player : MonoBehaviour
         }
         
     }
-
-    private void sellTower() 
+    
+    private void sellTower()
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
@@ -421,20 +595,44 @@ public class Player : MonoBehaviour
         towerBehavior.upgradeTower(upgradeStage, towerHitByRaycast);
         currency -= towerCost;
     }
-
+    public void rotateToSurface()
+    {
+        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+    }
     private void GainCurrency(GameObject enemyWhoDied)
     {
         currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
     }
 
+
+    //set towers + their order, and weapons + their order
+    private void level_LoadData(string[] givenTowerSet, string[] weaponSet)
+    {
+        //fill in the tower set from save data
+        for (int i = 0; i < towerSet.Length; i++)
+        {
+            towerSet[i] = Tower.GetPrefab(givenTowerSet[i]);
+        }
+
+        //fill in the active weapon slots with their respective weapon icons...
+        for (int i = 0; i < weaponList.Count; i++)
+        {
+            //SSS fill in the weapons from save data
+        }
+    }
+
     private void OnEnable()
     {
         EnemyBehavior.OnEnemyDeath += GainCurrency;
+        Weapon.OnFire += spentMana;
+        LevelManager.OnLoadData += level_LoadData;
     }
 
     private void OnDisable()
     {
         EnemyBehavior.OnEnemyDeath -= GainCurrency;
+        Weapon.OnFire -= spentMana;
+        LevelManager.OnLoadData -= level_LoadData;
     }
 
     private void destoryTempHolder() 

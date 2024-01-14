@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 //currentTile
@@ -25,6 +26,10 @@ public class EnemyBehavior : MonoBehaviour
     private float maxHealth;
     public float currentHealth;
 
+    public GameObject damageIndicator;
+
+    private Camera cameraToWatch;
+
     //currency gain on death
     public int worth;
 
@@ -48,7 +53,7 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //setGravityDir();
         updateCurrTile();
         moveAlongPath();
         
@@ -56,23 +61,17 @@ public class EnemyBehavior : MonoBehaviour
         {
             Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(gameObject);
-            OnEnemyDeath?.Invoke(gameObject);
+            //OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
         }
     }
-
-    public void SetupHealthBar(Camera Camera)
-    {
-        if(HealthBar.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
-        {
-            faceCamera.Camera = Camera;
-        }
-    }
-
     public void takeDamage(float damage, GameObject damagerBullet)
     {
         currentHealth -= damage;
+
+        deployDamageIndicator(damage);
+
         HealthBar.SetHealth(currentHealth / maxHealth, 3);
 
         EnemyHurtSFX.Play();
@@ -87,6 +86,26 @@ public class EnemyBehavior : MonoBehaviour
         
     }
 
+    private void deployDamageIndicator(float damage)
+    {
+        GameObject dmgInd = Instantiate(damageIndicator, gameObject.transform);
+        Destroy(dmgInd, 2f);
+        TMP_Text dmgIndText = dmgInd.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        //dmgInd.GetComponent<ConstantForce>.force = currGravDir;
+        dmgIndText.text = damage.ToString();
+
+        if (damage >= 3)
+            dmgIndText.color = Color.yellow;
+        if (damage >= 10)
+            dmgIndText.color = Color.red;
+
+        if (dmgIndText.TryGetComponent<FaceCamera>(out FaceCamera faceCamera))
+            faceCamera.Camera = cameraToWatch;
+
+        //dmgInd.GetComponent<Rigidbody>().AddForce(new Vector3(Vector3.Dot(Vector3.right, transform.right) * UnityEngine.Random.value, 10f, Vector3.Dot(Vector3.forward, transform.forward) * UnityEngine.Random.value), ForceMode.Impulse);
+        dmgInd.GetComponent<Rigidbody>().AddForce(new Vector3(UnityEngine.Random.value * 3f - .5f, 12f, UnityEngine.Random.value * 3f - .5f), ForceMode.Impulse);
+    }
+
     private void moveAlongPath()
     {
         //direction = normalize((successorPos + myHeightOffset) - currPos ); 
@@ -99,6 +118,8 @@ public class EnemyBehavior : MonoBehaviour
         Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
 
         transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);
+        //if (rb.velocity.magnitude < moveSpeed)
+        //    rb.AddForce(moveDirNormal * moveSpeed * 10f, ForceMode.Force);
 
         //should also rotate toward where you're moving
     }

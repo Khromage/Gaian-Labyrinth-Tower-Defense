@@ -13,6 +13,7 @@ public class Rifle : Weapon
         Automatic = true;
         Damage = 10;
         BulletRange = 500;
+        manaCost = 8;
     }
 
     void Update()

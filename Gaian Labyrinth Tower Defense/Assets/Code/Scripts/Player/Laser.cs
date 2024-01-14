@@ -18,6 +18,7 @@ public class Laser : Weapon
         Damage = 20;
         BulletRange = 500;
         LaserFireSFX = GetComponent<AudioSource>();
+        manaCost = 30; //cost 10 mana at .1 fireCooldown to fire for 3 seconds continuously
     }
 
     void Update()
