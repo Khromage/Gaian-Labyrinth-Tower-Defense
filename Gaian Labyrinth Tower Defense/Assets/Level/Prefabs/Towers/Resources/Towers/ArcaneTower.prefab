@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6561215891072590701}
   - component: {fileID: 5246249724988905885}
   - component: {fileID: 6505466437564927404}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ArcaneTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ MonoBehaviour:
   fireRate: 1
   fireCountdown: 0
   enemyTag: Enemy
-  InteractionIndicator: {fileID: 0}
+  InteractionIndicator: {fileID: 5392681474844564774}
   partToRotate: {fileID: 576702084041083807}
   turnSpeed: 5
   projectilePrefab: {fileID: 3816489243083930798, guid: 49fcdaf7bd6a89a4cafbf5620c989440, type: 3}
@@ -639,5 +639,10 @@ PrefabInstance:
 --- !u!4 &5201936240235053637 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+  m_PrefabInstance: {fileID: 5696209960028169158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5392681474844564774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
   m_PrefabInstance: {fileID: 5696209960028169158}
   m_PrefabAsset: {fileID: 0}
