@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6505466437564927404}
   m_Layer: 2
   m_Name: FireTower
-  m_TagString: Untagged
+  m_TagString: towerbuilding
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
