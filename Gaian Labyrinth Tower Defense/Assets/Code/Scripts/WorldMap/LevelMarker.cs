@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LevelMarker : MonoBehaviour
 {
-    public delegate void LevelInvestigated(int num);
-    public static event LevelInvestigated OnLevelInvestigate;
+    //public delegate void LevelInvestigated(int num);
+    //public static event LevelInvestigated OnLevelInvestigate;
 
     [SerializeField]
     private int levelNum;
