@@ -873,7 +873,7 @@ GameObject:
   - component: {fileID: 6821233095777773789}
   - component: {fileID: 726423612606791363}
   - component: {fileID: 6342735199999938622}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PulseTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -910,14 +910,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73370f49894591c4f9cd71bee9b005aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pulsePrefab: {fileID: 3933728882239899299, guid: 127e36d8477fb08488339104cde3d0d7, type: 3}
+  target: {fileID: 0}
+  targetingMode: 
   range: 10
-  maxDamage: 5
   fireRate: 0.3
+  fireCountdown: 0
   enemyTag: Enemy
+  InteractionIndicator: {fileID: 0}
+  partToRotate: {fileID: 0}
+  turnSpeed: 5
+  projectilePrefab: {fileID: 0}
   firePoint: {fileID: 5391525610649829236}
   enemies: []
+  detectionZone: {fileID: 0}
   cost: 8
+  pulsePrefab: {fileID: 3933728882239899299, guid: 127e36d8477fb08488339104cde3d0d7, type: 3}
+  maxDamage: 5
 --- !u!135 &6342735199999938622
 SphereCollider:
   m_ObjectHideFlags: 0

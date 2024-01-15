@@ -191,6 +191,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     void OpenTowerUI()
     {
+        Debug.Log("INTERACTION HAPPINGING");
         // display ui in screen space
     }
     

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6561215891072590701}
   - component: {fileID: 5246249724988905885}
   - component: {fileID: 6505466437564927404}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ExplodingTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}

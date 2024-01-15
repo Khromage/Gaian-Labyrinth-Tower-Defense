@@ -255,34 +255,34 @@ public class Player : UnitBehavior
 
     private void checkInteractable()
     {
+        // Visualization for raycast debugging
+        // Debug.DrawLine(InteractionPoint.transform.position, InteractionPoint.transform.position + InteractionPoint.transform.forward * InteractRange, Color.red, 1f);
         
-        Ray interactRay = new Ray(InteractionPoint.transform.position, InteractionPoint.transform.forward * InteractRange);
-        Debug.DrawLine(InteractionPoint.transform.position, InteractionPoint.transform.position + InteractionPoint.transform.forward * InteractRange, Color.red, 2f);
-        
-        if(Physics.Raycast(interactRay, out RaycastHit hit, InteractRange))
+        if(Physics.Raycast(InteractionPoint.transform.position, InteractionPoint.transform.forward, out RaycastHit hit, InteractRange))
         {
-            Interactable interactable = hit.collider.gameObject.GetComponentInParent<Interactable>();
-            if(interactable != null)
+
+            Interactable curr_interactable = hit.collider.gameObject.GetComponentInParent<Interactable>();
+            if(curr_interactable != null)
             {
-                if(InteractionTarget != null && InteractionTarget != interactable)
+                if(InteractionTarget != null && InteractionTarget != curr_interactable)
                 {
                     InteractionTarget.HideInteractButton(); // Hide previous interactable's button
                 }
-                
-                InteractionTarget = interactable; // Update current interaction target
+                InteractionTarget = curr_interactable; // Update current interaction target
                 InteractionTarget.ShowInteractButton();
-                Debug.Log("Showing Interact Button");
             }
             else if(InteractionTarget != null)
             {
+                Debug.Log("Clearing Old InteractionTarget");
                 InteractionTarget.HideInteractButton();
                 InteractionTarget = null; // Reset last interactable
             }
         }
         else if(InteractionTarget != null)
         {
-                InteractionTarget.HideInteractButton();
-                InteractionTarget = null; // Reset last interactable
+            Debug.Log("Clearing Old InteractionTarget");
+            InteractionTarget.HideInteractButton();
+            InteractionTarget = null; // Reset last interactable
         }
     }
 
