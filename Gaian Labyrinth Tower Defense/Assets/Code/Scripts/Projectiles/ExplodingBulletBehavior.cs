@@ -11,7 +11,7 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
     public GameObject explosionPrefab;
 
 
-    public override void Start()
+    protected override void Start()
     {
         speed = 50f;
         damage = 3f;

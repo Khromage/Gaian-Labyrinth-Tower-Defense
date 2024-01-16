@@ -406,11 +406,13 @@ public class Player : UnitBehavior
         
         if (currentWeaponScript.Automatic && Input.GetMouseButton(0))
         {
-            currentWeaponScript.TryToFire(mana);
+            Ray aimRay = new Ray(playerCam.transform.position, playerCam.transform.forward);
+            currentWeaponScript.TryToFire(mana, aimRay);
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            currentWeaponScript.TryToFire(mana);
+            Ray aimRay = new Ray(playerCam.transform.position, playerCam.transform.forward);
+            currentWeaponScript.TryToFire(mana, aimRay);
         }
     
     }

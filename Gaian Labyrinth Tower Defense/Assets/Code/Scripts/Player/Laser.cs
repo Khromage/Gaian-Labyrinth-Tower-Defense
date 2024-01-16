@@ -16,7 +16,7 @@ public class Laser : Weapon
         FireCooldown = .5f;
         Automatic = true;
         Damage = 20;
-        BulletRange = 500;
+        ProjRange = 500;
         LaserFireSFX = GetComponent<AudioSource>();
         manaCost = 30; //cost 10 mana at .1 fireCooldown to fire for 3 seconds continuously
     }
@@ -39,7 +39,7 @@ public class Laser : Weapon
         GameObject laserInstance = Instantiate(Beam, FirePoint.position, transform.rotation);
         Destroy(laserInstance, .2f);
 
-        if (Physics.Raycast(gunRay, out RaycastHit hitInfo, BulletRange))
+        if (Physics.Raycast(gunRay, out RaycastHit hitInfo, ProjRange))
         {
             if (hitInfo.collider.gameObject.tag == "Enemy")
             {

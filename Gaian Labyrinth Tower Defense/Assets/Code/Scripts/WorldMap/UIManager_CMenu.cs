@@ -95,6 +95,13 @@ public class UIManager_CMenu : MonoBehaviour
         //if ActivePanel == panel && not in target position, move to target position
         //if panel.onScreen && panel.inactive, move it out. if it gets to offscreen position, set panel.onScreen = false;
         */
+
+
+        if (Input.GetKeyDown(KeyCode.Escape) && ActivePanel != null) 
+        {
+            ActivePanel.GetComponent<Animator>().SetFloat("Closing", 1f);
+        }
+
     }
 
 

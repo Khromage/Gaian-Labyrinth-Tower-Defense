@@ -8,7 +8,9 @@ public class CampaignMenuPlayer : MonoBehaviour
     public Transform playerBody;
     public Rigidbody rb;
 
-    public float moveSpeed = 6f;
+    private float moveSpeed = 5f;
+
+    private bool grounded = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +20,7 @@ public class CampaignMenuPlayer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
@@ -29,7 +31,7 @@ public class CampaignMenuPlayer : MonoBehaviour
 
         
         if (inputDir.magnitude > 0f)
-            rb.AddForce(inputDir * 40f);
+            rb.AddForce(inputDir * 50f);
 
 
 
@@ -37,6 +39,7 @@ public class CampaignMenuPlayer : MonoBehaviour
         {
             Vector3 limitedVel = lateralVelocityComponent.normalized * moveSpeed;
             rb.velocity = limitedVel + verticalVelocityComponent;
+            Debug.Log("Capping movespeed");
         }
 
         
@@ -44,5 +47,13 @@ public class CampaignMenuPlayer : MonoBehaviour
         {
             playerBody.forward = Vector3.Slerp(playerBody.forward, inputDir.normalized, 5f * Time.deltaTime);
         }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, .5f);
+            if (grounded)
+                rb.velocity = rb.velocity + new Vector3(0f, 2f, 0f);
+        }
     }
+
 }

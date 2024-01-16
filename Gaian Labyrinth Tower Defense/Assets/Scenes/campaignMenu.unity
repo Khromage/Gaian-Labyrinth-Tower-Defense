@@ -20576,7 +20576,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBody: {fileID: 0}
   rb: {fileID: 0}
-  moveSpeed: 3
 --- !u!54 &1927322208
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20586,7 +20585,7 @@ Rigidbody:
   m_GameObject: {fileID: 1927322205}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}

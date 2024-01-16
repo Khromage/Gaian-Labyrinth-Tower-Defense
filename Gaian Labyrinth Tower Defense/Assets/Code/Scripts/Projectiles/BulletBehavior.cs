@@ -10,7 +10,7 @@ public class BulletBehavior : ProjectileBehavior
     public List<EnemyBehavior> HitEnemies = new List<EnemyBehavior>();
 
     // Update is called once per frame
-    public virtual void Start()
+    protected virtual void Start()
     {
         speed = 50f;
         damage = 1f;
@@ -20,7 +20,7 @@ public class BulletBehavior : ProjectileBehavior
 
     }
 
-    public virtual void Update()
+    protected virtual void Update()
     {
         transform.Translate(transform.forward * speed * Time.deltaTime, Space.World);
         

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class TrackingBulletBehavior : BulletBehavior
 {
-    private Transform target;
+    public Transform target;
     //public string targeting;
     public List<GameObject> enemies = new List<GameObject>();
     public float range = 5f;
+
+    public float turnSpeed = 5f;
 
     public override void SetTarget(Transform _target)
     {
@@ -15,13 +17,11 @@ public class TrackingBulletBehavior : BulletBehavior
     }
 
     // Update is called once per frame
-    public override void Update()
+    protected override void Update()
     {
         if (target != null)
         {
-            Vector3 direction = target.position - transform.position;
-            float distanceThisFrame = speed * Time.deltaTime;
-            transform.Translate(direction.normalized * distanceThisFrame, Space.World);
+            MoveTowardTarget();
         }
         else
         {
@@ -29,8 +29,19 @@ public class TrackingBulletBehavior : BulletBehavior
             if (target == null)
                 Destroy(gameObject);
         }
-        
-        
+    }
+
+    protected void MoveTowardTarget()
+    {
+        Vector3 direction = target.position - transform.position;
+        float distanceThisFrame = speed * Time.deltaTime;
+        //transform.Translate(direction.normalized * distanceThisFrame, Space.World);
+
+        //changed Translate direction to forward, and added gradual rotation toward target
+        transform.Translate(transform.forward * distanceThisFrame, Space.World);
+
+        Quaternion targetingRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetingRotation, Time.deltaTime * turnSpeed);
     }
 
     public bool AlreadyHit(GameObject enemy)

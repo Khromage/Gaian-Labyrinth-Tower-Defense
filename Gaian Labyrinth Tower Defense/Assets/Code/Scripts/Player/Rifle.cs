@@ -12,7 +12,7 @@ public class Rifle : Weapon
         FireCooldown = .2f;
         Automatic = true;
         Damage = 10;
-        BulletRange = 500;
+        ProjRange = 500;
         manaCost = 8;
     }
 
