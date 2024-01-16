@@ -7,6 +7,7 @@ TagManager:
   - GridTile
   - Enemy
   - ActiveTowerSlot
+  - towerbuilding
   layers:
   - Default
   - TransparentFX

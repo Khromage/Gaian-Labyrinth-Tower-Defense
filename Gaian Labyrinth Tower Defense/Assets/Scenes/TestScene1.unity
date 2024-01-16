@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: b1293e40106a5ea479c0d7656ed3229f, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -8081,7 +8081,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189062905}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0016134195, y: 0.9563937, z: 0.29202843, w: -0.0052839527}
+  m_LocalRotation: {x: 0.042102393, y: 0.94679517, z: 0.28733188, w: -0.13873275}
   m_LocalPosition: {x: 0.46708882, y: 1.6654911, z: -14.217482}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -20189,7 +20189,7 @@ Transform:
   m_GameObject: {fileID: 536682488}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 1.5, z: 1}
+  m_LocalPosition: {x: 1.25, y: 1.5, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -47358,28 +47358,19 @@ MonoBehaviour:
   interactKey: 102
   nextWeapon: 101
   prevWeapon: 113
-  buildMode: 9
   tower1: 49
   tower2: 50
   tower3: 51
   tower4: 52
   tower5: 53
   tower6: 54
-  deleteTower: 48
-  upgradeCurrentTower: 118
-  upgradePath1: 106
-  upgradePath2: 107
-  upgradePath3: 108
+  playerHeight: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
   Grid:
     serializedVersion: 2
     m_Bits: 8
-  towerBuilding:
-    serializedVersion: 2
-    m_Bits: 128
-  playerHeight: 0
   orientation: {fileID: 2016914160}
   maxMana: 0
   mana: 0
@@ -47391,18 +47382,19 @@ MonoBehaviour:
   currency: 0
   InteractRange: 0
   Body: {fileID: 1513391536}
+  InteractionPoint: {fileID: 1526119777}
   currentWeapon: {fileID: 1212722250}
   weaponList:
   - {fileID: 5926663804712910904, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
   - {fileID: 5926663804712910904, guid: 1cc1147431a6d404fb6acfa7af10157e, type: 3}
   currentTower: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerSet:
-  - {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
-  - {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
-  - {fileID: 8666906952646496308, guid: 3dce8eea952c9904a8aa493f256f1810, type: 3}
-  - {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
-  - {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
-  - {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!54 &1299577099
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -54754,7 +54746,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478073242}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.025477627, y: 0.9325837, z: 0.25698432, w: 0.25218582}
+  m_LocalRotation: {x: -0.011674, y: 0.95753026, z: 0.26395428, w: 0.11544588}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -56224,6 +56216,7 @@ Transform:
   m_Children:
   - {fileID: 1212722251}
   - {fileID: 2074497831}
+  - {fileID: 1526119778}
   m_Father: {fileID: 1299577100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1513391538
@@ -56748,6 +56741,37 @@ Transform:
   - {fileID: 1354941651}
   - {fileID: 454926386}
   m_Father: {fileID: 1277092005}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1526119777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1526119778}
+  m_Layer: 0
+  m_Name: InteractionPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1526119778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526119777}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.25, y: 0.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1513391537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1526572917
 GameObject:
@@ -60022,7 +60046,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618123025}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.077745005, y: 0.8580504, z: 0.4466572, w: 0.24125192}
+  m_LocalRotation: {x: -0.035173137, y: 0.88275176, z: 0.45528603, w: 0.11057527}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -63461,7 +63485,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724848852}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.037171572, y: 0.9196313, z: 0.30005264, w: 0.25072905}
+  m_LocalRotation: {x: -0.017027246, y: 0.9442269, z: 0.30817452, w: 0.114778504}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -68009,7 +68033,7 @@ Transform:
   m_GameObject: {fileID: 1843667405}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.78, y: 0.73, z: 1.22}
+  m_LocalPosition: {x: 1.25, y: 0.75, z: 1.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

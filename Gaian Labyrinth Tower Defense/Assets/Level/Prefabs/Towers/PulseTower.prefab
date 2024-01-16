@@ -873,7 +873,7 @@ GameObject:
   - component: {fileID: 6821233095777773789}
   - component: {fileID: 726423612606791363}
   - component: {fileID: 6342735199999938622}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: PulseTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}

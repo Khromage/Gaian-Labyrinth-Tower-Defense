@@ -105,6 +105,7 @@ public class Player : UnitBehavior
     public float InteractRange;
     public Interactable InteractionTarget;
     public GameObject Body;
+    public GameObject InteractionPoint;
 
     [Header("Weapon List")]
     public GameObject currentWeapon;
@@ -130,7 +131,7 @@ public class Player : UnitBehavior
         rb.freezeRotation = true;
         readyToJump = true;
         currency = 200;
-        InteractRange = 3f;
+        InteractRange = 5f;
 
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
@@ -322,22 +323,21 @@ public class Player : UnitBehavior
 
     private void checkInteractable()
     {
-        Ray interactRay = new Ray(Body.transform.position, Body.transform.forward);
-        Debug.DrawLine(Body.transform.position, Body.transform.position + Body.transform.forward * InteractRange, Color.red, 2f);
+        // Visualization for raycast debugging
+        // Debug.DrawLine(InteractionPoint.transform.position, InteractionPoint.transform.position + InteractionPoint.transform.forward * InteractRange, Color.red, 1f);
         
-        if(Physics.Raycast(interactRay, out RaycastHit hit, InteractRange))
+        if(Physics.Raycast(InteractionPoint.transform.position, InteractionPoint.transform.forward, out RaycastHit hit, InteractRange))
         {
-            Interactable interactable = hit.collider.gameObject.GetComponentInParent<Interactable>();
-            if(interactable != null)
+
+            Interactable curr_interactable = hit.collider.gameObject.GetComponentInParent<Interactable>();
+            if(curr_interactable != null)
             {
-                if(InteractionTarget != null && InteractionTarget != interactable)
+                if(InteractionTarget != null && InteractionTarget != curr_interactable)
                 {
                     InteractionTarget.HideInteractButton(); // Hide previous interactable's button
                 }
-                
-                InteractionTarget = interactable; // Update current interaction target
+                InteractionTarget = curr_interactable; // Update current interaction target
                 InteractionTarget.ShowInteractButton();
-                Debug.Log("Showing Interact Button");
             }
             else if(InteractionTarget != null)
             {
@@ -347,8 +347,8 @@ public class Player : UnitBehavior
         }
         else if(InteractionTarget != null)
         {
-                InteractionTarget.HideInteractButton();
-                InteractionTarget = null; // Reset last interactable
+            InteractionTarget.HideInteractButton();
+            InteractionTarget = null; // Reset last interactable
         }
     }
 
