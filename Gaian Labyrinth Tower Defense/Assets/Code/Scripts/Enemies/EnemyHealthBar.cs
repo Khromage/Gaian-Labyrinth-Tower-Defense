@@ -56,16 +56,25 @@ public class EnemyHealthBar : MonoBehaviour
         float time = 0f;
         float initialHealth = HealthImage.fillAmount;
 
+        float deltaHealth = initialHealth - Health;
+
+        if (Health <= 0 && Speed < 10f)
+        {
+            Speed = 10f;
+        }
+
         while (time < 1)
         {
-            HealthImage.fillAmount = Mathf.Lerp(initialHealth, Health, time);
+            //added this line, commented out the below line
+            HealthImage.fillAmount -= deltaHealth * Time.deltaTime * Speed;
+            //HealthImage.fillAmount = Mathf.Lerp(initialHealth, Health, time);
             time += Time.deltaTime * Speed;
 
             OnHealthUpdate?.Invoke(HealthImage.fillAmount);
             yield return null;
         }
 
-        HealthImage.fillAmount = Health;
+        //HealthImage.fillAmount = Health;
         OnHealthUpdate?.Invoke(Health);
         onCompleted?.Invoke();
     }

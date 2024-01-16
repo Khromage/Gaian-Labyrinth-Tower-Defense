@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1657950746493528707}
   - component: {fileID: 3836794850466428154}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.17204475
+        value: 0.12903023
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -92,22 +92,22 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.61367655
-        value: 0.07956793
-        inSlope: -0.2905893
-        outSlope: -0.2905893
+        time: 0.4671464
+        value: 0.025803588
+        inSlope: -0.13707465
+        outSlope: -0.13707465
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.3617944
+        inWeight: 0.5038088
         outWeight: 0.64705867
       - serializedVersion: 3
         time: 1
         value: 0
-        inSlope: -0.16802241
-        outSlope: -0.16802241
+        inSlope: -0.0039055937
+        outSlope: -0.0039055937
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.5632184
+        inWeight: 1
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 6948821151714963512}
   - component: {fileID: 4529066726017426583}
   - component: {fileID: 1895947632699038959}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: fireflyProj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 3.44, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1657950746493528707}
@@ -256,7 +256,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

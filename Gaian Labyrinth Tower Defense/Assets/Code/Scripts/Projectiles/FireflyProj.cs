@@ -12,7 +12,7 @@ public class FireflyProj : TrackingBulletBehavior
         targeting = "Close";
 
         speed = 8f;
-        damage = 2f;
+        damage = 1f;
         pierceAMT = 0;
         range = 8f; // should match firefly weapon probably
 

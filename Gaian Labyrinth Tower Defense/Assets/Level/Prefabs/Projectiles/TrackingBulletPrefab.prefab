@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3816489243083930798}
   - component: {fileID: 5920508708287658196}
   - component: {fileID: -2218985801368675076}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TrackingBulletPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,8 +98,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21ec20274111cd44798a5badc9d0bef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targeting: 
   speed: 50
   damage: 1
+  pierceAMT: 0
+  HitEnemies: []
+  target: {fileID: 0}
+  enemies: []
+  range: 5
+  turnSpeed: 5
 --- !u!135 &5920508708287658196
 SphereCollider:
   m_ObjectHideFlags: 0

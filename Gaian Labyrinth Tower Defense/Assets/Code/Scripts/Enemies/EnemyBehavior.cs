@@ -72,14 +72,20 @@ public class EnemyBehavior : MonoBehaviour
 
         deployDamageIndicator(damage);
 
-        HealthBar.SetHealth(currentHealth / maxHealth, 3);
+        float spd = 5 + 5 * damage / maxHealth;
+        HealthBar.SetHealth(currentHealth / maxHealth, spd);
 
         EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
             OnEnemyDeath?.Invoke(gameObject);
-            
-            float destroyDelay = UnityEngine.Random.value;
+
+
+            //Modify these lines. Play death animation, but no delay on the Destroys (don't want enemies getting into goal even when hp <= 0)
+
+            float destroyDelay = .5f * damage / maxHealth; // UnityEngine.Random.value;
+            if (destroyDelay > .5f)
+                destroyDelay = .5f;
             Destroy(gameObject, destroyDelay);
             Destroy(HealthBar.gameObject, destroyDelay);
         }

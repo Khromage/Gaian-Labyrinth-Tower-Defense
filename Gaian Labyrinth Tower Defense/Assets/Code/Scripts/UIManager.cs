@@ -103,14 +103,14 @@ public class UIManager : MonoBehaviour
 
         while (elapsedTime < 1)
         {
-            if (delta < 0) //if spending mana, make bar purple, and transition back to blue over time
+            if (delta < -.5f) //if spending mana, make bar purple, and transition back to blue over time
                 manaBar.color = new Color(delta - elapsedTime * delta, 0f + .32f * elapsedTime, 1f, 1f);
 
             changeDuringThisLoop = delta * Time.deltaTime * animSpeed;
             manaBar.fillAmount += changeDuringThisLoop;
             totalChange += changeDuringThisLoop;
 
-            //lerp to directly set fillAmount (doesn't account for changes in value midway through animation, so I'm using += instead)
+            //lerp directly sets fillAmount (doesn't account for changes in value midway through animation, so I'm using += instead)
             //manaBar.fillAmount = Mathf.Lerp(initialMana, initialMana + delta, elapsedTime);
             elapsedTime += Time.deltaTime * animSpeed;
 

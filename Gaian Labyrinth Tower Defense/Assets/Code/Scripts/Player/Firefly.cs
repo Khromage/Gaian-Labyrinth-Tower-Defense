@@ -16,9 +16,9 @@ public class Firefly : Weapon
     {
         FirePoint = transform.Find("FirePoint");
 
-        Damage = 2; //unused atm
-        ProjRange = 8f;
-        manaCost = 4;
+        Damage = 1; //unused atm
+        ProjRange = 9f;
+        manaCost = 5;
         FireCooldown = .08f;
         Automatic = true;
 
