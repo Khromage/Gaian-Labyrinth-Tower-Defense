@@ -303,14 +303,12 @@ public class Player : UnitBehavior
             }
             else if(InteractionTarget != null)
             {
-                Debug.Log("Clearing Old InteractionTarget");
                 InteractionTarget.HideInteractButton();
                 InteractionTarget = null; // Reset last interactable
             }
         }
         else if(InteractionTarget != null)
         {
-            Debug.Log("Clearing Old InteractionTarget");
             InteractionTarget.HideInteractButton();
             InteractionTarget = null; // Reset last interactable
         }
