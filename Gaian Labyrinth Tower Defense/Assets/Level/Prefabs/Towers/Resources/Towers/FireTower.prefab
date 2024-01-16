@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6561215891072590701}
   - component: {fileID: 5246249724988905885}
   - component: {fileID: 6505466437564927404}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FireTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,6 +56,8 @@ MonoBehaviour:
   range: 10
   fireRate: 1
   fireCountdown: 0
+  currentDamage: 1
+  multiPathUpgrade: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 7357546956886231641}
   partToRotate: {fileID: 576702084041083807}
@@ -65,6 +67,9 @@ MonoBehaviour:
   enemies: []
   detectionZone: {fileID: 0}
   cost: 20
+  isUpgradable: 1
+  upgradeStage: 1
+  gridLocation: {fileID: 0}
 --- !u!135 &5246249724988905885
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -442,7 +447,7 @@ GameObject:
   - component: {fileID: 4718254890076313565}
   - component: {fileID: 7199546397524416133}
   - component: {fileID: 6184393713088988488}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -791,6 +796,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractIndicator
       objectReference: {fileID: 0}
+    - target: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.25
@@ -842,6 +851,14 @@ PrefabInstance:
     - target: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185306258849983658, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8114780537230103930, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

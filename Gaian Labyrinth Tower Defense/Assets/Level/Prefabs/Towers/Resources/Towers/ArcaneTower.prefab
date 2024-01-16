@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6561215891072590701}
   - component: {fileID: 5246249724988905885}
   - component: {fileID: 6505466437564927404}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArcaneTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,9 +55,9 @@ MonoBehaviour:
   targetingMode: 
   range: 10
   fireRate: 1
+  fireCountdown: 0
   currentDamage: 1
   multiPathUpgrade: 0
-  fireCountdown: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 0}
   partToRotate: {fileID: 576702084041083807}
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 2285349364528039930}
   - component: {fileID: 9008967760732439208}
   - component: {fileID: 5007820052481778316}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UpgradeSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -690,6 +690,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractIndicator
       objectReference: {fileID: 0}
+    - target: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.25
@@ -741,6 +745,14 @@ PrefabInstance:
     - target: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185306258849983658, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8114780537230103930, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -12,7 +12,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public string targetingMode;
     public float range = 10f;
     public float fireRate = 1f;
-    private float fireCountdown = 0f;
+    public float fireCountdown = 0f;
     public float currentDamage = 1f;
 
     public bool multiPathUpgrade = false;
@@ -232,6 +232,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
                 break;
 
             case 10:
+                Debug.Log("Tower upgraded to stage 10");
                 currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
 
                 multiPathUpgrade = false;

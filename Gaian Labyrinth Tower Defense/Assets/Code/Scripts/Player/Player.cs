@@ -197,12 +197,26 @@ public class Player : UnitBehavior
         if (Input.GetKeyDown(prevWeapon) ||
            Input.GetKeyDown(nextWeapon)) {
             currentMode = playerMode.Combat;
-            Debug.Log("Combat");
             if (tempDisplayHolder != null)
             {
                 Destroy(this.tempDisplayHolder);
             }
             OnEnterCombatMode?.Invoke(currentWeaponIndex);
+        }
+
+        if (Input.GetKeyDown(tower1) ||
+           Input.GetKeyDown(tower2) ||
+           Input.GetKeyDown(tower3)) {
+            currentMode = playerMode.Build;
+        }
+
+        if (Input.GetKeyDown(deleteTower)) {
+            currentMode = playerMode.Sell;
+        }
+
+        if (Input.GetKeyDown(upgradeCurrentTower) ||
+            Input.GetKeyDown(buildMode)) {
+            currentMode = playerMode.Upgrade;
         }
     }
     private bool enteringBuildMode()
@@ -227,6 +241,7 @@ public class Player : UnitBehavior
             Input.GetKeyDown(buildMode)) {
             currentMode = playerMode.Upgrade;
         }
+        return false;
     }
 
     //Getting WASD and jump inputs
@@ -524,7 +539,7 @@ public class Player : UnitBehavior
         }
         
     }
-    
+
     private void sellTower()
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
@@ -557,7 +572,6 @@ public class Player : UnitBehavior
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
-            Debug.Log("Upgrade");
             colerable = true;
             towerHitByRaycast = hit.transform.gameObject;
 
