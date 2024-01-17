@@ -315,3 +315,4 @@ MonoBehaviour:
   placeable: 1
   enemyOnTile: 0
   towerOnTile: 0
+  visibleSquare: {fileID: 2100000, guid: c32c91ad8ce39ad429ce49f9bcb2fbe6, type: 2}
