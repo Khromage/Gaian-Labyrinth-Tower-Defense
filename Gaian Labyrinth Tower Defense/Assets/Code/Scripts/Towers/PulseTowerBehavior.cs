@@ -18,7 +18,7 @@ public class PulseTowerBehavior : TowerBehavior
 
 
     // Call the targeting function twice a second to scan for enemies
-    void Start()
+    public override void Start()
     {
         cost = 8;
         fireRate = .3f;
@@ -60,7 +60,7 @@ public class PulseTowerBehavior : TowerBehavior
     }
 
 
-    void Update()
+    public override void Update()
     {
         if (fireCountdown <= 0)
         {

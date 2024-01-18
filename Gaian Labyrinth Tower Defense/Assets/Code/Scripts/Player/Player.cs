@@ -96,6 +96,7 @@ public class Player : UnitBehavior
     public GameObject towerPrefab;
     public GameObject towerDisplayPrefab;
     private GameObject tempDisplayHolder;
+    private GridTile highlightedTile;
     public int currency;
 
     bool colerable = false;
@@ -201,6 +202,7 @@ public class Player : UnitBehavior
             {
                 Destroy(this.tempDisplayHolder);
             }
+            highlightedTile.highlight(false);
             OnEnterCombatMode?.Invoke(currentWeaponIndex);
         }
 
@@ -488,12 +490,17 @@ public class Player : UnitBehavior
     {
         //destroying the previous frame's green highlight for potential placement of tower
         destoryTempHolder();
+        if (highlightedTile != null)
+            highlightedTile.highlight(false);
+
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 30f, Grid)))
         {
             if ((hit.transform.tag.Equals("GridTile")))
             {
                 GridTile currTileScript = hit.transform.GetComponent<GridTile>();
+                highlightedTile = currTileScript;
+                highlightedTile.highlight(true);
 
                 if (currTileScript.placeable && !currTileScript.enemyOnTile)
                 {
@@ -566,8 +573,14 @@ public class Player : UnitBehavior
         }
     }   
 
+
+
+
     private void upgradeTower()
     {
+
+
+        /*
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
             colerable = true;
@@ -601,14 +614,17 @@ public class Player : UnitBehavior
         } else {
         colerable = false;
         }
+        */
     }
 
+    /*
     private void goToUpgrade(int upgradeStage, TowerBehavior towerBehavior, int towerCost){
         colerable = false;
         upgradeStage++;
         towerBehavior.upgradeTower(upgradeStage);
         currency -= towerCost;
     }
+    */
     public void rotateToSurface()
     {
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);

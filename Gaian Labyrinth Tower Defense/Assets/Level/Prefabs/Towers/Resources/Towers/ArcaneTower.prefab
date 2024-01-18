@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c2dca21bbc5b74e8c2a67e89201460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerName: arcane
   target: {fileID: 0}
   targetingMode: 
   range: 10
@@ -67,8 +68,11 @@ MonoBehaviour:
   enemies: []
   detectionZone: {fileID: 0}
   cost: 10
-  isUpgradable: 1
-  upgradeStage: 1
+  lv2_cost: 20
+  lv3_1_cost: 30
+  lv3_2_cost: 30
+  lv3_3_cost: 30
+  currentLevel: 1
   gridLocation: {fileID: 0}
 --- !u!135 &5246249724988905885
 SphereCollider:
@@ -359,7 +363,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 1, y: 0.25, z: 1}
+  m_LocalScale: {x: 0.95, y: 0.25, z: 0.95}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7746743253069209908}
