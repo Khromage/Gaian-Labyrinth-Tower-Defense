@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class TowerBehavior : MonoBehaviour, Interactable
 {
+    public delegate void OpenInteractionPanel(string towerName, int currentLevel);
+    public static event OpenInteractionPanel OnOpenInteractionPanel;
+
+    public string towerName = "arcane";
 
     public GameObject target;
 
@@ -13,6 +17,9 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public float range = 10f;
     public float fireRate = 1f;
     public float fireCountdown = 0f;
+    public float currentDamage = 1f;
+
+    public bool multiPathUpgrade = false;
 
     [Header("Unity Fields")]
 
@@ -28,10 +35,18 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public List<GameObject> enemies = new List<GameObject>();
     public SphereCollider detectionZone;
 
-    public int cost;
+    public int cost = 10;
+    public int lv2_cost = 20;
+    public int lv3_1_cost = 30;
+    public int lv3_2_cost = 30;
+    public int lv3_3_cost = 30;
+
+    public int currentLevel = 1;
+
+    public GridTile gridLocation;
 
     // Call the targeting function twice a second to scan for enemies
-    void Start()
+    public virtual void Start()
     {
         InvokeRepeating("UpdateTarget", 0f, 0.1f);
     }
@@ -141,7 +156,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
             detectionZone.enabled = true;
         }
     }
-    void Update()
+    public virtual void Update()
     {
         if(target == null)
             return;
@@ -149,6 +164,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         // Generate vector pointing from tower towards target enemy and use it to rotate the tower head 
         Vector3 direction = target.transform.position - transform.position;
         Quaternion targetingRotation = Quaternion.LookRotation(direction);
+
         // Using Lerp to smooth transition between target swaps instead of snapping to new targets
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
@@ -164,9 +180,9 @@ public class TowerBehavior : MonoBehaviour, Interactable
     void Shoot()
     {
         ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation, gameObject.transform) as ProjectileBehavior;
+        projectile.damage = currentDamage;
         if (projectile != null)
             projectile.SetTarget(target.transform);
-
         projectile.targeting = targetingMode;
 
     }
@@ -174,11 +190,21 @@ public class TowerBehavior : MonoBehaviour, Interactable
     {
         OpenTowerUI();
     }
+
+    // display tower UI in screen space
+    void OpenTowerUI()
+    {
+        OnOpenInteractionPanel?.Invoke(towerName, currentLevel);
+        Debug.Log("INTERACTION HAPPINGING");
+
+    }
     public void ShowInteractButton()
     {
         if (InteractionIndicator != null)
         {
             InteractionIndicator.SetActive(true); // Show the indicator
+            //highlight tile
+            gridLocation.highlight(true);
         }
     }
     public void HideInteractButton()
@@ -186,19 +212,93 @@ public class TowerBehavior : MonoBehaviour, Interactable
         if (InteractionIndicator != null)
         {
             InteractionIndicator.SetActive(false); // Hide the indicator
+            gridLocation.highlight(false);
+            //unhighlight tile
         }
     }
 
-    void OpenTowerUI()
+
+
+    public void upgradeTower(int newLevel)
     {
-        Debug.Log("INTERACTION HAPPINGING");
-        // display ui in screen space
+        switch (newLevel)
+        {
+            case 2:
+                lv2_upgrade();
+                break;
+
+            case 31:
+                lv3_1_upgrade();
+                break;
+
+            case 32:
+                lv3_2_upgrade();
+                break;
+
+            case 33:
+                lv3_3_upgrade();
+                break;
+
+            default:
+                Debug.Log("Tower upgrade stage not found");
+                break;
+        }
     }
-    
+
+    protected virtual void lv2_upgrade()
+    {
+        //generic tower upgrade stats
+        Debug.Log("Tower upgraded to stage 2");
+        BulletBehavior bulletToUpgrade = projectilePrefab.GetComponent<BulletBehavior>();
+
+        //Placeholder Visual to change model, should actually change model here
+        GameObject upgradeSphere = transform.GetChild(0).gameObject;
+        upgradeSphere.SetActive(true);
+
+
+        currentDamage = 2f;
+        range = 10.2f;
+        fireRate = 3f;
+        cost = 200;
+        multiPathUpgrade = true;
+    }
+    protected virtual void lv3_1_upgrade()
+    {
+        Debug.Log("Tower upgraded to stage 10");
+        transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
+
+        multiPathUpgrade = false;
+        cost = 100;
+        currentDamage = 5f;
+        fireRate = 1f;
+    }
+    protected virtual void lv3_2_upgrade()
+    {
+        transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 100, 0, .1f));
+
+        multiPathUpgrade = false;
+        cost = 100;
+        currentDamage = 2f;
+        fireRate = 6f;
+    }
+    protected virtual void lv3_3_upgrade()
+    {
+        transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 100, .1f));
+
+        multiPathUpgrade = false;
+        cost = 100;
+        currentDamage = 7f;
+        fireRate = 7f;
+    }
+
+
+
+
     // Tower range visualization via gizmos 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+    
 }

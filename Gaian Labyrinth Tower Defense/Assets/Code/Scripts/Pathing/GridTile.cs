@@ -14,6 +14,9 @@ public class GridTile : MonoBehaviour
         private set { coords = value; }
     }
 
+    [SerializeField]
+    private GameObject highlightVisual;
+
     //distance from goal
     public int goalDist;
     public TMP_Text goalDistText;
@@ -111,6 +114,20 @@ public class GridTile : MonoBehaviour
             newSuccessor = null;
         return newSuccessor;
     }
+
+
+    public void highlight(bool highlighted)
+    {
+        if (highlighted)
+        {
+            highlightVisual.SetActive(true);
+        }
+        else
+        {
+            highlightVisual.SetActive(false);
+        }
+    }
+
 
     //displays the tile's coords and adjacent tile coords
     public void writeTileInfo()
