@@ -71,6 +71,7 @@ public class FireflyProj : TrackingBulletBehavior
             {
                 if (target != null && target.gameObject.tag != "Enemy")
                 {
+                    Debug.Log("destroying" + target.gameObject);
                     Destroy(target.gameObject);
                     Debug.Log("destroyed non-enemy target");
                 }

@@ -8,6 +8,7 @@ public class Firefly : Weapon
     Transform FirePoint;
 
     private Quaternion launchRot;
+
     private int count;
     private float offset;
 
@@ -44,8 +45,9 @@ public class Firefly : Weapon
         //maybe set proj.layer here, to a layer that ignores the weapon hitbox
         Vector3 randPos = FirePoint.transform.position + (FirePoint.transform.up * (1 + Random.value))
             + FirePoint.transform.right * (Random.value * 2f - 1f) + FirePoint.transform.forward * Random.value * 3f;
-        GameObject t = Instantiate(new GameObject(), randPos, launchRot);
-        Destroy(t, 2f);
+        GameObject t = new GameObject();
+        t.transform.position = randPos; 
+        //Destroy(t, 1f);
 
         proj.GetComponent<FireflyProj>().SetTarget(t.transform);
         proj.GetComponent<FireflyProj>().enemyTarget = aimTarget;
