@@ -211,10 +211,9 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
 //Tower Upgrade Functions work when upgrade placed manually here, 
 //need to figure out why they don't work when placed in the BasicTowerUpgrades script
-    public void upgradeTower(int updateStage, GameObject currentTower){
-        GameObject upgradeTower = currentTower;
-        BasicTowerUpgrades towerUpgrades = upgradeTower.GetComponent<BasicTowerUpgrades>();
-        towerUpgrades.upgradeTowerStage(updateStage, upgradeTower);
+    public void upgradeTower(int updateStage){
+        BasicTowerUpgrades towerUpgrades = GetComponent<BasicTowerUpgrades>();
+        towerUpgrades.upgradeTowerStage(updateStage);
     }
     
 }

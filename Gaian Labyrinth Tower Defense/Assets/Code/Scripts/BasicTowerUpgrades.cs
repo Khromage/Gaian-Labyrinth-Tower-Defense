@@ -20,7 +20,7 @@ public class BasicTowerUpgrades : TowerBehavior
         cost = 100;
     }
 
-    public void upgradeTowerStage(int updateStage, GameObject currentTower){
+    public void upgradeTowerStage(int updateStage){
         switch(updateStage) {
         
             case 2:
@@ -29,9 +29,9 @@ public class BasicTowerUpgrades : TowerBehavior
                 BulletBehavior bulletToUpgrade = projectilePrefab.GetComponent<BulletBehavior>();
 
                 //Placeholder Visual to change model, should actually change model here
-                GameObject upgradeSphere = currentTower.transform.GetChild(0).gameObject;
+                GameObject upgradeSphere = transform.GetChild(0).gameObject;
                 upgradeSphere.SetActive(true);
-                currentTower.SetActive(true);
+                
 
                 currentDamage = 2f; 
                 range = 10.2f;
@@ -43,7 +43,7 @@ public class BasicTowerUpgrades : TowerBehavior
 
             case 10:
                 Debug.Log("Tower upgraded to stage 10");
-                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
+                transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
 
                 multiPathUpgrade = false;
                 cost = 100;
@@ -52,7 +52,7 @@ public class BasicTowerUpgrades : TowerBehavior
                 break;
 
             case 20:
-                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,100,0, .1f));
+                transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,100,0, .1f));
 
                 multiPathUpgrade = false;
                 cost = 100;
@@ -61,7 +61,7 @@ public class BasicTowerUpgrades : TowerBehavior
                 break;
 
             case 30:
-                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,100, .1f));
+                transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,100, .1f));
 
                 multiPathUpgrade = false;
                 cost = 100;

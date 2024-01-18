@@ -583,18 +583,18 @@ public class Player : UnitBehavior
                 if (upgradeMultiPath == false) {
                     if (Input.GetKeyDown(upgradeCurrentTower)) {
                         Debug.Log("Upgrade");
-                        goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
+                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
                     }
                 }else if (upgradeMultiPath == true){
                     if (Input.GetKeyDown(upgradePath1)){
                         upgradeStage = 9;
-                        goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
+                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
                     }else if (Input.GetKeyDown(upgradePath2)){
                         upgradeStage = 19;
-                        goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
+                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
                     }else if (Input.GetKeyDown(upgradePath3)){
                         upgradeStage = 29;
-                        goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
+                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
                     }
                 }
             }
@@ -603,10 +603,10 @@ public class Player : UnitBehavior
         }
     }
 
-    private void goToUpgrade(int upgradeStage, GameObject towerHitByRaycast, TowerBehavior towerBehavior, int towerCost){
+    private void goToUpgrade(int upgradeStage, TowerBehavior towerBehavior, int towerCost){
         colerable = false;
         upgradeStage++;
-        towerBehavior.upgradeTower(upgradeStage, towerHitByRaycast);
+        towerBehavior.upgradeTower(upgradeStage);
         currency -= towerCost;
     }
     public void rotateToSurface()
