@@ -38,7 +38,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public GridTile gridLocation;
 
     // Call the targeting function twice a second to scan for enemies
-    void Start()
+    public void StartTowerBehavior()
     {
         InvokeRepeating("UpdateTarget", 0f, 0.1f);
     }
@@ -148,7 +148,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
             detectionZone.enabled = true;
         }
     }
-    void Update()
+    public void UpdateTowerBehavior()
     {
         if(target == null)
             return;
@@ -171,9 +171,9 @@ public class TowerBehavior : MonoBehaviour, Interactable
     void Shoot()
     {
         ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation, gameObject.transform) as ProjectileBehavior;
+        projectile.damage = currentDamage;
         if (projectile != null)
             projectile.SetTarget(target.transform);
-
         projectile.targeting = targetingMode;
 
     }
@@ -212,58 +212,9 @@ public class TowerBehavior : MonoBehaviour, Interactable
 //Tower Upgrade Functions work when upgrade placed manually here, 
 //need to figure out why they don't work when placed in the BasicTowerUpgrades script
     public void upgradeTower(int updateStage, GameObject currentTower){
-        switch(updateStage) {
-        
-            case 2:
-                //generic tower upgrade stats
-                Debug.Log("Tower upgraded to stage 2");
-                BulletBehavior bulletToUpgrade = projectilePrefab.GetComponent<BulletBehavior>();
-
-                //Placeholder Visual to change model, should actually change model here
-                GameObject upgradeSphere = currentTower.transform.GetChild(0).gameObject;
-                upgradeSphere.SetActive(true);
-                currentTower.SetActive(true);
-
-                currentDamage = 5f; 
-                range = 10.2f;
-                fireRate = 3f;
-                cost = 200;
-                multiPathUpgrade = true;
-
-                break;
-
-            case 10:
-                Debug.Log("Tower upgraded to stage 10");
-                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
-
-                multiPathUpgrade = false;
-                cost = 100;
-                currentDamage = 10f;
-                fireRate = 1f;
-                break;
-
-            case 20:
-                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,100,0, .1f));
-
-                multiPathUpgrade = false;
-                cost = 100;
-                currentDamage = 2f;
-                fireRate = 6f;
-                break;
-
-            case 30:
-                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,100, .1f));
-
-                multiPathUpgrade = false;
-                cost = 100;
-                currentDamage = 7f;
-                fireRate = 7f;
-                break;
-
-            default:
-                Debug.Log("Tower upgrade stage not found");
-                break;
-        }
+        GameObject upgradeTower = currentTower;
+        BasicTowerUpgrades towerUpgrades = upgradeTower.GetComponent<BasicTowerUpgrades>();
+        towerUpgrades.upgradeTowerStage(updateStage, upgradeTower);
     }
     
 }

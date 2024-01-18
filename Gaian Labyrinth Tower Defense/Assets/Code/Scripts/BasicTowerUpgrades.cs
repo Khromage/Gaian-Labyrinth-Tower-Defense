@@ -7,13 +7,13 @@ public class BasicTowerUpgrades : TowerBehavior
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartTowerBehavior();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateTowerBehavior();
     }
 
     public void towerCostAfterPlacement(){
@@ -33,7 +33,7 @@ public class BasicTowerUpgrades : TowerBehavior
                 upgradeSphere.SetActive(true);
                 currentTower.SetActive(true);
 
-                currentDamage = 5f; 
+                currentDamage = 2f; 
                 range = 10.2f;
                 fireRate = 3f;
                 cost = 200;
@@ -42,16 +42,17 @@ public class BasicTowerUpgrades : TowerBehavior
                 break;
 
             case 10:
-                currentTower.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(.1f, 0f, .1f, .1f));
+                Debug.Log("Tower upgraded to stage 10");
+                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
 
                 multiPathUpgrade = false;
                 cost = 100;
-                currentDamage = 10f;
+                currentDamage = 5f;
                 fireRate = 1f;
                 break;
 
             case 20:
-                currentTower.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(.1f, 0.92f, .016f, .1f));
+                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,100,0, .1f));
 
                 multiPathUpgrade = false;
                 cost = 100;
@@ -60,7 +61,7 @@ public class BasicTowerUpgrades : TowerBehavior
                 break;
 
             case 30:
-                currentTower.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(.1f, 0f, 0f, .1f));
+                currentTower.transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,100, .1f));
 
                 multiPathUpgrade = false;
                 cost = 100;

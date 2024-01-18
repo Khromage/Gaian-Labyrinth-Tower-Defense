@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProjectileBehavior : MonoBehaviour
 {
     public string targeting;
+    public float damage;
 
     public virtual void SetTarget(Transform _target)
     {

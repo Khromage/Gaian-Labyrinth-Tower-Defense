@@ -68,7 +68,6 @@ public class Player : UnitBehavior
     [Header("Layer Variables")]
     public LayerMask whatIsGround;
     public LayerMask Grid;
-    public LayerMask towerBuilding;
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -543,7 +542,7 @@ public class Player : UnitBehavior
     private void sellTower()
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-        if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
+        if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
             Debug.Log("Sell");
             colerable = true;
             towerHitByRaycast = hit.transform.gameObject;
@@ -561,7 +560,6 @@ public class Player : UnitBehavior
                 */
                 Destroy(towerHitByRaycast);
                 colerable = false;
-
             }
         } else {
             colerable = false;
@@ -571,7 +569,7 @@ public class Player : UnitBehavior
     private void upgradeTower()
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-        if ((Physics.Raycast(ray, out RaycastHit hit, 50f, towerBuilding))) {
+        if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
             colerable = true;
             towerHitByRaycast = hit.transform.gameObject;
 
@@ -581,8 +579,10 @@ public class Player : UnitBehavior
             int towerCost = towerBehavior.cost;
 
             if ((towerBehavior.isUpgradable) && (currency > towerCost)){
+                Debug.Log("Upgradeable");
                 if (upgradeMultiPath == false) {
                     if (Input.GetKeyDown(upgradeCurrentTower)) {
+                        Debug.Log("Upgrade");
                         goToUpgrade(upgradeStage, towerHitByRaycast, towerBehavior, towerCost);
                     }
                 }else if (upgradeMultiPath == true){
