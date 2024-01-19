@@ -202,7 +202,8 @@ public class Player : UnitBehavior
             {
                 Destroy(this.tempDisplayHolder);
             }
-            highlightedTile.highlight(false);
+            if (highlightedTile != null)
+                highlightedTile.highlight(false);
             OnEnterCombatMode?.Invoke(currentWeaponIndex);
         }
 

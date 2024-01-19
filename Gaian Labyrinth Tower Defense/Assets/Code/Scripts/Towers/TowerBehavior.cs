@@ -204,7 +204,8 @@ public class TowerBehavior : MonoBehaviour, Interactable
         {
             InteractionIndicator.SetActive(true); // Show the indicator
             //highlight tile
-            gridLocation.highlight(true);
+            if (gridLocation != null)
+                gridLocation.highlight(true);
         }
     }
     public void HideInteractButton()
@@ -212,7 +213,8 @@ public class TowerBehavior : MonoBehaviour, Interactable
         if (InteractionIndicator != null)
         {
             InteractionIndicator.SetActive(false); // Hide the indicator
-            gridLocation.highlight(false);
+            if (gridLocation != null)
+                gridLocation.highlight(false);
             //unhighlight tile
         }
     }
