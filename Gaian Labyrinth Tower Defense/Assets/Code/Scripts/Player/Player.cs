@@ -476,6 +476,7 @@ public class Player : UnitBehavior
                 currentWeaponIndex = weaponList.Count - 1;
         }
 
+        //in the hierarchy, the 1st weapon was originally at: .411, .121, 0
         Transform cwt = currentWeapon.transform;
 
         Destroy(currentWeapon);

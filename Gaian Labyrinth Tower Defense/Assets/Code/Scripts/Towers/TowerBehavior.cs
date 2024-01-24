@@ -19,7 +19,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public float fireCountdown = 0f;
     public float currentDamage = 1f;
 
-    public bool multiPathUpgrade = false;
 
     [Header("Unity Fields")]
 
@@ -161,13 +160,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         if(target == null)
             return;
 
-        // Generate vector pointing from tower towards target enemy and use it to rotate the tower head 
-        Vector3 direction = target.transform.position - transform.position;
-        Quaternion targetingRotation = Quaternion.LookRotation(direction);
-
-        // Using Lerp to smooth transition between target swaps instead of snapping to new targets
-        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
-        partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        LookTowardTarget();
 
         if(fireCountdown <= 0)
         {
@@ -176,6 +169,18 @@ public class TowerBehavior : MonoBehaviour, Interactable
         }
 
         fireCountdown -= Time.deltaTime;
+    }
+    
+    //rotate head of tower to follow current target. Can be overridden for specific rotation behaviors
+    protected virtual void LookTowardTarget()
+    {
+        // Generate vector pointing from tower towards target enemy and use it to rotate the tower head 
+        Vector3 direction = target.transform.position - transform.position;
+        Quaternion targetingRotation = Quaternion.LookRotation(direction);
+
+        // Using Lerp to smooth transition between target swaps instead of snapping to new targets
+        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
+        partToRotate.rotation = Quaternion.Euler(partToRotate.rotation.x, rotation.y, partToRotate.rotation.z); //changed this from (0, y, 0)
     }
     void Shoot()
     {
@@ -261,36 +266,21 @@ public class TowerBehavior : MonoBehaviour, Interactable
         currentDamage = 2f;
         range = 10.2f;
         fireRate = 3f;
-        cost = 200;
-        multiPathUpgrade = true;
     }
     protected virtual void lv3_1_upgrade()
     {
-        Debug.Log("Tower upgraded to stage 10");
         transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
-
-        multiPathUpgrade = false;
-        cost = 100;
-        currentDamage = 5f;
-        fireRate = 1f;
+        Debug.Log(gameObject + "lvl 3-1 upgrade");
     }
     protected virtual void lv3_2_upgrade()
     {
         transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 100, 0, .1f));
-
-        multiPathUpgrade = false;
-        cost = 100;
-        currentDamage = 2f;
-        fireRate = 6f;
+        Debug.Log(gameObject + "lvl 3-2 upgrade");
     }
     protected virtual void lv3_3_upgrade()
     {
         transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 100, .1f));
-
-        multiPathUpgrade = false;
-        cost = 100;
-        currentDamage = 7f;
-        fireRate = 7f;
+        Debug.Log(gameObject + "lvl 3-3 upgrade");
     }
 
 
