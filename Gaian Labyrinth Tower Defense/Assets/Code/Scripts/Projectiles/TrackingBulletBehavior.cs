@@ -9,7 +9,7 @@ public class TrackingBulletBehavior : BulletBehavior
     public List<GameObject> enemies = new List<GameObject>();
     public float range = 5f;
 
-    public float turnSpeed = 5f;
+    public float turnSpeed = 20f;
 
 
     protected override void Start()

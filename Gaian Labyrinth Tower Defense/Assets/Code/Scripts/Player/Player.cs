@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //Interface implemented by any object, tower, npc, etc that the player can interact with
@@ -81,7 +82,8 @@ public class Player : UnitBehavior
     Vector3 moveDirection;
     // rb rigidbody is declared in UnitBehavior
 
-    private Vector3 currGravDir;
+    //private Vector3 currGravDir;
+    private Coroutine rotateToSurfaceCoroutine;
 
     [Header("Mana")]
     public float maxMana;
@@ -155,8 +157,7 @@ public class Player : UnitBehavior
         getUserKey();
         playerSpeedControl();
 
-        setGravityDir();
-        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+        //setGravityDir();  // this call was to UnitBehavior function using raycast to determine gravity dir. unused
 
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
         //Vector3.down was the 2nd parameter here, originally
@@ -431,11 +432,53 @@ public class Player : UnitBehavior
         //reset Y velocity to prepare for new jump
         rb.velocity = lateralVelocityComponent;
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(-currGravDir * jumpForce, ForceMode.Impulse);
     }
     private void resetJump()
     {
         readyToJump = true;
+    }
+
+
+    protected override void beginRotation(Transform gravSource)
+    {
+        if (rotateToSurfaceCoroutine != null)
+            StopCoroutine(rotateToSurfaceCoroutine);
+        rotateToSurfaceCoroutine = StartCoroutine(rotateCoroutine(gravSource));
+    }
+
+    private IEnumerator rotateCoroutine(Transform gravSource)
+    {
+        Vector3 axisToRotateAround = Vector3.Cross(-transform.up, currGravDir);
+
+
+        Debug.Log("began rotation coroutine");
+        float initialDiffInRotation = Vector3.Angle(-transform.up, currGravDir);
+        Debug.Log("initial diff in rotation: " +  initialDiffInRotation);
+        float elapsedTime = 0f;
+        Quaternion initRot = transform.rotation;
+        //Quaternion goalRot = Quaternion.Euler(currGravDir.x, 0f, currGravDir.z); //THIS LINE IS THE PROBLEM. need currGravDir as an actual rotation, not a normalized direction
+        Quaternion goalRot = Quaternion.LookRotation(Vector3.Cross(Vector3.up, -currGravDir), -currGravDir);
+        
+        Vector3 initRotEuler = transform.rotation.eulerAngles;
+        Vector3 goalRotEuler = Quaternion.LookRotation(Vector3.Cross(Vector3.up, currGravDir), currGravDir).eulerAngles;
+
+
+        while (elapsedTime < 1)
+        {
+            //transform.rotation = Quaternion.Euler(Vector3.Lerp(initRot.eulerAngles, goalRot.eulerAngles, elapsedTime * 180 / initialDiffInRotation));
+            rb.rotation = Quaternion.Slerp(initRot, gravSource.rotation, elapsedTime * 90 / initialDiffInRotation); 
+            //transform.eulerAngles = Vector3.Lerp(initRotEuler, goalRotEuler, elapsedTime);
+
+            //transform.RotateAround(transform.position, axisToRotateAround, 1f); //initialDiffInRotation * Time.deltaTime
+
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        rb.rotation = gravSource.rotation;
+        //if elapsed rotation > initialDiffInRotation, set rotation to currGravDir's
+        Debug.Log("rot at end of corout: " + transform.rotation.eulerAngles);
     }
 
     /***
@@ -515,10 +558,12 @@ public class Player : UnitBehavior
                     {
                         if (currency >= currentTower.GetComponent<TowerBehavior>().cost)
                         {
-                            Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
-                            GameObject currTower = Instantiate(currentTower, towerPlacement, transform.rotation);
+                            //Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
+                            GameObject currTower = Instantiate(currentTower, hit.transform.position, hit.transform.rotation);
                             TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
                             tower.gridLocation = currTileScript;
+
+                            //transform.rotation = Quaternion.Euler(30f, 0f, 0f);
 
                             currTileScript.placeable = false;
                             currTileScript.walkable = false;
@@ -629,10 +674,6 @@ public class Player : UnitBehavior
         currency -= towerCost;
     }
     */
-    public void rotateToSurface()
-    {
-        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
-    }
     private void GainCurrency(GameObject enemyWhoDied)
     {
         currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;

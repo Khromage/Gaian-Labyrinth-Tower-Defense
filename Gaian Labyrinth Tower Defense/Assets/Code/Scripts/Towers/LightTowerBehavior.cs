@@ -5,6 +5,9 @@ using UnityEngine;
 public class LightTowerBehavior : TowerBehavior
 {
     [SerializeField]
+    private GameObject aimSource;
+
+    [SerializeField]
     private GameObject frame;
     [SerializeField]
     private GameObject lens;
@@ -33,14 +36,18 @@ public class LightTowerBehavior : TowerBehavior
         //rotate lens around frame's x axis
 
         // Generate vector pointing from tower towards target enemy and use it to rotate the tower head 
-        Vector3 direction = target.transform.position - firePoint.transform.position;
+        Vector3 direction = target.transform.position - aimSource.transform.position;
         Quaternion targetingRotation = Quaternion.LookRotation(direction);
 
+        //frame.transform.localRotation = targetingRotation;
+
         // Using Lerp to smooth transition between target swaps instead of snapping to new targets
-        Vector3 rotation = Quaternion.Lerp(frame.transform.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
+        //Vector3 rotation = Quaternion.Lerp(frame.transform.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
+        Vector3 rotation = targetingRotation.eulerAngles;
+        
         Debug.Log(rotation);
-        frame.transform.rotation = Quaternion.Euler(frame.transform.rotation.x, rotation.y, frame.transform.rotation.z);
-        lens.transform.rotation = Quaternion.Euler(0f, 0f, 90 + rotation.z);
+        frame.transform.localRotation = Quaternion.Euler(frame.transform.rotation.x, rotation.y, frame.transform.rotation.z);
+        lens.transform.rotation = targetingRotation;
     }
 
 

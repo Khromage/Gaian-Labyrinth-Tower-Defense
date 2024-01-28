@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - ActiveTowerSlot
   - towerbuilding
+  - goalTile
+  - gravCore
   layers:
   - Default
   - TransparentFX
