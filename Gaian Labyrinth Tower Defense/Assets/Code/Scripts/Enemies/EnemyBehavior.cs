@@ -19,11 +19,11 @@ public class EnemyBehavior : MonoBehaviour
     public GridTile currTile;
     public GridTile successorTile;
     public LayerMask Grid;
-    private float moveSpeed = 3f;
+    protected float moveSpeed = 3f;
 
     [SerializeField]
     private EnemyHealthBar HealthBar;
-    private float maxHealth;
+    protected float maxHealth;
     public float currentHealth;
 
     public GameObject damageIndicator;
@@ -37,8 +37,8 @@ public class EnemyBehavior : MonoBehaviour
     public int harm;
 
     //public float value? for when it dies
-
-    public AudioSource EnemyHurtSFX;
+    [SerializeField]
+    protected AudioSource EnemyHurtSFX;
 
     // Start is called before the first frame update
     void Start()

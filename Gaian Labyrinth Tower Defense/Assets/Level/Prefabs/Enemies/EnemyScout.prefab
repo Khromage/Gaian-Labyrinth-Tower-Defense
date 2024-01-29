@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d80d171a6602a9847983329c7ba56477, type: 2}
+  - {fileID: 2100000, guid: de43ed55813b0544b818909a4813d17b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -225,11 +225,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7792443051793761538}
-  - component: {fileID: -6983316178086118835}
+  - component: {fileID: 8883116948393023533}
   - component: {fileID: 5376600795978324578}
   - component: {fileID: 7286630038998008840}
   m_Layer: 0
-  m_Name: EnemyGenericPrefab
+  m_Name: EnemyScout
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245,14 +245,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3125070829993472992}
   - {fileID: 5000604493373114865}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-6983316178086118835
+--- !u!114 &8883116948393023533
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2921004111766893944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb75cff111e44d64a834ece3b1f55d81, type: 3}
+  m_Script: {fileID: 11500000, guid: f883da8f1f957bd48ad2c35e3c81d3fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currTile: {fileID: 0}

@@ -47358,19 +47358,25 @@ MonoBehaviour:
   interactKey: 102
   nextWeapon: 101
   prevWeapon: 113
+  buildMode: 9
   tower1: 49
   tower2: 50
   tower3: 51
   tower4: 52
   tower5: 53
   tower6: 54
-  playerHeight: 0
+  deleteTower: 48
+  upgradeCurrentTower: 118
+  upgradePath1: 106
+  upgradePath2: 107
+  upgradePath3: 108
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
   Grid:
     serializedVersion: 2
     m_Bits: 8
+  playerHeight: 0
   orientation: {fileID: 2016914160}
   maxMana: 0
   mana: 0
@@ -78811,6 +78817,18 @@ PrefabInstance:
       propertyPath: waveSet.Array.data[2].waveEnemies.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: waveSet.Array.data[0].waveEnemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 2921004111766893944, guid: 19d07072fce426942ac6fbc7fa660410, type: 3}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: waveSet.Array.data[1].waveEnemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 2921004111766893944, guid: 19d07072fce426942ac6fbc7fa660410, type: 3}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: waveSet.Array.data[1].waveEnemies.Array.data[1]
+      value: 
+      objectReference: {fileID: 2921004111766893944, guid: 19d07072fce426942ac6fbc7fa660410, type: 3}
     - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
       propertyPath: waveSet.Array.data[2].waveEnemies.Array.data[0]
       value: 
