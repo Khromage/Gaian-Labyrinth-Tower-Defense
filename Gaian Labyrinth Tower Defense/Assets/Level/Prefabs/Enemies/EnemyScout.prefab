@@ -271,6 +271,7 @@ MonoBehaviour:
     m_Bits: 8
   HealthBar: {fileID: 8524468329408580060}
   currentHealth: 0
+  currentSheild: 0
   damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0

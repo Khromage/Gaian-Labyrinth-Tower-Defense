@@ -25,6 +25,8 @@ public class EnemyBehavior : MonoBehaviour
     private EnemyHealthBar HealthBar;
     protected float maxHealth;
     public float currentHealth;
+    protected float maxSheild;
+    public float currentSheild;
 
     public GameObject damageIndicator;
 
