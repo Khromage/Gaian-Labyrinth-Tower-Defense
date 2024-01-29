@@ -54,7 +54,6 @@ public class UIManager : MonoBehaviour
 
     void WaveStart () {}
 
-
     private void player_updateManaBar(float changeAmount, bool animate)
     {
         if (animate)
@@ -122,7 +121,6 @@ public class UIManager : MonoBehaviour
         //manaBar.fillAmount = initialMana + delta;
         //Debug.Log("mana should now be at " + (manaBar.fillAmount * 100f) + "%");
     }
-
 
     private void player_selectTower(int towerIndex, GameObject towerObj)
     {

@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour
     public static event LoadData OnLoadData;
     
     public PlayerInfo savedData;
+    public LevelInfo levelInfo;
 
 
     //Timer
@@ -55,7 +56,6 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if (currWave < 7) //currWave < # of waves.
         {
             //Gameplay/design decision: maybe wait to start countdown until wave has been defeated, or just until they've all spawned. 
@@ -69,6 +69,8 @@ public class LevelManager : MonoBehaviour
                 OnWaveStart?.Invoke(currWave);
             }
         }
+
+
     }
 
     private void LoseLives(GameObject enemy)
@@ -135,7 +137,6 @@ public class LevelManager : MonoBehaviour
         Player.OnTowerPlaced += recalcFlowField_NewTower;
         Player.OnTowerSold += recalcFlowField_NewTile;
     }
-
     private void OnDisable()
     {
         EnemyBehavior.OnEnemyReachedGoal -= LoseLives;
