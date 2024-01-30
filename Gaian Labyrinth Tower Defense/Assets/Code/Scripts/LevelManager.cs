@@ -14,8 +14,7 @@ public class LevelManager : MonoBehaviour
     public static event LoadData OnLoadData;
     
     public PlayerInfo savedData;
-    public LevelInfo levelInfo;
-
+    public LevelData levelData;
 
     //Timer
     private float waveTimer = 10f; //total time between waves
@@ -44,7 +43,6 @@ public class LevelManager : MonoBehaviour
         savedData = new PlayerInfo();
         LoadSavedData();
 
-
         flowFieldGenerator = new FlowFieldGenerator();
         flowFieldGenerator.visibleSquare = visibleSquare;
         flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
@@ -70,7 +68,10 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-
+        // Update levelData
+        levelData.lives = remainingLives;
+        levelData.wave = currWave;
+        levelData.countdown = (int)waveCountdown;
     }
 
     private void LoseLives(GameObject enemy)

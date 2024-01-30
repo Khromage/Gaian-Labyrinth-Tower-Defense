@@ -23,7 +23,7 @@ public class EnemyBehavior : MonoBehaviour
 
     [SerializeField]
     private EnemyHealthBar HealthBar;
-    private float maxHealth;
+    protected float maxHealth;
     public float currentHealth;
 
     public GameObject damageIndicator;

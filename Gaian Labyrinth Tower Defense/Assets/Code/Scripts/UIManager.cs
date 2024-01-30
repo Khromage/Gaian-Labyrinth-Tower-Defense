@@ -15,7 +15,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public TMP_Text CountText;
     [SerializeField]
-    private GameObject levelManager;
+    public LevelData levelData;
+    public PlayerData playerData;
     [SerializeField]
     private GameObject player;
 
@@ -43,10 +44,10 @@ public class UIManager : MonoBehaviour
     {
         //int cw;
         //cw = levelManager.GetComponent<LevelManager>().currWave;
-        WavesText.text = "Wave: " + levelManager.GetComponent<LevelManager>().currWave.ToString();
-        TimeText.text = "Next Wave: " + ((int)levelManager.GetComponent<LevelManager>().waveCountdown).ToString();
-        LivesText.text = "Lives:\n" + levelManager.GetComponent<LevelManager>().remainingLives.ToString();
-        CurrencyText.text = "$" + player.GetComponent<Player>().currency.ToString();
+        WavesText.text = "Wave: " + levelData.wave.ToString();
+        TimeText.text = "Next Wave: " + levelData.countdown.ToString();
+        LivesText.text = "Lives:\n" + levelData.lives.ToString();
+        CurrencyText.text = "$" + playerData.currency.ToString();
         //LivesText.text = "hey " + counter;
         //counter++;
         //CountText.text = GetComponent<SpawnPoint>().waveSet[cw -1].waveEnemies.Length.ToString();
