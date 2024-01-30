@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //wave start as an event? invoke
 
@@ -49,6 +50,8 @@ public class LevelManager : MonoBehaviour
         
         waveCountdown = 1f;
         remainingLives += 5;
+
+        SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
     }
 
     // Update is called once per frame
