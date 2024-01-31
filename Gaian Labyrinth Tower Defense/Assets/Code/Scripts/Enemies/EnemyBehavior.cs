@@ -92,8 +92,6 @@ public class EnemyBehavior : MonoBehaviour
         EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
-            OnEnemyDeath?.Invoke(this);
-
             Debug.Log("enemy death event");
             OnEnemyDeath?.Invoke(this);
             isAlive = false;

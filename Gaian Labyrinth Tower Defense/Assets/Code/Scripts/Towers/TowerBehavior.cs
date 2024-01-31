@@ -19,6 +19,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public float fireCountdown;
     public float currentDamage;
 
+    public float targetCooldown;
 
     [Header("Unity Fields")]
 
@@ -51,7 +52,8 @@ public class TowerBehavior : MonoBehaviour, Interactable
         fireRate = 1f;
         fireCountdown = 0f;
         currentDamage = 5f;
-        InvokeRepeating("UpdateTarget", 0f, 0.1f);
+
+        targetCooldown = 0f;
     }
 
     private void OnEnable()
@@ -84,7 +86,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         if(!enemies.Contains(enemy.gameObject))
             return;
 
-        enemies.Remove(enemy.gameObject);
+        enemies.Remove(enemy.gameObject);   
         enemy.OnEnemyDeath -= RemoveEnemy;
     }
 
@@ -168,7 +170,15 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     public virtual void Update()
     {
-        if(target == null)
+        if (targetCooldown <= 0)
+        {
+            UpdateTarget();
+            targetCooldown = .1f;
+        }
+        targetCooldown -= Time.deltaTime;
+
+
+        if (target == null)
             return;
 
         LookTowardTarget();
@@ -180,7 +190,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         }
 
         fireCountdown -= Time.deltaTime;
-        
+
     }
     
     //rotate head of tower to follow current target. Can be overridden for specific rotation behaviors
