@@ -23,6 +23,8 @@ public class LevelManager : MonoBehaviour
 
     public int currWave = 0;
 
+    private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
+
     [SerializeField] private GameObject goalTile;
     public FlowFieldGenerator flowFieldGenerator;
 
@@ -77,11 +79,32 @@ public class LevelManager : MonoBehaviour
         levelData.countdown = (int)waveCountdown;
     }
 
-    private void LoseLives(GameObject enemy)
+
+    public void addSpawnPoint(SpawnPoint spawnPoint)
+    {
+        spawnPoints.Add(spawnPoint);
+        spawnPoint.OnSpawnedEnemy += enemySpawned;
+    }
+
+    private void enemySpawned(EnemyBehavior enemy)
+    {
+        enemy.OnEnemyReachedGoal += LoseLives;
+        enemy.OnEnemyDeath += nothingRN;
+    }
+    private void LoseLives(EnemyBehavior enemy)
     {
         int harm = enemy.GetComponent<EnemyBehavior>().harm;
         Debug.Log($"Losing {harm} lives in LevelManager. Remaining lives: {remainingLives}");
         remainingLives -= harm;
+
+        enemy.OnEnemyReachedGoal -= LoseLives;
+        enemy.OnEnemyDeath -= nothingRN;
+    }
+    private void nothingRN(EnemyBehavior enemy)
+    {
+        //move currencyGain from Player to here.
+        enemy.OnEnemyReachedGoal -= LoseLives;
+        enemy.OnEnemyDeath -= nothingRN;
     }
 
 
@@ -136,17 +159,20 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EnemyBehavior.OnEnemyReachedGoal += LoseLives;
 
         Player.OnTowerPlaced += recalcFlowField_NewTower;
         Player.OnTowerSold += recalcFlowField_NewTile;
     }
     private void OnDisable()
     {
-        EnemyBehavior.OnEnemyReachedGoal -= LoseLives;
         
         Player.OnTowerPlaced -= recalcFlowField_NewTower;
         Player.OnTowerSold -= recalcFlowField_NewTile;
+
+        foreach (var s in spawnPoints)
+        {
+            s.OnSpawnedEnemy -= enemySpawned;
+        }
 
         SaveData();
     }

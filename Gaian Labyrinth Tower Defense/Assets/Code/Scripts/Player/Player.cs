@@ -684,9 +684,9 @@ public class Player : UnitBehavior
         currency -= towerCost;
     }
     */
-    private void GainCurrency(GameObject enemyWhoDied)
+    private void GainCurrency(EnemyBehavior enemyWhoDied)
     {
-        currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
+        currency += enemyWhoDied.worth;
     }
 
 
@@ -708,14 +708,14 @@ public class Player : UnitBehavior
 
     private void OnEnable()
     {
-        EnemyBehavior.OnEnemyDeath += GainCurrency;
+        //EnemyBehavior.OnEnemyDeath += GainCurrency;
         Weapon.OnFire += spentMana;
         LevelManager.OnLoadData += level_LoadData;
     }
 
     private void OnDisable()
     {
-        EnemyBehavior.OnEnemyDeath -= GainCurrency;
+        //EnemyBehavior.OnEnemyDeath -= GainCurrency;
         Weapon.OnFire -= spentMana;
         LevelManager.OnLoadData -= level_LoadData;
     }

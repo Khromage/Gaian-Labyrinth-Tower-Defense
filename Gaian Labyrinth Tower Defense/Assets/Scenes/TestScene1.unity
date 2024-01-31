@@ -31388,6 +31388,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1443872102}
     - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: waveContent
+      value: 
+      objectReference: {fileID: 11400000, guid: 630a28efdd90cad41a63030fba53df8e, type: 2}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: levelManager
+      value: 
+      objectReference: {fileID: 1748067187}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
       propertyPath: waveSet.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -32895,6 +32903,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7171033322945162878, guid: 73ec4d64252f0034c8d7d3f10813a186, type: 3}
   m_PrefabInstance: {fileID: 1788503384}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1088712134
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1466698076454966206, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_Name
+      value: gravTestSurfaces
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -17.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215937605439482274, guid: ec2abe09715995b429169347d35baa7f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ec2abe09715995b429169347d35baa7f, type: 3}
 --- !u!1001 &1089046729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33593,8 +33658,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1443872102}
     - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: waveContent
+      value: 
+      objectReference: {fileID: 11400000, guid: f82ffacdec4995f4bb5fe9d02e691ee3, type: 2}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: levelManager
+      value: 
+      objectReference: {fileID: 1748067187}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
       propertyPath: waveSet.Array.size
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
       propertyPath: EnemyHealthBarCanvas
@@ -54715,24 +54788,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c4ae876432bc444b20043125d10018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savedData:
-    metaCurrency: 0
-    ActiveTowers:
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    ActiveWeapons:
-    - 
-    - 
-    - 
-    UnlockedTowers: 000000000000000000000000
-    UnlockedWeapons: 000000000000000000
-    lifetimeTowerDamage: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    lifetimeTowerPlacement: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    ActiveTechNodes: 00000000000000000000
   levelData: {fileID: 11400000, guid: 41bcd9da8efdd1840977dac01d006eab, type: 2}
   waveCountdown: 0
   currWave: 0
@@ -66891,6 +66946,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1443872102}
     - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: waveContent
+      value: 
+      objectReference: {fileID: 11400000, guid: 772068826b8c327429ea265a7be9aacf, type: 2}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
+      propertyPath: levelManager
+      value: 
+      objectReference: {fileID: 1748067187}
+    - target: {fileID: 48297540650708186, guid: 8525f78b4e07a8e419cfa5b91da2606b, type: 3}
       propertyPath: waveSet.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -67086,3 +67149,4 @@ SceneRoots:
   - {fileID: 350436595}
   - {fileID: 482578531}
   - {fileID: 1117051411}
+  - {fileID: 1088712134}

@@ -29,11 +29,11 @@ public class PulseTowerBehavior : TowerBehavior
 
     private void OnEnable()
     {
-        EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
+        //EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
     }
     private void onDisable()
     {
-        EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
+        //EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
     }
 
     void OnTriggerEnter(Collider other)

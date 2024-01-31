@@ -10,11 +10,11 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    public delegate void EnemyDeath(GameObject deadEnemy);
-    public static event EnemyDeath OnEnemyDeath;
+    public delegate void EnemyDeath(EnemyBehavior deadEnemy);
+    public event EnemyDeath OnEnemyDeath;
 
-    public delegate void EnemyReachedGoal(GameObject enemy);
-    public static event EnemyReachedGoal OnEnemyReachedGoal;
+    public delegate void EnemyReachedGoal(EnemyBehavior enemy);
+    public event EnemyReachedGoal OnEnemyReachedGoal;
 
     public GridTile currTile;
     public GridTile successorTile;
@@ -62,7 +62,7 @@ public class EnemyBehavior : MonoBehaviour
         if (currTile is GoalTile)
         {
             Debug.Log("reached end, presumably");
-            OnEnemyReachedGoal?.Invoke(gameObject);
+            OnEnemyReachedGoal?.Invoke(this);
             //OnEnemyDeath?.Invoke(gameObject);
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
@@ -80,7 +80,7 @@ public class EnemyBehavior : MonoBehaviour
         EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
-            OnEnemyDeath?.Invoke(gameObject);
+            OnEnemyDeath?.Invoke(this);
 
 
             //Modify these lines. Play death animation, but no delay on the Destroys (don't want enemies getting into goal even when hp <= 0)

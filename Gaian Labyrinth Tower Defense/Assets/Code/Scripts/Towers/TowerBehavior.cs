@@ -55,14 +55,14 @@ public class TowerBehavior : MonoBehaviour, Interactable
         targetingMode = "Close";
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
-        EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
-        EnemyBehavior.OnEnemyReachedGoal += removeEnemyFromList;
+        //EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
+        //EnemyBehavior.OnEnemyReachedGoal += removeEnemyFromList;
         HideInteractButton();
     }
     private void OnDisable()
     {
-        EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
-        EnemyBehavior.OnEnemyReachedGoal -= removeEnemyFromList;
+        //EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
+        //EnemyBehavior.OnEnemyReachedGoal -= removeEnemyFromList;
     }
     void OnTriggerEnter(Collider other)
     {

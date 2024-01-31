@@ -7,7 +7,7 @@ using System;
 //Convert class to Json, then save with PlayerPrefs. Load with PlayerPrefs and un-convert with Json
 //Loads on selecting save slot from main menu, and on every subsequent scene
 //PlayerPrefs key is "MyProgress"
-[Serializable]
+
 public class PlayerInfo
 {
     //maybe switch some of these to lists that populate based on the actual sets (of towers, weapons, tech nodes, levels) we have

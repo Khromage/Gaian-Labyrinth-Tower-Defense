@@ -47,7 +47,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362173102988795995}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f645bbba89ab6134bb4ec32177ca78d5, type: 3}
   m_Name: 
@@ -59,7 +59,6 @@ MonoBehaviour:
   fireRate: 1
   fireCountdown: 0
   currentDamage: 1
-  multiPathUpgrade: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 7357546956886231641}
   partToRotate: {fileID: 576702084041083807}
@@ -142,13 +141,12 @@ MonoBehaviour:
   fireRate: 1
   fireCountdown: 0
   currentDamage: 1
-  multiPathUpgrade: 0
   enemyTag: Enemy
-  InteractionIndicator: {fileID: 0}
-  partToRotate: {fileID: 0}
+  InteractionIndicator: {fileID: 7357546956886231641}
+  partToRotate: {fileID: 576702084041083807}
   turnSpeed: 5
-  projectilePrefab: {fileID: 0}
-  firePoint: {fileID: 0}
+  projectilePrefab: {fileID: -3075206357820888942, guid: 348358a1c08fa1a40b16b7937d20e68e, type: 3}
+  firePoint: {fileID: 6788566222244839869}
   enemies: []
   detectionZone: {fileID: 0}
   cost: 10
