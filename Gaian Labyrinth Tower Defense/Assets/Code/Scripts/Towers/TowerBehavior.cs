@@ -53,7 +53,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     private void OnEnable()
     {
-        targetingMode = "Close";
+        targetingMode = "First";
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
         EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
@@ -141,11 +141,42 @@ public class TowerBehavior : MonoBehaviour, Interactable
                             weakestEnemy = enemy;
                         }
                     }
+
                     if(weakestEnemy != null)
                     {
                         target = weakestEnemy;
                     }
                     break;
+                case "First":
+                int shortDist = int.MaxValue;
+                GameObject firstEnemy = null;
+                foreach (GameObject enemy in enemies) {
+                    int currDistance = enemy.GetComponent<EnemyBehavior>().currTile.goalDist;
+                    if (currDistance < shortDist) {
+                        shortDist = currDistance;
+                        firstEnemy = enemy;
+                    }
+                }
+
+                if(firstEnemy != null) {
+                    target = firstEnemy;
+                }
+                break;
+                case "Last":
+                int farDist = int.MinValue;
+                GameObject lastEnemy = null;
+                foreach (GameObject enemy in enemies) {
+                    int distance = enemy.GetComponent<EnemyBehavior>().currTile.goalDist;
+                    if (distance > farDist) {
+                        shortDist = distance;
+                        lastEnemy = enemy;
+                    }
+                }
+
+                if(lastEnemy != null) {
+                    target = lastEnemy;
+                }
+                break;
             }
         }
         catch
