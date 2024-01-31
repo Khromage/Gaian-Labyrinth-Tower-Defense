@@ -32,6 +32,8 @@ public class LevelManager : MonoBehaviour
 
     public Material visibleSquare;
 
+    [SerializeField]
+    private EnemiesRemaining remainingEnemies;
 
     //[SerializeField]
     public int remainingLives;
@@ -56,6 +58,8 @@ public class LevelManager : MonoBehaviour
         remainingLives = 25;
 
         SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
+
+        remainingEnemies.enemies.Clear();
     }
 
     // Update is called once per frame
@@ -85,13 +89,13 @@ public class LevelManager : MonoBehaviour
     {
         spawnPoints.Add(spawnPoint);
         spawnPoint.OnSpawnedEnemy += enemySpawned;
-        spawnPoint.OnSpawnedEnemy += enemySpawned;
     }
 
     private void enemySpawned(EnemyBehavior enemy)
     {
         enemy.OnEnemyReachedGoal += LoseLives;
         enemy.OnEnemyDeath += nothingRN;
+        //remainingEnemies.enemies.Add(enemy.gameObject);
     }
     private void LoseLives(EnemyBehavior enemy)
     {

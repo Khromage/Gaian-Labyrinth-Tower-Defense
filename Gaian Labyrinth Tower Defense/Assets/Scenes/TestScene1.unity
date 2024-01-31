@@ -54791,8 +54791,10 @@ MonoBehaviour:
   levelData: {fileID: 11400000, guid: 41bcd9da8efdd1840977dac01d006eab, type: 2}
   waveCountdown: 0
   currWave: 0
+  enemyList: []
   goalTile: {fileID: 1443872102}
   visibleSquare: {fileID: 2100000, guid: c32c91ad8ce39ad429ce49f9bcb2fbe6, type: 2}
+  remainingEnemies: {fileID: 11400000, guid: 4fbdfbed14053834494667841f693993, type: 2}
   remainingLives: 20
 --- !u!4 &1748067189
 Transform:

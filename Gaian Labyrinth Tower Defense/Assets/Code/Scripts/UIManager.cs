@@ -32,6 +32,9 @@ public class UIManager : MonoBehaviour
 
     //private int counter = 0;
 
+    [SerializeField]
+    private EnemiesRemaining remainingEnemies;
+
     void Start()
     {
         //get list of all spawnpoints
