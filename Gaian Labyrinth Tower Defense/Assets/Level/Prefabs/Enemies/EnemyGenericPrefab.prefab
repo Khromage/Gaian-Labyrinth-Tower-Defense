@@ -277,6 +277,7 @@ MonoBehaviour:
   worth: 0
   harm: 0
   EnemyHurtSFX: {fileID: 0}
+  remainingEnemies: {fileID: 11400000, guid: 4fbdfbed14053834494667841f693993, type: 2}
 --- !u!135 &5376600795978324578
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -468,10 +468,10 @@ public class Player : UnitBehavior
         float elapsedTime = 0f;
         Quaternion initRot = transform.rotation;
         //Quaternion goalRot = Quaternion.Euler(currGravDir.x, 0f, currGravDir.z); //THIS LINE IS THE PROBLEM. need currGravDir as an actual rotation, not a normalized direction
-        Quaternion goalRot = Quaternion.LookRotation(Vector3.Cross(Vector3.up, -currGravDir), -currGravDir);
+        //Quaternion goalRot = Quaternion.LookRotation(Vector3.Cross(Vector3.up, -currGravDir), -currGravDir);
         
-        Vector3 initRotEuler = transform.rotation.eulerAngles;
-        Vector3 goalRotEuler = Quaternion.LookRotation(Vector3.Cross(Vector3.up, currGravDir), currGravDir).eulerAngles;
+        //Vector3 initRotEuler = transform.rotation.eulerAngles;
+        //Vector3 goalRotEuler = Quaternion.LookRotation(Vector3.Cross(Vector3.up, currGravDir), currGravDir).eulerAngles;
 
 
         while (elapsedTime < 1)

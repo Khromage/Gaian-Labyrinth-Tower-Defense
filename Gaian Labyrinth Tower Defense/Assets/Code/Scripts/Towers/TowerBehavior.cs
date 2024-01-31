@@ -78,6 +78,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
         enemies.Add(enemy.gameObject);
         enemy.OnEnemyDeath += RemoveEnemy;
+        enemy.OnEnemyReachedGoal += RemoveEnemy;
     }
     public void RemoveEnemy(EnemyBehavior enemy)
     {
@@ -86,8 +87,10 @@ public class TowerBehavior : MonoBehaviour, Interactable
         if(!enemies.Contains(enemy.gameObject))
             return;
 
+        Debug.Log($"removing enemy {enemy.gameObject} from tower's list");
         enemies.Remove(enemy.gameObject);   
         enemy.OnEnemyDeath -= RemoveEnemy;
+        enemy.OnEnemyReachedGoal -= RemoveEnemy;
     }
 
     void OnTriggerEnter(Collider other)

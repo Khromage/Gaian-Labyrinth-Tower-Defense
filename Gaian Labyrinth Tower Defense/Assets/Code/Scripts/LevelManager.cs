@@ -95,7 +95,7 @@ public class LevelManager : MonoBehaviour
     {
         enemy.OnEnemyReachedGoal += LoseLives;
         enemy.OnEnemyDeath += nothingRN;
-        //remainingEnemies.enemies.Add(enemy.gameObject);
+        remainingEnemies.enemies.Add(enemy.gameObject); //removed from list in EnemyBehavior's LateUpdate()
     }
     private void LoseLives(EnemyBehavior enemy)
     {
