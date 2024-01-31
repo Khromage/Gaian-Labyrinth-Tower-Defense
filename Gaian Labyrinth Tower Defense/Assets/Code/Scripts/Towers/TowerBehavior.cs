@@ -78,6 +78,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         enemy.OnEnemyDeath += RemoveEnemy;
     }
     public void RemoveEnemy(EnemyBehavior enemy)
+    {
         if(enemy == null)
             return;
         if(!enemies.Contains(enemy.gameObject))
