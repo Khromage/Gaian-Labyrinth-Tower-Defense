@@ -75,6 +75,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         if(!isAlive)
         {
+            Debug.Log("destroying enemy");
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
         }
@@ -91,8 +92,8 @@ public class EnemyBehavior : MonoBehaviour
         EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
+            Debug.Log("enemy death event");
             OnEnemyDeath?.Invoke(gameObject);
-
             isAlive = false;
         }
         

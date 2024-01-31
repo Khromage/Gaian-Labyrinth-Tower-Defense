@@ -85,12 +85,18 @@ public class TowerBehavior : MonoBehaviour, Interactable
     }
     private void removeEnemyFromList(GameObject enemyToRemove)
     {
-        if(target = enemyToRemove)
+        if(target == enemyToRemove)
         {
+            Debug.Log("Removing target: " + enemyToRemove);
             enemies.Remove(enemyToRemove);
-            UpdateTarget();
+            Debug.Log("Enemies in list after removal: " + string.Join(", ", enemies));
+
+            //UpdateTarget();
         } else {
+            Debug.Log("Removing enemy: " + enemyToRemove);
             enemies.Remove(enemyToRemove);
+            Debug.Log("Enemies in list after removal: " + string.Join(", ", enemies));
+
         }
     }
     void UpdateTarget()
@@ -183,7 +189,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
         fireCountdown -= Time.deltaTime;
         
-        Debug.Log(string.Join(", ", enemies));
     }
     void Shoot()
     {
