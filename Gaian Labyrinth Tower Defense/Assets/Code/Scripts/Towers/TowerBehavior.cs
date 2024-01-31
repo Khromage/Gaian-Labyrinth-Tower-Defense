@@ -60,45 +60,43 @@ public class TowerBehavior : MonoBehaviour, Interactable
         targetingMode = "Close";
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
-        EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
-        EnemyBehavior.OnEnemyReachedGoal += removeEnemyFromList;
+
         HideInteractButton();
     }
     private void OnDisable()
     {
-        EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
-        EnemyBehavior.OnEnemyReachedGoal -= removeEnemyFromList;
+
     }
+    
+    public void AddEnemy(EnemyBehavior enemy)
+    {
+        if(enemy == null)
+            return;
+        if(enemies.Contains(enemy.gameObject))
+            return;
+
+        enemies.Add(enemy.gameObject);
+        enemy.OnEnemyDeath += RemoveEnemy;
+    }
+    public void RemoveEnemy(EnemyBehavior enemy)
+        if(enemy == null)
+            return;
+        if(!enemies.Contains(enemy.gameObject))
+            return;
+
+        enemies.Remove(enemy.gameObject);
+        enemy.OnEnemyDeath -= RemoveEnemy;
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy" && !enemies.Contains(other.gameObject))
-            {
-                enemies.Add(other.gameObject);
-            }
+        AddEnemy(other.GetComponent<EnemyBehavior>());
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
-        {
-            removeEnemyFromList(other.gameObject);
-        }
+        RemoveEnemy(other.GetComponent<EnemyBehavior>());
     }
-    private void removeEnemyFromList(GameObject enemyToRemove)
-    {
-        if(target == enemyToRemove)
-        {
-            Debug.Log("Removing target: " + enemyToRemove);
-            enemies.Remove(enemyToRemove);
-            Debug.Log("Enemies in list after removal: " + string.Join(", ", enemies));
 
-            //UpdateTarget();
-        } else {
-            Debug.Log("Removing enemy: " + enemyToRemove);
-            enemies.Remove(enemyToRemove);
-            Debug.Log("Enemies in list after removal: " + string.Join(", ", enemies));
-
-        }
-    }
     void UpdateTarget()
     {
         Debug.Log("Enemies in list: " + string.Join(", ", enemies));
@@ -192,7 +190,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     }
     void Shoot()
     {
-        ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation, gameObject.transform) as ProjectileBehavior;
+        ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation) as ProjectileBehavior;
         projectile.damage = currentDamage;
         if (projectile != null)
             projectile.SetTarget(target.transform);

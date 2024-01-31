@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
 
 
     //[SerializeField]
-    public int remainingLives = 20;
+    public int remainingLives;
     //maybe an event where an enemy reaches the goal? invoked by the enemy, then in this script adjust remainingLives
 
     //spawnPoint list
@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour
         flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
         
         waveCountdown = 1f;
-        remainingLives += 5;
+        remainingLives = 25;
 
         SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
     }
@@ -77,9 +77,9 @@ public class LevelManager : MonoBehaviour
         levelData.countdown = (int)waveCountdown;
     }
 
-    private void LoseLives(GameObject enemy)
+    private void LoseLives(EnemyBehavior enemy)
     {
-        int harm = enemy.GetComponent<EnemyBehavior>().harm;
+        int harm = enemy.harm;
         Debug.Log($"Losing {harm} lives in LevelManager. Remaining lives: {remainingLives}");
         remainingLives -= harm;
     }
