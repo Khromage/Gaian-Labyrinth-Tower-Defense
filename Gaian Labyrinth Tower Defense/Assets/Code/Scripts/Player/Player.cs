@@ -65,7 +65,6 @@ public class Player : UnitBehavior
     public KeyCode upgradePath3 = KeyCode.L;
 
 
-
     [Header("Layer Variables")]
     public LayerMask whatIsGround;
     public LayerMask Grid;
@@ -73,18 +72,20 @@ public class Player : UnitBehavior
     [Header("Ground Check")]
     public float playerHeight;
     bool grounded;
-
     public Transform orientation;
-
     float horizontalInput;
     float verticalInput;
-
     Vector3 moveDirection;
     // rb rigidbody is declared in UnitBehavior
 
     //private Vector3 currGravDir;
     private Coroutine rotateToSurfaceCoroutine;
 
+
+    [Header("Health")]
+    public float maxHealth;
+    public float health;
+    
     [Header("Mana")]
     public float maxMana;
     public float mana;
@@ -118,6 +119,9 @@ public class Player : UnitBehavior
     public GameObject currentTower;
     public GameObject[] towerSet = new GameObject[6];
 
+    [Header("Player Data")]
+    public PlayerData playerData;
+
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
     {
@@ -140,10 +144,11 @@ public class Player : UnitBehavior
 
         currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
 
+        maxHealth = 100f;
+        health = maxHealth;
         maxMana = 100f;
         mana = maxMana;
         manaRegenRate = 30f;
-
     }
 
     //Method to be checked on every frame of the game
@@ -186,6 +191,11 @@ public class Player : UnitBehavior
                 placeTowers();
             }
         }
+
+
+        playerData.currency = currency;
+        playerData.playerHealth = health;
+        playerData.playerMana = mana;
     }
 
     public void FixedUpdate()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //wave start as an event? invoke
 
@@ -14,7 +15,7 @@ public class LevelManager : MonoBehaviour
     public static event LoadData OnLoadData;
     
     public PlayerInfo savedData;
-
+    public LevelData levelData;
 
     //Timer
     private float waveTimer = 10f; //total time between waves
@@ -43,19 +44,19 @@ public class LevelManager : MonoBehaviour
         savedData = new PlayerInfo();
         LoadSavedData();
 
-
         flowFieldGenerator = new FlowFieldGenerator();
         flowFieldGenerator.visibleSquare = visibleSquare;
         flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
         
         waveCountdown = 1f;
         remainingLives += 5;
+
+        SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
         if (currWave < 7) //currWave < # of waves.
         {
             //Gameplay/design decision: maybe wait to start countdown until wave has been defeated, or just until they've all spawned. 
@@ -69,6 +70,11 @@ public class LevelManager : MonoBehaviour
                 OnWaveStart?.Invoke(currWave);
             }
         }
+
+        // Update levelData
+        levelData.lives = remainingLives;
+        levelData.wave = currWave;
+        levelData.countdown = (int)waveCountdown;
     }
 
     private void LoseLives(GameObject enemy)
@@ -135,7 +141,6 @@ public class LevelManager : MonoBehaviour
         Player.OnTowerPlaced += recalcFlowField_NewTower;
         Player.OnTowerSold += recalcFlowField_NewTile;
     }
-
     private void OnDisable()
     {
         EnemyBehavior.OnEnemyReachedGoal -= LoseLives;
