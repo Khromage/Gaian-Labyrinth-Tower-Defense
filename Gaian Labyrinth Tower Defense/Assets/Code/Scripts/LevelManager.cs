@@ -81,7 +81,6 @@ public class LevelManager : MonoBehaviour
         levelData.countdown = (int)waveCountdown;
     }
 
-
     public void addSpawnPoint(SpawnPoint spawnPoint)
     {
         spawnPoints.Add(spawnPoint);
@@ -96,7 +95,7 @@ public class LevelManager : MonoBehaviour
     }
     private void LoseLives(EnemyBehavior enemy)
     {
-        int harm = enemy.GetComponent<EnemyBehavior>().harm;
+        int harm = enemy.harm;
         Debug.Log($"Losing {harm} lives in LevelManager. Remaining lives: {remainingLives}");
         remainingLives -= harm;
 

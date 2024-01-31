@@ -15,7 +15,7 @@ public class TrackingBulletBehavior : BulletBehavior
     protected override void Start()
     {
         speed = 25f;
-        damage = 1f;
+        damage = 5f;
         turnSpeed = 20f;
         //how many enemies you wanna pierce
         pierceAMT = 0;
