@@ -57,7 +57,7 @@ MonoBehaviour:
   range: 10
   fireRate: 1
   fireCountdown: 0
-  currentDamage: 1
+  currentDamage: 5
   multiPathUpgrade: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 5392681474844564774}

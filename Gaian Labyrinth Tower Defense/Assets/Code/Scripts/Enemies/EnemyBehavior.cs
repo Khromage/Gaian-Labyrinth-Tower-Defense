@@ -19,7 +19,8 @@ public class EnemyBehavior : MonoBehaviour
     public GridTile currTile;
     public GridTile successorTile;
     public LayerMask Grid;
-    protected float moveSpeed = 3f;
+    protected float moveSpeed;
+    protected bool isAlive;
 
     [SerializeField]
     private EnemyHealthBar HealthBar;
@@ -48,6 +49,8 @@ public class EnemyBehavior : MonoBehaviour
         harm = 1;
         worth = 5;
         maxHealth = 12f;
+        moveSpeed = 3f;
+        isAlive = true;
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
     }
@@ -64,6 +67,14 @@ public class EnemyBehavior : MonoBehaviour
             Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(gameObject);
             //OnEnemyDeath?.Invoke(gameObject);
+            isAlive = false;
+        }
+    }
+
+    void LateUpdate()
+    {
+        if(!isAlive)
+        {
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
         }
@@ -82,14 +93,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             OnEnemyDeath?.Invoke(gameObject);
 
-
-            //Modify these lines. Play death animation, but no delay on the Destroys (don't want enemies getting into goal even when hp <= 0)
-
-            float destroyDelay = .5f * damage / maxHealth; // UnityEngine.Random.value;
-            if (destroyDelay > .5f)
-                destroyDelay = .5f;
-            Destroy(gameObject, destroyDelay);
-            Destroy(HealthBar.gameObject, destroyDelay);
+            isAlive = false;
         }
         
     }
