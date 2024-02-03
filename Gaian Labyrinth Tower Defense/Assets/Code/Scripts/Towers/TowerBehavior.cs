@@ -131,6 +131,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
                         target = null;
                     }
                     break;
+
                 case "Strong":
                     float highestHealth = 0;
                     GameObject strongestEnemy = null;
@@ -148,6 +149,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
                         target = strongestEnemy;
                     }
                     break;
+
                 case "Weak":
                     float lowestHealth = Mathf.Infinity;
                     GameObject weakestEnemy = null;
@@ -165,6 +167,36 @@ public class TowerBehavior : MonoBehaviour, Interactable
                         target = weakestEnemy;
                     }
                     break;
+
+                case "First":
+                int shortDist = int.MaxValue;
+                GameObject firstEnemy = null;
+                foreach (GameObject enemy in enemies) {
+                    int currDistance = enemy.GetComponent<EnemyBehavior>().currTile.goalDist;
+                    if (currDistance < shortDist) {
+                        shortDist = currDistance;
+                        firstEnemy = enemy;
+                    }
+                }
+                if(firstEnemy != null) {
+                    target = firstEnemy;
+                }
+                break;
+
+                case "Last":
+                int farDist = int.MinValue;
+                GameObject lastEnemy = null;
+                foreach (GameObject enemy in enemies) {
+                    int distance = enemy.GetComponent<EnemyBehavior>().currTile.goalDist;
+                    if (distance > farDist) {
+                        shortDist = distance;
+                        lastEnemy = enemy;
+                    }
+                }
+                if(lastEnemy != null) {
+                    target = lastEnemy;
+                }
+                break;
             }
         } else {
             Debug.Log("Enemy list is empty");
