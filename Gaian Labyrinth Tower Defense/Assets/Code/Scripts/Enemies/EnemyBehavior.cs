@@ -24,6 +24,7 @@ public class EnemyBehavior : MonoBehaviour
 
     [SerializeField]
     private EnemyHealthBar HealthBar;
+    protected int enemyID;
     protected float maxHealth;
     public float currentHealth;
     protected float maxSheild;
@@ -130,8 +131,10 @@ public class EnemyBehavior : MonoBehaviour
         Vector3 posToMoveToward = transform.position;
         if (successorTile != null)
             posToMoveToward = successorTile.transform.position;
+        /*
         else
             Debug.Log("enemy no successor to move toward");
+        */
         Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
 
         transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);

@@ -87,7 +87,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         if(!enemies.Contains(enemy.gameObject))
             return;
 
-        Debug.Log($"removing enemy {enemy.gameObject} from tower's list");
+        //Debug.Log($"removing enemy {enemy.gameObject} from tower's list");
         enemies.Remove(enemy.gameObject);   
         enemy.OnEnemyDeath -= RemoveEnemy;
         enemy.OnEnemyReachedGoal -= RemoveEnemy;
@@ -104,7 +104,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     void UpdateTarget()
     {
-        Debug.Log("Enemies in list: " + string.Join(", ", enemies));
+        //Debug.Log("Enemies in list: " + string.Join(", ", enemies));
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
         if(enemies.Count > 0)
         {
@@ -199,7 +199,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
                 break;
             }
         } else {
-            Debug.Log("Enemy list is empty");
+            //Debug.Log("Enemy list is empty");
         }
     }
 

@@ -15,7 +15,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public TMP_Text CountText;
     [SerializeField]
-    public LevelData levelData;
     public PlayerData playerData;
     [SerializeField]
     private GameObject player;
@@ -47,10 +46,10 @@ public class UIManager : MonoBehaviour
     {
         //int cw;
         //cw = levelManager.GetComponent<LevelManager>().currWave;
-        WavesText.text = "Wave: " + levelData.wave.ToString();
-        TimeText.text = "Next Wave: " + levelData.countdown.ToString();
-        LivesText.text = "Lives:\n" + levelData.lives.ToString();
-        CurrencyText.text = "$" + playerData.currency.ToString();
+        WavesText.text = "Wave: " + LevelManager.Instance.Wave.ToString();
+        TimeText.text = "Next Wave: " + LevelManager.Instance.Countdown.ToString();
+        LivesText.text = "Lives:\n" + LevelManager.Instance.Lives.ToString();
+        CurrencyText.text = "$" + LevelManager.Instance.Currency.ToString();
         //LivesText.text = "hey " + counter;
         //counter++;
         //CountText.text = GetComponent<SpawnPoint>().waveSet[cw -1].waveEnemies.Length.ToString();
@@ -203,7 +202,7 @@ public class UIManager : MonoBehaviour
         Player.OnEnterCombatMode += player_enterCombatMode;
         Player.OnSwapWeapon += player_swapWeapon;
 
-        LevelManager.OnLoadData += level_LoadData;
+        Level.OnLoadData += level_LoadData;
     }
     private void OnDisable()
     {
@@ -212,6 +211,6 @@ public class UIManager : MonoBehaviour
         Player.OnEnterCombatMode -= player_enterCombatMode;
         Player.OnSwapWeapon -= player_swapWeapon;
 
-        LevelManager.OnLoadData -= level_LoadData;
+        Level.OnLoadData -= level_LoadData;
     }
 }

@@ -710,14 +710,14 @@ public class Player : UnitBehavior
     {
         //EnemyBehavior.OnEnemyDeath += GainCurrency;
         Weapon.OnFire += spentMana;
-        LevelManager.OnLoadData += level_LoadData;
+        Level.OnLoadData += level_LoadData;
     }
 
     private void OnDisable()
     {
         //EnemyBehavior.OnEnemyDeath -= GainCurrency;
         Weapon.OnFire -= spentMana;
-        LevelManager.OnLoadData -= level_LoadData;
+        Level.OnLoadData -= level_LoadData;
     }
 
     private void destoryTempHolder() 

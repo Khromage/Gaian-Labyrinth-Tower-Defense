@@ -36,7 +36,7 @@ public class BulletBehavior : ProjectileBehavior
     public virtual void HitTarget(GameObject hitEnemy)
     {
         EnemyBehavior e = hitEnemy.GetComponent<EnemyBehavior>();
-        Debug.Log("Hit Enemy for: " + damage);
+        //Debug.Log("Hit Enemy for: " + damage);
         e.takeDamage(damage, gameObject);
         pierceAMT -= 1;
 
