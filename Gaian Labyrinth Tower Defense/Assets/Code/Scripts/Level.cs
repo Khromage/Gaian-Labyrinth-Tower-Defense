@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
+
 
 //wave start as an event? invoke
 
@@ -15,15 +17,16 @@ public class Level : MonoBehaviour
     public static event LoadData OnLoadData;
     
     public PlayerInfo savedData;
+    private LevelInfo currentLevelInfo;
 
     //Timer
-    private float waveTimer = 10f; //total time between waves
+    private float waveTimer; //total time between waves
     public float waveCountdown; //currently remaining time. Display this.
 
-    public int currWave = 0;
+    public int currWave;
     [field: SerializeField]
-    public GameObject[] SpawnPoints;
-    private int[] SpawnDelays;
+    public GameObject[] SpawnLocations;
+
     public List<EnemyBehavior> enemyList = new List<EnemyBehavior>();
 
     [SerializeField] private GameObject goalTile;
@@ -33,39 +36,36 @@ public class Level : MonoBehaviour
 
     [SerializeField]
     private EnemiesRemaining remainingEnemies;
-    //[SerializeField]
-    public int remainingLives;
-    //maybe an event where an enemy reaches the goal? invoked by the enemy, then in this script adjust remainingLives
 
-    //spawnPoint list
-        //FindGameObjectWithName? SpawnPointSet, and grab all of its children for our list to use for the waves.
-        //or manually fill the list with the spawn point objects back in the inspector for each level
+    public int remainingLives;
+
     //gameMode? (difficulty?)
 
     // Start is called before the first frame update
     void Start()
     {
         savedData = new PlayerInfo();
+        currentLevelInfo = LevelManager.Instance.currentLevel;
         LoadSavedData();
 
         flowFieldGenerator = new FlowFieldGenerator();
         flowFieldGenerator.visibleSquare = visibleSquare;
         flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
         
+        currWave = 0;
         waveCountdown = 1f;
+        waveTimer = 10f;
         remainingLives = 25;
 
         SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
 
         remainingEnemies.enemies.Clear();
-
-        SpawnDelays = new int[SpawnPoints.Length];
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (currWave < 7) //currWave < # of waves.
+        if (currWave < currentLevelInfo.Waves.Length) //currWave < # of waves.
         {
             //Gameplay/design decision: maybe wait to start countdown until wave has been defeated, or just until they've all spawned. 
             waveCountdown -= Time.deltaTime;
@@ -75,7 +75,7 @@ public class Level : MonoBehaviour
                 waveCountdown = waveTimer;
                 currWave++;
                 waveTimer++;
-                OnWaveStart?.Invoke(currWave);
+                StartWave(currWave); // LAST THING CHANGED (KHROM)
             }
         }
 
@@ -85,12 +85,37 @@ public class Level : MonoBehaviour
         LevelManager.Instance.Countdown = (int)waveCountdown;
     }
 
+    private void StartWave(int wave)
+    {
+        Debug.Log("Starting wave (" + wave + ")");
+        Parallel.ForEach(currentLevelInfo.Waves[wave].SpawnPoints, SpawnPoint =>
+        {
+            StartCoroutine(StartSpawning(1f, SpawnPoint.SpawnSet));
+        });
+    }
+
+    IEnumerator StartSpawning(float defaultDelay, int[] spawnSet)
+    {
+        for(int i = 0; i < spawnSet.Length; i++)
+        {
+            yield return new WaitForSeconds(defaultDelay);
+
+            /*
+            GameObject spawnedEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position, transform.rotation);
+            EnemyBehavior spawnedEnemyScript = spawnedEnemy.GetComponent<EnemyBehavior>();
+            spawnedEnemyScript.currTile = this.GetComponent<GridTile>();
+            */
+            Debug.Log("Enemy with ID (" + spawnSet[i] + ") was spawned");
+        }
+    }
+
     private void enemySpawned(EnemyBehavior enemy)
     {
         enemy.OnEnemyReachedGoal += LoseLives;
         enemy.OnEnemyDeath += nothingRN;
         remainingEnemies.enemies.Add(enemy.gameObject); //removed from list in EnemyBehavior's LateUpdate()
     }
+
     private void LoseLives(EnemyBehavior enemy)
     {
         int harm = enemy.harm;

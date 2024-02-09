@@ -408,11 +408,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1292365710648262116, guid: 9b79530712a089b4e8771d043225947b, type: 3}
   m_PrefabInstance: {fileID: 4408229351002248321}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1443872102 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5076105096958000290, guid: 1be7dec7d7ec9a64f8fb233be068053d, type: 3}
-  m_PrefabInstance: {fileID: 8631157221661438295}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1513391537 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7524210871195785605, guid: 9b79530712a089b4e8771d043225947b, type: 3}
@@ -510,57 +505,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 35, y: 0, z: 0}
---- !u!1 &1748067187
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1748067189}
-  - component: {fileID: 1748067188}
-  m_Layer: 0
-  m_Name: LevelManagerObj
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1748067188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1748067187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c4ae876432bc444b20043125d10018, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waveCountdown: 0
-  currWave: 0
-  enemyList: []
-  goalTile: {fileID: 1443872102}
-  visibleSquare: {fileID: 2100000, guid: c32c91ad8ce39ad429ce49f9bcb2fbe6, type: 2}
-  remainingEnemies: {fileID: 11400000, guid: 4fbdfbed14053834494667841f693993, type: 2}
-  remainingLives: 20
---- !u!4 &1748067189
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1748067187}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1843667406 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2024476711649803726, guid: 9b79530712a089b4e8771d043225947b, type: 3}
@@ -736,7 +680,7 @@ PrefabInstance:
     - target: {fileID: 1675261989773490950, guid: 1be7dec7d7ec9a64f8fb233be068053d, type: 3}
       propertyPath: levelManager
       value: 
-      objectReference: {fileID: 1748067187}
+      objectReference: {fileID: 0}
     - target: {fileID: 2655961102641313441, guid: 1be7dec7d7ec9a64f8fb233be068053d, type: 3}
       propertyPath: m_Name
       value: Forest Paths
@@ -800,11 +744,11 @@ PrefabInstance:
     - target: {fileID: 8389158546094680816, guid: 1be7dec7d7ec9a64f8fb233be068053d, type: 3}
       propertyPath: levelManager
       value: 
-      objectReference: {fileID: 1748067187}
+      objectReference: {fileID: 0}
     - target: {fileID: 9088565602806466461, guid: 1be7dec7d7ec9a64f8fb233be068053d, type: 3}
       propertyPath: levelManager
       value: 
-      objectReference: {fileID: 1748067187}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -818,7 +762,6 @@ SceneRoots:
   - {fileID: 1575695107}
   - {fileID: 687454846}
   - {fileID: 4408229351002248321}
-  - {fileID: 1748067189}
   - {fileID: 350436595}
   - {fileID: 1117051411}
   - {fileID: 1088712134}

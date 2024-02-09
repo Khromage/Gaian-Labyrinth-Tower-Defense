@@ -651,6 +651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4283309155778340619}
+  - component: {fileID: 6708232665586221932}
   m_Layer: 0
   m_Name: Forest Paths
   m_TagString: Untagged
@@ -676,6 +677,26 @@ Transform:
   - {fileID: 7504995289005355473}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6708232665586221932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2655961102641313441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17c4ae876432bc444b20043125d10018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveCountdown: 0
+  currWave: 0
+  SpawnPoints: []
+  enemyList: []
+  goalTile: {fileID: 5076105096958000290}
+  visibleSquare: {fileID: 2100000, guid: c32c91ad8ce39ad429ce49f9bcb2fbe6, type: 2}
+  remainingEnemies: {fileID: 11400000, guid: 4fbdfbed14053834494667841f693993, type: 2}
+  remainingLives: 0
 --- !u!1 &3458614962008988679
 GameObject:
   m_ObjectHideFlags: 0

@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
         TimeText.text = "Next Wave: " + LevelManager.Instance.Countdown.ToString();
         LivesText.text = "Lives:\n" + LevelManager.Instance.Lives.ToString();
         CurrencyText.text = "$" + LevelManager.Instance.Currency.ToString();
+        
         //LivesText.text = "hey " + counter;
         //counter++;
         //CountText.text = GetComponent<SpawnPoint>().waveSet[cw -1].waveEnemies.Length.ToString();

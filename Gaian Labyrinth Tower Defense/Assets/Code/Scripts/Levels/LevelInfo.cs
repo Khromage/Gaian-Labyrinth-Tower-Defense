@@ -12,20 +12,24 @@ public class LevelInfo : ScriptableObject
 
     [field: SerializeField]
     public GameObject Prefab { get; private set; }
-    
+        
     [field: SerializeField]
     public WaveInfo[] Waves { get; private set; }
 }
 
 [Serializable]
 public struct WaveInfo
-{
+{    
     [field: SerializeField]
-    public int AssignedSpawnPoint { get; private set; }
-    
-    [field: SerializeField]
-    public int[] SpawnSet { get; private set; } // list of EnemyIDs
+    public SpawnPointInfo[] SpawnPoints { get; private set; }
 
     [field: SerializeField]
     public TimeSpan Duration { get; private set; }
+}
+
+[Serializable]
+public struct SpawnPointInfo
+{
+    [field: SerializeField]
+    public int[] SpawnSet; // List of EnemyIDs to spawn at this spawn point
 }

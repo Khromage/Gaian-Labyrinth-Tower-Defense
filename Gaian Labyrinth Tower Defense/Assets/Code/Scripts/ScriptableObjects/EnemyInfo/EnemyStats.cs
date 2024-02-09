@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyStats : ScriptableObject
 {
     //time before spawning this enemy after the previous one
+    public int ID;
     public float spawnDelay;
 
     public float moveSpeed;

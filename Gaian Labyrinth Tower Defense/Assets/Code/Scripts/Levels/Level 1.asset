@@ -14,4 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: TestScene1
   <Prefab>k__BackingField: {fileID: 2655961102641313441, guid: 1be7dec7d7ec9a64f8fb233be068053d, type: 3}
-  <Waves>k__BackingField: []
+  <Waves>k__BackingField:
+  - <SpawnPoints>k__BackingField:
+    - SpawnSet: 01000000050000000300000002000000
+    - SpawnSet: 01000000050000000300000002000000
+    - SpawnSet: 01000000050000000300000002000000
+  - <SpawnPoints>k__BackingField:
+    - SpawnSet: 0100000002000000
+    - SpawnSet: 0100000002000000
+    - SpawnSet: 0100000002000000
