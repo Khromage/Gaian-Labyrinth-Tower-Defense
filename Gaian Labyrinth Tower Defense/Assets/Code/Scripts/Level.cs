@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 
 //wave start as an event? invoke
@@ -16,6 +17,7 @@ public class Level : MonoBehaviour
     public delegate void LoadData(string[] towerSet, string[] weaponSet);
     public static event LoadData OnLoadData;
     
+    public EnemyList enemyList;
     public PlayerInfo savedData;
     private LevelInfo currentLevelInfo;
 
@@ -25,9 +27,8 @@ public class Level : MonoBehaviour
 
     public int currWave;
     [field: SerializeField]
-    public GameObject[] SpawnLocations;
-
-    public List<EnemyBehavior> enemyList = new List<EnemyBehavior>();
+    public GameObject[] SpawnPoints;
+    private int FinishedSpawnPoints;
 
     [SerializeField] private GameObject goalTile;
     public FlowFieldGenerator flowFieldGenerator;
@@ -53,8 +54,9 @@ public class Level : MonoBehaviour
         flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
         
         currWave = 0;
-        waveCountdown = 1f;
         waveTimer = 10f;
+        waveCountdown = 0f;
+        FinishedSpawnPoints = 0;
         remainingLives = 25;
 
         SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
@@ -65,47 +67,47 @@ public class Level : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currWave < currentLevelInfo.Waves.Length) //currWave < # of waves.
-        {
-            //Gameplay/design decision: maybe wait to start countdown until wave has been defeated, or just until they've all spawned. 
-            waveCountdown -= Time.deltaTime;
+        //Gameplay/design decision: maybe wait to start countdown until wave has been defeated, or just until they've all spawned. 
 
-            if (waveCountdown <= 0)
-            {
-                waveCountdown = waveTimer;
-                currWave++;
-                waveTimer++;
-                StartWave(currWave); // LAST THING CHANGED (KHROM)
-            }
+        if (FinishedSpawnPoints >= SpawnPoints.Length)
+        {
+            waveCountdown -= Time.deltaTime;
+        }
+        if (currWave < currentLevelInfo.Waves.Length && waveCountdown <= 0) //currWave < # of waves.
+        {
+            StartWave(currWave);
+            FinishedSpawnPoints = 0;
+            waveCountdown = waveTimer;
+            currWave++;
+            LevelManager.Instance.Wave = currWave;
         }
 
-        // Update levelData
+        // Update levelInfo
         LevelManager.Instance.Lives = remainingLives;
-        LevelManager.Instance.Wave = currWave;
         LevelManager.Instance.Countdown = (int)waveCountdown;
     }
 
     private void StartWave(int wave)
     {
-        Debug.Log("Starting wave (" + wave + ")");
-        Parallel.ForEach(currentLevelInfo.Waves[wave].SpawnPoints, SpawnPoint =>
+        Debug.Log("Starting wave (" + currWave + ")");
+
+        for(int i = 0; i < currentLevelInfo.Waves[wave].SpawnPoints.Length; i++)
         {
-            StartCoroutine(StartSpawning(1f, SpawnPoint.SpawnSet));
-        });
+            StartCoroutine(StartSpawning(1f, currentLevelInfo.Waves[wave].SpawnPoints[i].SpawnSet, SpawnPoints[i]));
+        }
     }
 
-    IEnumerator StartSpawning(float defaultDelay, int[] spawnSet)
+    IEnumerator StartSpawning(float defaultDelay, int[] spawnSet, GameObject spawnPoint)
     {
         for(int i = 0; i < spawnSet.Length; i++)
         {
             yield return new WaitForSeconds(defaultDelay);
 
-            /*
-            GameObject spawnedEnemy = Instantiate(waveSet[waveNum - 1].waveEnemies[i], transform.position, transform.rotation);
-            EnemyBehavior spawnedEnemyScript = spawnedEnemy.GetComponent<EnemyBehavior>();
-            spawnedEnemyScript.currTile = this.GetComponent<GridTile>();
-            */
-            Debug.Log("Enemy with ID (" + spawnSet[i] + ") was spawned");
+            Instantiate(enemyList.GetEnemy(spawnSet[i]), spawnPoint.transform.position, spawnPoint.transform.rotation);
+
+            Debug.Log("Enemy spawned at spawnpoint (" + spawnSet[i] + ") during wave (" + currWave + ")");
+
+            FinishedSpawnPoints++;
         }
     }
 
