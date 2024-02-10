@@ -8,7 +8,7 @@ public class LevelMarker : MonoBehaviour
     //public static event LevelInvestigated OnLevelInvestigate;
 
     [SerializeField]
-    private int levelNum;
+    private LevelInfo Level;
 
     [SerializeField]
     private Canvas panel;
@@ -25,7 +25,11 @@ public class LevelMarker : MonoBehaviour
         
     }
 
-
+public void SetLevel()
+{
+    LevelManager.Instance.currentLevel = Level;
+    LevelManager.Instance.LoadLevel(Level);
+}
 
     public void OpenPanel()
     {

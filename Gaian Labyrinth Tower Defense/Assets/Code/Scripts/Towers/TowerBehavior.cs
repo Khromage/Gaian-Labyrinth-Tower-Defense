@@ -14,12 +14,12 @@ public class TowerBehavior : MonoBehaviour, Interactable
     [Header("Tower Stats")]
     
     public string targetingMode;
-    public float range = 10f;
-    public float fireRate = 1f;
-    public float fireCountdown = 0f;
-    public float currentDamage = 1f;
+    public float range;
+    public float fireRate;
+    public float fireCountdown;
+    public float currentDamage;
 
-    public bool multiPathUpgrade = false;
+    public float targetCooldown;
 
     [Header("Unity Fields")]
 
@@ -48,7 +48,12 @@ public class TowerBehavior : MonoBehaviour, Interactable
     // Call the targeting function twice a second to scan for enemies
     public virtual void Start()
     {
-        InvokeRepeating("UpdateTarget", 0f, 0.1f);
+        range = 10f;
+        fireRate = 1f;
+        fireCountdown = 0f;
+        currentDamage = 5f;
+
+        targetCooldown = 0f;
     }
 
     private void OnEnable()
@@ -56,38 +61,52 @@ public class TowerBehavior : MonoBehaviour, Interactable
         targetingMode = "First";
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
-        EnemyBehavior.OnEnemyDeath += removeEnemyFromList;
-        EnemyBehavior.OnEnemyReachedGoal += removeEnemyFromList;
+
         HideInteractButton();
     }
     private void OnDisable()
     {
-        EnemyBehavior.OnEnemyDeath -= removeEnemyFromList;
-        EnemyBehavior.OnEnemyReachedGoal -= removeEnemyFromList;
+
     }
+    
+    public void AddEnemy(EnemyBehavior enemy)
+    {
+        if(enemy == null)
+            return;
+        if(enemies.Contains(enemy.gameObject))
+            return;
+
+        enemies.Add(enemy.gameObject);
+        enemy.OnEnemyDeath += RemoveEnemy;
+        enemy.OnEnemyReachedGoal += RemoveEnemy;
+    }
+    public void RemoveEnemy(EnemyBehavior enemy)
+    {
+        if(enemy == null)
+            return;
+        if(!enemies.Contains(enemy.gameObject))
+            return;
+
+        //Debug.Log($"removing enemy {enemy.gameObject} from tower's list");
+        enemies.Remove(enemy.gameObject);   
+        enemy.OnEnemyDeath -= RemoveEnemy;
+        enemy.OnEnemyReachedGoal -= RemoveEnemy;
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
-            {
-                enemies.Add(other.gameObject);
-            }
+        AddEnemy(other.GetComponent<EnemyBehavior>());
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
-        {
-            enemies.Remove(other.gameObject);
-        }
+        RemoveEnemy(other.GetComponent<EnemyBehavior>());
     }
-    private void removeEnemyFromList(GameObject enemyToRemove)
-    {
-        enemies.Remove(enemyToRemove);
-    }
+
     void UpdateTarget()
     {
-
+        //Debug.Log("Enemies in list: " + string.Join(", ", enemies));
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
-        try
+        if(enemies.Count > 0)
         {
             switch (targetingMode)
             {
@@ -148,57 +167,53 @@ public class TowerBehavior : MonoBehaviour, Interactable
                     }
                     break;
                 case "First":
-                int shortDist = int.MaxValue;
-                GameObject firstEnemy = null;
-                foreach (GameObject enemy in enemies) {
-                    int currDistance = enemy.GetComponent<EnemyBehavior>().currTile.goalDist;
-                    if (currDistance < shortDist) {
-                        shortDist = currDistance;
-                        firstEnemy = enemy;
+                    int shortDist = int.MaxValue;
+                    GameObject firstEnemy = null;
+                    foreach (GameObject enemy in enemies) {
+                        int currDistance = enemy.GetComponent<EnemyBehavior>().currTile.goalDist;
+                        if (currDistance < shortDist) {
+                            shortDist = currDistance;
+                            firstEnemy = enemy;
+                        }
                     }
-                }
-
-                if(firstEnemy != null) {
-                    target = firstEnemy;
-                }
-                break;
+                    if(firstEnemy != null) {
+                        target = firstEnemy;
+                    }
+                    break;
                 case "Last":
-                int farDist = int.MinValue;
-                GameObject lastEnemy = null;
-                foreach (GameObject enemy in enemies) {
-                    int distance = enemy.GetComponent<EnemyBehavior>().currTile.goalDist;
-                    if (distance > farDist) {
-                        shortDist = distance;
-                        lastEnemy = enemy;
+                    int farDist = int.MinValue;
+                    GameObject lastEnemy = null;
+                    foreach (GameObject enemy in enemies) {
+                        int distance = enemy.GetComponent<EnemyBehavior>().currTile.goalDist;
+                        if (distance > farDist) {
+                            shortDist = distance;
+                            lastEnemy = enemy;
+                        }
                     }
-                }
-
-                if(lastEnemy != null) {
-                    target = lastEnemy;
-                }
+                    if(lastEnemy != null) {
+                        target = lastEnemy;
+                    }
                 break;
             }
-        }
-        catch
-        {
-            Debug.Log("Tower trying to target in empty enemy list. Would have sent a MissingReferenceException regarding the foreach (GameObject enemy in enemies)");
-            detectionZone.enabled = false;
-            enemies.Clear();
-            detectionZone.enabled = true;
+        } else {
+            //Debug.Log("Enemy list is empty");
         }
     }
+
     public virtual void Update()
     {
-        if(target == null)
+        if (targetCooldown <= 0)
+        {
+            UpdateTarget();
+            targetCooldown = .1f;
+        }
+        targetCooldown -= Time.deltaTime;
+
+
+        if (target == null)
             return;
 
-        // Generate vector pointing from tower towards target enemy and use it to rotate the tower head 
-        Vector3 direction = target.transform.position - transform.position;
-        Quaternion targetingRotation = Quaternion.LookRotation(direction);
-
-        // Using Lerp to smooth transition between target swaps instead of snapping to new targets
-        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
-        partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        LookTowardTarget();
 
         if(fireCountdown <= 0)
         {
@@ -207,10 +222,23 @@ public class TowerBehavior : MonoBehaviour, Interactable
         }
 
         fireCountdown -= Time.deltaTime;
+
+    }
+    
+    //rotate head of tower to follow current target. Can be overridden for specific rotation behaviors
+    protected virtual void LookTowardTarget()
+    {
+        // Generate vector pointing from tower towards target enemy and use it to rotate the tower head 
+        Vector3 direction = target.transform.position - transform.position;
+        Quaternion targetingRotation = Quaternion.LookRotation(direction);
+
+        // Using Lerp to smooth transition between target swaps instead of snapping to new targets
+        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
+        partToRotate.localRotation = Quaternion.Euler(partToRotate.rotation.x, rotation.y, partToRotate.rotation.z); //changed this from (0, y, 0), then changed rotation to localRotation, which might mean can change back to (0,y,0)
     }
     void Shoot()
     {
-        ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation, gameObject.transform) as ProjectileBehavior;
+        ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation) as ProjectileBehavior;
         projectile.damage = currentDamage;
         if (projectile != null)
             projectile.SetTarget(target.transform);
@@ -249,8 +277,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
             //unhighlight tile
         }
     }
-
-
 
     public void upgradeTower(int newLevel)
     {
@@ -292,36 +318,21 @@ public class TowerBehavior : MonoBehaviour, Interactable
         currentDamage = 2f;
         range = 10.2f;
         fireRate = 3f;
-        cost = 200;
-        multiPathUpgrade = true;
     }
     protected virtual void lv3_1_upgrade()
     {
-        Debug.Log("Tower upgraded to stage 10");
         transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
-
-        multiPathUpgrade = false;
-        cost = 100;
-        currentDamage = 5f;
-        fireRate = 1f;
+        Debug.Log(gameObject + "lvl 3-1 upgrade");
     }
     protected virtual void lv3_2_upgrade()
     {
         transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 100, 0, .1f));
-
-        multiPathUpgrade = false;
-        cost = 100;
-        currentDamage = 2f;
-        fireRate = 6f;
+        Debug.Log(gameObject + "lvl 3-2 upgrade");
     }
     protected virtual void lv3_3_upgrade()
     {
         transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 100, .1f));
-
-        multiPathUpgrade = false;
-        cost = 100;
-        currentDamage = 7f;
-        fireRate = 7f;
+        Debug.Log(gameObject + "lvl 3-3 upgrade");
     }
 
 

@@ -31,6 +31,8 @@ public static class Tower
         "Level 3-3 description"
     };
 
+    "Periodically slows all enemies in radius."
+
     */
 
     public static Sprite GetIcon(string type)

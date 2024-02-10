@@ -39,7 +39,7 @@ public class CampaignMenuPlayer : MonoBehaviour
         {
             Vector3 limitedVel = lateralVelocityComponent.normalized * moveSpeed;
             rb.velocity = limitedVel + verticalVelocityComponent;
-            Debug.Log("Capping movespeed");
+            //Debug.Log("Capping movespeed");
         }
 
         

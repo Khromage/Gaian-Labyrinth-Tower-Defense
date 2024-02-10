@@ -9,6 +9,7 @@ public class EnemyScout : EnemyBehavior
     // Start is called before the first frame update
     void Start()
     {
+        isAlive = true;
         //half as tanky as normal unit
         maxHealth = 6f;
         currentHealth = maxHealth;

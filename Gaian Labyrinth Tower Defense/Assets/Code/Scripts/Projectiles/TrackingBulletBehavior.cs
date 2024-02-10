@@ -9,13 +9,13 @@ public class TrackingBulletBehavior : BulletBehavior
     public List<GameObject> enemies = new List<GameObject>();
     public float range = 5f;
 
-    public float turnSpeed = 5f;
+    public float turnSpeed = 20f;
 
 
     protected override void Start()
     {
         speed = 25f;
-        damage = 1f;
+        damage = 5f;
         turnSpeed = 20f;
         //how many enemies you wanna pierce
         pierceAMT = 0;
