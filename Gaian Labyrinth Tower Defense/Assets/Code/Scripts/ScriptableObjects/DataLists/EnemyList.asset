@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: EnemyList
   m_EditorClassIdentifier: 
   <EnemyDataSet>k__BackingField:
-  - Prefab: {fileID: 2921004111766893944, guid: 3b67735bf8059df42b58ce162f2c769e, type: 3}
-    <Description>k__BackingField: 
-  - Prefab: {fileID: 2921004111766893944, guid: 19d07072fce426942ac6fbc7fa660410, type: 3}
-    <Description>k__BackingField: 
-  - Prefab: {fileID: 2921004111766893944, guid: 8a5591e72414aa745951350efbb7aeec, type: 3}
-    <Description>k__BackingField: 
+  - {fileID: 11400000, guid: 1ba88e16eb532264cbe41dd641f59d69, type: 2}
+  - {fileID: 11400000, guid: e1a51a2554696be4da03b28380f3748a, type: 2}
+  - {fileID: 11400000, guid: e7444393e9befa048b3adebf90519282, type: 2}

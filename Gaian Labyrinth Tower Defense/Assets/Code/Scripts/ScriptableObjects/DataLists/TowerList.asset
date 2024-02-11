@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f1454a80cc7bb48855096f029bf9f9, type: 3}
+  m_Name: TowerList
+  m_EditorClassIdentifier: 
+  <TowerDataSet>k__BackingField:
+  - {fileID: 11400000, guid: f95bb2455046e7249b718c1a5772ae98, type: 2}
+  - {fileID: 11400000, guid: cad7ccdf1aafa084d8da55f2737a4b1a, type: 2}
+  - {fileID: 11400000, guid: 2c83c07b848a1d2459803c6542fb2a53, type: 2}
+  - {fileID: 11400000, guid: ac835689b2425e64e947bd125bb4b30e, type: 2}
+  - {fileID: 11400000, guid: 829e78dee1140634fbaad202ee013ab2, type: 2}
+  - {fileID: 11400000, guid: cf15361deceb0dd4294bd629309c385e, type: 2}
+  - {fileID: 11400000, guid: 119c941907d44a340a8e5e1ea9f8a25f, type: 2}
+  - {fileID: 11400000, guid: 7f8b31bc29d43f34fb63a5650b7cc608, type: 2}
+  - {fileID: 11400000, guid: 67a9b7dd276363446841e4b74420e3c3, type: 2}

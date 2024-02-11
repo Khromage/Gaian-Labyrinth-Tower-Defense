@@ -34,11 +34,15 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private EnemiesRemaining remainingEnemies;
 
+    [SerializeField]
+    private TowerList towerList;
+
     void Start()
     {
         //get list of all spawnpoints
         //every time wave start, get all enemies
-        
+
+        FillEquipHUD();
     }
 
     // Update is called once per frame
@@ -181,15 +185,14 @@ public class UIManager : MonoBehaviour
     }
 
 
-    private void level_LoadData(string[] towerSet, string[] weaponSet)
+    private void FillEquipHUD()
     {
-        //fill in the active tower slots with their respective tower icons
+        int[] towerSet = SaveManager.Instance.EquippedTowerIDs;
+        int[] weaponSet = SaveManager.Instance.EquippedWeaponIDs;
         for (int i = 0; i < towerSet.Length; i++)
         {
-            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Tower.GetIcon(towerSet[i]);
+            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
         }
-
-        //fill in the active weapon slots with their respective weapon icons
         for (int i = 0; i < weaponSet.Length; i++)
         {
             //SSS fill in the active weapon slots with their respective weapon icons...
@@ -203,7 +206,6 @@ public class UIManager : MonoBehaviour
         Player.OnEnterCombatMode += player_enterCombatMode;
         Player.OnSwapWeapon += player_swapWeapon;
 
-        Level.OnLoadData += level_LoadData;
     }
     private void OnDisable()
     {
@@ -212,6 +214,5 @@ public class UIManager : MonoBehaviour
         Player.OnEnterCombatMode -= player_enterCombatMode;
         Player.OnSwapWeapon -= player_swapWeapon;
 
-        Level.OnLoadData -= level_LoadData;
     }
 }

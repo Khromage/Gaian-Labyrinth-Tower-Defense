@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -157,13 +157,13 @@ MonoBehaviour:
   LivesText: {fileID: 7240981734441961845}
   CurrencyText: {fileID: 2678875997518751479}
   CountText: {fileID: 8405447226630281352}
-  levelData: {fileID: 11400000, guid: 41bcd9da8efdd1840977dac01d006eab, type: 2}
   playerData: {fileID: 11400000, guid: 3a27bd55b3e460449a0d7a87218bfe91, type: 2}
   player: {fileID: 0}
   textboxPrefab: {fileID: 4747324250757586441, guid: 43e2f7b2556198d42a645cdf5a59bd54, type: 3}
   manaBar: {fileID: 8003870501132999995}
   activeTowerPanel: {fileID: 517304972538030907}
   remainingEnemies: {fileID: 11400000, guid: 4fbdfbed14053834494667841f693993, type: 2}
+  towerList: {fileID: 11400000, guid: c7308b4a69207f64bb0f7eee266f1e7a, type: 2}
 --- !u!4 &1143071468
 Transform:
   m_ObjectHideFlags: 0

@@ -53,6 +53,8 @@ THIS SCRIPT IS NO LONGER IN USE
 ⣿⣿⣷⡙⣿⣦⡀⢹⣿⣿⣿⣷⣄⠀⠘⣿⣿⡄⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⢿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣷⠀⠻⣿⣿
 
 */
+
+/*
 public class SpawnPoint : GridTile
 {
     public delegate void SpawnedEnemy(EnemyBehavior enemy);
@@ -125,4 +127,4 @@ public class SpawnPoint : GridTile
     }
 
 }
-
+*/

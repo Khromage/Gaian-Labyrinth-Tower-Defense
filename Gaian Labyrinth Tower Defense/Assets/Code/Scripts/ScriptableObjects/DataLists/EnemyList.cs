@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemyList : ScriptableObject
 {
     [field: SerializeField]
-    public EnemyData[] EnemyDataSet { get; private set; }
+    public EnemyInfo[] EnemyDataSet { get; private set; }
 
     public GameObject GetEnemy(int ID)
     {
@@ -19,20 +19,4 @@ public class EnemyList : ScriptableObject
     {
         return EnemyDataSet[ID].Delay;
     }
-}
-
-[Serializable]
-public struct EnemyData 
-{
-    [field: SerializeField]
-    public GameObject Prefab;
-
-    [field: SerializeField]
-    public float Delay;
-
-    [field: SerializeField]
-    public Image Icon { get; private set; }
-
-    [field: SerializeField]
-    public string Description { get; private set; }
 }

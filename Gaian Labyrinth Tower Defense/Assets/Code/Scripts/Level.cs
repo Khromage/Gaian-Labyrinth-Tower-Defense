@@ -14,7 +14,7 @@ public class Level : MonoBehaviour
     public delegate void WaveStart(int waveNum);
     public static event WaveStart OnWaveStart;
 
-    public delegate void LoadData(string[] towerSet, string[] weaponSet);
+    public delegate void LoadData(int[] towerSet, int[] weaponSet);
     public static event LoadData OnLoadData;
     
     public EnemyList enemyList;
@@ -47,7 +47,7 @@ public class Level : MonoBehaviour
     {
         savedData = new PlayerInfo();
         currentLevelInfo = LevelManager.Instance.currentLevel;
-        LoadSavedData();
+
 
         flowFieldGenerator = new FlowFieldGenerator();
         flowFieldGenerator.visibleSquare = visibleSquare;
@@ -165,25 +165,6 @@ public class Level : MonoBehaviour
 
 
 
-
-    public void LoadSavedData()
-    {
-        string jsonData = PlayerPrefs.GetString("MyProgress");
-        //Convert to Class but don't create new Save Object. Re-use loadedData and overwrite old data in it
-        JsonUtility.FromJsonOverwrite(jsonData, savedData);
-
-        OnLoadData?.Invoke(savedData.ActiveTowers, savedData.ActiveWeapons);
-    }
-    public void SaveData()
-    {
-        string jsonData = JsonUtility.ToJson(savedData);
-        //Save Json string
-        PlayerPrefs.SetString("MyProgress", jsonData);
-        PlayerPrefs.Save();
-
-        //SSS finish saving animation
-    }
-
     private void OnEnable()
     {
 
@@ -196,7 +177,7 @@ public class Level : MonoBehaviour
         Player.OnTowerPlaced -= recalcFlowField_NewTower;
         Player.OnTowerSold -= recalcFlowField_NewTile;
 
-        SaveData();
+        //SaveManager.Instance.SaveData();
     }
 
 }

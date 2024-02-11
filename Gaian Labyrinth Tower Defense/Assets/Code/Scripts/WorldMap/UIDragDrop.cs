@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public delegate void ActiveTowerChange(string newType, int slotIndex);
+    public delegate void ActiveTowerChange(int newTypeID, int slotIndex);
     public static event ActiveTowerChange OnActiveTowerChange;
 
     [SerializeField]
-    private string sourceType;
+    private TowerList towerList;
+
+    private int towerID;
 
     CanvasGroup canvasGroup;
     public string dropSlotTag = "ActiveTowerSlot";
@@ -36,18 +38,31 @@ public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public void OnBeginDrag(PointerEventData eventData)
     {
         //maybe unnecessary? Or could be done better than parent.parent.parent...
-        var canvas = transform.parent.parent.parent;
+        var canvas = transform.parent.parent;
         if (canvas == null)
             return;
 
-
         dragIcon = new GameObject("dragIcon");
 
-        dragIcon.transform.SetParent(canvas.transform, false);
-        dragIcon.transform.SetAsLastSibling();
+        RaycastResult raycastResult = eventData.pointerCurrentRaycast;
 
-        var image = dragIcon.AddComponent<Image>();
-        image.sprite = GetComponent<Image>().sprite;
+        if (raycastResult.gameObject.tag == "DragElement")
+        {
+            dragIcon.transform.SetParent(canvas.transform, false);
+            dragIcon.transform.SetAsLastSibling();
+
+            var image = dragIcon.AddComponent<Image>();
+
+            image.sprite = raycastResult.gameObject.GetComponent<Image>().sprite;
+            towerID = raycastResult.gameObject.transform.parent.GetSiblingIndex(); //ID = sibling index of the button itself
+        }
+        else
+        {
+            return;
+        }
+
+        
+        Debug.Log(raycastResult.gameObject.name);
         //image.SetNativeSize();
 
         if (dragIcon.GetComponent<CanvasGroup>() == null)
@@ -67,7 +82,9 @@ public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         RaycastResult raycastResult = eventData.pointerCurrentRaycast;
         Debug.Log($"raycastResult: {raycastResult}");
 
-        if (raycastResult.gameObject?.tag == dropSlotTag)
+        Destroy(dragIcon);
+
+        if (raycastResult.gameObject.tag == dropSlotTag)
         {
             Debug.Log($"Dropping on {dropSlotTag}");
 
@@ -77,14 +94,13 @@ public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
             Debug.Log(raycastResult.gameObject.transform.GetChild(0).GetChild(1).GetComponent<Image>().sprite);
             //changes the towerIcon child's sprite in the active tower slot button to the sprite of the tower type dragged in.
-            raycastResult.gameObject.transform.GetChild(0).GetChild(1).GetComponent<Image>().sprite = Tower.GetIcon(sourceType);
+            raycastResult.gameObject.transform.GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerID);
 
-            canvasGroup.alpha = 1f;
+            //canvasGroup.alpha = 1f;
 
 
             //ACTIVE TOWER SLOT CHANGED
-            OnActiveTowerChange?.Invoke(sourceType, raycastResult.gameObject.transform.GetSiblingIndex());
+            OnActiveTowerChange?.Invoke(towerID, raycastResult.gameObject.transform.GetSiblingIndex());
         }
-        Destroy(dragIcon);
     }
 }
