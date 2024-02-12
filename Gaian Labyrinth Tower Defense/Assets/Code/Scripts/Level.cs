@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using UnityEngine.AI;
 
 
 //wave start as an event? invoke
@@ -18,7 +19,6 @@ public class Level : MonoBehaviour
     public static event LoadData OnLoadData;
     
     public EnemyList enemyList;
-    public PlayerInfo savedData;
     private LevelInfo currentLevelInfo;
 
     //Timer
@@ -35,8 +35,8 @@ public class Level : MonoBehaviour
 
     public Material visibleSquare;
 
-    [SerializeField]
-    private EnemiesRemaining remainingEnemies;
+    //indexes correspond to enemy IDs. values represent how many of that type remain in wave (on wave start, totals the amount that will be spawned)
+    private int[] RemainingEnemiesInWave;
 
     public int remainingLives;
 
@@ -45,13 +45,15 @@ public class Level : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        savedData = new PlayerInfo();
         currentLevelInfo = LevelManager.Instance.currentLevel;
 
-
-        flowFieldGenerator = new FlowFieldGenerator();
-        flowFieldGenerator.visibleSquare = visibleSquare;
-        flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
+        //if statement for using FlowFieldGenerator only in TestScene1. otherwise using NavMesh in NavTestScene
+        if (currentLevelInfo.Name == "TestScene1")
+        {
+            flowFieldGenerator = new FlowFieldGenerator();
+            flowFieldGenerator.visibleSquare = visibleSquare;
+            flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
+        }
         
         currWave = 0;
         waveTimer = 10f;
@@ -61,7 +63,7 @@ public class Level : MonoBehaviour
 
         SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
 
-        remainingEnemies.enemies.Clear();
+        RemainingEnemiesInWave = new int[enemyList.EnemyDataSet.Length];
     }
 
     // Update is called once per frame
@@ -89,11 +91,15 @@ public class Level : MonoBehaviour
 
     private void StartWave(int wave)
     {
+        //can either reset the RemainingEnemiesInWave array each wave, or decrement it whenever an enemy dies or reaches the goal
+        System.Array.Clear(RemainingEnemiesInWave, 0 , RemainingEnemiesInWave.Length);
+
         Debug.Log("Starting wave (" + currWave + ")");
 
         for(int i = 0; i < currentLevelInfo.Waves[wave].SpawnPoints.Length; i++)
         {
             StartCoroutine(StartSpawning(1f, currentLevelInfo.Waves[wave].SpawnPoints[i].SpawnSet, SpawnPoints[i]));
+            AddEnemiesToTotal(currentLevelInfo.Waves[wave].SpawnPoints[i].SpawnSet);
         }
     }
 
@@ -103,11 +109,25 @@ public class Level : MonoBehaviour
         {
             yield return new WaitForSeconds(defaultDelay);
 
-            Instantiate(enemyList.GetEnemy(spawnSet[i]), spawnPoint.transform.position, spawnPoint.transform.rotation);
-
+            GameObject enemy = Instantiate(enemyList.GetEnemy(spawnSet[i]), spawnPoint.transform.position, spawnPoint.transform.rotation);
+            
+            //for nav mesh test
+            if (currentLevelInfo.Name == "NavTestScene")
+            {
+                enemy.GetComponent<NavMeshAgent>().SetDestination(goalTile.transform.position);
+            }
             Debug.Log("Enemy spawned at spawnpoint (" + spawnSet[i] + ") during wave (" + currWave + ")");
 
             FinishedSpawnPoints++;
+        }
+    }
+
+    //adds group to total for current wave, stored in RemainingEnemiesInWave
+    private void AddEnemiesToTotal(int[] enemyGroup)
+    {
+        for (int i = 0; i < enemyGroup.Length; i++)
+        {
+            RemainingEnemiesInWave[enemyGroup[i]]++;
         }
     }
 
@@ -115,7 +135,7 @@ public class Level : MonoBehaviour
     {
         enemy.OnEnemyReachedGoal += LoseLives;
         enemy.OnEnemyDeath += nothingRN;
-        remainingEnemies.enemies.Add(enemy.gameObject); //removed from list in EnemyBehavior's LateUpdate()
+        //remainingEnemies.enemies.Add(enemy.gameObject); //removed from list in EnemyBehavior's LateUpdate()
     }
 
     private void LoseLives(EnemyBehavior enemy)

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -4207093108988508853}
   - component: {fileID: 5246249724988905885}
   - component: {fileID: 6505466437564927404}
+  - component: {fileID: 8180185719092275757}
   m_Layer: 2
   m_Name: ArcaneTower
   m_TagString: towerbuilding
@@ -58,7 +59,7 @@ MonoBehaviour:
   fireRate: 1
   fireCountdown: 0
   currentDamage: 5
-  multiPathUpgrade: 0
+  targetCooldown: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 5392681474844564774}
   partToRotate: {fileID: 576702084041083807}
@@ -122,6 +123,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!208 &8180185719092275757
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362173102988795995}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 2, y: 2.5, z: 2}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &2660176201313847061
 GameObject:
   m_ObjectHideFlags: 0
