@@ -412,6 +412,7 @@ MonoBehaviour:
   - {fileID: 5926663804712910904, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
   - {fileID: 5926663804712910904, guid: 1cc1147431a6d404fb6acfa7af10157e, type: 3}
   - {fileID: 1864724351924341100, guid: f4a358b4967485f40b7b05240f2451f1, type: 3}
+  towerList: {fileID: 11400000, guid: c7308b4a69207f64bb0f7eee266f1e7a, type: 2}
   currentTower: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerSet:
   - {fileID: 0}

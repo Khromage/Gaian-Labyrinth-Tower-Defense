@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //ctrl+f SSS for thing to do (saving animation, etc)
@@ -58,7 +59,6 @@ public class UIManager_CMenu : MonoBehaviour
         //savedData = new PlayerInfo();
         //LoadSavedData();
 
-        string x = SaveManager.Instance.name; //idk instantiate the Instance of the Singleton by calling it. did LoadData() before, but that currently happens in SaveManager's Start()
 
         ActivePanel = null;
 
@@ -134,7 +134,7 @@ public class UIManager_CMenu : MonoBehaviour
             if (changedData)
             {
                 //SSS begin saving animation
-                //SaveData();
+                SaveManager.Instance.SaveData();
                 changedData = false;
             }
         }
@@ -147,7 +147,7 @@ public class UIManager_CMenu : MonoBehaviour
             if (changedData)
             {
                 //SSS begin saving animation
-                //SaveData();
+                SaveManager.Instance.SaveData();
                 changedData = false;
             }
         }
@@ -345,9 +345,33 @@ public class UIManager_CMenu : MonoBehaviour
 
     */
 
+
+    private void InitialFillUI()
+    {
+        Debug.Log("About to fill the UI display of tower loadout");
+        int[] activeTowerSet = LoadoutManager.Instance.GetTowerLoadout();
+
+
+        string printStr = "";
+        for (int i = 0; i < 6; i++)
+        {
+            if (activeTowerSet[i] != -1)
+                printStr += activeTowerSet[i] + ", ";
+            else
+                printStr += "__, ";
+        }
+        Debug.Log("UIManager's initial fill. List from LoadoutManager: " + printStr);
+
+
+        for (int i = 0; i < 6; i++)
+        {
+            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(activeTowerSet[i]);
+        }
+    }
+
     public void UpdateActiveTowerSet(int id, int indexOfChange)
     {
-        int[] activeTowerSet = SaveManager.Instance.EquippedTowerIDs;
+        int[] activeTowerSet = LoadoutManager.Instance.EquippedTowerIDs;
 
         //if any slots already have the type of tower being added, then swap slot of the type with the new slot indexOfChange
         for (int i = 0; i < 6; i++)
@@ -380,13 +404,13 @@ public class UIManager_CMenu : MonoBehaviour
             if (activeTowerSet[i] != -1)
                 printStr += activeTowerSet[i] + ", ";
             else
-                printStr += "___, ";
+                printStr += "__, ";
         }
         Debug.Log("tower set: " + printStr);
 
         changedData = true;
 
-        SaveManager.Instance.EquippedTowerIDs = activeTowerSet;
+        LoadoutManager.Instance.EquippedTowerIDs = activeTowerSet;
     }
 
     public void UpdateActiveWeaponSet(string type, int indexOfChange)
@@ -396,8 +420,8 @@ public class UIManager_CMenu : MonoBehaviour
         changedData = true;
     }
 
-
-
+    #region obsoleteLoad
+    /*
     public void LoadSavedData()
     {
         string jsonData = PlayerPrefs.GetString("MyProgress");
@@ -421,18 +445,26 @@ public class UIManager_CMenu : MonoBehaviour
             //SSS fill in the active weapon slots with their respective weapon icons...
         }
     }
-     
+    */
+    #endregion
 
     private void OnEnable()
     {
         //LevelMarker.OnLevelInvestigate += RemoveActivePanel;
         UIDragDrop.OnActiveTowerChange += UpdateActiveTowerSet;
 
+
+        //SaveManager.Instance.InitializeFreshSave();
+        Debug.Log("started up SaveManager from UIManager?");
+
+        SaveManager.Instance.OnSaveFileLoaded += InitialFillUI;
+
     }
     private void OnDisable()
     {
         //LevelMarker.OnLevelInvestigate -= RemoveActivePanel;
         UIDragDrop.OnActiveTowerChange -= UpdateActiveTowerSet;
+        SaveManager.Instance.OnSaveFileLoaded -= InitialFillUI;
 
         //SaveManager.Instance.SaveData();
     }

@@ -116,8 +116,10 @@ public class Player : UnitBehavior
     private int currentWeaponIndex = 0;
 
     [Header("Tower List")]
+    [SerializeField]
+    private TowerList towerList;
     public GameObject currentTower;
-    public GameObject[] towerSet = new GameObject[6];
+    public GameObject[] towerSet;
 
     [Header("Player Data")]
     public PlayerData playerData;
@@ -132,7 +134,8 @@ public class Player : UnitBehavior
     }
 
     //Method to be checked on first frame of the game
-    public void Start() {
+    public void Start()
+    {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
@@ -149,6 +152,10 @@ public class Player : UnitBehavior
         maxMana = 100f;
         mana = maxMana;
         manaRegenRate = 30f;
+
+        towerSet = new GameObject[6];
+        FillLoadout();
+
     }
 
     //Method to be checked on every frame of the game
@@ -691,12 +698,18 @@ public class Player : UnitBehavior
 
 
     //set towers + their order, and weapons + their order
-    private void level_LoadData(string[] givenTowerSet, string[] weaponSet)
+    private void FillLoadout()
     {
+        int[] towerLoadout = LoadoutManager.Instance.EquippedTowerIDs;
+        int[] weaponLoadout = LoadoutManager.Instance.EquippedWeaponIDs;
+
+        Debug.Log("FillLoadout loadoutManager's length: " + towerLoadout.Length);
+
         //fill in the tower set from save data
         for (int i = 0; i < towerSet.Length; i++)
         {
-            towerSet[i] = Tower.GetPrefab(givenTowerSet[i]);
+            if (towerLoadout[i] != -1) // -1 is the default/empty value
+                towerSet[i] = towerList.TowerDataSet[towerLoadout[i]].Prefab;
         }
 
         //fill in the active weapon slots with their respective weapon icons...

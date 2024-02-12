@@ -134,6 +134,7 @@ public class UIManager : MonoBehaviour
     {
         if (towerObj != null)
         {
+            Debug.Log($"Tower {towerObj} in slot index {towerIndex}");
             //set highlight on UI
         }
         else
@@ -187,8 +188,8 @@ public class UIManager : MonoBehaviour
 
     private void FillEquipHUD()
     {
-        int[] towerSet = SaveManager.Instance.EquippedTowerIDs;
-        int[] weaponSet = SaveManager.Instance.EquippedWeaponIDs;
+        int[] towerSet = LoadoutManager.Instance.EquippedTowerIDs;
+        int[] weaponSet = LoadoutManager.Instance.EquippedWeaponIDs;
         for (int i = 0; i < towerSet.Length; i++)
         {
             activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);

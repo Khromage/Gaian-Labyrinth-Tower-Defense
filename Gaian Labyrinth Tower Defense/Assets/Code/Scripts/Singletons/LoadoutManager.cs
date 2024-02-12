@@ -1,23 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-public class LoadoutManager : ScriptableSingleton<LoadoutManager>
+public class LoadoutManager : SpawnableSingleton<LoadoutManager>
 {
 
     public int[] EquippedTowerIDs;
     public int[] EquippedWeaponIDs;
 
-    public bool[] EquippedTechNodeIDs;
+    public bool[] EquippedTechNodes;
 
 
-    // Start is called before the first frame update
-    void Start()
+    public int[] GetTowerLoadout()
     {
-        EquippedTowerIDs = SaveManager.Instance.EquippedTowerIDs;
-        EquippedWeaponIDs = SaveManager.Instance.EquippedWeaponIDs;
-        EquippedTechNodeIDs = SaveManager.Instance.EquippedTechNodeIDs;
+        if (EquippedTowerIDs != null)
+        {
+            return EquippedTowerIDs;
+        }
+        else
+        {
+            Debug.Log("Attempted to grab Tower Loadout from LoadoutManager, but no loadout initialized, so grabbing SaveManager's instead.");
+            return SaveManager.Instance.EquippedTowerIDs;
+        }
     }
-
 }
