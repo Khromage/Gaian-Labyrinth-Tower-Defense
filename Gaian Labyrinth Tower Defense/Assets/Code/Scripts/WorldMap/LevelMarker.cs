@@ -25,11 +25,12 @@ public class LevelMarker : MonoBehaviour
         
     }
 
-public void SetLevel()
-{
-    LevelManager.Instance.currentLevel = Level;
-    LevelManager.Instance.LoadLevel(Level);
-}
+    public void SetLevel()
+    {
+        LevelManager.Instance.currentLevel = Level;
+        SaveManager.Instance.SaveData();
+        LevelManager.Instance.LoadLevel(Level);
+    }
 
     public void OpenPanel()
     {

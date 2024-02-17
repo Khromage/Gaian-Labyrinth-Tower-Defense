@@ -58,7 +58,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     private void OnEnable()
     {
-        targetingMode = "First";
+        targetingMode = "Close";
         detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
 

@@ -721,7 +721,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Forest Paths
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4938620030104546486, guid: 9146a369df935bd4f91ede9e7ce1927b, type: 3}
+    - {fileID: 390088719741409481, guid: 9146a369df935bd4f91ede9e7ce1927b, type: 3}
+    - {fileID: 4264645777050160284, guid: 9146a369df935bd4f91ede9e7ce1927b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

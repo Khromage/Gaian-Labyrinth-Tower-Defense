@@ -261,8 +261,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1156900528222985396}
-  - component: {fileID: 48297540650708186}
   - component: {fileID: 6119210802428938075}
+  - component: {fileID: 3350497195483630510}
   m_Layer: 3
   m_Name: SpawnPointPrefab
   m_TagString: GridTile
@@ -287,35 +287,6 @@ Transform:
   - {fileID: 2321595592755277543}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &48297540650708186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1267206581894517229}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ba3c79f7f2b8b24fa0f19c8bb1b0ba8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlightVisual: {fileID: 1443147430520610544}
-  goalDist: 0
-  goalDistText: {fileID: 4843955564168244305}
-  successor: {fileID: 0}
-  predecessorList: []
-  fielded: 0
-  G: 0
-  H: 0
-  previous: {fileID: 0}
-  walkable: 1
-  placeable: 1
-  enemyOnTile: 0
-  towerOnTile: 0
-  spawnPointNumber: 0
-  waveContent: {fileID: 0}
-  endTile: {fileID: 7836494575547697010, guid: 48c22d752721d4a489dc92283af6e273, type: 3}
-  levelManager: {fileID: 0}
 --- !u!65 &6119210802428938075
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -337,6 +308,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.2, z: 1}
   m_Center: {x: 0, y: -0.4, z: 0}
+--- !u!114 &3350497195483630510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267206581894517229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84b4dea737211934c867b05e640ab94a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightVisual: {fileID: 1443147430520610544}
+  goalDist: 0
+  goalDistText: {fileID: 4843955564168244305}
+  successor: {fileID: 0}
+  predecessorList: []
+  fielded: 0
+  G: 0
+  H: 0
+  previous: {fileID: 0}
+  walkable: 1
+  placeable: 1
+  enemyOnTile: 0
+  towerOnTile: 0
 --- !u!1 &1443147430520610544
 GameObject:
   m_ObjectHideFlags: 0
