@@ -17,7 +17,7 @@ public class WaveWaterBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cooldown = .2f;
+        NavigationCooldown = .2f;
     }
 
     // Update is called once per frame
@@ -53,17 +53,17 @@ public class WaveWaterBehavior : MonoBehaviour
             
             currTile = hit.transform.GetComponent<GridTile>();
             //if not branching, keep going
-            if (currTile.predecessorList.length == 1)
+            if (currTile.predecessorList.Count == 1)
                 prevTile = currTile.predecessorList[0];
             //
-            else if (currTile.predecessorList.length >= 2)
+            else if (currTile.predecessorList.Count >= 2)
             {
                 //create a copy going down every other path
-                for (int i = 1; i < currTile.predecessorList.length; i++)
+                for (int i = 1; i < currTile.predecessorList.Count; i++)
                 {
                     bool covered = false;
                     //check every tile already traveled
-                    for(int j = 0; j < tilesCovered.length; j++)
+                    for(int j = 0; j < tilesCovered.Count; j++)
                     {
                         if (currTile.predecessorList[i] == tilesCovered[j])
                             covered = true;

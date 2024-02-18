@@ -13,6 +13,6 @@ public class WaveAttack : MonoBehaviour
         if (transform.childCount != 0)
             hadChildren = true;
         if (transform.childCount == 0 && hadChildren)
-            Destroy(Gameobject);
+            Destroy(GameObject);
     }
 }
