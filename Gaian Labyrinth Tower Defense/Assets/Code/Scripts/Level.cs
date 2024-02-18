@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using UnityEngine.AI;
 
+//if (currentLevelInfo.Name == "TestScene1")   drop these once we decide on nav mesh or tiles
 
 //wave start as an event? invoke
 
@@ -159,9 +160,10 @@ public class Level : MonoBehaviour
     private void recalcFlowField_NewTower(GridTile towerTile)
     {
         Debug.Log("tower placed event in level manager. recalcing field");
-
-        flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
-
+        if (currentLevelInfo.Name == "TestScene1")
+        {
+            flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
+        }
         /*
         thinking of doing A* from the tower tile's predecessor until it finds tiles with lower goalDist than the tower tile,
         then from there GenerateField on part of the map.
