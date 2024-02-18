@@ -93,7 +93,7 @@ public class Player : UnitBehavior
 
     [Header("Player Cam")]
     public GameObject playerCam;
-    public GameObject currentCam;
+    //public GameObject currentCam;
 
     [Header("Build mode")]
     public GameObject towerPrefab;
@@ -145,7 +145,6 @@ public class Player : UnitBehavior
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
 
-        currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
 
         maxHealth = 100f;
         health = maxHealth;
@@ -154,7 +153,7 @@ public class Player : UnitBehavior
         manaRegenRate = 30f;
 
         towerSet = new GameObject[6];
-        FillLoadout();
+        //FillLoadout();
 
     }
 
@@ -550,6 +549,7 @@ public class Player : UnitBehavior
         Methods for Build and Upgrade Modes
     ****
     ***/
+    
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
