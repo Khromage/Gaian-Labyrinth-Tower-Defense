@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerAttackWave : MonoBehaviour
+public class TowerAttackWave : TowerBehavior
 {
-    // Start is called before the first frame update
-    void Start()
+    public float WaveDistance = 7;
+    public void Shoot()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameObject attackInfo = Instantiate(waveAttack, transform.position, transform.rotation);
+        GameObject attackWave = Instantiate(waveWater, target.successor.successor.successor, target.rotation, attackInfo.transform);
+        attackWave.tilesLeft = WaveDistance;
     }
 }
