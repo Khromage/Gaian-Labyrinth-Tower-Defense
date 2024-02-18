@@ -121,9 +121,6 @@ public class Player : UnitBehavior
     public GameObject currentTower;
     public GameObject[] towerSet;
 
-    [Header("Player Data")]
-    public PlayerData playerData;
-
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
     {
@@ -199,10 +196,13 @@ public class Player : UnitBehavior
             }
         }
 
-
+        // This needs to be converted to use either a PlayerManager singleton or LevelManager to relay the info to the UI
+        /*
         playerData.currency = currency;
         playerData.playerHealth = health;
         playerData.playerMana = mana;
+        */
+
     }
 
     public void FixedUpdate()

@@ -245,18 +245,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
         projectile.targeting = targetingMode;
 
     }
-    public void Interact()
-    {
-        OpenTowerUI();
-    }
-
-    // display tower UI in screen space
-    void OpenTowerUI()
-    {
-        OnOpenInteractionPanel?.Invoke(towerName, currentLevel);
-        Debug.Log("INTERACTION HAPPINGING");
-
-    }
     public void ShowInteractButton()
     {
         if (InteractionIndicator != null)
@@ -278,6 +266,17 @@ public class TowerBehavior : MonoBehaviour, Interactable
         }
     }
 
+    public void Interact()
+    {
+        OpenTowerUI();
+    }
+    // display tower UI in screen space 
+    void OpenTowerUI()
+    {
+        OnOpenInteractionPanel?.Invoke(towerName, currentLevel);
+        Debug.Log("Tower UI Opening");
+
+    }
     public void upgradeTower(int newLevel)
     {
         switch (newLevel)
@@ -303,7 +302,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
                 break;
         }
     }
-
     protected virtual void lv2_upgrade()
     {
         //generic tower upgrade stats

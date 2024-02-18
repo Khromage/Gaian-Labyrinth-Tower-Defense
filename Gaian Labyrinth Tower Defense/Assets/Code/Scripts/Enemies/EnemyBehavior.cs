@@ -44,9 +44,6 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     protected AudioSource EnemyHurtSFX;
 
-    [SerializeField]
-    private EnemiesRemaining remainingEnemies;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -80,7 +77,6 @@ public class EnemyBehavior : MonoBehaviour
         if(!isAlive)
         {
             Debug.Log("destroying enemy");
-            remainingEnemies.enemies.Remove(gameObject);
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
         }

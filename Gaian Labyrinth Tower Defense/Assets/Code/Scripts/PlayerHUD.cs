@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 //using static System.Net.Mime.MediaTypeNames;
 
-public class UIManager : MonoBehaviour
+public class PlayerHUD : MonoBehaviour
 {
     // Start is called before the first frame update
     public TMP_Text WavesText; 
@@ -14,8 +14,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text CurrencyText;
     [SerializeField]
     public TMP_Text CountText;
-    [SerializeField]
-    public PlayerData playerData;
+
     [SerializeField]
     private GameObject player;
 
@@ -30,9 +29,6 @@ public class UIManager : MonoBehaviour
     private GameObject activeTowerPanel;
 
     //private int counter = 0;
-
-    [SerializeField]
-    private EnemiesRemaining remainingEnemies;
 
     [SerializeField]
     private TowerList towerList;
