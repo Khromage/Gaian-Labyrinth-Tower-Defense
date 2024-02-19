@@ -6,7 +6,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
 {
     public delegate void OpenInteractionPanel(string towerName, int currentLevel);
     public static event OpenInteractionPanel OnOpenInteractionPanel;
-
+    public AudioSource gotPlaced;
     public string towerName = "arcane";
 
     public GameObject target;
@@ -34,6 +34,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     public List<GameObject> enemies = new List<GameObject>();
     public SphereCollider detectionZone;
+    
 
     public int cost = 10;
     public int lv2_cost = 20;
@@ -54,6 +55,8 @@ public class TowerBehavior : MonoBehaviour, Interactable
         currentDamage = 5f;
 
         targetCooldown = 0f;
+        gotPlaced = GetComponent<AudioSource>();
+        gotPlaced.Play();
     }
 
     private void OnEnable()
