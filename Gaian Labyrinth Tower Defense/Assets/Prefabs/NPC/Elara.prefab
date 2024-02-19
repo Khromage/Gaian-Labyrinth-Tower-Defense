@@ -209,6 +209,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4155915156140436997, guid: 0e606e1271515894586283ca350ee822, type: 3}
+      propertyPath: m_fontSize
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4155915156140436997, guid: 0e606e1271515894586283ca350ee822, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4420919089724096958, guid: 0e606e1271515894586283ca350ee822, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.000061035
+      objectReference: {fileID: 0}
+    - target: {fileID: 4420919089724096958, guid: 0e606e1271515894586283ca350ee822, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4420919089724096958, guid: 0e606e1271515894586283ca350ee822, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000030517578
+      objectReference: {fileID: 0}
+    - target: {fileID: 4420919089724096958, guid: 0e606e1271515894586283ca350ee822, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.00999999
+      objectReference: {fileID: 0}
     - target: {fileID: 6832323019483078343, guid: 0e606e1271515894586283ca350ee822, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
