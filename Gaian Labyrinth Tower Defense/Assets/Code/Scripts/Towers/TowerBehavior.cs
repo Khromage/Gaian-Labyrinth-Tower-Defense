@@ -7,7 +7,8 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public delegate void OpenInteractionPanel(TowerBehavior towerScript);
     public static event OpenInteractionPanel OnOpenInteractionPanel;
 
-    public string towerName = "arcane";
+    public TowerInfo towerInfo;
+    public string towerName;
 
     public GameObject target;
 
@@ -17,7 +18,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public float range;
     public float fireRate;
     public float fireCountdown;
-    public float currentDamage;
+    public float damage;
 
     public float targetCooldown;
 
@@ -48,11 +49,11 @@ public class TowerBehavior : MonoBehaviour, Interactable
     // Call the targeting function twice a second to scan for enemies
     public virtual void Start()
     {
-        range = 10f;
-        fireRate = 1f;
+        towerName = towerInfo.Name;
+        damage = towerInfo.Damage;
+        range = towerInfo.Range;
+        fireRate = towerInfo.FireRate;
         fireCountdown = 0f;
-        currentDamage = 5f;
-
         targetCooldown = 0f;
     }
 
@@ -239,7 +240,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     void Shoot()
     {
         ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation) as ProjectileBehavior;
-        projectile.damage = currentDamage;
+        projectile.damage = damage;
         if (projectile != null)
             projectile.SetTarget(target.transform);
         projectile.targeting = targetingMode;
@@ -309,7 +310,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         upgradeSphere.SetActive(true);
 
 
-        currentDamage = 2f;
+        damage = 2f;
         range = 10.2f;
         fireRate = 3f;
     }

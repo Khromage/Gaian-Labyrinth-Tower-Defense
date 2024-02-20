@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
@@ -7,10 +8,22 @@ using UnityEngine;
 public class TowerInfo : ScriptableObject
 {
     [field: SerializeField]
+    public string Name;
+
+    [field: SerializeField]
     public GameObject Prefab;
 
     [field: SerializeField]
     public int BaseCost;
+
+    [field: SerializeField]
+    public float Damage;
+
+    [field: SerializeField]
+    public float Range;
+
+    [field: SerializeField]
+    public float FireRate;
 
     [field: SerializeField]
     public int Lv2Cost;

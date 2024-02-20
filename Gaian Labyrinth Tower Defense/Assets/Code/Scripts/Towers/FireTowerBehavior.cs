@@ -9,7 +9,6 @@ public class FireTowerBehavior : TowerBehavior
     public override void Start()
     {
         base.Start();
-        towerName = "fire";
 
         cost = 50;
         lv2_cost = 60;
@@ -27,13 +26,13 @@ public class FireTowerBehavior : TowerBehavior
     protected override void lv2_upgrade()
     {
         base.lv2_upgrade();
-        currentDamage = 5f;
+        damage = 5f;
     }
 
     protected override void lv3_1_upgrade()
     {
         base.lv3_1_upgrade();
-        currentDamage = 6f;
+        damage = 6f;
         projectilePrefab.GetComponent<ExplodingBulletBehavior>().blastRadius += 2f;
     }
     //mortar
@@ -41,14 +40,14 @@ public class FireTowerBehavior : TowerBehavior
     {
         base.lv3_2_upgrade();
         range = 15f;
-        currentDamage = 10f;
+        damage = 10f;
         fireRate = .5f;
     }
     //sun
     protected override void lv3_3_upgrade()
     {
         base.lv3_3_upgrade();
-        currentDamage = 3f;
+        damage = 3f;
         fireRate = 4f;
     }
 

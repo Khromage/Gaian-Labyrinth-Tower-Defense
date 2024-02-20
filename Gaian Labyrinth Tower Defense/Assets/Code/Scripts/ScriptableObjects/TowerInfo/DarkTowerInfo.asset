@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3698e0e3b3110f4490f8aa66bc88b94, type: 3}
   m_Name: DarkTowerInfo
   m_EditorClassIdentifier: 
+  Name: Darj
   Prefab: {fileID: 0}
   BaseCost: 0
+  Damage: 0
+  Range: 0
+  FireRate: 0
   Lv2Cost: 0
   Lv3Cost: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 2c13b25d5f5fdbe4ba77530cd2d2087a, type: 3}

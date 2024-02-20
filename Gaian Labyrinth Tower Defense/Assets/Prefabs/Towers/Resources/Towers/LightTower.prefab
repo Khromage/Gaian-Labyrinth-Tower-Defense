@@ -262,13 +262,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ebb413ae69a9448b814154a823cd19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerInfo: {fileID: 11400000, guid: 119c941907d44a340a8e5e1ea9f8a25f, type: 2}
   towerName: light
   target: {fileID: 0}
   targetingMode: 
   range: 10
   fireRate: 1
   fireCountdown: 0
-  currentDamage: 1
+  damage: 0
+  targetCooldown: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 5392681474844564774}
   partToRotate: {fileID: 0}

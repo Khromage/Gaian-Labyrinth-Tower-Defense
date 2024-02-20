@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3698e0e3b3110f4490f8aa66bc88b94, type: 3}
   m_Name: LightningTowerInfo
   m_EditorClassIdentifier: 
+  Name: Lightning
   Prefab: {fileID: 0}
   BaseCost: 0
+  Damage: 0
+  Range: 0
+  FireRate: 0
   Lv2Cost: 0
   Lv3Cost: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 67e0a4ffacd26554ba39fe19d3331da7, type: 3}

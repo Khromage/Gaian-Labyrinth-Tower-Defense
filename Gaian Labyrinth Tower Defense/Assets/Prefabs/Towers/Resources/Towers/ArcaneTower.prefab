@@ -52,13 +52,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c2dca21bbc5b74e8c2a67e89201460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerInfo: {fileID: 11400000, guid: f95bb2455046e7249b718c1a5772ae98, type: 2}
   towerName: arcane
   target: {fileID: 0}
   targetingMode: 
   range: 10
   fireRate: 1
   fireCountdown: 0
-  currentDamage: 5
+  damage: 0
   targetCooldown: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 5392681474844564774}

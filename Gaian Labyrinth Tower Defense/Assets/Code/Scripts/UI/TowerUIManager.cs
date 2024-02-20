@@ -6,7 +6,12 @@ using UnityEngine.UI;
 
 public class TowerUIManager : MonoBehaviour
 {
+    public Image towerIcon;
+    public TMP_Text towerName;
 
+
+    
+    
     public void OnEnable()
     {
         
@@ -14,6 +19,7 @@ public class TowerUIManager : MonoBehaviour
 
     public void setTowerInfo(TowerBehavior selectedTower)
     {
-
+        towerName.text = selectedTower.towerName;
+        towerIcon.sprite = selectedTower.towerInfo.Icon;
     }
 }
