@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TowerBehavior : MonoBehaviour, Interactable
 {
-    public delegate void OpenInteractionPanel(string towerName, int currentLevel);
+    public delegate void OpenInteractionPanel(TowerBehavior towerScript);
     public static event OpenInteractionPanel OnOpenInteractionPanel;
 
     public string towerName = "arcane";
@@ -266,17 +266,13 @@ public class TowerBehavior : MonoBehaviour, Interactable
         }
     }
 
+    // Interaction opens the Tower UI
     public void Interact()
     {
-        OpenTowerUI();
-    }
-    // display tower UI in screen space 
-    void OpenTowerUI()
-    {
-        OnOpenInteractionPanel?.Invoke(towerName, currentLevel);
+        OnOpenInteractionPanel?.Invoke(this);
         Debug.Log("Tower UI Opening");
-
     }
+
     public void upgradeTower(int newLevel)
     {
         switch (newLevel)
