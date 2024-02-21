@@ -14,6 +14,9 @@ public class GridTile : MonoBehaviour
         private set { coords = value; }
     }
 
+    [SerializeField]
+    private GameObject highlightVisual;
+
     //distance from goal
     public int goalDist;
     public TMP_Text goalDistText;
@@ -38,6 +41,8 @@ public class GridTile : MonoBehaviour
     public bool placeable = true; //whether a tower can be placed on it. False while enemies on it or due to unique environment.
     public bool enemyOnTile = false;
     public bool towerOnTile = false;
+
+    public bool hex;
 
 
     void Awake()
@@ -87,15 +92,18 @@ public class GridTile : MonoBehaviour
     //fills our adjacent tile list with adjacent grid tile objects.
     public void setAdjTiles()
     {
-        //gets an array of all colliders we can hit within (this tile's width * .6) on the same layer as this tile (3rd parameter is a layer mask, so I bitshifted the layer)
-        Collider[] adjTileColliders = Physics.OverlapSphere(transform.position, (GetComponent<BoxCollider>().size.x * .6f), (1 << gameObject.layer));
-        //adds the game object of each of those colliders to our adjacentTiles list
-
-        foreach (Collider col in adjTileColliders)
+        if (!hex) 
         {
-            //Debug.Log($"attempting to add col: {col}, gameObj: {col.gameObject}");
-            if (col.gameObject != gameObject) 
-                adjacentTiles.Add(col.gameObject.GetComponent<GridTile>());
+            //gets an array of all colliders we can hit within (this tile's width * .6) on the same layer as this tile (3rd parameter is a layer mask, so I bitshifted the layer)
+            Collider[] adjTileColliders = Physics.OverlapSphere(transform.position, (GetComponent<BoxCollider>().size.x * .6f), (1 << gameObject.layer));
+            //adds the game object of each of those colliders to our adjacentTiles list
+
+            foreach (Collider col in adjTileColliders)
+            {
+                //Debug.Log($"attempting to add col: {col}, gameObj: {col.gameObject}");
+                if (col.gameObject != gameObject)
+                    adjacentTiles.Add(col.gameObject.GetComponent<GridTile>());
+            }
         }
     }
 
@@ -111,6 +119,20 @@ public class GridTile : MonoBehaviour
             newSuccessor = null;
         return newSuccessor;
     }
+
+
+    public void highlight(bool highlighted)
+    {
+        if (highlighted)
+        {
+            highlightVisual.SetActive(true);
+        }
+        else
+        {
+            highlightVisual.SetActive(false);
+        }
+    }
+
 
     //displays the tile's coords and adjacent tile coords
     public void writeTileInfo()

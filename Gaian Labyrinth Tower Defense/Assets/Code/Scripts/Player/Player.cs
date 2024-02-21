@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //Interface implemented by any object, tower, npc, etc that the player can interact with
@@ -41,10 +42,15 @@ public class Player : UnitBehavior
     bool readyToJump;
 
     [Header("KeyBinds")]
+    //Movement
     public KeyCode jumpKey = KeyCode.Space;
+    //Combat
     public KeyCode interactKey = KeyCode.F;
     public KeyCode nextWeapon = KeyCode.E;
     public KeyCode prevWeapon = KeyCode.Q;
+    //Build Mode
+    public KeyCode buildMode = KeyCode.Tab;
+
     public KeyCode tower1 = KeyCode.Alpha1;
     public KeyCode tower2 = KeyCode.Alpha2;
     public KeyCode tower3 = KeyCode.Alpha3;
@@ -52,23 +58,34 @@ public class Player : UnitBehavior
     public KeyCode tower5 = KeyCode.Alpha5;
     public KeyCode tower6 = KeyCode.Alpha6;
 
-    //Variables to be used to check if player is on the ground
-    [Header("Ground Check")]
-    public float playerHeight;
+    public KeyCode deleteTower = KeyCode.Alpha0;
+    public KeyCode upgradeCurrentTower = KeyCode.V;
+    public KeyCode upgradePath1 = KeyCode.J;
+    public KeyCode upgradePath2 = KeyCode.K;
+    public KeyCode upgradePath3 = KeyCode.L;
+
+
+    [Header("Layer Variables")]
     public LayerMask whatIsGround;
     public LayerMask Grid;
+
+    [Header("Ground Check")]
+    public float playerHeight;
     bool grounded;
-
     public Transform orientation;
-
     float horizontalInput;
     float verticalInput;
-
     Vector3 moveDirection;
     // rb rigidbody is declared in UnitBehavior
 
-    private Vector3 currGravDir;
+    //private Vector3 currGravDir;
+    private Coroutine rotateToSurfaceCoroutine;
 
+
+    [Header("Health")]
+    public float maxHealth;
+    public float health;
+    
     [Header("Mana")]
     public float maxMana;
     public float mana;
@@ -82,8 +99,11 @@ public class Player : UnitBehavior
     public GameObject towerPrefab;
     public GameObject towerDisplayPrefab;
     private GameObject tempDisplayHolder;
+    private GridTile highlightedTile;
     public int currency;
 
+    bool colerable = false;
+    private GameObject towerHitByRaycast;
     [Header("Player Interaction")]
     public float InteractRange;
     public Interactable InteractionTarget;
@@ -96,18 +116,26 @@ public class Player : UnitBehavior
     private int currentWeaponIndex = 0;
 
     [Header("Tower List")]
+    [SerializeField]
+    private TowerList towerList;
     public GameObject currentTower;
-    public GameObject[] towerSet = new GameObject[6];
+    public GameObject[] towerSet;
+
+    [Header("Player Data")]
+    public PlayerData playerData;
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public enum playerMode
     {
         Combat,
         Build,
+        Upgrade,
+        Sell,
     }
 
     //Method to be checked on first frame of the game
-    public void Start() {
+    public void Start()
+    {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
@@ -119,9 +147,14 @@ public class Player : UnitBehavior
 
         currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
 
+        maxHealth = 100f;
+        health = maxHealth;
         maxMana = 100f;
         mana = maxMana;
         manaRegenRate = 30f;
+
+        towerSet = new GameObject[6];
+        FillLoadout();
 
     }
 
@@ -133,11 +166,10 @@ public class Player : UnitBehavior
 
         checkCurrentMode();
         checkInteractable();
-        getUserKeyInput();
+        getUserKey();
         playerSpeedControl();
 
-        setGravityDir();
-        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+        //setGravityDir();  // this call was to UnitBehavior function using raycast to determine gravity dir. unused
 
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
         //Vector3.down was the 2nd parameter here, originally
@@ -149,43 +181,63 @@ public class Player : UnitBehavior
             rb.drag = 0;
 
         //Actions player can do depending on mode they are in
-        if (currentMode == playerMode.Combat)
-        {
+        if (currentMode == playerMode.Combat) {
             attack();
+        } else {
+            if (currentMode != playerMode.Build) {
+                //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
+                destoryTempHolder();
+                if (currentMode == playerMode.Sell) {
+                    sellTower();
+                    changeTowerColor();
+                } else if (currentMode == playerMode.Upgrade) {
+                    upgradeTower();
+                    changeTowerColor();
+                }
+            } else {
+                placeTowers();
+            }
         }
-        else if (currentMode == playerMode.Build)
-        {
-            placeTowers();
-            //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
-        }
+
+
+        playerData.currency = currency;
+        playerData.playerHealth = health;
+        playerData.playerMana = mana;
     }
 
-    //Methods to be executed when user inputs movement keys
-    //Executed on a fixed interval
     public void FixedUpdate()
     {
         regenMana();
         movePlayer();
     }
 
-    //Checking which mode the player is currently in
     private void checkCurrentMode()
     {
-        if (enteringBuildMode())
-        {
-            currentMode = playerMode.Build;
-
-            Debug.Log("Build");
-        }
-        else if (enteringCombatMode())
-        {
+        if (Input.GetKeyDown(prevWeapon) ||
+           Input.GetKeyDown(nextWeapon)) {
             currentMode = playerMode.Combat;
-            Debug.Log("Combat");
             if (tempDisplayHolder != null)
             {
                 Destroy(this.tempDisplayHolder);
             }
+            if (highlightedTile != null)
+                highlightedTile.highlight(false);
             OnEnterCombatMode?.Invoke(currentWeaponIndex);
+        }
+
+        if (Input.GetKeyDown(tower1) ||
+           Input.GetKeyDown(tower2) ||
+           Input.GetKeyDown(tower3)) {
+            currentMode = playerMode.Build;
+        }
+
+        if (Input.GetKeyDown(deleteTower)) {
+            currentMode = playerMode.Sell;
+        }
+
+        if (Input.GetKeyDown(upgradeCurrentTower) ||
+            Input.GetKeyDown(buildMode)) {
+            currentMode = playerMode.Upgrade;
         }
     }
     private bool enteringBuildMode()
@@ -205,15 +257,16 @@ public class Player : UnitBehavior
         {
             return true;
         }
-        if (Input.GetKeyDown(nextWeapon))
-        {
-            return true;
+
+        if (Input.GetKeyDown(upgradeCurrentTower) ||
+            Input.GetKeyDown(buildMode)) {
+            currentMode = playerMode.Upgrade;
         }
         return false;
     }
 
     //Getting WASD and jump inputs
-    private void getUserKeyInput()
+    private void getUserKey()
     { 
         //Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
@@ -279,6 +332,11 @@ public class Player : UnitBehavior
             if (towerSet[5] != null)
             currentTower = towerSet[5];
             OnTowerSelect?.Invoke(5, towerSet[5]);
+        }
+        if ((Input.GetKeyDown(deleteTower))
+            || (Input.GetKeyDown(buildMode)))
+        {
+            currentTower = null;
         }
 
     }
@@ -391,18 +449,64 @@ public class Player : UnitBehavior
         //reset Y velocity to prepare for new jump
         rb.velocity = lateralVelocityComponent;
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(-currGravDir * jumpForce, ForceMode.Impulse);
     }
     private void resetJump()
     {
-        //Reset readytoJump to True so player can jump again
         readyToJump = true;
     }
+
+
+    protected override void beginRotation(Transform gravSource)
+    {
+        if (rotateToSurfaceCoroutine != null)
+            StopCoroutine(rotateToSurfaceCoroutine);
+        rotateToSurfaceCoroutine = StartCoroutine(rotateCoroutine(gravSource));
+    }
+
+    private IEnumerator rotateCoroutine(Transform gravSource)
+    {
+        Vector3 axisToRotateAround = Vector3.Cross(-transform.up, currGravDir);
+
+
+        Debug.Log("began rotation coroutine");
+        float initialDiffInRotation = Vector3.Angle(-transform.up, currGravDir);
+        Debug.Log("initial diff in rotation: " +  initialDiffInRotation);
+        float elapsedTime = 0f;
+        Quaternion initRot = transform.rotation;
+        //Quaternion goalRot = Quaternion.Euler(currGravDir.x, 0f, currGravDir.z); //THIS LINE IS THE PROBLEM. need currGravDir as an actual rotation, not a normalized direction
+        //Quaternion goalRot = Quaternion.LookRotation(Vector3.Cross(Vector3.up, -currGravDir), -currGravDir);
+        
+        //Vector3 initRotEuler = transform.rotation.eulerAngles;
+        //Vector3 goalRotEuler = Quaternion.LookRotation(Vector3.Cross(Vector3.up, currGravDir), currGravDir).eulerAngles;
+
+
+        while (elapsedTime < 1)
+        {
+            //transform.rotation = Quaternion.Euler(Vector3.Lerp(initRot.eulerAngles, goalRot.eulerAngles, elapsedTime * 180 / initialDiffInRotation));
+            rb.rotation = Quaternion.Slerp(initRot, gravSource.rotation, elapsedTime * 90 / initialDiffInRotation); 
+            //transform.eulerAngles = Vector3.Lerp(initRotEuler, goalRotEuler, elapsedTime);
+
+            //transform.RotateAround(transform.position, axisToRotateAround, 1f); //initialDiffInRotation * Time.deltaTime
+
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        rb.rotation = gravSource.rotation;
+        //if elapsed rotation > initialDiffInRotation, set rotation to currGravDir's
+        Debug.Log("rot at end of corout: " + transform.rotation.eulerAngles);
+    }
+
+    /***
+    ****
+        Methods for player weapon usage
+    ****
+    ***/
+
     private void attack()
     {
         Weapon currentWeaponScript = currentWeapon.GetComponent<Weapon>();
-
-        //Empty
         
         if (currentWeaponScript.Automatic && Input.GetMouseButton(0))
         {
@@ -432,29 +536,35 @@ public class Player : UnitBehavior
                 currentWeaponIndex = weaponList.Count - 1;
         }
 
-
+        //in the hierarchy, the 1st weapon was originally at: .411, .121, 0
         Transform cwt = currentWeapon.transform;
 
         Destroy(currentWeapon);
 
         currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
         OnSwapWeapon?.Invoke(currentWeaponIndex);
-
     }
+
+    /***
+    ****
+        Methods for Build and Upgrade Modes
+    ****
+    ***/
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
-        if (tempDisplayHolder != null)
-        {
-            Destroy(this.tempDisplayHolder);
-        }
-        //here is where we should display an outline of the currently selected tower, either a green transparent silhouette if placeable, or red.
+        destoryTempHolder();
+        if (highlightedTile != null)
+            highlightedTile.highlight(false);
+
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 30f, Grid)))
         {
             if ((hit.transform.tag.Equals("GridTile")))
             {
                 GridTile currTileScript = hit.transform.GetComponent<GridTile>();
+                highlightedTile = currTileScript;
+                highlightedTile.highlight(true);
 
                 if (currTileScript.placeable && !currTileScript.enemyOnTile)
                 {
@@ -465,10 +575,12 @@ public class Player : UnitBehavior
                     {
                         if (currency >= currentTower.GetComponent<TowerBehavior>().cost)
                         {
-                            Debug.Log(hit.transform.position.x);
-                            Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
-                            GameObject currTower = Instantiate(currentTower, towerPlacement, transform.rotation);
+                            //Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
+                            GameObject currTower = Instantiate(currentTower, hit.transform.position, hit.transform.rotation);
                             TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
+                            tower.gridLocation = currTileScript;
+
+                            //transform.rotation = Quaternion.Euler(30f, 0f, 0f);
 
                             currTileScript.placeable = false;
                             currTileScript.walkable = false;
@@ -478,9 +590,7 @@ public class Player : UnitBehavior
                             //currTileScript.goalDistText.text = $"{currTileScript.goalDist}";
                             //Debug.Log($"CurrTile dist {currTileScript.goalDist}");
 
-                            Debug.Log($"Currency before tower placement: {currency}");
                             currency -= tower.cost;
-                            Debug.Log($"Currency after tower placement: {currency}");
 
                             OnTowerPlaced?.Invoke(currTileScript);
                         }
@@ -488,8 +598,6 @@ public class Player : UnitBehavior
                         {
                             Debug.Log("We require more Vespene Gas");
                         }
-
-
                     }
                 }
                 else if (!currTileScript.towerOnTile)
@@ -503,29 +611,105 @@ public class Player : UnitBehavior
         }
         
     }
+
     private void sellTower()
     {
-        GridTile tileOn = null;
-        //invoke this event with the tile the tower was on.
-        OnTowerSold?.Invoke(tileOn);
-    }
-    public void rotateToSurface()
+        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+        if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
+            Debug.Log("Sell");
+            colerable = true;
+            towerHitByRaycast = hit.transform.gameObject;
+            if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                TowerBehavior towerBehavior = towerHitByRaycast.GetComponent<TowerBehavior>();
+
+                GridTile towerTile = towerBehavior.gridLocation;
+                currency += towerBehavior.cost;
+                towerTile.placeable = true;
+                towerTile.walkable = true;
+                towerTile.towerOnTile = false;
+                /*
+                //invoke this event with the tile the tower was on.
+                OnTowerSold?.Invoke(towerTile);
+                */
+                Destroy(towerHitByRaycast);
+                colerable = false;
+            }
+        } else {
+            colerable = false;
+        }
+    }   
+
+
+
+
+    private void upgradeTower()
     {
-        currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
+
+
+        /*
+        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+        if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
+            colerable = true;
+            towerHitByRaycast = hit.transform.gameObject;
+
+            TowerBehavior towerBehavior = towerHitByRaycast.GetComponent<TowerBehavior>();
+            bool upgradeMultiPath = towerBehavior.multiPathUpgrade;
+            int upgradeStage = towerBehavior.upgradeStage;
+            int towerCost = towerBehavior.cost;
+
+            if ((towerBehavior.isUpgradable) && (currency > towerCost)){
+                Debug.Log("Upgradeable");
+                if (upgradeMultiPath == false) {
+                    if (Input.GetKeyDown(upgradeCurrentTower)) {
+                        Debug.Log("Upgrade");
+                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
+                    }
+                }else if (upgradeMultiPath == true){
+                    if (Input.GetKeyDown(upgradePath1)){
+                        upgradeStage = 9;
+                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
+                    }else if (Input.GetKeyDown(upgradePath2)){
+                        upgradeStage = 19;
+                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
+                    }else if (Input.GetKeyDown(upgradePath3)){
+                        upgradeStage = 29;
+                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
+                    }
+                }
+            }
+        } else {
+        colerable = false;
+        }
+        */
     }
-    private void GainCurrency(GameObject enemyWhoDied)
+
+    /*
+    private void goToUpgrade(int upgradeStage, TowerBehavior towerBehavior, int towerCost){
+        colerable = false;
+        upgradeStage++;
+        towerBehavior.upgradeTower(upgradeStage);
+        currency -= towerCost;
+    }
+    */
+    private void GainCurrency(EnemyBehavior enemyWhoDied)
     {
-        currency += enemyWhoDied.GetComponent<EnemyBehavior>().worth;
+        currency += enemyWhoDied.worth;
     }
 
 
     //set towers + their order, and weapons + their order
-    private void level_LoadData(string[] givenTowerSet, string[] weaponSet)
+    private void FillLoadout()
     {
+        int[] towerLoadout = LoadoutManager.Instance.EquippedTowerIDs;
+        int[] weaponLoadout = LoadoutManager.Instance.EquippedWeaponIDs;
+
+        Debug.Log("FillLoadout loadoutManager's length: " + towerLoadout.Length);
+
         //fill in the tower set from save data
         for (int i = 0; i < towerSet.Length; i++)
         {
-            towerSet[i] = Tower.GetPrefab(givenTowerSet[i]);
+            if (towerLoadout[i] != -1) // -1 is the default/empty value
+                towerSet[i] = towerList.TowerDataSet[towerLoadout[i]].Prefab;
         }
 
         //fill in the active weapon slots with their respective weapon icons...
@@ -537,14 +721,35 @@ public class Player : UnitBehavior
 
     private void OnEnable()
     {
-        EnemyBehavior.OnEnemyDeath += GainCurrency;
+        //EnemyBehavior.OnEnemyDeath += GainCurrency;
         Weapon.OnFire += spentMana;
-        LevelManager.OnLoadData += level_LoadData;
     }
+
     private void OnDisable()
     {
-        EnemyBehavior.OnEnemyDeath -= GainCurrency;
+        //EnemyBehavior.OnEnemyDeath -= GainCurrency;
         Weapon.OnFire -= spentMana;
-        LevelManager.OnLoadData -= level_LoadData;
     }
+
+    private void destoryTempHolder() 
+    {
+        if (tempDisplayHolder != null) {
+            Destroy(this.tempDisplayHolder);
+        }
+    }
+
+//Should highlight the tower that the player is looking at (Only changes tower color rn)
+    private void changeTowerColor()
+    {
+        if (towerHitByRaycast == null) {
+            return;
+        }
+        if (colerable) {
+            towerHitByRaycast.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(.1f, .9f, .1f, .2f));
+        } else if (!colerable) {
+
+            towerHitByRaycast.transform.Find("Head").GetComponent<Renderer>().material.SetColor("_Color", new Color(1,1,1,1));
+        }
+    }
+
 }

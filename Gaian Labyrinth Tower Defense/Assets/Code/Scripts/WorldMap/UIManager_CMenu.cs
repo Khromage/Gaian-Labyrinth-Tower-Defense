@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //ctrl+f SSS for thing to do (saving animation, etc)
@@ -15,12 +16,19 @@ public class UIManager_CMenu : MonoBehaviour
     public PlayerInfo savedData;
     private bool changedData = false;
 
+
+    [SerializeField]
+    private TowerList towerList;
+
+
     //need a name for this currency
     public int metaCurrency = 0;
     private string[] activeTowerSet = { "", "", "", "", "", "" };
     private string[] activeWeaponSet = { "", "", ""};
 
     public GameObject ActivePanel;
+
+    private int towerInfoPanelID;
 
     /*
     [SerializeField]
@@ -48,8 +56,9 @@ public class UIManager_CMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        savedData = new PlayerInfo();
-        LoadSavedData();
+        //savedData = new PlayerInfo();
+        //LoadSavedData();
+
 
         ActivePanel = null;
 
@@ -125,7 +134,7 @@ public class UIManager_CMenu : MonoBehaviour
             if (changedData)
             {
                 //SSS begin saving animation
-                //SaveData();
+                SaveManager.Instance.SaveData();
                 changedData = false;
             }
         }
@@ -138,7 +147,7 @@ public class UIManager_CMenu : MonoBehaviour
             if (changedData)
             {
                 //SSS begin saving animation
-                //SaveData();
+                SaveManager.Instance.SaveData();
                 changedData = false;
             }
         }
@@ -239,21 +248,25 @@ public class UIManager_CMenu : MonoBehaviour
     */
 
 
-    public void DisplayTowerInfo(string type)
+    public void DisplayTowerInfo(int id)
     {
         if (!towerInfoPanelIsOpen)
         {
-            OpenTowerInfoPanel();
+            OpenTowerInfoPanel(id);
+        }
+        else if (towerInfoPanelID == id)
+        {
+            CloseTowerInfoPanel();
         }
 
         Debug.Log("Fill out tower info panel here");
-        switch (type)
+        switch (id)
         {
-            case "arcane":
+            case 0:
                 Debug.Log("populate info panel with arcane tower class's description and buttons/images");
                 towerInfoPanel.transform.GetChild(0).GetComponent<Image>().color = new Color(.2f, 0f, .8f, .8f);
                 break;
-            case "fire":
+            case 1:
                 Debug.Log("populate info panel with fire tower class's description and buttons/images");
                 towerInfoPanel.transform.GetChild(0).GetComponent<Image>().color = new Color(.6f, 0f, .4f, .8f);
                 break;
@@ -273,10 +286,11 @@ public class UIManager_CMenu : MonoBehaviour
     {
         //using an array of strings belonging to the tower type's class, change the text in the info panel
     }
-    private void OpenTowerInfoPanel()
+    private void OpenTowerInfoPanel(int id)
     {
         towerInfoPanel.SetActive(true);
         towerInfoPanelIsOpen = true;
+        towerInfoPanelID = id;
         //play open animation
         towerInfoPanel.GetComponent<Animator>().SetFloat("Closing", 0f);
     }
@@ -331,34 +345,72 @@ public class UIManager_CMenu : MonoBehaviour
 
     */
 
-    public void UpdateActiveTowerSet(string type, int indexOfChange)
-    {
-        //if any slots already have the type of tower being added, then swap slot of the type with the new slot indexOfChange
-        for (int i = 0; i < 6; i++)
-        {
-            if (activeTowerSet[i] == type && type != "")
-            {
-                activeTowerSet[i] = activeTowerSet[indexOfChange];
-                activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Tower.GetIcon(activeTowerSet[indexOfChange]);
-            }
-        }
-        activeTowerSet[indexOfChange] = type;
-        Debug.Log("new tower of type " + type + ": {" + activeTowerSet[indexOfChange] + "} at " + indexOfChange);
 
-        //if type is null/empty (which will be set up for dragging out of the slot), then set the index's string to empty
+    private void InitialFillUI()
+    {
+        Debug.Log("About to fill the UI display of tower loadout");
+        int[] activeTowerSet = LoadoutManager.Instance.GetTowerLoadout();
+
 
         string printStr = "";
         for (int i = 0; i < 6; i++)
         {
-            if (activeTowerSet[i] != "")
+            if (activeTowerSet[i] != -1)
                 printStr += activeTowerSet[i] + ", ";
             else
-                printStr += "___, ";
+                printStr += "__, ";
+        }
+        Debug.Log("UIManager's initial fill. List from LoadoutManager: " + printStr);
+
+
+        for (int i = 0; i < 6; i++)
+        {
+            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(activeTowerSet[i]);
+        }
+    }
+
+    public void UpdateActiveTowerSet(int id, int indexOfChange)
+    {
+        int[] activeTowerSet = LoadoutManager.Instance.EquippedTowerIDs;
+
+        //if any slots already have the type of tower being added, then swap slot of the type with the new slot indexOfChange
+        for (int i = 0; i < 6; i++)
+        {
+            if (activeTowerSet[i] == id)
+            {
+                //Sprite spriteToChange;
+                activeTowerSet[i] = activeTowerSet[indexOfChange];
+                activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(activeTowerSet[indexOfChange]);
+                /*
+                if (activeTowerSet[indexOfChange] != -1)
+                    spriteToChange = towerList.GetTowerIcon(activeTowerSet[indexOfChange]);
+                else
+                {
+                    spriteToChange = activeTowerPanel.transform.GetChild(0).GetChild(indexOfChange).GetChild(0).GetChild(1).GetComponent<Image>().sprite;
+                }
+                activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = spriteToChange;
+                */
+            }
+        }
+
+        activeTowerSet[indexOfChange] = id;
+        Debug.Log("new tower of type " + id + ": {" + activeTowerSet[indexOfChange] + "} at " + indexOfChange);
+
+        //if type is null/empty (which will be set up for dragging out of the slot), then set the index's int back to default (-1)
+
+        string printStr = "";
+        for (int i = 0; i < 6; i++)
+        {
+            if (activeTowerSet[i] != -1)
+                printStr += activeTowerSet[i] + ", ";
+            else
+                printStr += "__, ";
         }
         Debug.Log("tower set: " + printStr);
 
-        savedData.ActiveTowers = activeTowerSet;
         changedData = true;
+
+        LoadoutManager.Instance.EquippedTowerIDs = activeTowerSet;
     }
 
     public void UpdateActiveWeaponSet(string type, int indexOfChange)
@@ -368,8 +420,8 @@ public class UIManager_CMenu : MonoBehaviour
         changedData = true;
     }
 
-
-
+    #region obsoleteLoad
+    /*
     public void LoadSavedData()
     {
         string jsonData = PlayerPrefs.GetString("MyProgress");
@@ -393,28 +445,27 @@ public class UIManager_CMenu : MonoBehaviour
             //SSS fill in the active weapon slots with their respective weapon icons...
         }
     }
-    public void SaveData()
-    {
-        string jsonData = JsonUtility.ToJson(savedData);
-        //Save Json string
-        PlayerPrefs.SetString("MyProgress", jsonData);
-        PlayerPrefs.Save();
-
-        //SSS finish saving animation
-    }
-     
+    */
+    #endregion
 
     private void OnEnable()
     {
         //LevelMarker.OnLevelInvestigate += RemoveActivePanel;
         UIDragDrop.OnActiveTowerChange += UpdateActiveTowerSet;
 
+
+        //SaveManager.Instance.InitializeFreshSave();
+        Debug.Log("started up SaveManager from UIManager?");
+
+        SaveManager.Instance.OnSaveFileLoaded += InitialFillUI;
+
     }
     private void OnDisable()
     {
         //LevelMarker.OnLevelInvestigate -= RemoveActivePanel;
         UIDragDrop.OnActiveTowerChange -= UpdateActiveTowerSet;
+        SaveManager.Instance.OnSaveFileLoaded -= InitialFillUI;
 
-        SaveData();
+        //SaveManager.Instance.SaveData();
     }
 }

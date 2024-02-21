@@ -56,5 +56,8 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Gaian Labyrinth Tower Defense.sln"
+    "dotnet.defaultSolution": "Gaian Labyrinth Tower Defense.sln",
+    "files.associations": {
+        "assignment1": "c"
+    }
 }

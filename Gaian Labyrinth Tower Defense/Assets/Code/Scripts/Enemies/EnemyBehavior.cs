@@ -10,21 +10,25 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    public delegate void EnemyDeath(GameObject deadEnemy);
-    public static event EnemyDeath OnEnemyDeath;
+    public delegate void EnemyDeath(EnemyBehavior deadEnemy);
+    public event EnemyDeath OnEnemyDeath;
 
-    public delegate void EnemyReachedGoal(GameObject enemy);
-    public static event EnemyReachedGoal OnEnemyReachedGoal;
+    public delegate void EnemyReachedGoal(EnemyBehavior enemy);
+    public event EnemyReachedGoal OnEnemyReachedGoal;
 
     public GridTile currTile;
     public GridTile successorTile;
     public LayerMask Grid;
-    private float moveSpeed = 3f;
+    protected float moveSpeed;
+    protected bool isAlive;
 
     [SerializeField]
     private EnemyHealthBar HealthBar;
-    private float maxHealth;
+    protected int enemyID;
+    protected float maxHealth;
     public float currentHealth;
+    protected float maxSheild;
+    public float currentSheild;
 
     public GameObject damageIndicator;
 
@@ -37,8 +41,11 @@ public class EnemyBehavior : MonoBehaviour
     public int harm;
 
     //public float value? for when it dies
+    [SerializeField]
+    protected AudioSource EnemyHurtSFX;
 
-    public AudioSource EnemyHurtSFX;
+    [SerializeField]
+    private EnemiesRemaining remainingEnemies;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +53,8 @@ public class EnemyBehavior : MonoBehaviour
         harm = 1;
         worth = 5;
         maxHealth = 12f;
+        moveSpeed = 3f;
+        isAlive = true;
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
     }
@@ -60,8 +69,18 @@ public class EnemyBehavior : MonoBehaviour
         if (currTile is GoalTile)
         {
             Debug.Log("reached end, presumably");
-            OnEnemyReachedGoal?.Invoke(gameObject);
+            OnEnemyReachedGoal?.Invoke(this);
             //OnEnemyDeath?.Invoke(gameObject);
+            isAlive = false;
+        }
+    }
+
+    void LateUpdate()
+    {
+        if(!isAlive)
+        {
+            Debug.Log("destroying enemy");
+            remainingEnemies.enemies.Remove(gameObject);
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
         }
@@ -78,16 +97,9 @@ public class EnemyBehavior : MonoBehaviour
         EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
-            OnEnemyDeath?.Invoke(gameObject);
-
-
-            //Modify these lines. Play death animation, but no delay on the Destroys (don't want enemies getting into goal even when hp <= 0)
-
-            float destroyDelay = .5f * damage / maxHealth; // UnityEngine.Random.value;
-            if (destroyDelay > .5f)
-                destroyDelay = .5f;
-            Destroy(gameObject, destroyDelay);
-            Destroy(HealthBar.gameObject, destroyDelay);
+            Debug.Log("enemy death event");
+            OnEnemyDeath?.Invoke(this);
+            isAlive = false;
         }
         
     }
@@ -119,8 +131,10 @@ public class EnemyBehavior : MonoBehaviour
         Vector3 posToMoveToward = transform.position;
         if (successorTile != null)
             posToMoveToward = successorTile.transform.position;
+        /*
         else
             Debug.Log("enemy no successor to move toward");
+        */
         Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
 
         transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);

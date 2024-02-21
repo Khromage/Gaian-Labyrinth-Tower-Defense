@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public TMP_Text CountText;
     [SerializeField]
-    private GameObject levelManager;
+    public PlayerData playerData;
     [SerializeField]
     private GameObject player;
 
@@ -31,11 +31,18 @@ public class UIManager : MonoBehaviour
 
     //private int counter = 0;
 
+    [SerializeField]
+    private EnemiesRemaining remainingEnemies;
+
+    [SerializeField]
+    private TowerList towerList;
+
     void Start()
     {
         //get list of all spawnpoints
         //every time wave start, get all enemies
-        
+
+        FillEquipHUD();
     }
 
     // Update is called once per frame
@@ -43,17 +50,17 @@ public class UIManager : MonoBehaviour
     {
         //int cw;
         //cw = levelManager.GetComponent<LevelManager>().currWave;
-        WavesText.text = "Wave: " + levelManager.GetComponent<LevelManager>().currWave.ToString();
-        TimeText.text = "Next Wave: " + ((int)levelManager.GetComponent<LevelManager>().waveCountdown).ToString();
-        LivesText.text = "Lives:\n" + levelManager.GetComponent<LevelManager>().remainingLives.ToString();
-        CurrencyText.text = "$" + player.GetComponent<Player>().currency.ToString();
+        WavesText.text = "Wave: " + LevelManager.Instance.Wave.ToString();
+        TimeText.text = "Next Wave: " + LevelManager.Instance.Countdown.ToString();
+        LivesText.text = "Lives:\n" + LevelManager.Instance.Lives.ToString();
+        CurrencyText.text = "$" + LevelManager.Instance.Currency.ToString();
+        
         //LivesText.text = "hey " + counter;
         //counter++;
         //CountText.text = GetComponent<SpawnPoint>().waveSet[cw -1].waveEnemies.Length.ToString();
     }
 
     void WaveStart () {}
-
 
     private void player_updateManaBar(float changeAmount, bool animate)
     {
@@ -123,11 +130,11 @@ public class UIManager : MonoBehaviour
         //Debug.Log("mana should now be at " + (manaBar.fillAmount * 100f) + "%");
     }
 
-
     private void player_selectTower(int towerIndex, GameObject towerObj)
     {
         if (towerObj != null)
         {
+            Debug.Log($"Tower {towerObj} in slot index {towerIndex}");
             //set highlight on UI
         }
         else
@@ -179,15 +186,14 @@ public class UIManager : MonoBehaviour
     }
 
 
-    private void level_LoadData(string[] towerSet, string[] weaponSet)
+    private void FillEquipHUD()
     {
-        //fill in the active tower slots with their respective tower icons
+        int[] towerSet = LoadoutManager.Instance.EquippedTowerIDs;
+        int[] weaponSet = LoadoutManager.Instance.EquippedWeaponIDs;
         for (int i = 0; i < towerSet.Length; i++)
         {
-            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Tower.GetIcon(towerSet[i]);
+            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
         }
-
-        //fill in the active weapon slots with their respective weapon icons
         for (int i = 0; i < weaponSet.Length; i++)
         {
             //SSS fill in the active weapon slots with their respective weapon icons...
@@ -201,7 +207,6 @@ public class UIManager : MonoBehaviour
         Player.OnEnterCombatMode += player_enterCombatMode;
         Player.OnSwapWeapon += player_swapWeapon;
 
-        LevelManager.OnLoadData += level_LoadData;
     }
     private void OnDisable()
     {
@@ -210,6 +215,5 @@ public class UIManager : MonoBehaviour
         Player.OnEnterCombatMode -= player_enterCombatMode;
         Player.OnSwapWeapon -= player_swapWeapon;
 
-        LevelManager.OnLoadData -= level_LoadData;
     }
 }

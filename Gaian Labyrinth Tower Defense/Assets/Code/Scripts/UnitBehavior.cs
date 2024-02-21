@@ -13,13 +13,25 @@ public class UnitBehavior : MonoBehaviour
 
     public Rigidbody rb;
 
-    public void UpdateGravity(Vector3 gravityDir)
+    public Vector3 currGravDir;
+
+    public void UpdateGravity(Vector3 gravityDir, Transform gravSource)
     {
+        Debug.Log("updating gravity");
         float mass = GetComponent<Rigidbody>().mass;
         gameObject.GetComponent<ConstantForce>().force = gravityDir * mass * gravityConstant;
+        currGravDir = Vector3.Normalize(gravityDir);
 
+        //transform.up = -currGravDir;
+        beginRotation(gravSource);
+    }
+    protected virtual void beginRotation(Transform gravSource)
+    {
+        //to be overridden and start coroutines in Player and maybe EnemyBehavior
     }
     
+    //raycast form of determining gravity direction. defunct/unused
+    /*
     public virtual void setGravityDir()
     {
         Vector3 movementOffset = lateralVelocityComponent.normalized * .3f; //or Vector3.zero;
@@ -33,6 +45,7 @@ public class UnitBehavior : MonoBehaviour
             gameObject.GetComponent<ConstantForce>().force = -hitInfo.normal * GetComponent<Rigidbody>().mass * gravityConstant;
         }
     }
+    */
 
     public void setVelocityComponents()
     {

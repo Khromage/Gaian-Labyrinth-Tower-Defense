@@ -58,7 +58,8 @@ public class ThirdPersonCam : MonoBehaviour
         Vector3 dirToCombatLook = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
         orientation.forward = dirToCombatLook.normalized;
 
-        playerObj.forward = dirToCombatLook.normalized;
+        //playerObj.forward = dirToCombatLook.normalized;
+        playerObj.localRotation = Quaternion.LookRotation(dirToCombatLook, Vector3.up);
 
         //Method to call Camera Style Operations
         cameraStyleMethods();

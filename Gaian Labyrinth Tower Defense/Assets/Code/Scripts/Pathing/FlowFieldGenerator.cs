@@ -128,8 +128,8 @@ public class FlowFieldGenerator
         foreach (GridTile b in prevBottlenecks)
         {
             b.placeable = true;
-            prevBottlenecks.Remove(b);
         }
+        prevBottlenecks.Clear();
 
         int i = 0;
         while (sortedTileList[i].goalDist == 0 && i < sortedTileList.Count)
