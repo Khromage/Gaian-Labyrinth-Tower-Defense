@@ -16,7 +16,9 @@ public class FirstPersonCamera : CinemachineExtension
     [SerializeField]
     private float clampAngle = 80.0f;
     public Transform playerObj;
-    public Transform head;
+    public Transform orientation;
+    public Transform combatLookAt;
+    public GameObject PlayerCam;
 
     private UnityEngine.Vector3 startingRotation;
 
@@ -48,6 +50,8 @@ public class FirstPersonCamera : CinemachineExtension
                 //Affects the rotation of the camera
                 state.RawOrientation = UnityEngine.Quaternion.Euler(-startingRotation.y, startingRotation.x, 0f);
 
+                //Affects the rotation of the player
+                playerObj.transform.rotation = UnityEngine.Quaternion.Euler(0f, startingRotation.x, 0f);
                 
             }
         }    
