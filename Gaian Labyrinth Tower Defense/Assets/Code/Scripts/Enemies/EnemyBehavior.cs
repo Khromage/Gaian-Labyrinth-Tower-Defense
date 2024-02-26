@@ -44,12 +44,14 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     protected AudioSource EnemyHurtSFX;
 
+
     [SerializeField]
-    private EnemiesRemaining remainingEnemies;
+    private EnemyInfo info;
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
+        //change these to pull from the scriptableObject
         harm = 1;
         worth = 5;
         maxHealth = 12f;
