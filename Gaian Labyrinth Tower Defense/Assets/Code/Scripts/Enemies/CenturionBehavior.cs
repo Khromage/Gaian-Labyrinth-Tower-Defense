@@ -10,6 +10,8 @@ public class CenturionBehavior : EnemyBehavior
         Head, Body, Tail
     }
 
+    [SerializeField]
+    private status currentStatus;
     
 
     // Start is called before the first frame update

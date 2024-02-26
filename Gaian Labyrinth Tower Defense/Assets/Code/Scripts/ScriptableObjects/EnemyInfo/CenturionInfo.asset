@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e237d18e48fbd44a1140a14d20e07c, type: 3}
   m_Name: CenturionInfo
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 0}
+  Prefab: {fileID: 8082728119782324012, guid: bf819678f6d04ad448b105e4679ab39a, type: 3}
   Delay: 0
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Giant centipede with multiple segments that get faster

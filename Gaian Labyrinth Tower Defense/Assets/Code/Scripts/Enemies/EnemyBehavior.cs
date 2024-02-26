@@ -82,7 +82,6 @@ public class EnemyBehavior : MonoBehaviour
         if(!isAlive)
         {
             Debug.Log("destroying enemy");
-            remainingEnemies.enemies.Remove(gameObject);
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
         }
