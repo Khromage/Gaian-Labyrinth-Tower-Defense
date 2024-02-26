@@ -53,7 +53,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c2dca21bbc5b74e8c2a67e89201460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gotPlaced: {fileID: 2374892957163312544}
   towerName: arcane
   target: {fileID: 0}
   targetingMode: 
@@ -70,6 +69,7 @@ MonoBehaviour:
   firePoint: {fileID: 6788566222244839869}
   enemies: []
   detectionZone: {fileID: 0}
+  placedSFX: {fileID: 2374892957163312544}
   cost: 10
   lv2_cost: 20
   lv3_1_cost: 30
