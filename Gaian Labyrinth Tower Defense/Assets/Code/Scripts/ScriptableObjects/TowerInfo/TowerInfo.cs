@@ -22,16 +22,10 @@ public class TowerInfo : ScriptableObject
     public float FireRate;
     
     [field: SerializeField]
-    public int Value;
+    public int Cost;
 
     [field: SerializeField]
-    public string Description = "This tower is {Name} and costs {Price}.";
-
-    public string GetDescription(string towerName, float towerPrice)
-    {
-        return Description.Replace("{Name}", towerName)
-                            .Replace("{Price}", towerPrice.ToString());
-    }
+    public string Description { get; private set; }
     
     [field: SerializeField]
     public int BaseCost;

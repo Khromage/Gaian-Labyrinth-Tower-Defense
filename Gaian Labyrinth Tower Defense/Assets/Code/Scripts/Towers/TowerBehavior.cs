@@ -225,6 +225,15 @@ public class TowerBehavior : MonoBehaviour, Interactable
         fireCountdown -= Time.deltaTime;
 
     }
+
+    public virtual string GetDescription()
+    {
+        return towerInfo.Description.Replace("{Name}", towerName)
+                                    .Replace("{Damage}", damage.ToString())
+                                    .Replace("{Range}", range.ToString())
+                                    .Replace("{FireRate}", fireRate.ToString())
+                                    .Replace("{Cost}", cost.ToString());
+    }
     
     //rotate head of tower to follow current target. Can be overridden for specific rotation behaviors
     protected virtual void LookTowardTarget()

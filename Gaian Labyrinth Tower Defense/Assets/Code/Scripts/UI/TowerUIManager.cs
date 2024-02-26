@@ -24,7 +24,7 @@ public class TowerUIManager : MonoBehaviour
     {
         towerName.text = selectedTower.towerName;
         towerIcon.sprite = selectedTower.towerInfo.Icon;
-        towerValue.text = "Value: " + selectedTower.towerInfo.Value;
-        //towerDescription.text = selectedTower.towerInfo.GetDescription();
+        towerValue.text = "Value: " + selectedTower.cost;
+        towerDescription.text = selectedTower.GetDescription();
     }
 }
