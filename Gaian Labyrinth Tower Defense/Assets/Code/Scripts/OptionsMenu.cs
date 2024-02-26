@@ -17,9 +17,12 @@ public class OptionsMenu : MonoBehaviour
     {
         resolutions = Screen.resolutions;
         PopulateResolutionDropdown();
-
+        SetFPS();
     }
-
+    void Awake()
+    {
+        QualitySettings.vSyncCount = 0;
+    }
     private void PopulateResolutionDropdown()
     {
         resolutionDropdown.ClearOptions();
@@ -57,25 +60,16 @@ public class OptionsMenu : MonoBehaviour
         Screen.fullScreen = isFullscreen;
     }
 
-    public void SetFPS(int f) {
-        Application.targetFrameRate = f;
+    public void SetFPS() {
         
-    }
-
-    private void OnFPSDropdownValueChanged(int index)
-    {
-        string selectedText = FPSDropdown.options[index].text;
-
-        // Try to parse the selected text to an integer
-        if (int.TryParse(selectedText, out int fpsValue))
+        if(FPSDropdown.value == 0)
         {
-            // Call SetFPS with the parsed integer value
-            SetFPS(fpsValue);
-        }
-        else
-        {
-            Debug.LogWarning("Failed to parse FPS value from dropdown: " + selectedText);
-        }
+            Application.targetFrameRate = -1;
+        } else 
+            {
+                string stringFPS = FPSDropdown.options[FPSDropdown.value].text;
+                Application.targetFrameRate = int.Parse(stringFPS);
+            }
     }
 
     void Update() {
