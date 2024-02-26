@@ -8,6 +8,9 @@ public class TowerUIManager : MonoBehaviour
 {
     public Image towerIcon;
     public TMP_Text towerName;
+    public TMP_Text towerValue;
+    public TMP_Text towerDescription;
+
 
 
     
@@ -21,5 +24,7 @@ public class TowerUIManager : MonoBehaviour
     {
         towerName.text = selectedTower.towerName;
         towerIcon.sprite = selectedTower.towerInfo.Icon;
+        towerValue.text = "Value: " + selectedTower.towerInfo.Value;
+        //towerDescription.text = selectedTower.towerInfo.GetDescription();
     }
 }

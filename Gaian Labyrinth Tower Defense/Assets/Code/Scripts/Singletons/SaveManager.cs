@@ -89,7 +89,7 @@ public class SaveManager : SpawnableSingleton<SaveManager>
         string jsonData = PlayerPrefs.GetString(saveFileName);
         JsonUtility.FromJsonOverwrite(jsonData, Instance);
 
-        if (jsonData == null)
+        if (EquippedTowerIDs.Length == 0)
         {
             InitializeFreshSave();
         }

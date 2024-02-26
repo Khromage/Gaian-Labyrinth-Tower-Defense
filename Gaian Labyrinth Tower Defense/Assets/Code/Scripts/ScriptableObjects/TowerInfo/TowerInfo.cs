@@ -13,9 +13,6 @@ public class TowerInfo : ScriptableObject
     public GameObject Prefab;
 
     [field: SerializeField]
-    public int BaseCost;
-
-    [field: SerializeField]
     public float Damage;
 
     [field: SerializeField]
@@ -23,6 +20,21 @@ public class TowerInfo : ScriptableObject
 
     [field: SerializeField]
     public float FireRate;
+    
+    [field: SerializeField]
+    public int Value;
+
+    [field: SerializeField]
+    public string Description = "This tower is {Name} and costs {Price}.";
+
+    public string GetDescription(string towerName, float towerPrice)
+    {
+        return Description.Replace("{Name}", towerName)
+                            .Replace("{Price}", towerPrice.ToString());
+    }
+    
+    [field: SerializeField]
+    public int BaseCost;
 
     [field: SerializeField]
     public int Lv2Cost;
@@ -33,6 +45,4 @@ public class TowerInfo : ScriptableObject
     [field: SerializeField]
     public Sprite Icon { get; private set; }
 
-    [field: SerializeField]
-    public string Description { get; private set; }
 }

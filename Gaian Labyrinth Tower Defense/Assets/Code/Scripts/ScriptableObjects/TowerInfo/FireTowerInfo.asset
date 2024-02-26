@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Fire
   Prefab: {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
-  BaseCost: 50
   Damage: 5
   Range: 19
   FireRate: 1
+  Value: 5
+  BaseCost: 50
   Lv2Cost: 40
   Lv3Cost: 640000006e00000082000000
   <Icon>k__BackingField: {fileID: 21300000, guid: fb0e4e9a7949e5f43bdeb28346757ba3, type: 3}

@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Water
   Prefab: {fileID: 0}
-  BaseCost: 0
   Damage: 0
   Range: 0
   FireRate: 0
+  Value: 5
+  BaseCost: 0
   Lv2Cost: 0
   Lv3Cost: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 4e5ca202d7ad0f344a607fd7fce195f6, type: 3}
