@@ -11,13 +11,12 @@ public class TowerUIManager : MonoBehaviour
     public TMP_Text towerValue;
     public TMP_Text towerDescription;
 
-
+    public GameObject[] optionTiles;
 
     
     
     public void OnEnable()
     {
-        
     }
 
     public void setTowerInfo(TowerBehavior selectedTower)
@@ -26,5 +25,15 @@ public class TowerUIManager : MonoBehaviour
         towerIcon.sprite = selectedTower.towerInfo.Icon;
         towerValue.text = "Value: " + selectedTower.cost;
         towerDescription.text = selectedTower.GetDescription();
+
+
+        for(int i=0; i<optionTiles.Length; i++)
+            optionTiles[i].SetActive(false);
+        // check tower level and display appropriate # of upgrade options
+        if(selectedTower.currentLevel == 1)
+        {
+            optionTiles[1].SetActive(true);
+            
+        }
     }
 }

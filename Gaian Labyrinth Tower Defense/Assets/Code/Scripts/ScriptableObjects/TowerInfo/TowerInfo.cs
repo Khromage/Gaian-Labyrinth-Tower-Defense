@@ -25,10 +25,8 @@ public class TowerInfo : ScriptableObject
     public int Cost;
 
     [field: SerializeField]
+    [field: TextArea(3, 10)]
     public string Description { get; private set; }
-    
-    [field: SerializeField]
-    public int BaseCost;
 
     [field: SerializeField]
     public int Lv2Cost;

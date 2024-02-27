@@ -18,9 +18,8 @@ MonoBehaviour:
   Range: 10
   FireRate: 1
   Cost: 0
-  <Description>k__BackingField: Condenses Arcane energy into projectiles which track
-    and damage their targets.
-  BaseCost: 30
+  <Description>k__BackingField: Condenses Arcane energy into projectiles that deal
+    {Damage}/{FireRate}s that track targets.
   Lv2Cost: 25
   Lv3Cost: 3c000000320000002d000000
   <Icon>k__BackingField: {fileID: 21300000, guid: b99b7ecd57baf4841a10867bab165779, type: 3}
