@@ -1,36 +1,78 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
+
 public class OptionsMenu : MonoBehaviour
 {
     public AudioMixer audioMixer;
     public TMP_Dropdown resolutionDropdown;
-    Resolution[] resolutions;
+    UnityEngine.Resolution[] resolutions;
 
-    void Start () {
+    public TMP_Dropdown FPSDropdown;
+
+    void Start()
+    {
         resolutions = Screen.resolutions;
+        PopulateResolutionDropdown();
+        SetFPS();
+    }
+    void Awake()
+    {
+        QualitySettings.vSyncCount = 0;
+    }
+    private void PopulateResolutionDropdown()
+    {
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
-        for (int i = 0; i < resolutions.Length; i++) {
+        int currentResolutionIndex = 0;
+
+        for (int i = 0; i < resolutions.Length; i++)
+        {
             string option = resolutions[i].width + "x" + resolutions[i].height;
             options.Add(option);
+
+            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
+            {
+                currentResolutionIndex = i;
+            }
         }
+
         resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
     }
-    public void SetVolume (float volume) {
+
+    public void SetVolume(float volume)
+    {
         audioMixer.SetFloat("Volume", volume);
     }
 
-    public void SetQuality(int qualityIndex) {
+    public void SetQuality(int qualityIndex)
+    {
         QualitySettings.SetQualityLevel(qualityIndex);
     }
 
-    public void SetFullscreen (bool isFullscreen) {
+    public void SetFullscreen(bool isFullscreen)
+    {
         Screen.fullScreen = isFullscreen;
     }
-  
+
+    public void SetFPS() {
+        
+        if(FPSDropdown.value == 0)
+        {
+            Application.targetFrameRate = -1;
+        } else 
+            {
+                string stringFPS = FPSDropdown.options[FPSDropdown.value].text;
+                Application.targetFrameRate = int.Parse(stringFPS);
+            }
+    }
+
+    void Update() {
+        
+    }
 }
