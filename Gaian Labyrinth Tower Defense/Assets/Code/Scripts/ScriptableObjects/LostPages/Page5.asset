@@ -13,5 +13,12 @@ MonoBehaviour:
   m_Name: Page5
   m_EditorClassIdentifier: 
   pageTitle: 
-  pageContent: 
+  pageContent: 'Page 5: Radical Resolutions
+
+    While their cause was noble, their
+    methods became increasingly radical as peaceful protests escalated to acts of
+    magical terrorism against mining sites and ore transportation. The Purists, with
+    rogue mages, hatched a bold plan. The ''Ultimate Ritual'' was devised to tap
+    directly into Gaian''s core magic, promising unlimited power and a return to
+    ancient purity.'
   pageImage: {fileID: 0}

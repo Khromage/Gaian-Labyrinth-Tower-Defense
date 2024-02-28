@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: Page4
   m_EditorClassIdentifier: 
   pageTitle: 
-  pageContent: 
+  pageContent: 'Page 4: Strain on the Land
+
+    As demand for crystalline ore grew,
+    rapid extraction began to disturb the land. Seasons became unpredictable, and
+    wild magic surges occasionally erupted, causing both wonder and chaos.'
   pageImage: {fileID: 0}

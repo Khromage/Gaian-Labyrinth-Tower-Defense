@@ -13,5 +13,10 @@ MonoBehaviour:
   m_Name: Page6
   m_EditorClassIdentifier: 
   pageTitle: 
-  pageContent: 
+  pageContent: "Page 6: The Night of Catastrophe\nThey believed in a ritual that
+    would cleanse the world of the ores' influence, restoring Gaian to its original
+    state. But something went terribly wrong; someone inside the Purist made a mistake.
+    The ritual, instead of channeling the magic, fractured it. A blinding flash lit
+    the sky. The next morning, Gaian was transformed\u2014its terrains twisted, gravity
+    unreliable, and the once harmonious magic now a rampant force of corruption."
   pageImage: {fileID: 0}
