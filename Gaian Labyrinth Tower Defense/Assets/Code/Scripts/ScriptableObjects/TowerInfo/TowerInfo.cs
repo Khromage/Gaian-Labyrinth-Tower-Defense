@@ -7,34 +7,46 @@ using UnityEngine;
 public class TowerInfo : ScriptableObject
 {
     [field: SerializeField]
-    public string Name;
+    public string Name { get; private set; }
 
     [field: SerializeField]
-    public GameObject Prefab;
+    public float Damage { get; private set; }
 
     [field: SerializeField]
-    public float Damage;
+    public float Range { get; private set; }
 
     [field: SerializeField]
-    public float Range;
-
-    [field: SerializeField]
-    public float FireRate;
+    public float FireRate { get; private set; }
     
     [field: SerializeField]
-    public int Cost;
+    public int Cost { get; private set; }
 
     [field: SerializeField]
     [field: TextArea(3, 10)]
     public string Description { get; private set; }
 
     [field: SerializeField]
-    public int Lv2Cost;
-
-    [field: SerializeField]
-    public int[] Lv3Cost;
+    public Branch[] Branches { get; private set; }
 
     [field: SerializeField]
     public Sprite Icon { get; private set; }
+
+    [field: SerializeField]
+    public GameObject Prefab { get; private set; }
+
+}
+
+[Serializable]
+public struct Branch
+{
+    [field: SerializeField]
+    public string Name { get; private set; }
+ 
+    [field: SerializeField]
+    public int Cost { get; private set; }
+
+    [field: SerializeField]
+    [field: TextArea(3, 10)]
+    public string Description { get; private set; }
 
 }

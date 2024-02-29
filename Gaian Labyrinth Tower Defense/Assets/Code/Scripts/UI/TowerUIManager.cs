@@ -10,10 +10,7 @@ public class TowerUIManager : MonoBehaviour
     public TMP_Text towerName;
     public TMP_Text towerValue;
     public TMP_Text towerDescription;
-
     public GameObject[] optionTiles;
-
-    
     
     public void OnEnable()
     {
