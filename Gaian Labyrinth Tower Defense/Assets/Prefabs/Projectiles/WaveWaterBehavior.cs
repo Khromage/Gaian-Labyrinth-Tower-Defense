@@ -7,33 +7,28 @@ using UnityEngine;
 public class WaveWaterBehavior : MonoBehaviour
 {
     public GridTile currTile;
-    
     public LayerMask Grid;
-    protected float moveSpeed = 3f;
+    protected float moveSpeed = 4f;
     public float tilesLeft;
     public GridTile nextTile;
     public float damage; //some number
-    //public GameObject[] enemiesHit;
-    public float NavigationCooldown;
     public GameObject WavePrefab;
-    
-
     WaveMaster WaveMaster;
 
     // Start is called before the first frame update
     void Start()
     {
-        NavigationCooldown = .2f;
         WaveMaster = transform.parent.gameObject.GetComponent<WaveMaster>();
+        Destroy(gameObject, 5);
     }
 
     // Update is called once per frame
     void Update()
     {
-        NavigationCooldown -= Time.deltaTime;
-        if(NavigationCooldown <= 0)
-            updateCurrTile();
+        updateCurrTile();
         moveAlongPathReverse();
+        if(tilesLeft <= 0)
+            Destroy(gameObject);
     }
 
     //taken from enemy with slight changes
@@ -44,38 +39,49 @@ public class WaveWaterBehavior : MonoBehaviour
             posToMoveToward = nextTile.transform.position;
         else
             Debug.Log("no predecessor to move toward");
-        Vector3 moveDirNormal = Vector3.Normalize((posToMoveToward + new Vector3(0f, .5f, 0f)) - transform.position);
+        Vector3 moveDirNormal = Vector3.Normalize(posToMoveToward - transform.position);
 
         transform.Translate(moveDirNormal * moveSpeed * Time.deltaTime);
     }
 
     //taken from enemy with slight changes
-
-
     private void updateCurrTile()
     {
-        GridTile[] TilesCovered = WaveMaster.tilesCovered;
+
         Ray ray = new Ray(this.transform.position, -this.transform.up);
+
+        
         if (Physics.Raycast(ray, out RaycastHit hit, 10f, Grid))
         {
-            
+            List<GridTile> TilesCovered = WaveMaster.tilesCovered;
             currTile = hit.transform.GetComponent<GridTile>();
+            if(TilesCovered == null)
+                WaveMaster.tilesCovered.Add(currTile);
+            if(!TilesCovered.Contains(currTile))
+            {
+                WaveMaster.tilesCovered.Add(currTile);
+                tilesLeft -= 1;
+            }
+        
             //if not branching, keep going
             if (currTile.predecessorList.Count == 1)
+            {
                 nextTile = currTile.predecessorList[0];
+            }
             //
             else if (currTile.predecessorList.Count >= 2)
             {
-                //create a copy going down every other path
+                //for each branch except the first
                 for (int i = 1; i < currTile.predecessorList.Count; i++)
                 {
                     bool covered = false;
                     //check every tile already traveled
-                    for(int j = 0; j < TilesCovered.Length; j++)
+                    for(int j = 0; j < TilesCovered.Count; j++)
                     {
                         if (currTile.predecessorList[i] == TilesCovered[j])
                             covered = true;
                     }
+                    //create a clone going that path
                     if (!covered)
                       Split(currTile.predecessorList[i]);
                     covered = false;
@@ -86,6 +92,10 @@ public class WaveWaterBehavior : MonoBehaviour
             else
                 Destroy(gameObject);
         }
+        else
+        {
+            Debug.Log("i missed the ground");
+        }
     }
 
     //copied from bullet
@@ -93,16 +103,12 @@ public class WaveWaterBehavior : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            foreach(GameObject i in WaveMaster.enemiesHit)
+
+            if(!WaveMaster.enemiesHit.Contains(other.gameObject))
             {
-                //if enemy has been hit before(by this wave)
-                if(other == i)
-                    //do nothing
-                    break;
-                
+                HitTarget(other.gameObject);
+                WaveMaster.enemiesHit.Add(other.gameObject);
             }
-            HitTarget(other.gameObject);
-            WaveMaster.enemiesHit.Add(other.gameObject);
 
         }
         
@@ -111,8 +117,7 @@ public class WaveWaterBehavior : MonoBehaviour
     private void HitTarget(GameObject hitEnemy)
     {
         EnemyBehavior e = hitEnemy.GetComponent<EnemyBehavior>();
-        e.takeDamage(damage, gameObject);
-        //GetTargetInfo();   
+        e.takeDamage(damage, gameObject);  
     }
 
     //create another miniwave per split path(try not to have the waves overlap and
@@ -123,7 +128,7 @@ public class WaveWaterBehavior : MonoBehaviour
         Quaternion SplitDirection = Quaternion.Euler(direction);
         GameObject branchWave = Instantiate(WavePrefab, tile.transform.position, SplitDirection, gameObject.transform.parent);
         WaveMaster.waterWaves.Add(branchWave);
-        //branchWave.tilesLeft = tilesLeft;
+        branchWave.GetComponent<WaveWaterBehavior>().tilesLeft = tilesLeft;
 
     }
 }

@@ -122,6 +122,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
                         float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
                         if (distanceToEnemy < shortestDistance)
                         {
+                            Debug.Log("found enemy WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
                             shortestDistance = distanceToEnemy;
                             nearestEnemy = enemy;
                         }
@@ -221,6 +222,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
         if(fireCountdown <= 0)
         {
+            Debug.Log("shoot should be called here");
             Shoot();
             fireCountdown = 1f / fireRate;
         }
@@ -240,7 +242,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, targetingRotation, Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.localRotation = Quaternion.Euler(partToRotate.rotation.x, rotation.y, partToRotate.rotation.z); //changed this from (0, y, 0), then changed rotation to localRotation, which might mean can change back to (0,y,0)
     }
-    void Shoot()
+    protected virtual void Shoot()
     {
         ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation) as ProjectileBehavior;
         projectile.damage = currentDamage;

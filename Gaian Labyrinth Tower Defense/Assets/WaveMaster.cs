@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveMaster : MonoBehaviour
+public class WaveMaster : ProjectileBehavior
 {
     //this is parent behavior of each overarching attack from the wave tower
     public List<GameObject> waterWaves = new List<GameObject>();
     public List<GameObject> enemiesHit = new List<GameObject>();
-
-    public GridTile[] tilesCovered;
+    public List<GridTile> tilesCovered = new List<GridTile>();
+    //public GridTile[] tilesCovered;
     public bool hadChildren = false;
 
     public void Update()
@@ -18,8 +18,5 @@ public class WaveMaster : MonoBehaviour
         if (transform.childCount == 0 && hadChildren)
             Destroy(gameObject);
     }
-    public void InterferingPaths(GridTile tile)
-    {
 
-    }
 }
