@@ -162,7 +162,6 @@ MonoBehaviour:
   textboxPrefab: {fileID: 4747324250757586441, guid: 43e2f7b2556198d42a645cdf5a59bd54, type: 3}
   manaBar: {fileID: 8003870501132999995}
   activeTowerPanel: {fileID: 517304972538030907}
-  remainingEnemies: {fileID: 11400000, guid: 4fbdfbed14053834494667841f693993, type: 2}
   towerList: {fileID: 11400000, guid: c7308b4a69207f64bb0f7eee266f1e7a, type: 2}
 --- !u!4 &1143071468
 Transform:
