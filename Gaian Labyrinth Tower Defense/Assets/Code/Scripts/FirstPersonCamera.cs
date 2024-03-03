@@ -1,13 +1,15 @@
 using UnityEngine;
 using Cinemachine;
+using Unity.VisualScripting;
 
 public class FirstPersonCamera : CinemachineExtension
 {
     [SerializeField] private float horizontalSpeed = 10.0f;
     [SerializeField] private float verticalSpeed = 10.0f;
-    [SerializeField] private float clampAngle = 80.0f;
+    [SerializeField] private float clampAngle = 70.0f;
 
     public Transform playerObj;
+    public Transform playerHead;
     public Transform orientation;
     public Transform combatLookAt;
     public GameObject PlayerCam;
@@ -35,11 +37,17 @@ public class FirstPersonCamera : CinemachineExtension
                 startingRotation.x += mouseX * 800 * Time.deltaTime;
                 startingRotation.y += mouseY * 800 * Time.deltaTime;
                 startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);
-                // Affects the rotation of the camera
-                state.RawOrientation = Quaternion.Euler(-startingRotation.y, startingRotation.x, 0f);
+                // Calculate camera rotation based on mouse input while keeping the starting rotation in mind
+                Quaternion rotation = Quaternion.Euler(-mouseY * verticalSpeed * Time.deltaTime, mouseX * horizontalSpeed * Time.deltaTime, 0f);
+
+                // Apply the rotation to the camera's current orientation
+                state.RawOrientation *= rotation;
 
                 // Rotate the player object
-                playerObj.localRotation = Quaternion.Euler(0, startingRotation.x, 0);
+                playerObj.localRotation = Quaternion.Euler(0f, startingRotation.x, 0f);
+                
+                // Rotate the playerHead to match the camera's raw orientation
+                playerHead.localRotation = state.RawOrientation;
 
                 // Rotate the orientation object
                 orientation.localRotation = Quaternion.Euler(-startingRotation.y, startingRotation.x, 0f);
@@ -48,8 +56,6 @@ public class FirstPersonCamera : CinemachineExtension
                 Vector3 dirToCombatLook = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
                 combatLookAt.localRotation = Quaternion.LookRotation(dirToCombatLook, Vector3.up); 
 
-                // rotate the player camera
-                PlayerCam.transform.localRotation = Quaternion.Euler(-startingRotation.y, startingRotation.x, 0f);
             }
         }
     }
