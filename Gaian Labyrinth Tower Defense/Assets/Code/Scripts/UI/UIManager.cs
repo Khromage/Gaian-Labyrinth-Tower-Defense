@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
         
         // Set Info
         TowerUIManager towerUI = TowerUI.GetComponent<TowerUIManager>();
-        towerUI.setTowerInfo(tower);
+        towerUI.SetTowerInfo(tower);
     }
 
     // Update is called once per frame

@@ -19,10 +19,11 @@ MonoBehaviour:
   <Cost>k__BackingField: 25
   <Description>k__BackingField: Condenses Arcane energy into projectiles that deal
     {Damage}/{FireRate}s that track targets.
-  <Branches>k__BackingField:
-  - <Name>k__BackingField: Level 2
+  <Level2>k__BackingField:
+    <Name>k__BackingField: Level 2
     <Cost>k__BackingField: 10
     <Description>k__BackingField: This is upgrade Level 2
+  <Branches>k__BackingField:
   - <Name>k__BackingField: Branch 1
     <Cost>k__BackingField: 11
     <Description>k__BackingField: This is upgrade Level 3 - Branch 1
