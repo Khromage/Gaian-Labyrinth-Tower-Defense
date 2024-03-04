@@ -88,7 +88,7 @@ Transform:
   m_GameObject: {fileID: 1510897389695385935}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.1291885, y: 0.5, z: 11.875}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -489,7 +489,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  playerData: {fileID: 11400000, guid: 3a27bd55b3e460449a0d7a87218bfe91, type: 2}
 --- !u!75 &2425587535376021181
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -634,7 +633,7 @@ Transform:
   m_GameObject: {fileID: 3266892479513722274}
   serializedVersion: 2
   m_LocalRotation: {x: 1e-45, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.1291885, y: 1, z: -11.875}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -659,8 +658,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_LookAt: {fileID: 6990636678159885021}
+  m_Follow: {fileID: 8587171858653350087}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -1145,7 +1144,7 @@ Transform:
   m_GameObject: {fileID: 7251585544851350419}
   serializedVersion: 2
   m_LocalRotation: {x: 1e-45, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.1291885, y: 1, z: -11.875}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
