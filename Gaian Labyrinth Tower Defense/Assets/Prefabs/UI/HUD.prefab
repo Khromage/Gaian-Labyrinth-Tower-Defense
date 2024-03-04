@@ -2489,6 +2489,7 @@ GameObject:
   - component: {fileID: 8554990514765338434}
   - component: {fileID: 4911448822339116918}
   - component: {fileID: 2988224618466843295}
+  - component: {fileID: 5158695646581883956}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -2562,6 +2563,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5158695646581883956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697419540031250258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a35f1cf47425aab4596e1383442ba99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WavesText: {fileID: 7715626042808320120}
+  TimeText: {fileID: 4854872419868063226}
+  LivesText: {fileID: 2628811883419368505}
+  CurrencyText: {fileID: 7289937438278210491}
+  CountText: {fileID: 3792151045734346180}
+  player: {fileID: 0}
+  textboxPrefab: {fileID: 0}
+  manaBar: {fileID: 3392685169424640119}
+  activeTowerPanel: {fileID: 0}
+  towerList: {fileID: 0}
 --- !u!1 &4752669893165640206
 GameObject:
   m_ObjectHideFlags: 0

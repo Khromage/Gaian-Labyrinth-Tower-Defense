@@ -25,6 +25,6 @@ public class TowerList : ScriptableObject
 
     public int GetTowerCost(int ID)
     {
-        return TowerDataSet[ID].BaseCost;
+        return TowerDataSet[ID].Cost;
     }
 }

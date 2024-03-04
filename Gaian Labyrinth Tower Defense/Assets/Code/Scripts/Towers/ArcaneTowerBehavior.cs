@@ -9,7 +9,6 @@ public class ArcaneTowerBehavior : TowerBehavior
     public override void Start()
     {
         base.Start();
-        towerName = "arcane";
 
 
         cost = 30;
@@ -29,24 +28,24 @@ public class ArcaneTowerBehavior : TowerBehavior
     protected override void lv2_upgrade()
     {
         base.lv2_upgrade();
-        currentDamage = 2f;
+        damage = 2f;
         fireRate = 1.5f;
     }
     protected override void lv3_1_upgrade()
     {
         base.lv3_1_upgrade();
-        currentDamage = 2f;
+        damage = 2f;
         fireRate = 6f;
     }
     protected override void lv3_2_upgrade()
     {
         base.lv3_2_upgrade();
-        currentDamage = 7f;
+        damage = 7f;
     }
     protected override void lv3_3_upgrade()
     {
         base.lv3_3_upgrade();
-        currentDamage = 2f;
+        damage = 2f;
         projectilePrefab.GetComponent<TrackingBulletBehavior>().pierceAMT = 2;
     }
 
