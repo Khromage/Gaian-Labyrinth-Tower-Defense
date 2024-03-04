@@ -46,8 +46,8 @@ public class FirstPersonCamera : CinemachineExtension
                 // Rotate the player object
                 playerObj.localRotation = Quaternion.Euler(0f, startingRotation.x, 0f);
                 
-                // Rotate the playerHead to match the camera's raw orientation
-                playerHead.localRotation = state.RawOrientation;
+                // Rotate the playerHead to match the camera's orientation while also keeping the player object's rotation in mind
+                playerHead.transform.position = state.RawPosition;
 
                 // Rotate the orientation object
                 orientation.localRotation = Quaternion.Euler(-startingRotation.y, startingRotation.x, 0f);
