@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &632453636332426054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7438996033440137229}
+  m_Layer: 0
+  m_Name: WeaponHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7438996033440137229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632453636332426054}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.411, y: -0.3789999, z: 0.79}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7304820053007349556}
+  m_Father: {fileID: 1190557904319586742}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &712702234164571559
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +92,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7304820053007349556}
+  - {fileID: 7438996033440137229}
   - {fileID: 2143875388038005950}
   m_Father: {fileID: 8288195003860329832}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -435,13 +467,14 @@ MonoBehaviour:
   maxMana: 0
   mana: 0
   manaRegenRate: 0
-  playerCam: {fileID: 0}
+  playerCam: {fileID: 7251585544851350419}
   towerPrefab: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerDisplayPrefab: {fileID: 3248011058118863728, guid: f94bb3fe3267d3545a2495bcc73ce8c9, type: 3}
   currency: 0
   InteractRange: 0
   Body: {fileID: 4835368386127021285}
   InteractionPoint: {fileID: 7985478383346782855}
+  weaponHolder: {fileID: 632453636332426054}
   currentWeapon: {fileID: 856123760663606732}
   weaponList:
   - {fileID: 5926663804712910904, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
@@ -1902,7 +1935,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1190557904319586742}
+    m_TransformParent: {fileID: 7438996033440137229}
     m_Modifications:
     - target: {fileID: 3011751793413727280, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
       propertyPath: m_Enabled
@@ -1910,15 +1943,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4359979704163435200, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.411
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4359979704163435200, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.37899995
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4359979704163435200, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.78999996
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4359979704163435200, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
       propertyPath: m_LocalRotation.w

@@ -111,6 +111,7 @@ public class Player : UnitBehavior
     public GameObject InteractionPoint;
 
     [Header("Weapon List")]
+    public GameObject weaponHolder;
     public GameObject currentWeapon;
     public List<GameObject> weaponList;
     private int currentWeaponIndex = 0;
@@ -540,7 +541,7 @@ public class Player : UnitBehavior
 
         Destroy(currentWeapon);
 
-        currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
+        currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, weaponHolder.transform);
         OnSwapWeapon?.Invoke(currentWeaponIndex);
     }
 
