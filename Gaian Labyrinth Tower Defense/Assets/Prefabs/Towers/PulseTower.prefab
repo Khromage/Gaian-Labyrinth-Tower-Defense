@@ -910,13 +910,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73370f49894591c4f9cd71bee9b005aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerName: arcane
   target: {fileID: 0}
   targetingMode: 
-  range: 10
+  range: 1
   fireRate: 0.3
   fireCountdown: 0
   currentDamage: 1
-  multiPathUpgrade: 0
+  targetCooldown: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 0}
   partToRotate: {fileID: 0}
@@ -925,9 +926,13 @@ MonoBehaviour:
   firePoint: {fileID: 5391525610649829236}
   enemies: []
   detectionZone: {fileID: 0}
+  placedSFX: {fileID: 0}
   cost: 8
-  isUpgradable: 1
-  upgradeStage: 1
+  lv2_cost: 20
+  lv3_1_cost: 30
+  lv3_2_cost: 30
+  lv3_3_cost: 30
+  currentLevel: 1
   gridLocation: {fileID: 0}
   pulsePrefab: {fileID: 3933728882239899299, guid: 127e36d8477fb08488339104cde3d0d7, type: 3}
   maxDamage: 5
