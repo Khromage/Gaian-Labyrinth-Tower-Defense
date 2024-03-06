@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6682333059816674589}
   - component: {fileID: 1583244971268440535}
   - component: {fileID: -8115949130670682756}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WaveWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7746743253069209908}
   - component: {fileID: 5246249724988905885}
   - component: {fileID: 6505466437564927404}
-  - component: {fileID: 8860183989119382842}
   - component: {fileID: -854023295297194275}
+  - component: {fileID: 2306761962504678061}
   m_Layer: 2
-  m_Name: WaveTower
+  m_Name: WindBladeTower
   m_TagString: towerbuilding
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,45 +88,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8860183989119382842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1362173102988795995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8ead70c2cdabe5489e3d8cecb51a54f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  towerName: water
-  target: {fileID: 0}
-  targetingMode: 
-  range: 10
-  fireRate: 0
-  fireCountdown: 0
-  currentDamage: 0
-  targetCooldown: 0
-  enemyTag: Enemy
-  InteractionIndicator: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
-  partToRotate: {fileID: 576702084041083807}
-  turnSpeed: 5
-  projectilePrefab: {fileID: -8115949130670682756, guid: d79976aa3f5b93d46b5fa50b5cb5e129, type: 3}
-  firePoint: {fileID: 6788566222244839869}
-  enemies: []
-  detectionZone: {fileID: 0}
-  placedSFX: {fileID: -854023295297194275}
-  cost: 10
-  lv2_cost: 20
-  lv3_1_cost: 30
-  lv3_2_cost: 30
-  lv3_3_cost: 30
-  currentLevel: 1
-  gridLocation: {fileID: 0}
-  WaveDistance: 7
-  WavePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
-  MasterList: []
 --- !u!82 &-854023295297194275
 AudioSource:
   m_ObjectHideFlags: 0
@@ -223,6 +184,42 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2306761962504678061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362173102988795995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74170036f26709649980419a821d240a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerName: arcane
+  target: {fileID: 0}
+  targetingMode: 
+  range: 10
+  fireRate: 0
+  fireCountdown: 0
+  currentDamage: 0
+  targetCooldown: 0
+  enemyTag: Enemy
+  InteractionIndicator: {fileID: 5392681474844564774}
+  partToRotate: {fileID: 576702084041083807}
+  turnSpeed: 5
+  projectilePrefab: {fileID: 9032314768855207869, guid: e7ffea71e05729b40b818fd19e60247d, type: 3}
+  firePoint: {fileID: 6788566222244839869}
+  enemies: []
+  detectionZone: {fileID: 0}
+  placedSFX: {fileID: -854023295297194275}
+  cost: 10
+  lv2_cost: 20
+  lv3_1_cost: 30
+  lv3_2_cost: 30
+  lv3_3_cost: 30
+  currentLevel: 1
+  gridLocation: {fileID: 0}
 --- !u!1 &2660176201313847061
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +282,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 6222d3226581b6a43966e727bd82a640, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -497,7 +494,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 6222d3226581b6a43966e727bd82a640, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -635,7 +632,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 6222d3226581b6a43966e727bd82a640, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -740,7 +737,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 6222d3226581b6a43966e727bd82a640, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -871,5 +868,10 @@ PrefabInstance:
 --- !u!4 &5201936240235053637 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+  m_PrefabInstance: {fileID: 5696209960028169158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5392681474844564774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
   m_PrefabInstance: {fileID: 5696209960028169158}
   m_PrefabAsset: {fileID: 0}

@@ -122,7 +122,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
                         float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
                         if (distanceToEnemy < shortestDistance)
                         {
-                            Debug.Log("found enemy WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
                             shortestDistance = distanceToEnemy;
                             nearestEnemy = enemy;
                         }
