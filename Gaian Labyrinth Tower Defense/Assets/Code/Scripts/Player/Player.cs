@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -30,8 +31,6 @@ public class Player : UnitBehavior
     public delegate void SwapWeaponEvent(int newIndex);
     public static event SwapWeaponEvent OnSwapWeapon;
 
-    public playerMode currentMode;
-
     //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
     public float moveSpeed;
@@ -41,28 +40,22 @@ public class Player : UnitBehavior
     public float airMultiplier;
     bool readyToJump;
 
+
     [Header("KeyBinds")]
+    // SO with default bindings
+    public DefaultKeybinds defaultKeybinds;
     //Movement
-    public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode jumpKey;
     //Combat
-    public KeyCode interactKey = KeyCode.F;
-    public KeyCode nextWeapon = KeyCode.E;
-    public KeyCode prevWeapon = KeyCode.Q;
+    public KeyCode interactKey;
+    public KeyCode nextWeaponKey;
+    public KeyCode prevWeaponKey;
     //Build Mode
-    public KeyCode buildMode = KeyCode.Tab;
-
-    public KeyCode tower1 = KeyCode.Alpha1;
-    public KeyCode tower2 = KeyCode.Alpha2;
-    public KeyCode tower3 = KeyCode.Alpha3;
-    public KeyCode tower4 = KeyCode.Alpha4;
-    public KeyCode tower5 = KeyCode.Alpha5;
-    public KeyCode tower6 = KeyCode.Alpha6;
-
-    public KeyCode deleteTower = KeyCode.Alpha0;
-    public KeyCode upgradeCurrentTower = KeyCode.V;
-    public KeyCode upgradePath1 = KeyCode.J;
-    public KeyCode upgradePath2 = KeyCode.K;
-    public KeyCode upgradePath3 = KeyCode.L;
+    public KeyCode modeChangeKey;
+    public KeyCode[] towerKeys;
+    public KeyCode sellKey;
+    public KeyCode upgradeCurrentTowerKey;
+    public KeyCode[] updatePathKeys;
 
 
     [Header("Layer Variables")]
@@ -122,12 +115,14 @@ public class Player : UnitBehavior
     public GameObject[] towerSet;
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
+    public playerMode currentMode;
     public enum playerMode
     {
         Combat,
         Build,
         Upgrade,
         Sell,
+        Menu
     }
 
     //Method to be checked on first frame of the game
@@ -152,7 +147,7 @@ public class Player : UnitBehavior
 
         towerSet = new GameObject[6];
         FillLoadout();
-
+        InitializeKeybinds();
     }
 
     //Method to be checked on every frame of the game
@@ -211,58 +206,26 @@ public class Player : UnitBehavior
         movePlayer();
     }
 
-    private void checkCurrentMode()
+    public playerMode checkCurrentMode()
     {
-        if (Input.GetKeyDown(prevWeapon) ||
-           Input.GetKeyDown(nextWeapon)) {
-            currentMode = playerMode.Combat;
-            if (tempDisplayHolder != null)
-            {
-                Destroy(this.tempDisplayHolder);
-            }
-            if (highlightedTile != null)
-                highlightedTile.highlight(false);
-            OnEnterCombatMode?.Invoke(currentWeaponIndex);
-        }
-
-        if (Input.GetKeyDown(tower1) ||
-           Input.GetKeyDown(tower2) ||
-           Input.GetKeyDown(tower3)) {
-            currentMode = playerMode.Build;
-        }
-
-        if (Input.GetKeyDown(deleteTower)) {
-            currentMode = playerMode.Sell;
-        }
-
-        if (Input.GetKeyDown(upgradeCurrentTower) ||
-            Input.GetKeyDown(buildMode)) {
-            currentMode = playerMode.Upgrade;
-        }
+        return currentMode;
     }
-    private bool enteringBuildMode()
-    {
-        //Sets tower immediatley to whichever key is pressed 
-        //then returns true to place player into build mode
-        if (Input.GetKeyDown(tower1) || Input.GetKeyDown(tower2) || Input.GetKeyDown(tower3) 
-            || Input.GetKeyDown(tower4) || Input.GetKeyDown(tower5) || Input.GetKeyDown(tower6))
-        { 
-            return true;
-        }
-        return false;
-    }
-    private bool enteringCombatMode()
-    {
-        if (Input.GetKeyDown(prevWeapon))
-        {
-            return true;
-        }
 
-        if (Input.GetKeyDown(upgradeCurrentTower) ||
-            Input.GetKeyDown(buildMode)) {
-            currentMode = playerMode.Upgrade;
-        }
-        return false;
+    // Loads default keybinds from DefaultKeybinds SO
+    private void InitializeKeybinds()
+    {
+        // General
+        jumpKey = defaultKeybinds.jumpKey;
+        interactKey = defaultKeybinds.interactKey;
+        // Combat
+        nextWeaponKey = defaultKeybinds.nextWeaponKey;
+        prevWeaponKey = defaultKeybinds.prevWeaponKey;
+        //Build Mode
+        modeChangeKey = defaultKeybinds.modeChangeKey;
+        towerKeys = defaultKeybinds.towerKeys;
+        sellKey = defaultKeybinds.sellKey;
+        upgradeCurrentTowerKey = defaultKeybinds.upgradeCurrentTowerKey;
+        updatePathKeys = defaultKeybinds.updatePathKeys;
     }
 
     //Getting WASD and jump inputs
@@ -283,61 +246,126 @@ public class Player : UnitBehavior
         //Player wants to interact
         if(Input.GetKeyDown(interactKey))
         {
-            Interact();
+            try
+            {
+                Interact();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            Debug.Log("Interaction");
         }
 
         //Getting weapon selected
-        if (Input.GetKeyDown(nextWeapon))
+        if (Input.GetKeyDown(nextWeaponKey))
         {
-            SwapWeapon(nextWeapon);
+            SwapWeapon(nextWeaponKey);
+            currentMode = playerMode.Combat;
         }
-        else if (Input.GetKeyDown(prevWeapon))
+        else if (Input.GetKeyDown(prevWeaponKey))
         {
-            SwapWeapon(prevWeapon);
+            SwapWeapon(prevWeaponKey);
+            currentMode = playerMode.Combat;
         }
 
-        //Change current selected tower
-        if (Input.GetKeyDown(tower1))
+        /***
+            Setting player mode (Combat/Build/Sell/Menu)
+        ***/
+
+        if (Input.GetKeyDown(sellKey)) {
+                currentMode = playerMode.Sell;
+        }
+
+        if (Input.GetKeyDown(upgradeCurrentTowerKey) ||
+            Input.GetKeyDown(modeChangeKey)) {
+                currentMode = playerMode.Upgrade;
+        }
+
+
+
+
+
+        // Change current selected tower
+
+        for (int i = 0; i < towerKeys.Length; i++)
+        {
+            if (Input.GetKeyDown(towerKeys[i])) 
+            {
+                // int selectedTower = Array.IndexOf(towerKeys, key);
+                Debug.Log("Tower Slot " + (i+1) + "Chosen");
+                // Implement the logic you want to occur when a key is pressed
+            }
+        }
+
+
+        /*
+        if (Input.GetKeyDown(towerKeys[0]))
         {
             if (towerSet[0] != null)
                 currentTower = towerSet[0];
             OnTowerSelect?.Invoke(0, towerSet[0]);
         }
-        if (Input.GetKeyDown(tower2))
+        if (Input.GetKeyDown(towerKeys[1]))
         {
             if (towerSet[1] != null)
                 currentTower = towerSet[1];
             OnTowerSelect?.Invoke(1, towerSet[1]);
         }
-        if (Input.GetKeyDown(tower3))
+        if (Input.GetKeyDown(towerKeys[2]))
         {
             if (towerSet[2] != null)
                 currentTower = towerSet[2];
             OnTowerSelect?.Invoke(2, towerSet[2]);
         }
-        if (Input.GetKeyDown(tower4))
+        if (Input.GetKeyDown(towerKeys[3]))
         {
             if (towerSet[3] != null)
                 currentTower = towerSet[3];
             OnTowerSelect?.Invoke(3, towerSet[3]);
         }
-        if (Input.GetKeyDown(tower5))
+        if (Input.GetKeyDown(towerKeys[4]))
         {
             if (towerSet[4] != null)
                 currentTower = towerSet[4];
             OnTowerSelect?.Invoke(4, towerSet[4]);
         }
-        if (Input.GetKeyDown(tower6))
+        if (Input.GetKeyDown(towerKeys[5]))
         {
             if (towerSet[5] != null)
             currentTower = towerSet[5];
             OnTowerSelect?.Invoke(5, towerSet[5]);
         }
-        if ((Input.GetKeyDown(deleteTower))
-            || (Input.GetKeyDown(buildMode)))
+        */
+        
+        if ((Input.GetKeyDown(sellKey))
+            || (Input.GetKeyDown(modeChangeKey)))
         {
             currentTower = null;
         }
+
+        if (Input.GetKeyDown(prevWeaponKey) ||
+            Input.GetKeyDown(nextWeaponKey)) {
+                currentMode = playerMode.Combat;
+                if (tempDisplayHolder != null)
+                {
+                    Destroy(this.tempDisplayHolder);
+                }
+                if (highlightedTile != null)
+                    highlightedTile.highlight(false);
+                OnEnterCombatMode?.Invoke(currentWeaponIndex);
+        }
+
+        /*
+        if (Input.GetKeyDown(towerKeys[0]) ||
+            Input.GetKeyDown(towerKeys[1]) ||
+            Input.GetKeyDown(towerKeys[2]) ||
+            Input.GetKeyDown(towerKeys[3]) ||
+            Input.GetKeyDown(towerKeys[4]) ||
+            Input.GetKeyDown(towerKeys[5])) {
+                currentMode = playerMode.Build;
+        }
+        */
 
     }
 
@@ -523,13 +551,13 @@ public class Player : UnitBehavior
     private void SwapWeapon(KeyCode input)
     {
 
-        if (input == nextWeapon)
+        if (input == nextWeaponKey)
         {
             currentWeaponIndex++;
             if (currentWeaponIndex >= (weaponList.Count))
                 currentWeaponIndex = 0;
         }
-        if (input == prevWeapon)
+        if (input == prevWeaponKey)
         {
             currentWeaponIndex--;
             if (currentWeaponIndex < 0)
@@ -639,9 +667,6 @@ public class Player : UnitBehavior
         }
     }   
 
-
-
-
     private void upgradeTower()
     {
 
@@ -660,7 +685,7 @@ public class Player : UnitBehavior
             if ((towerBehavior.isUpgradable) && (currency > towerCost)){
                 Debug.Log("Upgradeable");
                 if (upgradeMultiPath == false) {
-                    if (Input.GetKeyDown(upgradeCurrentTower)) {
+                    if (Input.GetKeyDown(upgradeCurrentTowerKey)) {
                         Debug.Log("Upgrade");
                         goToUpgrade(upgradeStage, towerBehavior, towerCost);
                     }

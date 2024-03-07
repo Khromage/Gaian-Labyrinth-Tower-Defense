@@ -364,28 +364,21 @@ MonoBehaviour:
   verticalVelocityComponent: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   currGravDir: {x: 0, y: 0, z: 0}
-  currentMode: 0
   moveSpeed: 7
   groundDrag: 5
   jumpForce: 12
   jumpCooldown: 0.25
   airMultiplier: 0.4
-  jumpKey: 32
-  interactKey: 102
-  nextWeapon: 101
-  prevWeapon: 113
-  buildMode: 9
-  tower1: 49
-  tower2: 50
-  tower3: 51
-  tower4: 52
-  tower5: 53
-  tower6: 54
-  deleteTower: 48
-  upgradeCurrentTower: 118
-  upgradePath1: 106
-  upgradePath2: 107
-  upgradePath3: 108
+  defaultKeybinds: {fileID: 11400000, guid: 79342df42de94434f8a365383e842d6e, type: 2}
+  jumpKey: 0
+  interactKey: 0
+  nextWeaponKey: 0
+  prevWeaponKey: 0
+  modeChangeKey: 0
+  towerKeys: 
+  sellKey: 0
+  upgradeCurrentTowerKey: 0
+  updatePathKeys: 
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -421,7 +414,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  playerData: {fileID: 11400000, guid: 3a27bd55b3e460449a0d7a87218bfe91, type: 2}
+  currentMode: 0
 --- !u!75 &2392563291835466655
 ConstantForce:
   m_ObjectHideFlags: 0

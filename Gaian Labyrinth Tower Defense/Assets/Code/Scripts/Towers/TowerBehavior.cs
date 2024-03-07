@@ -260,6 +260,8 @@ public class TowerBehavior : MonoBehaviour, Interactable
         projectile.targeting = targetingMode;
 
     }
+
+
     public void ShowInteractButton()
     {
         if (InteractionIndicator != null)
