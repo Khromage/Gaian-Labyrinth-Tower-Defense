@@ -54,7 +54,6 @@ public class Player : UnitBehavior
     public KeyCode modeChangeKey;
     public KeyCode[] towerKeys;
     public KeyCode sellKey;
-    public KeyCode upgradeCurrentTowerKey;
     public KeyCode[] updatePathKeys;
 
 
@@ -120,7 +119,6 @@ public class Player : UnitBehavior
     {
         Combat,
         Build,
-        Upgrade,
         Sell,
         Menu
     }
@@ -198,7 +196,6 @@ public class Player : UnitBehavior
         modeChangeKey = defaultKeybinds.modeChangeKey;
         towerKeys = defaultKeybinds.towerKeys;
         sellKey = defaultKeybinds.sellKey;
-        upgradeCurrentTowerKey = defaultKeybinds.upgradeCurrentTowerKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
     }
 
@@ -208,21 +205,17 @@ public class Player : UnitBehavior
         // Mouse click actions player can do depending on mode they are in
         if (currentMode == playerMode.Combat) {
             attack();
-        } else {
-            if (currentMode != playerMode.Build) {
+        } else if (currentMode != playerMode.Build) 
+            {
                 //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
                 destoryTempHolder();
-            if (currentMode == playerMode.Sell) {
-                sellTower();
-                changeTowerColor();
-            } else if (currentMode == playerMode.Upgrade) {
-                upgradeTower();
-                changeTowerColor();
-            }
-            } else {
-                placeTowers();
-            }
-        }
+            } else if (currentMode == playerMode.Sell) {
+                    sellTower();
+                    changeTowerColor();
+                } else {
+                        placeTowers();
+                    }
+        
         
         // Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
@@ -271,9 +264,6 @@ public class Player : UnitBehavior
                 currentMode = playerMode.Sell;
         }
 
-        if (Input.GetKeyDown(upgradeCurrentTowerKey)) {
-                currentMode = playerMode.Upgrade;
-        }
 
         // Change current selected tower
 
@@ -348,7 +338,8 @@ public class Player : UnitBehavior
 
     private void Interact()
     {
-        InteractionTarget.Interact();
+        if(InteractionTarget != null)
+            InteractionTarget.Interact();
     }
 
 
@@ -615,8 +606,6 @@ public class Player : UnitBehavior
 
     private void upgradeTower()
     {
-
-
         /*
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
