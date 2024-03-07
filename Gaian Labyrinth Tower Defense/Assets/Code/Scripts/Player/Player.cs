@@ -166,38 +166,12 @@ public class Player : UnitBehavior
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
         //Vector3.down was the 2nd parameter here, originally
         grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        
         //handling player drag if on the ground
         if (grounded)
             rb.drag = groundDrag;
         else
             rb.drag = 0;
-
-        //Actions player can do depending on mode they are in
-        if (currentMode == playerMode.Combat) {
-            attack();
-        } else {
-            if (currentMode != playerMode.Build) {
-                //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
-                destoryTempHolder();
-                if (currentMode == playerMode.Sell) {
-                    sellTower();
-                    changeTowerColor();
-                } else if (currentMode == playerMode.Upgrade) {
-                    upgradeTower();
-                    changeTowerColor();
-                }
-            } else {
-                placeTowers();
-            }
-        }
-
-        // This needs to be converted to use either a PlayerManager singleton or LevelManager to relay the info to the UI
-        /*
-        playerData.currency = currency;
-        playerData.playerHealth = health;
-        playerData.playerMana = mana;
-        */
-
     }
 
     public void FixedUpdate()
@@ -231,11 +205,30 @@ public class Player : UnitBehavior
     //Getting WASD and jump inputs
     private void getUserKey()
     { 
-        //Player hits WASD
+        // Mouse click actions player can do depending on mode they are in
+        if (currentMode == playerMode.Combat) {
+            attack();
+        } else {
+            if (currentMode != playerMode.Build) {
+                //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
+                destoryTempHolder();
+            if (currentMode == playerMode.Sell) {
+                sellTower();
+                changeTowerColor();
+            } else if (currentMode == playerMode.Upgrade) {
+                upgradeTower();
+                changeTowerColor();
+            }
+            } else {
+                placeTowers();
+            }
+        }
+        
+        // Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        //Player wants to jump
+        // Player wants to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
@@ -257,6 +250,10 @@ public class Player : UnitBehavior
             Debug.Log("Interaction");
         }
 
+        /***
+            Setting player mode (Combat/Build/Sell/Menu)
+        ***/
+
         //Getting weapon selected
         if (Input.GetKeyDown(nextWeaponKey))
         {
@@ -269,22 +266,14 @@ public class Player : UnitBehavior
             currentMode = playerMode.Combat;
         }
 
-        /***
-            Setting player mode (Combat/Build/Sell/Menu)
-        ***/
 
         if (Input.GetKeyDown(sellKey)) {
                 currentMode = playerMode.Sell;
         }
 
-        if (Input.GetKeyDown(upgradeCurrentTowerKey) ||
-            Input.GetKeyDown(modeChangeKey)) {
+        if (Input.GetKeyDown(upgradeCurrentTowerKey)) {
                 currentMode = playerMode.Upgrade;
         }
-
-
-
-
 
         // Change current selected tower
 
@@ -292,51 +281,19 @@ public class Player : UnitBehavior
         {
             if (Input.GetKeyDown(towerKeys[i])) 
             {
-                // int selectedTower = Array.IndexOf(towerKeys, key);
-                Debug.Log("Tower Slot " + (i+1) + "Chosen");
-                // Implement the logic you want to occur when a key is pressed
+                if (towerSet[i] != null)
+                {
+                    currentTower = towerSet[i];
+                    OnTowerSelect?.Invoke(i, towerSet[i]);
+                    Debug.Log("Tower Slot " + (i+1) + "Chosen");
+                    currentMode = playerMode.Build;
+                } else 
+                {
+                    Debug.Log("No tower in slot " + (i+1));
+                }
             }
         }
 
-
-        /*
-        if (Input.GetKeyDown(towerKeys[0]))
-        {
-            if (towerSet[0] != null)
-                currentTower = towerSet[0];
-            OnTowerSelect?.Invoke(0, towerSet[0]);
-        }
-        if (Input.GetKeyDown(towerKeys[1]))
-        {
-            if (towerSet[1] != null)
-                currentTower = towerSet[1];
-            OnTowerSelect?.Invoke(1, towerSet[1]);
-        }
-        if (Input.GetKeyDown(towerKeys[2]))
-        {
-            if (towerSet[2] != null)
-                currentTower = towerSet[2];
-            OnTowerSelect?.Invoke(2, towerSet[2]);
-        }
-        if (Input.GetKeyDown(towerKeys[3]))
-        {
-            if (towerSet[3] != null)
-                currentTower = towerSet[3];
-            OnTowerSelect?.Invoke(3, towerSet[3]);
-        }
-        if (Input.GetKeyDown(towerKeys[4]))
-        {
-            if (towerSet[4] != null)
-                currentTower = towerSet[4];
-            OnTowerSelect?.Invoke(4, towerSet[4]);
-        }
-        if (Input.GetKeyDown(towerKeys[5]))
-        {
-            if (towerSet[5] != null)
-            currentTower = towerSet[5];
-            OnTowerSelect?.Invoke(5, towerSet[5]);
-        }
-        */
         
         if ((Input.GetKeyDown(sellKey))
             || (Input.GetKeyDown(modeChangeKey)))
@@ -355,17 +312,6 @@ public class Player : UnitBehavior
                     highlightedTile.highlight(false);
                 OnEnterCombatMode?.Invoke(currentWeaponIndex);
         }
-
-        /*
-        if (Input.GetKeyDown(towerKeys[0]) ||
-            Input.GetKeyDown(towerKeys[1]) ||
-            Input.GetKeyDown(towerKeys[2]) ||
-            Input.GetKeyDown(towerKeys[3]) ||
-            Input.GetKeyDown(towerKeys[4]) ||
-            Input.GetKeyDown(towerKeys[5])) {
-                currentMode = playerMode.Build;
-        }
-        */
 
     }
 
