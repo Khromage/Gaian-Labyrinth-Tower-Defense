@@ -191,6 +191,10 @@ PrefabInstance:
       propertyPath: towerIcon
       value: 
       objectReference: {fileID: 2424605327214075372}
+    - target: {fileID: 5153292277126167916, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.7109375
+      objectReference: {fileID: 0}
     - target: {fileID: 5504063004748425921, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

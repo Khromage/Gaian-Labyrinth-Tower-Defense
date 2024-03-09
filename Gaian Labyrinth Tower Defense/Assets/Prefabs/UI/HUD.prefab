@@ -2583,8 +2583,8 @@ MonoBehaviour:
   player: {fileID: 0}
   textboxPrefab: {fileID: 0}
   manaBar: {fileID: 3392685169424640119}
-  activeTowerPanel: {fileID: 0}
-  towerList: {fileID: 0}
+  activeTowerPanel: {fileID: 5128367279404490359}
+  towerList: {fileID: 11400000, guid: c7308b4a69207f64bb0f7eee266f1e7a, type: 2}
 --- !u!1 &4752669893165640206
 GameObject:
   m_ObjectHideFlags: 0
