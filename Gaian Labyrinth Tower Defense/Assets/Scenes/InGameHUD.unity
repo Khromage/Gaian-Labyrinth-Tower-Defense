@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -135,6 +135,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 942793638451535747, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: towerList
+      value: 
+      objectReference: {fileID: 11400000, guid: c7308b4a69207f64bb0f7eee266f1e7a, type: 2}
+    - target: {fileID: 942793638451535747, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: textboxPrefab
+      value: 
+      objectReference: {fileID: 4747324250757586441, guid: 43e2f7b2556198d42a645cdf5a59bd54, type: 3}
+    - target: {fileID: 942793638451535747, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: activeTowerPanel
+      value: 
+      objectReference: {fileID: 2424605327214075373}
     - target: {fileID: 1189622195404430330, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: m_Name
       value: Player UI Canvas (UIManager)
@@ -351,6 +363,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2424605327214075373 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 984521767946864064, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+  m_PrefabInstance: {fileID: 2424605327214075371}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
