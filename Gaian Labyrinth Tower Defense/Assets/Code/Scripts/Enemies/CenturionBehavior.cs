@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CenturionBehavior : EnemyBehavior
 {
@@ -18,9 +19,13 @@ public class CenturionBehavior : EnemyBehavior
 
     [SerializeField]
     private int bodySegmentCount;
+    private int segmentNum;
 
     private CenturionBehavior prevSegment;
-    
+
+    [SerializeField]
+    private GameObject headPieces;
+
 
     // Start is called before the first frame update
     public override void Start()
@@ -28,7 +33,9 @@ public class CenturionBehavior : EnemyBehavior
         base.Start();
         if (currentStatus == status.Head)
         {
+            segmentNum = 0;
             Debug.Log("am a head");
+            GetComponent<Rigidbody>().isKinematic = true;
             StartCoroutine(spawnBody(bodySegmentCount));
         }
 
@@ -37,23 +44,32 @@ public class CenturionBehavior : EnemyBehavior
     // Update is called once per frame
     void Update()
     {
-        
+        if (currentStatus == status.Body || currentStatus == status.Tail)
+        {
+            UpdateStatus();
+            Debug.Log(GetComponent<Rigidbody>().GetAccumulatedForce());
+        }
     }
 
 
     private void UpdateStatus()
     {
         //if prevSegment becomes null / dies, then this segment becomes a head
-        if (prevSegment == null)
+        if (!prevSegment)
         {
-            GetComponent<SpringJoint>().breakForce = 0; //easy destruction of the joint
-
+            Debug.Log("prev segment is null, making this a head");
+            BecomeHead();
         }
     }
 
     private void BecomeHead()
     {
-        //set active the head crest stuff
+        currentStatus = status.Head;
+        GetComponent<SpringJoint>().breakForce = 0; //easy destruction of the joint
+        headPieces.SetActive(true);
+        GetComponent<NavMeshAgent>().enabled = true;
+        GetComponent<Rigidbody>().isKinematic = true;
+
         //adjust armor/speed. maybe count how many segments are behind? Would need to know next segment as well... 
     }
 
@@ -68,7 +84,10 @@ public class CenturionBehavior : EnemyBehavior
             currB.GetComponent<CenturionBehavior>().prevSegment = prev;
             prev = currB.GetComponent<CenturionBehavior>();
             spawned++;
-            yield return null; //WaitForSeconds
+            segmentNum = spawned;
+            Debug.Log($"segment {segmentNum}'s prevSegment = {currB.GetComponent<CenturionBehavior>().prevSegment}");
+            Debug.Log($"segment {segmentNum}'s spring's connected body = {currB.GetComponent<SpringJoint>().connectedBody}");
+            yield return new WaitForSeconds(.05f);
         }
     }
 }

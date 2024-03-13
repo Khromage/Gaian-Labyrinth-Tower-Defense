@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 7735579116642935453}
   m_Layer: 0
   m_Name: EnemyCenturionHead
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -904,10 +904,10 @@ MonoBehaviour:
   Grid:
     serializedVersion: 2
     m_Bits: 0
-  HealthBar: {fileID: 0}
+  HealthBar: {fileID: 1758651591399184673}
   currentHealth: 0
   currentSheild: 0
-  damageIndicator: {fileID: 0}
+  damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0
   EnemyHurtSFX: {fileID: 0}
@@ -915,6 +915,7 @@ MonoBehaviour:
   bodySegmentPrefab: {fileID: 8082728119782324012, guid: 29c0769fac1262f48906b6d6d47d9687, type: 3}
   currentStatus: 0
   bodySegmentCount: 5
+  headPieces: {fileID: 8925336418046236657}
 --- !u!135 &-4036100166708265459
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -958,7 +959,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
