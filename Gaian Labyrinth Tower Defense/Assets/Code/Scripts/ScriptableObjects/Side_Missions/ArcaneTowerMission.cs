@@ -8,7 +8,7 @@ public class DestroyEnemiesArcaneTowerMission : MissionBase
     public int requiredKills = 20; // Set the target kills to 20
     private int currentKills = 0; // Track the number of kills
 
-    // Assuming you have a method to call when an enemy is killed by the Arcane Tower
+    
     public void OnEnemyKilledByArcaneTower()
     {
         currentKills++;
@@ -31,7 +31,7 @@ public class DestroyEnemiesArcaneTowerMission : MissionBase
 
     private void AwardExtraPoints()
     {
-        // Implement the logic to award points to the player
-        // For example, adding points to the player's score
+        // I will implement the logic to award points to the player
+   
     }
 }
