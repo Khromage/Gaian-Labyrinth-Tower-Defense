@@ -26,6 +26,9 @@ public class TowerInfo : ScriptableObject
     public string Description { get; private set; }
 
     [field: SerializeField]
+    public Branch Level2 { get; private set; }
+
+    [field: SerializeField]
     public Branch[] Branches { get; private set; }
 
     [field: SerializeField]

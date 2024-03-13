@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 0a803b906ffd64c4fb39adb969846978
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - towerInfo: {fileID: 11400000, guid: f95bb2455046e7249b718c1a5772ae98, type: 2}
+  - target: {instanceID: 0}
+  - InteractionIndicator: {instanceID: 0}
+  - partToRotate: {instanceID: 0}
+  - projectilePrefab: {instanceID: 0}
+  - firePoint: {instanceID: 0}
+  - detectionZone: {instanceID: 0}
+  - placedSFX: {instanceID: 0}
+  - gridLocation: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

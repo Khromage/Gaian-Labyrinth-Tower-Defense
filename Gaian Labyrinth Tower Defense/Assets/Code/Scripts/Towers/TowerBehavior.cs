@@ -39,11 +39,11 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     
 
-    public int cost = 10;
-    public int lv2_cost = 20;
-    public int lv3_1_cost = 30;
-    public int lv3_2_cost = 30;
-    public int lv3_3_cost = 30;
+    public int cost;
+    public int lv2_cost;
+    public int lv3_1_cost;
+    public int lv3_2_cost;
+    public int lv3_3_cost;
 
     public int currentLevel = 1;
 
@@ -124,7 +124,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
                         float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
                         if (distanceToEnemy < shortestDistance)
                         {
-                            //Debug.Log("found enemy WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
                             shortestDistance = distanceToEnemy;
                             nearestEnemy = enemy;
                         }
@@ -224,7 +223,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
         if(fireCountdown <= 0)
         {
-            Debug.Log("shoot should be called here");
             Shoot();
             fireCountdown = 1f / fireRate;
         }
@@ -262,6 +260,8 @@ public class TowerBehavior : MonoBehaviour, Interactable
         projectile.targeting = targetingMode;
 
     }
+
+
     public void ShowInteractButton()
     {
         if (InteractionIndicator != null)
@@ -294,19 +294,19 @@ public class TowerBehavior : MonoBehaviour, Interactable
     {
         switch (newLevel)
         {
-            case 2:
+            case 0:
                 lv2_upgrade();
                 break;
 
-            case 31:
+            case 1:
                 lv3_1_upgrade();
                 break;
 
-            case 32:
+            case 2:
                 lv3_2_upgrade();
                 break;
 
-            case 33:
+            case 3:
                 lv3_3_upgrade();
                 break;
 
