@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+public class MainMenuModule : MonoBehaviour
 {
    public void PlayGame () {
       // load campaign scene
       LevelManager.Instance.LoadCampaign();
    } 
+
+   public void OpenSettings()
+   {
+      
+   }
 
    public void QuitGame () {
       Application.Quit();

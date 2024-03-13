@@ -1,55 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
-    public GameObject[] Modules;
-    
-    public GameObject TowerUI;
+
+    public GameObject MainMenuModule;
+    public GameObject CampaignMenuModule;
+    public GameObject LevelModule;
+
+    private GameObject SettingsMenu;
+    private GameObject currentModule;
+
     
     // Start is called before the first frame update
     void Start()
     {
-
-    }
-    void OnEnable()
-    {
-        TowerBehavior.OnOpenInteractionPanel += enableTowerUI;
-        LevelManager.Instance.OnLevelLoaded += SetLevelUI;
-        LevelManager.Instance.OnCampaignLoaded += SetCampaignUI;
-
-    }
-
-    void OnDisable()
-    {
-        TowerBehavior.OnOpenInteractionPanel -= enableTowerUI;
-    }
-    
-    private void SetCampaignUI()
-    {
-
-    }
-    private void SetLevelUI(LevelInfo level)
-    {
-
-    }
-
-    private void ClearUI()
-    {
-        
-    }
-
-
-    private void enableTowerUI(TowerBehavior tower)
-    {
-        // Enable UI Elements
-        TowerUI.SetActive(true);
-        
-        // Set Info
-        TowerUIManager towerUI = TowerUI.GetComponent<TowerUIManager>();
-        towerUI.SetTowerInfo(tower);
+        // start with main menu being loaded
+        currentModule = Instantiate(MainMenuModule, gameObject.transform);
     }
 
     // Update is called once per frame
@@ -57,4 +27,43 @@ public class UIManager : MonoBehaviour
     {
         
     }
+
+    void OnEnable()
+    {
+        LevelManager.Instance.OnLevelLoaded += SetLevelUI;
+        LevelManager.Instance.OnCampaignLoaded += SetCampaignUI;
+    }
+
+    void OnDisable()
+    {
+        LevelManager.Instance.OnLevelLoaded -= SetLevelUI;
+        LevelManager.Instance.OnCampaignLoaded -= SetCampaignUI;
+    }
+    
+    private void SetMainMenuUI()
+    {
+        ClearUI();
+        currentModule = Instantiate(MainMenuModule, gameObject.transform);
+    }
+    private void SetCampaignUI()
+    {
+        ClearUI();
+        currentModule = Instantiate(CampaignMenuModule, gameObject.transform); 
+    }
+    private void SetLevelUI(LevelInfo level)
+    {
+        ClearUI();
+        currentModule = Instantiate(LevelModule, gameObject.transform);
+    }
+
+    private void ClearUI()
+    {
+        if (currentModule != null)
+        {
+            Destroy(currentModule);
+            currentModule = null;
+        }
+    }
+
+
 }
