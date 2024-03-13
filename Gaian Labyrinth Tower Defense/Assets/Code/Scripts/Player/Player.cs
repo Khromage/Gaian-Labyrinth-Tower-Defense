@@ -54,7 +54,6 @@ public class Player : UnitBehavior
     public KeyCode modeChangeKey;
     public KeyCode[] towerKeys;
     public KeyCode sellKey;
-    public KeyCode upgradeCurrentTowerKey;
     public KeyCode[] updatePathKeys;
 
 
@@ -121,7 +120,6 @@ public class Player : UnitBehavior
     {
         Combat,
         Build,
-        Upgrade,
         Sell,
         Menu
     }
@@ -198,7 +196,6 @@ public class Player : UnitBehavior
         modeChangeKey = defaultKeybinds.modeChangeKey;
         towerKeys = defaultKeybinds.towerKeys;
         sellKey = defaultKeybinds.sellKey;
-        upgradeCurrentTowerKey = defaultKeybinds.upgradeCurrentTowerKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
     }
 
@@ -206,23 +203,21 @@ public class Player : UnitBehavior
     private void getUserKey()
     { 
         // Mouse click actions player can do depending on mode they are in
-        if (currentMode == playerMode.Combat) {
+        if (currentMode == playerMode.Combat) 
+        {
             attack();
-        } else {
-            if (currentMode != playerMode.Build) {
+        } else if (currentMode != playerMode.Build) 
+            {
                 //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
-                destoryTempHolder();
-            if (currentMode == playerMode.Sell) {
-                sellTower();
-                changeTowerColor();
-            } else if (currentMode == playerMode.Upgrade) {
-                upgradeTower();
-                changeTowerColor();
-            }
-            } else {
-                placeTowers();
-            }
-        }
+                destroyTempHolder();
+            } else if (currentMode == playerMode.Sell) 
+                {
+                    sellTower();
+                    changeTowerColor();
+                } else 
+                    {
+                        placeTowers();
+                    }
         
         // Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
@@ -236,47 +231,11 @@ public class Player : UnitBehavior
             Invoke(nameof(resetJump), jumpCooldown);
         }
 
-        //Player wants to interact
-        if(Input.GetKeyDown(interactKey))
-        {
-            try
-            {
-                Interact();
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-            Debug.Log("Interaction");
-        }
-
         /***
-            Setting player mode (Combat/Build/Sell/Menu)
+            Setting player mode (Combat/Build/Menu)
         ***/
 
-        //Getting weapon selected
-        if (Input.GetKeyDown(nextWeaponKey))
-        {
-            SwapWeapon(nextWeaponKey);
-            currentMode = playerMode.Combat;
-        }
-        else if (Input.GetKeyDown(prevWeaponKey))
-        {
-            SwapWeapon(prevWeaponKey);
-            currentMode = playerMode.Combat;
-        }
-
-
-        if (Input.GetKeyDown(sellKey)) {
-                currentMode = playerMode.Sell;
-        }
-
-        if (Input.GetKeyDown(upgradeCurrentTowerKey)) {
-                currentMode = playerMode.Upgrade;
-        }
-
-        // Change current selected tower
-
+        // Change selected tower and set Build Mode
         for (int i = 0; i < towerKeys.Length; i++)
         {
             if (Input.GetKeyDown(towerKeys[i])) 
@@ -293,24 +252,46 @@ public class Player : UnitBehavior
                 }
             }
         }
-
         
-        if ((Input.GetKeyDown(sellKey))
-            || (Input.GetKeyDown(modeChangeKey)))
+        if ( (Input.GetKeyDown(sellKey)))
         {
             currentTower = null;
+            currentMode = playerMode.Sell;
         }
 
-        if (Input.GetKeyDown(prevWeaponKey) ||
-            Input.GetKeyDown(nextWeaponKey)) {
-                currentMode = playerMode.Combat;
-                if (tempDisplayHolder != null)
-                {
-                    Destroy(this.tempDisplayHolder);
-                }
-                if (highlightedTile != null)
-                    highlightedTile.highlight(false);
-                OnEnterCombatMode?.Invoke(currentWeaponIndex);
+        // Change chosen weapon and set Combat mode
+        if (Input.GetKeyDown(nextWeaponKey))
+        {
+            SwapWeapon(nextWeaponKey);
+            currentMode = playerMode.Combat;
+            if (tempDisplayHolder != null)
+                Destroy(this.tempDisplayHolder);
+            if (highlightedTile != null)
+                highlightedTile.highlight(false);
+            OnEnterCombatMode?.Invoke(currentWeaponIndex);
+        } else if (Input.GetKeyDown(prevWeaponKey))
+        {
+            SwapWeapon(prevWeaponKey);
+            currentMode = playerMode.Combat;
+            if (tempDisplayHolder != null)
+                Destroy(this.tempDisplayHolder);
+            if (highlightedTile != null)
+                highlightedTile.highlight(false);
+            OnEnterCombatMode?.Invoke(currentWeaponIndex);  
+        }
+
+        // Player uses interaction key. If menu opens, set menu mode.
+        if(Input.GetKeyDown(interactKey))
+        {
+            try
+            {
+                Interact();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            Debug.Log("Interaction");
         }
 
     }
@@ -348,7 +329,8 @@ public class Player : UnitBehavior
 
     private void Interact()
     {
-        InteractionTarget.Interact();
+        if(InteractionTarget != null)
+            InteractionTarget.Interact();
     }
 
 
@@ -528,7 +510,7 @@ public class Player : UnitBehavior
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
-        destoryTempHolder();
+        destroyTempHolder();
         if (highlightedTile != null)
             highlightedTile.highlight(false);
 
@@ -616,8 +598,6 @@ public class Player : UnitBehavior
 
     private void upgradeTower()
     {
-
-
         /*
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
@@ -703,7 +683,7 @@ public class Player : UnitBehavior
         Weapon.OnFire -= spentMana;
     }
 
-    private void destoryTempHolder() 
+    private void destroyTempHolder() 
     {
         if (tempDisplayHolder != null) {
             Destroy(this.tempDisplayHolder);

@@ -861,12 +861,11 @@ GameObject:
   - component: {fileID: 547636147575734193}
   - component: {fileID: -4036100166708265459}
   - component: {fileID: 5529557284949425024}
-  - component: {fileID: 8163493867666400762}
   - component: {fileID: -7403572862678630784}
   - component: {fileID: 7735579116642935453}
   m_Layer: 0
   m_Name: EnemyCenturionHead
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -897,23 +896,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 8082728119782324012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6e8420b657e114fba076c8cd667e91, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a2f563df9f88be45ba4d5e9ad2dd1c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currTile: {fileID: 0}
   successorTile: {fileID: 0}
   Grid:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   HealthBar: {fileID: 1758651591399184673}
   currentHealth: 0
   currentSheild: 0
   damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0
-  EnemyHurtSFX: {fileID: -7403572862678630784}
-  info: {fileID: 11400000, guid: e10443c502c1f224f9edba514936a9e7, type: 2}
+  EnemyHurtSFX: {fileID: 0}
+  info: {fileID: 11400000, guid: 8fbb4fafd9d8347478765323ece399d5, type: 2}
+  bodySegmentPrefab: {fileID: 8082728119782324012, guid: 29c0769fac1262f48906b6d6d47d9687, type: 3}
   currentStatus: 0
+  bodySegmentCount: 5
+  headPieces: {fileID: 8925336418046236657}
 --- !u!135 &-4036100166708265459
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -957,35 +959,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!145 &8163493867666400762
-SpringJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8082728119782324012}
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0, z: 0}
-  m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
-  serializedVersion: 2
-  m_Spring: 10
-  m_Damper: 0.2
-  m_MinDistance: 0
-  m_MaxDistance: 0
-  m_Tolerance: 0.025
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!82 &-7403572862678630784
 AudioSource:
   m_ObjectHideFlags: 0

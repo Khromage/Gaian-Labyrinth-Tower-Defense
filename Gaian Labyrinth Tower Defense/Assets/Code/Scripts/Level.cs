@@ -62,8 +62,6 @@ public class Level : MonoBehaviour
         FinishedSpawnPoints = 0;
         remainingLives = 25;
 
-        SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
-
         RemainingEnemiesInWave = new int[enemyList.EnemyDataSet.Length];
     }
 

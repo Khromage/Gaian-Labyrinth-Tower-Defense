@@ -17,6 +17,5 @@ public class DefaultKeybinds : ScriptableObject
     public KeyCode modeChangeKey;
     public KeyCode[] towerKeys;
     public KeyCode sellKey;
-    public KeyCode upgradeCurrentTowerKey;
     public KeyCode[] updatePathKeys;
 }

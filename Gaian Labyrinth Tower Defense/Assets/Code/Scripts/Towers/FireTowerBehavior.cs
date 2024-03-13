@@ -8,19 +8,13 @@ public class FireTowerBehavior : TowerBehavior
     // Start is called before the first frame update
     public override void Start()
     {
-        base.Start();
-
-        cost = 50;
-        lv2_cost = 60;
-        lv3_1_cost = 100;
-        lv3_2_cost = 110;
-        lv3_3_cost = 130;
+        //base.Start();
     }
 
     // Update is called once per frame
     public override void Update()
     {
-        base.Update();
+        //base.Update();
     }
 
     protected override void lv2_upgrade()

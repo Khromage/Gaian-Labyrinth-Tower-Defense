@@ -39,11 +39,11 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     
 
-    public int cost = 10;
-    public int lv2_cost = 20;
-    public int lv3_1_cost = 30;
-    public int lv3_2_cost = 30;
-    public int lv3_3_cost = 30;
+    public int cost;
+    public int lv2_cost;
+    public int lv3_1_cost;
+    public int lv3_2_cost;
+    public int lv3_3_cost;
 
     public int currentLevel = 1;
 
