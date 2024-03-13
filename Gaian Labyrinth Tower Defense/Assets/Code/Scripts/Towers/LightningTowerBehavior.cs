@@ -9,13 +9,6 @@ public class LightningTowerBehavior : TowerBehavior
     public override void Start()
     {
         base.Start();
-
-
-        cost = 45;
-        lv2_cost = 40;
-        lv3_1_cost = 70;
-        lv3_2_cost = 90;
-        lv3_3_cost = 55;
     }
 
     // Update is called once per frame

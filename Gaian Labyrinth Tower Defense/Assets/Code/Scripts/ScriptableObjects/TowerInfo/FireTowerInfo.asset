@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FireTowerInfo
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Fire
-  <Damage>k__BackingField: 8
+  <Damage>k__BackingField: 3
   <Range>k__BackingField: 10
   <FireRate>k__BackingField: 1
   <Cost>k__BackingField: 25

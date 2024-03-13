@@ -9,13 +9,6 @@ public class ArcaneTowerBehavior : TowerBehavior
     public override void Start()
     {
         base.Start();
-
-
-        cost = 30;
-        lv2_cost = 40;
-        lv3_1_cost = 80;
-        lv3_2_cost = 70;
-        lv3_3_cost = 65;
     }
 
     // Update is called once per frame

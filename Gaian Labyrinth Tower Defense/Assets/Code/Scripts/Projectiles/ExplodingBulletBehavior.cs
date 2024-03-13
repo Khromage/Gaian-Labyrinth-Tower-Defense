@@ -13,10 +13,10 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
 
     protected override void Start()
     {
-        speed = 50f;
+        speed = 40f;
         damage = 3f;
         blastRadius = 3f;
-        turnSpeed = 20f;
+        turnSpeed = 180f;
     }
     public override void HitTarget(GameObject hitEnemy)
         {

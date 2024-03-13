@@ -8,13 +8,13 @@ public class FireTowerBehavior : TowerBehavior
     // Start is called before the first frame update
     public override void Start()
     {
-        //base.Start();
+        base.Start();
     }
 
     // Update is called once per frame
     public override void Update()
     {
-        //base.Update();
+        base.Update();
     }
 
     protected override void lv2_upgrade()
