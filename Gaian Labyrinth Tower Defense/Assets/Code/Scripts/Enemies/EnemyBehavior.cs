@@ -27,8 +27,8 @@ public class EnemyBehavior : MonoBehaviour
     protected int enemyID;
     protected float maxHealth;
     public float currentHealth;
-    protected float maxSheild;
-    public float currentSheild;
+    public enum Weight { light, medium, heavy };
+    public Weight enemyWeight;
 
     public GameObject damageIndicator;
 
@@ -70,7 +70,7 @@ public class EnemyBehavior : MonoBehaviour
         
         if (currTile is GoalTile)
         {
-            Debug.Log("reached end, presumably");
+            //Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(this);
             //OnEnemyDeath?.Invoke(gameObject);
             isAlive = false;
