@@ -1444,7 +1444,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1398210534}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -4174,11 +4174,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1307615716}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1398210534 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 772327340942430033, guid: 1b08de92674b73f4e947964821ebd507, type: 3}
-  m_PrefabInstance: {fileID: 17897394275704824}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1406631318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11307,6 +11302,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1971940154409610003, guid: 1b08de92674b73f4e947964821ebd507, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7032097774474053755, guid: 1b08de92674b73f4e947964821ebd507, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7032097774474053755, guid: 1b08de92674b73f4e947964821ebd507, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7175535397975998267, guid: 1b08de92674b73f4e947964821ebd507, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8139336710030280851, guid: 1b08de92674b73f4e947964821ebd507, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8139336710030280851, guid: 1b08de92674b73f4e947964821ebd507, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8139336710030280851, guid: 1b08de92674b73f4e947964821ebd507, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8253990476870750521, guid: 1b08de92674b73f4e947964821ebd507, type: 3}

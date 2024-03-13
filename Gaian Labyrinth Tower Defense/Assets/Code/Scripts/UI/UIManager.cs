@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
     public GameObject CampaignMenuModule;
     public GameObject LevelModule;
 
-    private GameObject SettingsMenu;
+    public GameObject OptionsMenu;
     private GameObject currentModule;
 
     
@@ -19,7 +19,12 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         // start with main menu being loaded
-        currentModule = Instantiate(MainMenuModule, gameObject.transform);
+        SetMainMenuUI();
+        
+        CampaignMenuModule.SetActive(false);
+        LevelModule.SetActive(false);
+        OptionsMenu.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -30,37 +35,68 @@ public class UIManager : MonoBehaviour
 
     void OnEnable()
     {
-        LevelManager.Instance.OnLevelLoaded += SetLevelUI;
-        LevelManager.Instance.OnCampaignLoaded += SetCampaignUI;
+        LevelManager.Instance.OnSceneLoaded += SetUIModule;
+
     }
 
     void OnDisable()
     {
-        LevelManager.Instance.OnLevelLoaded -= SetLevelUI;
-        LevelManager.Instance.OnCampaignLoaded -= SetCampaignUI;
+        LevelManager.Instance.OnSceneLoaded -= SetUIModule;
+
     }
     
+    private void SetUIModule(int ID)
+    {
+        switch (ID)
+        {
+            case 0:
+                SetMainMenuUI();
+                break;
+            case 1:
+                SetCampaignUI();
+                break;
+            case 2:
+                SetLevelUI();
+                break;
+            default:
+                Debug.Log("just cry");
+                break;
+        }
+    }
+
+
     private void SetMainMenuUI()
     {
         ClearUI();
-        currentModule = Instantiate(MainMenuModule, gameObject.transform);
+        Debug.Log("UI CLEARED");
+        MainMenuModule.SetActive(true);
+        currentModule = MainMenuModule;
+        Debug.Log("Main Menu UI SET");
+
     }
     private void SetCampaignUI()
     {
         ClearUI();
-        currentModule = Instantiate(CampaignMenuModule, gameObject.transform); 
+        Debug.Log("UI CLEARED");
+        CampaignMenuModule.SetActive(true);
+        currentModule = CampaignMenuModule;
+        Debug.Log("Campaign UI SET");
     }
-    private void SetLevelUI(LevelInfo level)
+    private void SetLevelUI()
     {
         ClearUI();
-        currentModule = Instantiate(LevelModule, gameObject.transform);
+        Debug.Log("UI CLEARED");
+        LevelModule.SetActive(true);
+        currentModule = LevelModule;
+        Debug.Log("LEVEL UI SET");
     }
 
     private void ClearUI()
     {
         if (currentModule != null)
         {
-            Destroy(currentModule);
+            currentModule.SetActive(false);
+            Debug.Log("Module Destroyed");
             currentModule = null;
         }
     }
