@@ -100,13 +100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ead70c2cdabe5489e3d8cecb51a54f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerInfo: {fileID: 11400000, guid: cf15361deceb0dd4294bd629309c385e, type: 2}
   towerName: water
   target: {fileID: 0}
   targetingMode: 
   range: 10
   fireRate: 0
   fireCountdown: 0
-  currentDamage: 0
+  damage: 0
   targetCooldown: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}

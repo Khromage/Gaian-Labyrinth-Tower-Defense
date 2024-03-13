@@ -190,7 +190,7 @@ PrefabInstance:
     - target: {fileID: 4145317313787882105, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: towerIcon
       value: 
-      objectReference: {fileID: 2424605327214075372}
+      objectReference: {fileID: 0}
     - target: {fileID: 5153292277126167916, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.7109375
@@ -364,21 +364,12 @@ PrefabInstance:
       value: -50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 440325078587486869, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+    - {fileID: 842931404213994725, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
---- !u!114 &2424605327214075372 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7057511616686216064, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
-  m_PrefabInstance: {fileID: 2424605327214075371}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

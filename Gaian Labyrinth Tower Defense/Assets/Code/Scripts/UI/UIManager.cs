@@ -5,9 +5,6 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public GameObject TowerUI;
-    public GameObject InGameHUD;
-    public GameObject CampaignHUD;
-
     
     // Start is called before the first frame update
     void Start()
