@@ -8,7 +8,10 @@ public class LevelManager : SpawnableSingleton<LevelManager>
 {
     public delegate void LevelManagementEvent(LevelInfo level);
     public event LevelManagementEvent OnLevelLoaded;
-    public event LevelManagementEvent OnLevelUnloaded;
+
+    public delegate void CampaignManagementEvent();
+    public event CampaignManagementEvent OnCampaignLoaded;
+
 
     public LevelInfo currentLevel;
     public int Lives, Wave, Countdown, Currency;
@@ -26,5 +29,17 @@ public class LevelManager : SpawnableSingleton<LevelManager>
         // Start Level Laoded (Waves etc)
         
         OnLevelLoaded?.Invoke(level);
+    }
+
+    public void LoadCampaign()
+    {
+        if(currentLevel != null)
+        {
+            SceneManager.UnloadSceneAsync(currentLevel.Name);
+            currentLevel = null;
+        }
+
+        SceneManager.LoadScene("campaignMenu");
+        OnCampaignLoaded?.Invoke();
     }
 }

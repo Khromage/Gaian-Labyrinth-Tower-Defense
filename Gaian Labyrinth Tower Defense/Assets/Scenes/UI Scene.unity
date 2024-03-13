@@ -187,6 +187,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3298561159238174527, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: TowerUI
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3298561159238174527, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: Modules.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3298561159238174527, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: Modules.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: a4cef3d027e51cf408d3711fb353af31, type: 2}
     - target: {fileID: 4145317313787882105, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: towerIcon
       value: 

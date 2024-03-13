@@ -4,31 +4,38 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField]
+    public GameObject[] Modules;
+    
     public GameObject TowerUI;
     
     // Start is called before the first frame update
     void Start()
     {
-        TowerUI.SetActive(false);
+
     }
     void OnEnable()
     {
-        LevelManager.Instance.OnLevelLoaded += SetUIModule;
         TowerBehavior.OnOpenInteractionPanel += enableTowerUI;
+        LevelManager.Instance.OnLevelLoaded += SetLevelUI;
+        LevelManager.Instance.OnCampaignLoaded += SetCampaignUI;
+
     }
 
     void OnDisable()
     {
-        LevelManager.Instance.OnLevelLoaded -= SetUIModule;
         TowerBehavior.OnOpenInteractionPanel -= enableTowerUI;
     }
-
-    private void SetUIModule(LevelInfo level)
+    
+    private void SetCampaignUI()
     {
-        
+
     }
-    
-    
+    private void SetLevelUI(LevelInfo level)
+    {
+
+    }
+
     private void ClearUI()
     {
         
