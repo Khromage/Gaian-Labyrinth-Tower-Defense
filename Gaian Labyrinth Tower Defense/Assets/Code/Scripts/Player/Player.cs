@@ -85,7 +85,7 @@ public class Player : UnitBehavior
 
     [Header("Player Cam")]
     public GameObject playerCam;
-    public GameObject currentCam;
+    //public GameObject currentCam;
 
     [Header("Build mode")]
     public GameObject towerPrefab;
@@ -103,6 +103,7 @@ public class Player : UnitBehavior
     public GameObject InteractionPoint;
 
     [Header("Weapon List")]
+    public GameObject weaponHolder;
     public GameObject currentWeapon;
     public List<GameObject> weaponList;
     private int currentWeaponIndex = 0;
@@ -135,7 +136,6 @@ public class Player : UnitBehavior
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
 
-        currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
 
         maxHealth = 100f;
         health = maxHealth;
@@ -497,7 +497,7 @@ public class Player : UnitBehavior
 
         Destroy(currentWeapon);
 
-        currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
+        currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, weaponHolder.transform);
         OnSwapWeapon?.Invoke(currentWeaponIndex);
     }
 
@@ -506,6 +506,7 @@ public class Player : UnitBehavior
         Methods for Build and Upgrade Modes
     ****
     ***/
+    
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
