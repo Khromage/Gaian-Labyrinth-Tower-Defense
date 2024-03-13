@@ -16,13 +16,27 @@ public class UIManager : MonoBehaviour
     }
     void OnEnable()
     {
+        LevelManager.Instance.OnLevelLoaded += SetUIModule;
         TowerBehavior.OnOpenInteractionPanel += enableTowerUI;
     }
 
     void OnDisable()
     {
+        LevelManager.Instance.OnLevelLoaded -= SetUIModule;
         TowerBehavior.OnOpenInteractionPanel -= enableTowerUI;
     }
+
+    private void SetUIModule(LevelInfo level)
+    {
+        
+    }
+    
+    
+    private void ClearUI()
+    {
+        
+    }
+
 
     private void enableTowerUI(TowerBehavior tower)
     {
