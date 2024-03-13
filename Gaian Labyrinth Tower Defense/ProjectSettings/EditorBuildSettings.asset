@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TestScene1.unity
     guid: 5dba8396e4cb96c48be65380f34d646e
   - enabled: 1
-    path: Assets/Scenes/InGameHUD.unity
+    path: Assets/Scenes/UI Scene.unity
     guid: 2bec7851d2a4e3042aa6d9e37e4cac68
   - enabled: 1
     path: Assets/Scenes/NavTestScene.unity

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1310235444719481038}
   - component: {fileID: 3298561159238174527}
   m_Layer: 5
-  m_Name: Player UI Canvas
+  m_Name: UI Manager Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,6 +117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerUI: {fileID: 440325078587486869}
+  InGameHUD: {fileID: 842931404213994725}
+  CampaignHUD: {fileID: 0}
 --- !u!1001 &5368897181094304695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -195,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4697419540031250258, guid: a38604576e7c2e0439106f87cc711758, type: 3}
       propertyPath: m_Name
-      value: HUD
+      value: InGameHUD
       objectReference: {fileID: 0}
     - target: {fileID: 6434499208401956722, guid: a38604576e7c2e0439106f87cc711758, type: 3}
       propertyPath: m_AnchorMax.y
@@ -334,6 +336,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a38604576e7c2e0439106f87cc711758, type: 3}
+--- !u!1 &842931404213994725 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4697419540031250258, guid: a38604576e7c2e0439106f87cc711758, type: 3}
+  m_PrefabInstance: {fileID: 5368897181094304695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4340142957695094005 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8554990514765338434, guid: a38604576e7c2e0439106f87cc711758, type: 3}
