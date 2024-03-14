@@ -116,6 +116,7 @@ public class Player : UnitBehavior
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public playerMode currentMode;
+    private playerMode lastMode;
     public enum playerMode
     {
         Combat,
@@ -153,8 +154,6 @@ public class Player : UnitBehavior
      {
 
         setVelocityComponents();
-
-        checkCurrentMode();
         checkInteractable();
         getUserKey();
         playerSpeedControl();
@@ -177,6 +176,27 @@ public class Player : UnitBehavior
         regenMana();
         movePlayer();
     }
+    
+    private void OnEnable()
+    {
+        //EnemyBehavior.OnEnemyDeath += GainCurrency;
+        Weapon.OnFire += spentMana;
+        LevelModule.OnMenuOpened += SetMenuMode;
+    }
+
+    private void OnDisable()
+    {
+        //EnemyBehavior.OnEnemyDeath -= GainCurrency;
+        Weapon.OnFire -= spentMana;
+        LevelModule.OnMenuOpened -= SetMenuMode;
+    }
+
+    private void SetMenuMode()
+    {
+        lastMode = currentMode;
+        currentMode = playerMode.Menu;
+    }
+
 
     public playerMode checkCurrentMode()
     {
@@ -671,17 +691,6 @@ public class Player : UnitBehavior
         }
     }
 
-    private void OnEnable()
-    {
-        //EnemyBehavior.OnEnemyDeath += GainCurrency;
-        Weapon.OnFire += spentMana;
-    }
-
-    private void OnDisable()
-    {
-        //EnemyBehavior.OnEnemyDeath -= GainCurrency;
-        Weapon.OnFire -= spentMana;
-    }
 
     private void destroyTempHolder() 
     {
