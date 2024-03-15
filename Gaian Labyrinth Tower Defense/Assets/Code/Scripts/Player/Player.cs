@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Video;
 
 //Interface implemented by any object, tower, npc, etc that the player can interact with
 public interface Interactable
@@ -116,7 +117,7 @@ public class Player : UnitBehavior
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public playerMode currentMode;
-    private playerMode lastMode;
+    private playerMode? lastMode;
     public enum playerMode
     {
         Combat,
@@ -153,10 +154,15 @@ public class Player : UnitBehavior
     public void Update() 
      {
 
-        setVelocityComponents();
-        checkInteractable();
-        getUserKey();
-        playerSpeedControl();
+        // Check if NOT in menu mode
+
+        if(currentMode != playerMode.Menu)
+        {
+            setVelocityComponents();
+            checkInteractable();
+            getUserKey();
+            playerSpeedControl();
+        }
 
         //setGravityDir();  // this call was to UnitBehavior function using raycast to determine gravity dir. unused
 
@@ -181,20 +187,30 @@ public class Player : UnitBehavior
     {
         //EnemyBehavior.OnEnemyDeath += GainCurrency;
         Weapon.OnFire += spentMana;
-        LevelModule.OnMenuOpened += SetMenuMode;
+        LevelModule.OnMenuOpened += EnterMenuMode;
     }
 
     private void OnDisable()
     {
         //EnemyBehavior.OnEnemyDeath -= GainCurrency;
         Weapon.OnFire -= spentMana;
-        LevelModule.OnMenuOpened -= SetMenuMode;
+        LevelModule.OnMenuOpened -= EnterMenuMode;
     }
 
-    private void SetMenuMode()
+    private void EnterMenuMode()
     {
         lastMode = currentMode;
         currentMode = playerMode.Menu;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void ExitMenuMode()
+    {
+        currentMode = (playerMode)lastMode;
+        lastMode = null;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
 
