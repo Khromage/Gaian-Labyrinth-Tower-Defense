@@ -53,7 +53,7 @@ public class TowerUIManager : MonoBehaviour
         }
     }
 
-    public void OptionClicked(GameObject option)
+    public void OptionClicked(int option)
     {
         switch (tower.currentLevel)
         {
@@ -62,9 +62,8 @@ public class TowerUIManager : MonoBehaviour
                 Debug.Log("Tower upgraded to level 2");
                 break;
             case 2:
-                int chosenOption = Array.IndexOf(upgradeOptions, option) + 1;
-                tower.upgradeTower(chosenOption);
-                Debug.Log("Tower upgraded to level 3 - Branch " + chosenOption);
+                tower.upgradeTower(option);
+                Debug.Log("Tower upgraded to level 3 - Branch " + option);
                 break;
         }
     }
