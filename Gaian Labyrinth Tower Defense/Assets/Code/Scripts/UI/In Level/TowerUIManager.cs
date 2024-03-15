@@ -7,6 +7,10 @@ using System;
 
 public class TowerUIManager : MonoBehaviour
 {
+
+    public delegate void TowerUIEvent(TowerBehavior towerScript);
+    public static event TowerUIEvent OnExitButtonClicked;
+
     public TowerBehavior tower;
     public Image towerIcon;
     public TMP_Text towerName;
@@ -43,6 +47,9 @@ public class TowerUIManager : MonoBehaviour
                     upgradeOptions[i].SetOptionInfo(i, selectedTower);
                 }
                 break;
+            case 3:
+                Debug.Log("Level 3 - No Upgrade Available");
+                break;
         }
     }
 
@@ -62,6 +69,10 @@ public class TowerUIManager : MonoBehaviour
         }
     }
 
+    public void ExitButtonClicked()
+    {
+        OnExitButtonClicked?.Invoke(tower);
+    }
 }
 
 [Serializable]

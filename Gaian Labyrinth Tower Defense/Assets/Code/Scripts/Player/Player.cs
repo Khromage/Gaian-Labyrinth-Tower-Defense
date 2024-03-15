@@ -188,6 +188,7 @@ public class Player : UnitBehavior
         //EnemyBehavior.OnEnemyDeath += GainCurrency;
         Weapon.OnFire += spentMana;
         LevelModule.OnMenuOpened += EnterMenuMode;
+        LevelModule.OnMenuClosed += ExitMenuMode;
     }
 
     private void OnDisable()
@@ -195,6 +196,7 @@ public class Player : UnitBehavior
         //EnemyBehavior.OnEnemyDeath -= GainCurrency;
         Weapon.OnFire -= spentMana;
         LevelModule.OnMenuOpened -= EnterMenuMode;
+        LevelModule.OnMenuClosed -= ExitMenuMode;
     }
 
     private void EnterMenuMode()

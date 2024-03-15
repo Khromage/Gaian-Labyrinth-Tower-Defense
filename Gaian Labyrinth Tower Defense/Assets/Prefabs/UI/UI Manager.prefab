@@ -579,6 +579,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 3327190355961593219, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3043021400878881887}
+    - target: {fileID: 3327190355961593219, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3457742039389638011, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -751,11 +759,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -60
       objectReference: {fileID: 0}
+    - target: {fileID: 9152472324594216085, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
+--- !u!1 &3043021400878881887 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6148441573698333038, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
+  m_PrefabInstance: {fileID: 9180971425966880049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4297403220921835436 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4956824554726894237, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}

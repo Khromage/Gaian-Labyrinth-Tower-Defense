@@ -29,11 +29,15 @@ public class LevelModule : MonoBehaviour
     void OnEnable()
     {
         TowerBehavior.OnOpenInteractionPanel += enableTowerUI;
+        TowerBehavior.OnCloseInteractionPanel += disableTowerUI;
+        TowerUIManager.OnExitButtonClicked += disableTowerUI;
     }
 
     void OnDisable()
     {
         TowerBehavior.OnOpenInteractionPanel -= enableTowerUI;
+        TowerBehavior.OnCloseInteractionPanel += disableTowerUI;
+        TowerUIManager.OnExitButtonClicked += disableTowerUI;
     }
 
     
@@ -48,6 +52,13 @@ public class LevelModule : MonoBehaviour
 
         // Send Broadcast to Player to set Menu Mode
         OnMenuOpened?.Invoke();
+    }
+
+    private void disableTowerUI(TowerBehavior tower)
+    {
+        TowerUI.SetActive(false);
+        OnMenuClosed?.Invoke();
+        Debug.Log("Closing interaction UI panel for " + tower.name + "tower");
     }
 
 }
