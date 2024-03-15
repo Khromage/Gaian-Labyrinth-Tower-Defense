@@ -861,10 +861,11 @@ GameObject:
   - component: {fileID: 547636147575734193}
   - component: {fileID: -4036100166708265459}
   - component: {fileID: 5529557284949425024}
+  - component: {fileID: 3616953574253434754}
   - component: {fileID: -7403572862678630784}
   - component: {fileID: 7735579116642935453}
   m_Layer: 0
-  m_Name: EnemyCenturionHead
+  m_Name: EnemyCenturionBody
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -912,9 +913,9 @@ MonoBehaviour:
   harm: 0
   EnemyHurtSFX: {fileID: 0}
   info: {fileID: 11400000, guid: 8fbb4fafd9d8347478765323ece399d5, type: 2}
-  bodySegmentPrefab: {fileID: 8082728119782324012, guid: 29c0769fac1262f48906b6d6d47d9687, type: 3}
-  currentStatus: 0
-  bodySegmentCount: 5
+  bodySegmentPrefab: {fileID: 0}
+  currentStatus: 1
+  bodySegmentCount: 0
   headPieces: {fileID: 8925336418046236657}
 --- !u!135 &-4036100166708265459
 SphereCollider:
@@ -964,6 +965,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!145 &3616953574253434754
+SpringJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8082728119782324012}
+  m_ConnectedBody: {fileID: 0}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Spring: 100
+  m_Damper: 0.2
+  m_MinDistance: 0.1
+  m_MaxDistance: 0.5
+  m_Tolerance: 0.2
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!82 &-7403572862678630784
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1067,7 +1092,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8082728119782324012}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -1202,7 +1227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6685849870336841522
 Transform:
   m_ObjectHideFlags: 0
