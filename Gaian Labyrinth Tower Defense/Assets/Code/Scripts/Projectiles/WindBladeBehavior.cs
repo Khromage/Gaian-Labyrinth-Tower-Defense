@@ -21,14 +21,17 @@ public class WindBladeBehavior : TrackingBulletBehavior
             // Calculate direction and distance
             Vector3 direction = target.position - transform.position;
             float distanceThisFrame = rotationSpeed * Time.deltaTime;
-
+            
             base.Update();
             // Check if we should start rotating
             Debug.Log((transform.position - target.position).magnitude + "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+            Debug.Log("What fucking state am i: " + isRotating);
+            Debug.Log("p");
             Debug.Log(distanceThisFrame + "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             if (Vector3.Distance(transform.position, target.position) < distanceThisFrame)
             {
                 isRotating = true;
+                Debug.Log("I just becameable to rotate: " + isRotating);
                 rotationTime = 0f;
             }
         }
