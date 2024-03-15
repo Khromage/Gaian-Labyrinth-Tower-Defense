@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class TowerBehavior : MonoBehaviour, Interactable
 {
-    public delegate void OpenInteractionPanel(string towerName, int currentLevel);
-    public static event OpenInteractionPanel OnOpenInteractionPanel;
-    public string towerName = "arcane";
+    public delegate void InteractionPanel(TowerBehavior towerScript);
+    public static event InteractionPanel OnOpenInteractionPanel;
+    public static event InteractionPanel OnCloseInteractionPanel;
+
+
+    public TowerInfo towerInfo;
+    public string towerName;
 
     public GameObject target;
 
@@ -16,7 +20,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public float range;
     public float fireRate;
     public float fireCountdown;
-    public float currentDamage;
+    public float damage;
 
     public float targetCooldown;
 
@@ -37,11 +41,11 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
     
 
-    public int cost = 10;
-    public int lv2_cost = 20;
-    public int lv3_1_cost = 30;
-    public int lv3_2_cost = 30;
-    public int lv3_3_cost = 30;
+    public int cost;
+    public int lv2_cost;
+    public int lv3_1_cost;
+    public int lv3_2_cost;
+    public int lv3_3_cost;
 
     public int currentLevel = 1;
 
@@ -50,11 +54,11 @@ public class TowerBehavior : MonoBehaviour, Interactable
     // Call the targeting function twice a second to scan for enemies
     public virtual void Start()
     {
-        range = 10f;
-        fireRate = 1f;
+        towerName = towerInfo.Name;
+        damage = towerInfo.Damage;
+        range = towerInfo.Range;
+        fireRate = towerInfo.FireRate;
         fireCountdown = 0f;
-        currentDamage = 5f;
-
         targetCooldown = 0f;
         placedSFX = GetComponent<AudioSource>();
         placedSFX.Play();
@@ -221,13 +225,21 @@ public class TowerBehavior : MonoBehaviour, Interactable
 
         if(fireCountdown <= 0)
         {
-            Debug.Log("shoot should be called here");
             Shoot();
             fireCountdown = 1f / fireRate;
         }
 
         fireCountdown -= Time.deltaTime;
 
+    }
+
+    public virtual string GetDescription()
+    {
+        return towerInfo.Description.Replace("{Name}", towerName)
+                                    .Replace("{Damage}", damage.ToString())
+                                    .Replace("{Range}", range.ToString())
+                                    .Replace("{FireRate}", fireRate.ToString())
+                                    .Replace("{Cost}", cost.ToString());
     }
     
     //rotate head of tower to follow current target. Can be overridden for specific rotation behaviors
@@ -244,24 +256,14 @@ public class TowerBehavior : MonoBehaviour, Interactable
     protected virtual void Shoot()
     {
         ProjectileBehavior projectile = Instantiate (projectilePrefab, firePoint.position, firePoint.rotation) as ProjectileBehavior;
-        projectile.damage = currentDamage;
+        projectile.damage = damage;
         if (projectile != null)
             projectile.SetTarget(target.transform);
         projectile.targeting = targetingMode;
 
     }
-    public void Interact()
-    {
-        OpenTowerUI();
-    }
 
-    // display tower UI in screen space
-    void OpenTowerUI()
-    {
-        OnOpenInteractionPanel?.Invoke(towerName, currentLevel);
-        Debug.Log("INTERACTION HAPPINGING");
 
-    }
     public void ShowInteractButton()
     {
         if (InteractionIndicator != null)
@@ -283,32 +285,43 @@ public class TowerBehavior : MonoBehaviour, Interactable
         }
     }
 
-    public void upgradeTower(int newLevel)
+    // Interaction opens the Tower UI
+    public void Interact()
     {
-        switch (newLevel)
+        OnOpenInteractionPanel?.Invoke(this);
+        Debug.Log("Tower UI Opening");
+    }
+
+    public void upgradeTower(int option)
+    {
+        switch (option)
         {
-            case 2:
+            case 0:
                 lv2_upgrade();
+                currentLevel = 2;
                 break;
 
-            case 31:
+            case 1:
                 lv3_1_upgrade();
+                currentLevel = 3;
                 break;
 
-            case 32:
+            case 2:
                 lv3_2_upgrade();
+                currentLevel = 3;
                 break;
 
-            case 33:
+            case 3:
                 lv3_3_upgrade();
+                currentLevel = 3;
                 break;
 
             default:
                 Debug.Log("Tower upgrade stage not found");
                 break;
         }
+        OnCloseInteractionPanel?.Invoke(this);
     }
-
     protected virtual void lv2_upgrade()
     {
         //generic tower upgrade stats
@@ -320,7 +333,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         upgradeSphere.SetActive(true);
 
 
-        currentDamage = 2f;
+        damage = 2f;
         range = 10.2f;
         fireRate = 3f;
     }

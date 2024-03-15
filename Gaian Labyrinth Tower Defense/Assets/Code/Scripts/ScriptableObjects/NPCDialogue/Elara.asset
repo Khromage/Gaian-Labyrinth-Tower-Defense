@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Elara
   m_EditorClassIdentifier: 
   dialogueLines:
-  - Line 1
-  - Line 2
-  - Line 3
-  - Thank You, Bye!
+  - 'Welcome, Traveler! '
+  - Embrace the silence, for through it, the forest whispers its ancient secrets
+    and entrusts you with its sacred magic.
+  - Haunted by my past with Myrana, I find redemption in guarding the purity of this
+    forest, teaching others to protect what we once took for granted.
+  - Farewell, traveler. Let the forest's whisper guide your steps and its peace fill
+    your heart until we meet again.

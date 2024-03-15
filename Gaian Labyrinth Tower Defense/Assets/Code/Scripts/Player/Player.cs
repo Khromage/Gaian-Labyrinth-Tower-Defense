@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Video;
 
 //Interface implemented by any object, tower, npc, etc that the player can interact with
 public interface Interactable
@@ -30,8 +32,6 @@ public class Player : UnitBehavior
     public delegate void SwapWeaponEvent(int newIndex);
     public static event SwapWeaponEvent OnSwapWeapon;
 
-    public playerMode currentMode;
-
     //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
     public float moveSpeed;
@@ -41,28 +41,21 @@ public class Player : UnitBehavior
     public float airMultiplier;
     bool readyToJump;
 
+
     [Header("KeyBinds")]
+    // SO with default bindings
+    public DefaultKeybinds defaultKeybinds;
     //Movement
-    public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode jumpKey;
     //Combat
-    public KeyCode interactKey = KeyCode.F;
-    public KeyCode nextWeapon = KeyCode.E;
-    public KeyCode prevWeapon = KeyCode.Q;
+    public KeyCode interactKey;
+    public KeyCode nextWeaponKey;
+    public KeyCode prevWeaponKey;
     //Build Mode
-    public KeyCode buildMode = KeyCode.Tab;
-
-    public KeyCode tower1 = KeyCode.Alpha1;
-    public KeyCode tower2 = KeyCode.Alpha2;
-    public KeyCode tower3 = KeyCode.Alpha3;
-    public KeyCode tower4 = KeyCode.Alpha4;
-    public KeyCode tower5 = KeyCode.Alpha5;
-    public KeyCode tower6 = KeyCode.Alpha6;
-
-    public KeyCode deleteTower = KeyCode.Alpha0;
-    public KeyCode upgradeCurrentTower = KeyCode.V;
-    public KeyCode upgradePath1 = KeyCode.J;
-    public KeyCode upgradePath2 = KeyCode.K;
-    public KeyCode upgradePath3 = KeyCode.L;
+    public KeyCode modeChangeKey;
+    public KeyCode[] towerKeys;
+    public KeyCode sellKey;
+    public KeyCode[] updatePathKeys;
 
 
     [Header("Layer Variables")]
@@ -93,7 +86,7 @@ public class Player : UnitBehavior
 
     [Header("Player Cam")]
     public GameObject playerCam;
-    public GameObject currentCam;
+    //public GameObject currentCam;
 
     [Header("Build mode")]
     public GameObject towerPrefab;
@@ -111,6 +104,7 @@ public class Player : UnitBehavior
     public GameObject InteractionPoint;
 
     [Header("Weapon List")]
+    public GameObject weaponHolder;
     public GameObject currentWeapon;
     public List<GameObject> weaponList;
     private int currentWeaponIndex = 0;
@@ -121,16 +115,15 @@ public class Player : UnitBehavior
     public GameObject currentTower;
     public GameObject[] towerSet;
 
-    [Header("Player Data")]
-    public PlayerData playerData;
-
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
+    public playerMode currentMode;
+    private playerMode? lastMode;
     public enum playerMode
     {
         Combat,
         Build,
-        Upgrade,
         Sell,
+        Menu
     }
 
     //Method to be checked on first frame of the game
@@ -145,7 +138,6 @@ public class Player : UnitBehavior
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
         gameObject.GetComponent<ConstantForce>().force = defaultGravityDir * rb.mass * gravityConstant;
 
-        currentCam = playerCam.GetComponent<ThirdPersonCam>().currentCam;
 
         maxHealth = 100f;
         health = maxHealth;
@@ -155,54 +147,34 @@ public class Player : UnitBehavior
 
         towerSet = new GameObject[6];
         FillLoadout();
-
+        InitializeKeybinds();
     }
 
     //Method to be checked on every frame of the game
     public void Update() 
      {
 
-        setVelocityComponents();
+        // Check if NOT in menu mode
 
-        checkCurrentMode();
-        checkInteractable();
-        getUserKey();
-        playerSpeedControl();
+        if(currentMode != playerMode.Menu)
+        {
+            setVelocityComponents();
+            checkInteractable();
+            getUserKey();
+            playerSpeedControl();
+        }
 
         //setGravityDir();  // this call was to UnitBehavior function using raycast to determine gravity dir. unused
 
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
         //Vector3.down was the 2nd parameter here, originally
         grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        
         //handling player drag if on the ground
         if (grounded)
             rb.drag = groundDrag;
         else
             rb.drag = 0;
-
-        //Actions player can do depending on mode they are in
-        if (currentMode == playerMode.Combat) {
-            attack();
-        } else {
-            if (currentMode != playerMode.Build) {
-                //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
-                destoryTempHolder();
-                if (currentMode == playerMode.Sell) {
-                    sellTower();
-                    changeTowerColor();
-                } else if (currentMode == playerMode.Upgrade) {
-                    upgradeTower();
-                    changeTowerColor();
-                }
-            } else {
-                placeTowers();
-            }
-        }
-
-
-        playerData.currency = currency;
-        playerData.playerHealth = health;
-        playerData.playerMana = mana;
     }
 
     public void FixedUpdate()
@@ -210,69 +182,86 @@ public class Player : UnitBehavior
         regenMana();
         movePlayer();
     }
-
-    private void checkCurrentMode()
+    
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(prevWeapon) ||
-           Input.GetKeyDown(nextWeapon)) {
-            currentMode = playerMode.Combat;
-            if (tempDisplayHolder != null)
-            {
-                Destroy(this.tempDisplayHolder);
-            }
-            if (highlightedTile != null)
-                highlightedTile.highlight(false);
-            OnEnterCombatMode?.Invoke(currentWeaponIndex);
-        }
-
-        if (Input.GetKeyDown(tower1) ||
-           Input.GetKeyDown(tower2) ||
-           Input.GetKeyDown(tower3)) {
-            currentMode = playerMode.Build;
-        }
-
-        if (Input.GetKeyDown(deleteTower)) {
-            currentMode = playerMode.Sell;
-        }
-
-        if (Input.GetKeyDown(upgradeCurrentTower) ||
-            Input.GetKeyDown(buildMode)) {
-            currentMode = playerMode.Upgrade;
-        }
+        //EnemyBehavior.OnEnemyDeath += GainCurrency;
+        Weapon.OnFire += spentMana;
+        LevelModule.OnMenuOpened += EnterMenuMode;
+        LevelModule.OnMenuClosed += ExitMenuMode;
     }
-    private bool enteringBuildMode()
-    {
-        //Sets tower immediatley to whichever key is pressed 
-        //then returns true to place player into build mode
-        if (Input.GetKeyDown(tower1) || Input.GetKeyDown(tower2) || Input.GetKeyDown(tower3) 
-            || Input.GetKeyDown(tower4) || Input.GetKeyDown(tower5) || Input.GetKeyDown(tower6))
-        { 
-            return true;
-        }
-        return false;
-    }
-    private bool enteringCombatMode()
-    {
-        if (Input.GetKeyDown(prevWeapon))
-        {
-            return true;
-        }
 
-        if (Input.GetKeyDown(upgradeCurrentTower) ||
-            Input.GetKeyDown(buildMode)) {
-            currentMode = playerMode.Upgrade;
-        }
-        return false;
+    private void OnDisable()
+    {
+        //EnemyBehavior.OnEnemyDeath -= GainCurrency;
+        Weapon.OnFire -= spentMana;
+        LevelModule.OnMenuOpened -= EnterMenuMode;
+        LevelModule.OnMenuClosed -= ExitMenuMode;
+    }
+
+    private void EnterMenuMode()
+    {
+        lastMode = currentMode;
+        currentMode = playerMode.Menu;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void ExitMenuMode()
+    {
+        currentMode = (playerMode)lastMode;
+        lastMode = null;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+
+    public playerMode checkCurrentMode()
+    {
+        return currentMode;
+    }
+
+    // Loads default keybinds from DefaultKeybinds SO
+    private void InitializeKeybinds()
+    {
+        // General
+        jumpKey = defaultKeybinds.jumpKey;
+        interactKey = defaultKeybinds.interactKey;
+        // Combat
+        nextWeaponKey = defaultKeybinds.nextWeaponKey;
+        prevWeaponKey = defaultKeybinds.prevWeaponKey;
+        //Build Mode
+        modeChangeKey = defaultKeybinds.modeChangeKey;
+        towerKeys = defaultKeybinds.towerKeys;
+        sellKey = defaultKeybinds.sellKey;
+        updatePathKeys = defaultKeybinds.updatePathKeys;
     }
 
     //Getting WASD and jump inputs
     private void getUserKey()
     { 
-        //Player hits WASD
+        // Mouse click actions player can do depending on mode they are in
+        if (currentMode == playerMode.Combat) 
+        {
+            attack();
+        } else if (currentMode != playerMode.Build) 
+            {
+                //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
+                destroyTempHolder();
+            } else if (currentMode == playerMode.Sell) 
+                {
+                    sellTower();
+                    changeTowerColor();
+                } else 
+                    {
+                        placeTowers();
+                    }
+        
+        // Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        //Player wants to jump
+        // Player wants to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
@@ -280,63 +269,67 @@ public class Player : UnitBehavior
             Invoke(nameof(resetJump), jumpCooldown);
         }
 
-        //Player wants to interact
-        if(Input.GetKeyDown(interactKey))
-        {
-            Interact();
-        }
+        /***
+            Setting player mode (Combat/Build/Menu)
+        ***/
 
-        //Getting weapon selected
-        if (Input.GetKeyDown(nextWeapon))
+        // Change selected tower and set Build Mode
+        for (int i = 0; i < towerKeys.Length; i++)
         {
-            SwapWeapon(nextWeapon);
+            if (Input.GetKeyDown(towerKeys[i])) 
+            {
+                if (towerSet[i] != null)
+                {
+                    currentTower = towerSet[i];
+                    OnTowerSelect?.Invoke(i, towerSet[i]);
+                    Debug.Log("Tower Slot " + (i+1) + "Chosen");
+                    currentMode = playerMode.Build;
+                } else 
+                {
+                    Debug.Log("No tower in slot " + (i+1));
+                }
+            }
         }
-        else if (Input.GetKeyDown(prevWeapon))
-        {
-            SwapWeapon(prevWeapon);
-        }
-
-        //Change current selected tower
-        if (Input.GetKeyDown(tower1))
-        {
-            if (towerSet[0] != null)
-                currentTower = towerSet[0];
-            OnTowerSelect?.Invoke(0, towerSet[0]);
-        }
-        if (Input.GetKeyDown(tower2))
-        {
-            if (towerSet[1] != null)
-                currentTower = towerSet[1];
-            OnTowerSelect?.Invoke(1, towerSet[1]);
-        }
-        if (Input.GetKeyDown(tower3))
-        {
-            if (towerSet[2] != null)
-                currentTower = towerSet[2];
-            OnTowerSelect?.Invoke(2, towerSet[2]);
-        }
-        if (Input.GetKeyDown(tower4))
-        {
-            if (towerSet[3] != null)
-                currentTower = towerSet[3];
-            OnTowerSelect?.Invoke(3, towerSet[3]);
-        }
-        if (Input.GetKeyDown(tower5))
-        {
-            if (towerSet[4] != null)
-                currentTower = towerSet[4];
-            OnTowerSelect?.Invoke(4, towerSet[4]);
-        }
-        if (Input.GetKeyDown(tower6))
-        {
-            if (towerSet[5] != null)
-            currentTower = towerSet[5];
-            OnTowerSelect?.Invoke(5, towerSet[5]);
-        }
-        if ((Input.GetKeyDown(deleteTower))
-            || (Input.GetKeyDown(buildMode)))
+        
+        if ( (Input.GetKeyDown(sellKey)))
         {
             currentTower = null;
+            currentMode = playerMode.Sell;
+        }
+
+        // Change chosen weapon and set Combat mode
+        if (Input.GetKeyDown(nextWeaponKey))
+        {
+            SwapWeapon(nextWeaponKey);
+            currentMode = playerMode.Combat;
+            if (tempDisplayHolder != null)
+                Destroy(this.tempDisplayHolder);
+            if (highlightedTile != null)
+                highlightedTile.highlight(false);
+            OnEnterCombatMode?.Invoke(currentWeaponIndex);
+        } else if (Input.GetKeyDown(prevWeaponKey))
+        {
+            SwapWeapon(prevWeaponKey);
+            currentMode = playerMode.Combat;
+            if (tempDisplayHolder != null)
+                Destroy(this.tempDisplayHolder);
+            if (highlightedTile != null)
+                highlightedTile.highlight(false);
+            OnEnterCombatMode?.Invoke(currentWeaponIndex);  
+        }
+
+        // Player uses interaction key. If menu opens, set menu mode.
+        if(Input.GetKeyDown(interactKey))
+        {
+            try
+            {
+                Interact();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            Debug.Log("Interaction");
         }
 
     }
@@ -374,7 +367,8 @@ public class Player : UnitBehavior
 
     private void Interact()
     {
-        InteractionTarget.Interact();
+        if(InteractionTarget != null)
+            InteractionTarget.Interact();
     }
 
 
@@ -523,13 +517,13 @@ public class Player : UnitBehavior
     private void SwapWeapon(KeyCode input)
     {
 
-        if (input == nextWeapon)
+        if (input == nextWeaponKey)
         {
             currentWeaponIndex++;
             if (currentWeaponIndex >= (weaponList.Count))
                 currentWeaponIndex = 0;
         }
-        if (input == prevWeapon)
+        if (input == prevWeaponKey)
         {
             currentWeaponIndex--;
             if (currentWeaponIndex < 0)
@@ -541,7 +535,7 @@ public class Player : UnitBehavior
 
         Destroy(currentWeapon);
 
-        currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, transform.Find("Body"));
+        currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, weaponHolder.transform);
         OnSwapWeapon?.Invoke(currentWeaponIndex);
     }
 
@@ -550,10 +544,11 @@ public class Player : UnitBehavior
         Methods for Build and Upgrade Modes
     ****
     ***/
+    
     private void placeTowers()
     {
         //destroying the previous frame's green highlight for potential placement of tower
-        destoryTempHolder();
+        destroyTempHolder();
         if (highlightedTile != null)
             highlightedTile.highlight(false);
 
@@ -639,13 +634,8 @@ public class Player : UnitBehavior
         }
     }   
 
-
-
-
     private void upgradeTower()
     {
-
-
         /*
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
         if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
@@ -660,7 +650,7 @@ public class Player : UnitBehavior
             if ((towerBehavior.isUpgradable) && (currency > towerCost)){
                 Debug.Log("Upgradeable");
                 if (upgradeMultiPath == false) {
-                    if (Input.GetKeyDown(upgradeCurrentTower)) {
+                    if (Input.GetKeyDown(upgradeCurrentTowerKey)) {
                         Debug.Log("Upgrade");
                         goToUpgrade(upgradeStage, towerBehavior, towerCost);
                     }
@@ -719,19 +709,8 @@ public class Player : UnitBehavior
         }
     }
 
-    private void OnEnable()
-    {
-        //EnemyBehavior.OnEnemyDeath += GainCurrency;
-        Weapon.OnFire += spentMana;
-    }
 
-    private void OnDisable()
-    {
-        //EnemyBehavior.OnEnemyDeath -= GainCurrency;
-        Weapon.OnFire -= spentMana;
-    }
-
-    private void destoryTempHolder() 
+    private void destroyTempHolder() 
     {
         if (tempDisplayHolder != null) {
             Destroy(this.tempDisplayHolder);
