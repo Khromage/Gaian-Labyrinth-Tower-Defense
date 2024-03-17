@@ -18,6 +18,7 @@ public class OptionsMenu : MonoBehaviour
         resolutions = Screen.resolutions;
         PopulateResolutionDropdown();
         SetFPS();
+        gameObject.SetActive(false);
     }
     void Awake()
     {

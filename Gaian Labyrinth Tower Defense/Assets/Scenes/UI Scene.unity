@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -133,17 +133,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6536075805286667429, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
   m_PrefabInstance: {fileID: 2424605327214075371}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &426740721 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4188378531403662871, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+--- !u!1 &580461659 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3043021400878881887, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
   m_PrefabInstance: {fileID: 2424605327214075371}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426740720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96534b6bc9575b946b8960d38238ee07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1135529266
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,6 +558,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5856318742915860658, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 580461659}
+    - target: {fileID: 5856318742915860658, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6029196489254027856, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -801,16 +803,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8896078244909941258, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 426740721}
-    - target: {fileID: 8896078244909941258, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenSettings
+      value: OpenOptions
       objectReference: {fileID: 0}
     - target: {fileID: 8896078244909941258, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MainMenuModule, Assembly-CSharp
+      value: UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8992766360956398665, guid: f36513ab589d4dc4dbdafd88c867c9d9, type: 3}
       propertyPath: m_AnchorMax.y

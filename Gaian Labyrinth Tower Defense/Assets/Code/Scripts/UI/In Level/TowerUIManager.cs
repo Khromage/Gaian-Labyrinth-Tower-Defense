@@ -7,6 +7,10 @@ using System;
 
 public class TowerUIManager : MonoBehaviour
 {
+
+    public delegate void TowerUIEvent(TowerBehavior towerScript);
+    public static event TowerUIEvent OnExitButtonClicked;
+
     public TowerBehavior tower;
     public Image towerIcon;
     public TMP_Text towerName;
@@ -43,10 +47,13 @@ public class TowerUIManager : MonoBehaviour
                     upgradeOptions[i].SetOptionInfo(i, selectedTower);
                 }
                 break;
+            case 3:
+                Debug.Log("Level 3 - No Upgrade Available");
+                break;
         }
     }
 
-    public void OptionClicked(GameObject option)
+    public void OptionClicked(int option)
     {
         switch (tower.currentLevel)
         {
@@ -55,13 +62,16 @@ public class TowerUIManager : MonoBehaviour
                 Debug.Log("Tower upgraded to level 2");
                 break;
             case 2:
-                int chosenOption = Array.IndexOf(upgradeOptions, option) + 1;
-                tower.upgradeTower(chosenOption);
-                Debug.Log("Tower upgraded to level 3 - Branch " + chosenOption);
+                tower.upgradeTower(option);
+                Debug.Log("Tower upgraded to level 3 - Branch " + option);
                 break;
         }
     }
 
+    public void ExitButtonClicked()
+    {
+        OnExitButtonClicked?.Invoke(tower);
+    }
 }
 
 [Serializable]

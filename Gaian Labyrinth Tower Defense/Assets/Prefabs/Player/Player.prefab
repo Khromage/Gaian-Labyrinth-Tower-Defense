@@ -445,7 +445,6 @@ MonoBehaviour:
   modeChangeKey: 0
   towerKeys: 
   sellKey: 0
-  upgradeCurrentTowerKey: 0
   updatePathKeys: 
   whatIsGround:
     serializedVersion: 2
@@ -688,7 +687,8 @@ MonoBehaviour:
   horizontalSpeed: 10
   verticalSpeed: 10
   clampAngle: 32
-  playerObj: {fileID: 2681359607818998218}
+  player: {fileID: 2903142278872346041}
+  playerBody: {fileID: 2681359607818998218}
   playerHead: {fileID: 1190557904319586742}
   orientation: {fileID: 6929699631383834895}
   combatLookAt: {fileID: 8871531477944292613}
@@ -1294,7 +1294,7 @@ Transform:
   m_GameObject: {fileID: 7985478383346782855}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.25, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

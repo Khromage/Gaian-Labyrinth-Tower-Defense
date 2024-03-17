@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 6827496241912143159}
   - component: {fileID: 6682333059816674589}
   - component: {fileID: 1583244971268440535}
-  m_Layer: 0
+  - component: {fileID: -8115949130670682756}
+  m_Layer: 7
   m_Name: WaveWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -62,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 06c125944f5569a4ebc18e6a4707cd49, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105,3 +106,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-8115949130670682756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7818044678873102962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 142ea4743d70a50429ae79628caa5c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targeting: 
+  damage: 0
+  waterWaves: []
+  enemiesHit: []
+  tilesCovered: []
+  hadChildren: 0
