@@ -622,6 +622,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2569334398435147726, guid: 9146a369df935bd4f91ede9e7ce1927b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -11.8895
+      objectReference: {fileID: 0}
     - target: {fileID: 2783699610139314182, guid: 9146a369df935bd4f91ede9e7ce1927b, type: 3}
       propertyPath: m_Name
       value: Forest Paths
