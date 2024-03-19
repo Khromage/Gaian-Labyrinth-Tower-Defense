@@ -117,7 +117,7 @@ MonoBehaviour:
   firePoint: {fileID: 6788566222244839869}
   enemies: []
   detectionZone: {fileID: 0}
-  placedSFX: {fileID: 0}
+  placedSFX: {fileID: -854023295297194275}
   cost: 10
   lv2_cost: 20
   lv3_1_cost: 30

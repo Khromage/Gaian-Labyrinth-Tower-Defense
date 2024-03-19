@@ -18,12 +18,12 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         // start with main menu being loaded
         SetMainMenuUI();
         
         CampaignMenuModule.SetActive(false);
         LevelModule.SetActive(false);
-        OptionsMenu.SetActive(false);
 
     }
 
@@ -45,6 +45,15 @@ public class UIManager : MonoBehaviour
 
     }
     
+    public void OpenOptions()
+    {
+        OptionsMenu.SetActive(true);
+    }
+    public void CloseOptions()
+    {
+        OptionsMenu.SetActive(false);
+    }
+
     private void SetUIModule(int ID)
     {
         switch (ID)

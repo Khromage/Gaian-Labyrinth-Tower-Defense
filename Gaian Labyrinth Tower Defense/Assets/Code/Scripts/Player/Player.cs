@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Video;
 
 //Interface implemented by any object, tower, npc, etc that the player can interact with
 public interface Interactable
@@ -116,6 +117,7 @@ public class Player : UnitBehavior
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public playerMode currentMode;
+    private playerMode? lastMode;
     public enum playerMode
     {
         Combat,
@@ -152,12 +154,15 @@ public class Player : UnitBehavior
     public void Update() 
      {
 
-        setVelocityComponents();
+        // Check if NOT in menu mode
 
-        checkCurrentMode();
-        checkInteractable();
-        getUserKey();
-        playerSpeedControl();
+        if(currentMode != playerMode.Menu)
+        {
+            setVelocityComponents();
+            checkInteractable();
+            getUserKey();
+            playerSpeedControl();
+        }
 
         //setGravityDir();  // this call was to UnitBehavior function using raycast to determine gravity dir. unused
 
@@ -177,6 +182,39 @@ public class Player : UnitBehavior
         regenMana();
         movePlayer();
     }
+    
+    private void OnEnable()
+    {
+        //EnemyBehavior.OnEnemyDeath += GainCurrency;
+        Weapon.OnFire += spentMana;
+        LevelModule.OnMenuOpened += EnterMenuMode;
+        LevelModule.OnMenuClosed += ExitMenuMode;
+    }
+
+    private void OnDisable()
+    {
+        //EnemyBehavior.OnEnemyDeath -= GainCurrency;
+        Weapon.OnFire -= spentMana;
+        LevelModule.OnMenuOpened -= EnterMenuMode;
+        LevelModule.OnMenuClosed -= ExitMenuMode;
+    }
+
+    private void EnterMenuMode()
+    {
+        lastMode = currentMode;
+        currentMode = playerMode.Menu;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void ExitMenuMode()
+    {
+        currentMode = (playerMode)lastMode;
+        lastMode = null;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
 
     public playerMode checkCurrentMode()
     {
@@ -671,17 +709,6 @@ public class Player : UnitBehavior
         }
     }
 
-    private void OnEnable()
-    {
-        //EnemyBehavior.OnEnemyDeath += GainCurrency;
-        Weapon.OnFire += spentMana;
-    }
-
-    private void OnDisable()
-    {
-        //EnemyBehavior.OnEnemyDeath -= GainCurrency;
-        Weapon.OnFire -= spentMana;
-    }
 
     private void destroyTempHolder() 
     {

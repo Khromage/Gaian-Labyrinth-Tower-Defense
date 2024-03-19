@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class TowerBehavior : MonoBehaviour, Interactable
 {
-    public delegate void OpenInteractionPanel(TowerBehavior towerScript);
-    public static event OpenInteractionPanel OnOpenInteractionPanel;
+    public delegate void InteractionPanel(TowerBehavior towerScript);
+    public static event InteractionPanel OnOpenInteractionPanel;
+    public static event InteractionPanel OnCloseInteractionPanel;
+
 
     public TowerInfo towerInfo;
     public string towerName;
@@ -290,30 +292,35 @@ public class TowerBehavior : MonoBehaviour, Interactable
         Debug.Log("Tower UI Opening");
     }
 
-    public void upgradeTower(int newLevel)
+    public void upgradeTower(int option)
     {
-        switch (newLevel)
+        switch (option)
         {
             case 0:
                 lv2_upgrade();
+                currentLevel = 2;
                 break;
 
             case 1:
                 lv3_1_upgrade();
+                currentLevel = 3;
                 break;
 
             case 2:
                 lv3_2_upgrade();
+                currentLevel = 3;
                 break;
 
             case 3:
                 lv3_3_upgrade();
+                currentLevel = 3;
                 break;
 
             default:
                 Debug.Log("Tower upgrade stage not found");
                 break;
         }
+        OnCloseInteractionPanel?.Invoke(this);
     }
     protected virtual void lv2_upgrade()
     {

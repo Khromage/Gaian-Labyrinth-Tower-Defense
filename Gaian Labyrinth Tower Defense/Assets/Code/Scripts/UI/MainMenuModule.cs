@@ -10,11 +10,6 @@ public class MainMenuModule : MonoBehaviour
       LevelManager.Instance.LoadCampaign();
    } 
 
-   public void OpenSettings()
-   {
-      
-   }
-
    public void QuitGame () {
       Application.Quit();
    }
