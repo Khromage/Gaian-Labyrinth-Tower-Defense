@@ -168,7 +168,7 @@ public class Player : UnitBehavior
 
         //Checking if player is on the ground by sending a Raycast down to see if layer whatIsGround is hit
         //Vector3.down was the 2nd parameter here, originally
-        grounded = Physics.Raycast(transform.position + new Vector3(0, 0.05f, 0), Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        grounded = Physics.Raycast(transform.position + (transform.up * .05f), -transform.up, playerHeight * 0.5f + 0.3f, whatIsGround);
         
         //handling player drag if on the ground
         if (grounded)
@@ -444,6 +444,7 @@ public class Player : UnitBehavior
         rb.velocity = lateralVelocityComponent;
 
         rb.AddForce(-currGravDir * jumpForce, ForceMode.Impulse);
+        Debug.Log("jumping");
     }
     private void resetJump()
     {
