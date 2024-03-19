@@ -47,7 +47,7 @@ public class CenturionBehavior : EnemyBehavior
         if (currentStatus == status.Body || currentStatus == status.Tail)
         {
             UpdateStatus();
-            Debug.Log(GetComponent<Rigidbody>().GetAccumulatedForce());
+            // Debug.Log(GetComponent<Rigidbody>().GetAccumulatedForce());
         }
     }
 
