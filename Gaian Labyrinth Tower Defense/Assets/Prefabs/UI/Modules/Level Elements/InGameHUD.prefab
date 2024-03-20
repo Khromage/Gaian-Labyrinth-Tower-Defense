@@ -2466,7 +2466,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.6743044, y: 0}
   m_AnchorMax: {x: 1, y: 0.15587011}
-  m_AnchoredPosition: {x: -0.13476562, y: -0.32354736}
+  m_AnchoredPosition: {x: -0.13476562, y: -0.3236084}
   m_SizeDelta: {x: 0.2694702, y: 1.3529053}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8968991509229796539
@@ -4900,7 +4900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a35f1cf47425aab4596e1383442ba99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WavesText: {fileID: 8742409017969795179}
+  WavesText: {fileID: 9019566840604049285}
   TimeText: {fileID: 6766637547141379593}
   LivesText: {fileID: 5837348657903429498}
   CurrencyText: {fileID: 5795576043485031753}

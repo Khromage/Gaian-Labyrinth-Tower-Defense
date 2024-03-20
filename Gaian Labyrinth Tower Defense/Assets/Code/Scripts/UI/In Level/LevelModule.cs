@@ -31,13 +31,15 @@ public class LevelModule : MonoBehaviour
         TowerBehavior.OnOpenInteractionPanel += enableTowerUI;
         TowerBehavior.OnCloseInteractionPanel += disableTowerUI;
         TowerUIManager.OnExitButtonClicked += disableTowerUI;
+        TowerUIManager.OnSellButtonClicked += disableTowerUI;
     }
 
     void OnDisable()
     {
         TowerBehavior.OnOpenInteractionPanel -= enableTowerUI;
-        TowerBehavior.OnCloseInteractionPanel += disableTowerUI;
-        TowerUIManager.OnExitButtonClicked += disableTowerUI;
+        TowerBehavior.OnCloseInteractionPanel -= disableTowerUI;
+        TowerUIManager.OnExitButtonClicked -= disableTowerUI;
+        TowerUIManager.OnSellButtonClicked -= disableTowerUI;
     }
 
     

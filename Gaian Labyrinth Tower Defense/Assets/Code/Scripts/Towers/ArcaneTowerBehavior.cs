@@ -21,25 +21,38 @@ public class ArcaneTowerBehavior : TowerBehavior
     protected override void lv2_upgrade()
     {
         base.lv2_upgrade();
-        damage = 2f;
-        fireRate = 1.5f;
+        //change model
+        //change projectile, if necessary
     }
     protected override void lv3_1_upgrade()
     {
         base.lv3_1_upgrade();
-        damage = 2f;
-        fireRate = 6f;
+        //change model
+        //change projectile, if necessary
     }
     protected override void lv3_2_upgrade()
     {
         base.lv3_2_upgrade();
-        damage = 7f;
+        //change model
+        //change projectile, if necessary
     }
     protected override void lv3_3_upgrade()
     {
         base.lv3_3_upgrade();
-        damage = 2f;
-        projectilePrefab.GetComponent<TrackingBulletBehavior>().pierceAMT = 2;
+        //change model
+        //change projectile, if necessary
+    }
+
+
+    protected override void lv3_2_Attack()
+    {
+        //ZONE OF VULNERABILITY
+        lv1_Attack();
+    }
+    protected override void lv3_3_Attack()
+    {
+        //PULSE DAMAGE AROUND TOWER
+        lv1_Attack();
     }
 
 }

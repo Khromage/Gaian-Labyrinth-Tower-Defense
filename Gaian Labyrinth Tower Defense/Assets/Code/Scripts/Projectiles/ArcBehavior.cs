@@ -14,7 +14,7 @@ public class ArcBehavior : TrackingBulletBehavior
     protected override void Start()
     {
         base.Start();
-        damage = 4f;
+        //damage = 4f; //damage gets set by the tower spawning this. updating the value here in Start overwrites that...
         turnSpeed = 720f;
         speed = 40f;
         pierceAMT = 2;

@@ -93,7 +93,8 @@ public class Player : UnitBehavior
     public GameObject towerDisplayPrefab;
     private GameObject tempDisplayHolder;
     private GridTile highlightedTile;
-    public int currency;
+
+    public static int currency { get; private set; }
 
     bool colerable = false;
     private GameObject towerHitByRaycast;
@@ -132,7 +133,7 @@ public class Player : UnitBehavior
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
-        currency = 200;
+        UpdateCurrency(200);
         InteractRange = 5f;
 
         currGravDir = Vector3.Normalize(GetComponent<ConstantForce>().force);
@@ -189,6 +190,7 @@ public class Player : UnitBehavior
         Weapon.OnFire += spentMana;
         LevelModule.OnMenuOpened += EnterMenuMode;
         LevelModule.OnMenuClosed += ExitMenuMode;
+        TowerBehavior.OnUpgradeOrSell += UpdateCurrency;
     }
 
     private void OnDisable()
@@ -197,6 +199,7 @@ public class Player : UnitBehavior
         Weapon.OnFire -= spentMana;
         LevelModule.OnMenuOpened -= EnterMenuMode;
         LevelModule.OnMenuClosed -= ExitMenuMode;
+        TowerBehavior.OnUpgradeOrSell -= UpdateCurrency;
     }
 
     private void EnterMenuMode()
@@ -250,7 +253,7 @@ public class Player : UnitBehavior
                 destroyTempHolder();
             } else if (currentMode == playerMode.Sell) 
                 {
-                    sellTower();
+                    //sellTower();
                     changeTowerColor();
                 } else 
                     {
@@ -569,7 +572,7 @@ public class Player : UnitBehavior
 
                     if (Input.GetKeyDown(KeyCode.Mouse0))
                     {
-                        if (currency >= currentTower.GetComponent<TowerBehavior>().cost)
+                        if (currency >= currentTower.GetComponent<TowerBehavior>().towerInfo.Cost)
                         {
                             //Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
                             GameObject currTower = Instantiate(currentTower, hit.transform.position, hit.transform.rotation);
@@ -586,7 +589,9 @@ public class Player : UnitBehavior
                             //currTileScript.goalDistText.text = $"{currTileScript.goalDist}";
                             //Debug.Log($"CurrTile dist {currTileScript.goalDist}");
 
-                            currency -= tower.cost;
+                            Debug.Log($"Tower's cost: {tower.towerInfo.Cost}");
+                            Debug.Log($"Tower's lv2 cost: {tower.towerInfo.Level2.Cost}");
+                            UpdateCurrency(-tower.towerInfo.Cost);
 
                             OnTowerPlaced?.Invoke(currTileScript);
                         }
@@ -607,7 +612,9 @@ public class Player : UnitBehavior
         }
         
     }
-
+    
+    /*
+     * Taking care of this in TowerUIManager and TowerBehavior
     private void sellTower()
     {
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
@@ -619,14 +626,14 @@ public class Player : UnitBehavior
                 TowerBehavior towerBehavior = towerHitByRaycast.GetComponent<TowerBehavior>();
 
                 GridTile towerTile = towerBehavior.gridLocation;
-                currency += towerBehavior.cost;
+                UpdateCurrency((int)(towerBehavior.cost * .7f));
                 towerTile.placeable = true;
                 towerTile.walkable = true;
                 towerTile.towerOnTile = false;
-                /*
+                
                 //invoke this event with the tile the tower was on.
-                OnTowerSold?.Invoke(towerTile);
-                */
+                //OnTowerSold?.Invoke(towerTile);
+                
                 Destroy(towerHitByRaycast);
                 colerable = false;
             }
@@ -634,57 +641,17 @@ public class Player : UnitBehavior
             colerable = false;
         }
     }   
-
-    private void upgradeTower()
-    {
-        /*
-        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-        if ((Physics.Raycast(ray, out RaycastHit hit, 30f)) && (hit.transform.tag == "towerbuilding")) {
-            colerable = true;
-            towerHitByRaycast = hit.transform.gameObject;
-
-            TowerBehavior towerBehavior = towerHitByRaycast.GetComponent<TowerBehavior>();
-            bool upgradeMultiPath = towerBehavior.multiPathUpgrade;
-            int upgradeStage = towerBehavior.upgradeStage;
-            int towerCost = towerBehavior.cost;
-
-            if ((towerBehavior.isUpgradable) && (currency > towerCost)){
-                Debug.Log("Upgradeable");
-                if (upgradeMultiPath == false) {
-                    if (Input.GetKeyDown(upgradeCurrentTowerKey)) {
-                        Debug.Log("Upgrade");
-                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
-                    }
-                }else if (upgradeMultiPath == true){
-                    if (Input.GetKeyDown(upgradePath1)){
-                        upgradeStage = 9;
-                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
-                    }else if (Input.GetKeyDown(upgradePath2)){
-                        upgradeStage = 19;
-                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
-                    }else if (Input.GetKeyDown(upgradePath3)){
-                        upgradeStage = 29;
-                        goToUpgrade(upgradeStage, towerBehavior, towerCost);
-                    }
-                }
-            }
-        } else {
-        colerable = false;
-        }
-        */
-    }
-
-    /*
-    private void goToUpgrade(int upgradeStage, TowerBehavior towerBehavior, int towerCost){
-        colerable = false;
-        upgradeStage++;
-        towerBehavior.upgradeTower(upgradeStage);
-        currency -= towerCost;
-    }
     */
-    private void GainCurrency(EnemyBehavior enemyWhoDied)
+
+    public void GainCurrency(EnemyBehavior enemyWhoDied)
     {
-        currency += enemyWhoDied.worth;
+        UpdateCurrency(enemyWhoDied.worth);
+    }
+
+    private void UpdateCurrency(int val)
+    {
+        currency += val;
+        LevelManager.Instance.Currency = currency;
     }
 
 

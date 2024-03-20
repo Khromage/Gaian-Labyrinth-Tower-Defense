@@ -72,7 +72,6 @@ public class EnemyBehavior : MonoBehaviour
         {
             Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(this);
-            //OnEnemyDeath?.Invoke(gameObject);
             isAlive = false;
         }
     }

@@ -17,21 +17,42 @@ MonoBehaviour:
   <Range>k__BackingField: 10
   <FireRate>k__BackingField: 1
   <Cost>k__BackingField: 25
-  <Description>k__BackingField: Condenses Arcane energy into projectiles that deal
-    {Damage}/{FireRate}s that track targets.
+  <Description>k__BackingField: Condenses Arcane energy into {FireRate} projectiles
+    per sec that deal {Damage} and track targets.
   <Level2>k__BackingField:
     <Name>k__BackingField: Level 2
-    <Cost>k__BackingField: 10
+    <Damage>k__BackingField: 2
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 1.5
+    <Cost>k__BackingField: 20
     <Description>k__BackingField: This is upgrade Level 2
   <Branches>k__BackingField:
   - <Name>k__BackingField: Branch 1
-    <Cost>k__BackingField: 11
-    <Description>k__BackingField: This is upgrade Level 3 - Branch 1
+    <Damage>k__BackingField: 2
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 6
+    <Cost>k__BackingField: 30
+    <Description>k__BackingField: 'This is upgrade Level 3 - Branch 1
+
+      Rapid
+      fire projectiles'
   - <Name>k__BackingField: Branch 2
-    <Cost>k__BackingField: 22
-    <Description>k__BackingField: This is upgrade Level 3 - Branch 2
+    <Damage>k__BackingField: 0
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 0
+    <Cost>k__BackingField: 25
+    <Description>k__BackingField: 'This is upgrade Level 3 - Branch 2
+
+      Zone
+      of vulnerability'
   - <Name>k__BackingField: Branch 3
-    <Cost>k__BackingField: 33
-    <Description>k__BackingField: This is upgrade Level 3 - Branch 2
+    <Damage>k__BackingField: 8
+    <Range>k__BackingField: 5
+    <FireRate>k__BackingField: 0.5
+    <Cost>k__BackingField: 40
+    <Description>k__BackingField: 'This is upgrade Level 3 - Branch 3
+
+      Pulse
+      area damage'
   <Icon>k__BackingField: {fileID: 21300000, guid: b99b7ecd57baf4841a10867bab165779, type: 3}
   <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
