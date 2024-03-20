@@ -41,6 +41,9 @@ public class Level : MonoBehaviour
 
     public int remainingLives;
 
+    [SerializeField]
+    private GameObject player;
+
     //gameMode? (difficulty?)
 
     // Start is called before the first frame update
@@ -131,7 +134,7 @@ public class Level : MonoBehaviour
     private void enemySpawned(EnemyBehavior enemy)
     {
         enemy.OnEnemyReachedGoal += LoseLives;
-        enemy.OnEnemyDeath += nothingRN;
+        enemy.OnEnemyDeath += gainCurrency;
         //remainingEnemies.enemies.Add(enemy.gameObject); //removed from list in EnemyBehavior's LateUpdate()
     }
 
@@ -142,13 +145,14 @@ public class Level : MonoBehaviour
         remainingLives -= harm;
 
         enemy.OnEnemyReachedGoal -= LoseLives;
-        enemy.OnEnemyDeath -= nothingRN;
+        enemy.OnEnemyDeath -= gainCurrency;
     }
-    private void nothingRN(EnemyBehavior enemy)
+    private void gainCurrency(EnemyBehavior enemy)
     {
         //move currencyGain from Player to here.
+        player.GetComponent<Player>().GainCurrency(enemy);
         enemy.OnEnemyReachedGoal -= LoseLives;
-        enemy.OnEnemyDeath -= nothingRN;
+        enemy.OnEnemyDeath -= gainCurrency;
     }
 
 

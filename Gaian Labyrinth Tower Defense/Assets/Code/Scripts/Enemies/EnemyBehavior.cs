@@ -71,7 +71,6 @@ public class EnemyBehavior : MonoBehaviour
         if (currTile is GoalTile)
         {
             OnEnemyReachedGoal?.Invoke(this);
-            //OnEnemyDeath?.Invoke(gameObject);
             isAlive = false;
         }
     }

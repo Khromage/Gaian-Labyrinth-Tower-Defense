@@ -131,9 +131,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2681359607818998218, guid: de4c507f298d29c4b80a036e4fd85e2b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1e-45
+      objectReference: {fileID: 0}
     - target: {fileID: 2903142278872346041, guid: de4c507f298d29c4b80a036e4fd85e2b, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929699631383834895, guid: de4c507f298d29c4b80a036e4fd85e2b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1e-45
       objectReference: {fileID: 0}
     - target: {fileID: 8587171858653350087, guid: de4c507f298d29c4b80a036e4fd85e2b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -175,11 +183,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8871531477944292613, guid: de4c507f298d29c4b80a036e4fd85e2b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8871531477944292613, guid: de4c507f298d29c4b80a036e4fd85e2b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4c507f298d29c4b80a036e4fd85e2b, type: 3}
+--- !u!1 &486698042 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2903142278872346041, guid: de4c507f298d29c4b80a036e4fd85e2b, type: 3}
+  m_PrefabInstance: {fileID: 486698041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &687454844
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,6 +579,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Forest Paths
       objectReference: {fileID: 0}
+    - target: {fileID: 6875664322787924182, guid: 9146a369df935bd4f91ede9e7ce1927b, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 486698042}
     m_RemovedComponents:
     - {fileID: 4938620030104546486, guid: 9146a369df935bd4f91ede9e7ce1927b, type: 3}
     - {fileID: 390088719741409481, guid: 9146a369df935bd4f91ede9e7ce1927b, type: 3}
