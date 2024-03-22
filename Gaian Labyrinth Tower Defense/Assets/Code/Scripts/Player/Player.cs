@@ -157,12 +157,12 @@ public class Player : UnitBehavior
     //Method to be checked on every frame of the game
     public void Update() 
      {
+        setVelocityComponents();
 
         // Check if NOT in menu mode
 
         if(currentMode != playerMode.Menu)
         {
-            setVelocityComponents();
             checkInteractable();
             getUserKey();
             updateAnimationState();

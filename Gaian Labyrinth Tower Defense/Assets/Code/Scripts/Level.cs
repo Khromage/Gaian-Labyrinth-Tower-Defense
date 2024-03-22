@@ -118,8 +118,6 @@ public class Level : MonoBehaviour
             {
                 enemy.GetComponent<NavMeshAgent>().SetDestination(goalTile.transform.position);
             }
-            Debug.Log("Enemy spawned at spawnpoint (" + spawnSet[i] + ") during wave (" + currWave + ")");
-
             FinishedSpawnPoints++;
         }
     }

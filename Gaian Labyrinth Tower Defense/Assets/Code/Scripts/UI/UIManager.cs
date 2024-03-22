@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public GameObject LevelModule;
 
     public GameObject OptionsMenu;
+    
     private GameObject currentModule;
 
     

@@ -134,6 +134,13 @@ public class TowerBehavior : MonoBehaviour, Interactable
         // Iterate through the list and find the enemy with the shortest distance from the tower ("Close" targeting)
         if(enemies.Count > 0)
         {
+            string printstuff = "";
+            foreach(GameObject enemy in enemies)
+            {
+                printstuff += enemy.name;
+                    
+            }
+            Debug.Log(printstuff);
             switch (targetingMode)
             {
                 case "Close":

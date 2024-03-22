@@ -32,7 +32,6 @@ public class FireflyProj : TrackingBulletBehavior
         {
             if (enemyTarget == null)
             {
-                Debug.Log("Retargeting");
                 GetTargetInfo();
             }
             else
