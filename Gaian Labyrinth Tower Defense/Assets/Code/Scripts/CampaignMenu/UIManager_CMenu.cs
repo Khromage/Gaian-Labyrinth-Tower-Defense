@@ -274,7 +274,7 @@ public class UIManager_CMenu : MonoBehaviour
                 towerInfoPanel.transform.GetChild(0).GetComponent<Image>().color = new Color(.1f, .1f, .8f, .8f);
                 break;
         }
-        //switch case "fire" "arcane" "ice" etc
+        //using the tower datalist SO
         //populate the 5 buttons on the background image, and title+description+picture/gif
         //each button will change the active picture/gif and description (maybe also make the title a button to give default/general description)
 
@@ -284,7 +284,7 @@ public class UIManager_CMenu : MonoBehaviour
     //called by the buttons on the tower info panel (the pictures of each tower level)
     public void ChangeTowerInfoDescription(int lvl)
     {
-        //using an array of strings belonging to the tower type's class, change the text in the info panel
+        //using the tower's SO, switch out the description shown in the panel
     }
     private void OpenTowerInfoPanel(int id)
     {
