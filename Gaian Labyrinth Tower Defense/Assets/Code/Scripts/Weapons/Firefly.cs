@@ -5,7 +5,6 @@ using UnityEngine;
 public class Firefly : Weapon
 {
     public GameObject fireflyProj;
-    Transform FirePoint;
 
     private Quaternion launchRot;
 
@@ -20,16 +19,9 @@ public class Firefly : Weapon
     public List<AudioSource> SFXList = new List<AudioSource>();
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        FirePoint = transform.Find("FirePoint");
-
-        Damage = 1; //unused atm
-        ProjRange = 9f;
-        manaCost = 5;
-        FireCooldown = .08f;
-        Automatic = true;
-
+        base.Start();
         count = 0;
         offset = 0f;
 
@@ -46,12 +38,6 @@ public class Firefly : Weapon
         SFXList.Add(fireflySFX5);
 
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        CurrentCooldown -= Time.deltaTime;
     }
 
     public override void Fire()

@@ -8,45 +8,65 @@ public class Weapon : MonoBehaviour
     // public UnityEvent OnGunShoot;
 
     public delegate void Fired(float manaSpent);
-    public static event Fired OnFire; 
+    public static event Fired OnFire;
 
-    public int Damage;
-    public float ProjRange;
+    public float Damage { get; protected set; }
+    public float ProjRange { get; protected set; }
 
-    public float manaCost;
-    
-    public float FireCooldown;
+    public float manaCost { get; protected set; }
+
+    public float FireCooldown { get; protected set; }
 
     //default is semi
-    public bool Automatic;
-    public float CurrentCooldown;
+    public bool Automatic { get; protected set; }
+    public float CurrentCooldown { get; protected set; }
 
+    public Transform FirePoint { get; protected set; }
     public GameObject aimTarget;
+    public Vector3 aimHitPos;
+
+    [SerializeField]
+    private WeaponInfo weaponInfo;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        //not neccessary but puts gun on cd on game start
+        //weapon on CD on equip
         CurrentCooldown = FireCooldown;
+
+        Damage = weaponInfo.Damage;
+        FireCooldown = weaponInfo.FireCooldown;
+        manaCost = weaponInfo.ManaCost;
+        Automatic = weaponInfo.Automatic;
+        ProjRange = weaponInfo.ProjectileRange;
+
+        FirePoint = transform.Find("FirePoint");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        
+        CurrentCooldown -= Time.deltaTime;
     }
 
-    public void TryToFire(float currMana, Ray aimRay)
+    public bool TryToFire(float currMana, Ray aimRay)
     {
-
+        bool success = false;
         if (CurrentCooldown <= 0 && manaCost <= currMana)
         {
-            GetAimTarget(aimRay);
+            if (GetAimTarget(aimRay))
+            {
+                FirePoint.rotation = Quaternion.LookRotation((aimHitPos - FirePoint.position), transform.up);
+            }
+            else
+            {
+                FirePoint.rotation = Quaternion.LookRotation(aimRay.direction, transform.up);
+            }
 
             Fire();
             OnFire?.Invoke(-manaCost);
             CurrentCooldown = FireCooldown;
+            success = true;
             
         }
         else if (CurrentCooldown <= 0 && manaCost > currMana)
@@ -54,8 +74,10 @@ public class Weapon : MonoBehaviour
             Debug.Log("Insufficient mana to fire current weapon.");
         }
 
+        return success;
     }
 
+    //Instantiate projectile, specific to each weapon (hence virtual -> override)
     public virtual void Fire()
     {
         
@@ -63,14 +85,22 @@ public class Weapon : MonoBehaviour
 
 
     //gives any enemy player camera/reticle is aiming at during fire
-    public void GetAimTarget(Ray aimRay)
+    public bool GetAimTarget(Ray aimRay)
     {
         if ((Physics.Raycast(aimRay, out RaycastHit hit, 30f)))
         {
             if ((hit.transform.tag.Equals("Enemy")))
-            {
                 aimTarget = hit.transform.gameObject;
-            }
+
+            //don't aim too far inward
+            if (Vector3.SqrMagnitude(hit.point - FirePoint.position) > 1)
+                aimHitPos = hit.point;
+
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
