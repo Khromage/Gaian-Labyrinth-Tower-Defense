@@ -619,6 +619,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -60
       objectReference: {fileID: 0}
+    - target: {fileID: 3787355859361671907, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4186446803779838123, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -778,8 +782,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4956824554726894237, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
   m_PrefabInstance: {fileID: 9180971425966880049}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &8589837641510402047 stripped
-RectTransform:
+--- !u!4 &8589837641510402047 stripped
+Transform:
   m_CorrespondingSourceObject: {fileID: 602469753768231630, guid: 3875ff518e59f2d4baa1fe3865cb80d7, type: 3}
   m_PrefabInstance: {fileID: 9180971425966880049}
   m_PrefabAsset: {fileID: 0}
