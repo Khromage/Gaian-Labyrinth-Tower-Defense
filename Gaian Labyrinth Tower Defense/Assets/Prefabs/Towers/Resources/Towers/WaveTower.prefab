@@ -123,7 +123,10 @@ MonoBehaviour:
   lv3_1_cost: 30
   lv3_2_cost: 30
   lv3_3_cost: 30
+  totalSpent: 0
+  sellRatio: 0
   currentLevel: 1
+  currentBranch: 0
   gridLocation: {fileID: 0}
   WaveDistance: 7
   WavePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
@@ -286,7 +289,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 10bf1aa1ebbcbeb45921fa73abbc9d0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -498,7 +501,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 10bf1aa1ebbcbeb45921fa73abbc9d0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -636,7 +639,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 10bf1aa1ebbcbeb45921fa73abbc9d0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -741,7 +744,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9699cfe7608befc4d99cd62bd7d3a81d, type: 2}
+  - {fileID: 2100000, guid: 10bf1aa1ebbcbeb45921fa73abbc9d0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

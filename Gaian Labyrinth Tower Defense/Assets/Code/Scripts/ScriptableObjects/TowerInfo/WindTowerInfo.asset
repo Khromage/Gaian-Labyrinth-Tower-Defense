@@ -45,4 +45,4 @@ MonoBehaviour:
     <Cost>k__BackingField: 25
     <Description>k__BackingField: Slows enemies in headwind, damages enemies in tailwind.
   <Icon>k__BackingField: {fileID: 21300000, guid: 630409f738c9ef04b8fffb917aada31c, type: 3}
-  <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: 5604650e20221644a9622b9225f2c28f, type: 3}
+  <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: 49ca02f0fe56a254f958e716ab6e5fdd, type: 3}
