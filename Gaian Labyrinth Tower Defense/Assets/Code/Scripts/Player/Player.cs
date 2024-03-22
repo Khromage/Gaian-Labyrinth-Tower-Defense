@@ -116,6 +116,8 @@ public class Player : UnitBehavior
     public GameObject currentTower;
     public GameObject[] towerSet;
 
+    public Animator armAnimator;
+
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
     public playerMode currentMode;
     private playerMode? lastMode;
@@ -162,6 +164,7 @@ public class Player : UnitBehavior
             setVelocityComponents();
             checkInteractable();
             getUserKey();
+            updateAnimationState();
             playerSpeedControl();
         }
 
@@ -247,18 +250,21 @@ public class Player : UnitBehavior
         if (currentMode == playerMode.Combat) 
         {
             attack();
-        } else if (currentMode != playerMode.Build) 
-            {
-                //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
-                destroyTempHolder();
-            } else if (currentMode == playerMode.Sell) 
-                {
-                    //sellTower();
-                    changeTowerColor();
-                } else 
-                    {
-                        placeTowers();
-                    }
+        } 
+        else if (currentMode != playerMode.Build) 
+        {
+            //maybe also display outlines of the grid tiles so the player has some idea of where towers can be placed.
+            destroyTempHolder();
+        } 
+        else if (currentMode == playerMode.Sell) 
+        {
+            //sellTower();
+            changeTowerColor();
+        } 
+        else 
+        {
+            placeTowers();
+        }
         
         // Player hits WASD
         horizontalInput = Input.GetAxis("Horizontal");
@@ -408,6 +414,49 @@ public class Player : UnitBehavior
             OnAdjustMana?.Invoke(changeAmount / maxMana, animated);
     }
 
+    private void updateAnimationState()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            armAnimator.SetBool("Clicking", true);
+        }
+        else
+        {
+            armAnimator.SetBool("Clicking", false);
+        }
+
+        if (currentMode == playerMode.Build)
+        {
+            armAnimator.SetBool("Build Mode", true);
+        }
+        else
+        {
+            armAnimator.SetBool("Build Mode", false);
+        }
+        
+        armAnimator.SetBool("Arcane Equipped", false);
+        armAnimator.SetBool("Lantern Equipped", false);
+        armAnimator.SetBool("Heatray Equipped", false);
+        armAnimator.SetBool("Arcshatter Equipped", false);
+
+        //update this to use weapon ID's from the WeaponList SO's WeaponDataSet
+        switch (currentWeaponIndex)
+        {
+            case 0:
+                armAnimator.SetBool("Arcane Equipped", true);
+                break;
+            case 1:
+                armAnimator.SetBool("Lantern Equipped", true);
+                break;
+            case 2:
+                armAnimator.SetBool("Heatray Equipped", true);
+                break;
+            case 3:
+                armAnimator.SetBool("Arcshatter Equipped", true);
+                break;
+        }
+    }
+
     //Method to move the player on ground and in air 
     private void movePlayer() 
     {
@@ -509,12 +558,22 @@ public class Player : UnitBehavior
         if (currentWeaponScript.Automatic && Input.GetMouseButton(0))
         {
             Ray aimRay = new Ray(playerCam.transform.position, playerCam.transform.forward);
-            currentWeaponScript.TryToFire(mana, aimRay);
+            if (currentWeaponScript.TryToFire(mana, aimRay))
+            {
+                armAnimator.SetBool("Clicking", true);
+            }
         }
         else if (Input.GetMouseButtonDown(0))
         {
             Ray aimRay = new Ray(playerCam.transform.position, playerCam.transform.forward);
-            currentWeaponScript.TryToFire(mana, aimRay);
+            if (currentWeaponScript.TryToFire(mana, aimRay))
+            {
+                armAnimator.SetBool("Clicking", true);
+            }
+        }
+        else
+        {
+            armAnimator.SetBool("Clicking", false);
         }
     
     }
