@@ -4,41 +4,24 @@ using UnityEngine;
 
 public class Laser : Weapon
 {
-    RaycastHit hit;
     public GameObject Beam;
-    private Transform PlayerCamera;
     public AudioSource LaserFireSFX;
-
    
-    void Start()
+    protected override void Start()
     {
-        //PlayerCamera = Camera.main.transform;
-        FireCooldown = .5f;
-        Automatic = true;
-        Damage = 20;
-        ProjRange = 500;
+        base.Start();
         LaserFireSFX = GetComponent<AudioSource>();
-        manaCost = 30; //cost 10 mana at .1 fireCooldown to fire for 3 seconds continuously
     }
-
-    void Update()
-    {
-        CurrentCooldown -= Time.deltaTime;
-    }
-
-    
-    
 
     // Update is called once per frame
     public override void Fire()
     {
-        Ray gunRay = new Ray(transform.position, transform.forward);
-        Transform FirePoint = transform.Find("FirePoint");
         LaserFireSFX.Play();
 
-        GameObject laserInstance = Instantiate(Beam, FirePoint.position, transform.rotation);
-        Destroy(laserInstance, .2f);
+        GameObject laserInstance = Instantiate(Beam, FirePoint.position, FirePoint.rotation);
+        Destroy(laserInstance, FireCooldown);
 
+        Ray gunRay = new Ray(FirePoint.position, FirePoint.forward);
         if (Physics.Raycast(gunRay, out RaycastHit hitInfo, ProjRange))
         {
             if (hitInfo.collider.gameObject.tag == "Enemy")

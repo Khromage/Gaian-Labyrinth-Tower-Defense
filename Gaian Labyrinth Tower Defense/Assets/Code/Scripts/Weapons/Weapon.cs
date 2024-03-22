@@ -23,6 +23,7 @@ public class Weapon : MonoBehaviour
 
     public Transform FirePoint { get; protected set; }
     public GameObject aimTarget;
+    public Vector3 aimHitPos;
 
     [SerializeField]
     private WeaponInfo weaponInfo;
@@ -51,10 +52,16 @@ public class Weapon : MonoBehaviour
     public bool TryToFire(float currMana, Ray aimRay)
     {
         bool success = false;
-        FirePoint.rotation = Quaternion.LookRotation(aimRay.direction, transform.up);
         if (CurrentCooldown <= 0 && manaCost <= currMana)
         {
-            GetAimTarget(aimRay);
+            if (GetAimTarget(aimRay))
+            {
+                FirePoint.rotation = Quaternion.LookRotation((aimHitPos - FirePoint.position), transform.up);
+            }
+            else
+            {
+                FirePoint.rotation = Quaternion.LookRotation(aimRay.direction, transform.up);
+            }
 
             Fire();
             OnFire?.Invoke(-manaCost);
@@ -78,14 +85,22 @@ public class Weapon : MonoBehaviour
 
 
     //gives any enemy player camera/reticle is aiming at during fire
-    public void GetAimTarget(Ray aimRay)
+    public bool GetAimTarget(Ray aimRay)
     {
         if ((Physics.Raycast(aimRay, out RaycastHit hit, 30f)))
         {
             if ((hit.transform.tag.Equals("Enemy")))
-            {
                 aimTarget = hit.transform.gameObject;
-            }
+
+            //don't aim too far inward
+            if (Vector3.SqrMagnitude(hit.point - FirePoint.position) > 1)
+                aimHitPos = hit.point;
+
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

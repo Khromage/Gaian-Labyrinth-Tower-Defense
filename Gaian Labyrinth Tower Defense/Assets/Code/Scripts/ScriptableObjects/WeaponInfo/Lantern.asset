@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9788681207984647803705bdc4b354f, type: 3}
   m_Name: Lantern
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 0
-  <FireCooldown>k__BackingField: 0
-  <ManaCost>k__BackingField: 0
-  <Automatic>k__BackingField: 0
-  <ProjectileRange>k__BackingField: 0
+  <Damage>k__BackingField: 1
+  <FireCooldown>k__BackingField: 0.08
+  <ManaCost>k__BackingField: 5
+  <Automatic>k__BackingField: 1
+  <ProjectileRange>k__BackingField: 9
   Prefab: {fileID: 1864724351924341100, guid: f4a358b4967485f40b7b05240f2451f1, type: 3}
   <Icon>k__BackingField: {fileID: 21300000, guid: 7551655953b14e74383cfa90565498d9, type: 3}
   <Description>k__BackingField: Unleash innumerable homing fireflies.

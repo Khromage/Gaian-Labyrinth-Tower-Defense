@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9788681207984647803705bdc4b354f, type: 3}
   m_Name: Arcshatter
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 0
-  <FireCooldown>k__BackingField: 0
-  <ManaCost>k__BackingField: 0
-  <Automatic>k__BackingField: 0
-  <ProjectileRange>k__BackingField: 0
+  <Damage>k__BackingField: 4
+  <FireCooldown>k__BackingField: 0.6
+  <ManaCost>k__BackingField: 16
+  <Automatic>k__BackingField: 1
+  <ProjectileRange>k__BackingField: 8
   Prefab: {fileID: 0}
   <Icon>k__BackingField: {fileID: 21300000, guid: 4e5ca202d7ad0f344a607fd7fce195f6, type: 3}
   <Description>k__BackingField: Drench your enemies before flashfreezing them.

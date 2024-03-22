@@ -8,6 +8,7 @@ public class Rifle : Weapon
 
     public override void Fire()
     {
-        Instantiate(Bullet, FirePoint.position, FirePoint.rotation);
+        GameObject b = Instantiate(Bullet, FirePoint.position, FirePoint.rotation);
+        b.GetComponent<ProjectileBehavior>().damage = Damage;
     }
 }

@@ -115,6 +115,7 @@ public class Player : UnitBehavior
     private TowerList towerList;
     public GameObject currentTower;
     public GameObject[] towerSet;
+    public GameObject ctDisplay;
 
     public Animator armAnimator;
 
@@ -293,6 +294,9 @@ public class Player : UnitBehavior
                     OnTowerSelect?.Invoke(i, towerSet[i]);
                     Debug.Log("Tower Slot " + (i+1) + "Chosen");
                     currentMode = playerMode.Build;
+
+                    currentWeapon.SetActive(false);
+                    toggleTowerDisplay(currentTower, true);
                 } else 
                 {
                     Debug.Log("No tower in slot " + (i+1));
@@ -309,6 +313,9 @@ public class Player : UnitBehavior
         // Change chosen weapon and set Combat mode
         if (Input.GetKeyDown(nextWeaponKey))
         {
+            currentWeapon.SetActive(true);
+            toggleTowerDisplay(currentTower, false);
+
             SwapWeapon(nextWeaponKey);
             currentMode = playerMode.Combat;
             if (tempDisplayHolder != null)
@@ -316,8 +323,12 @@ public class Player : UnitBehavior
             if (highlightedTile != null)
                 highlightedTile.highlight(false);
             OnEnterCombatMode?.Invoke(currentWeaponIndex);
-        } else if (Input.GetKeyDown(prevWeaponKey))
+        } 
+        else if (Input.GetKeyDown(prevWeaponKey))
         {
+            currentWeapon.SetActive(true);
+            toggleTowerDisplay(currentTower, false);
+
             SwapWeapon(prevWeaponKey);
             currentMode = playerMode.Combat;
             if (tempDisplayHolder != null)
@@ -425,6 +436,13 @@ public class Player : UnitBehavior
             armAnimator.SetBool("Clicking", false);
         }
 
+
+        armAnimator.SetBool("Arcane Equipped", false);
+        armAnimator.SetBool("Lantern Equipped", false);
+        armAnimator.SetBool("Heatray Equipped", false);
+        armAnimator.SetBool("Arcshatter Equipped", false);
+
+
         if (currentMode == playerMode.Build)
         {
             armAnimator.SetBool("Build Mode", true);
@@ -432,28 +450,41 @@ public class Player : UnitBehavior
         else
         {
             armAnimator.SetBool("Build Mode", false);
-        }
-        
-        armAnimator.SetBool("Arcane Equipped", false);
-        armAnimator.SetBool("Lantern Equipped", false);
-        armAnimator.SetBool("Heatray Equipped", false);
-        armAnimator.SetBool("Arcshatter Equipped", false);
 
-        //update this to use weapon ID's from the WeaponList SO's WeaponDataSet
-        switch (currentWeaponIndex)
+            //update this to use weapon ID's from the WeaponList SO's WeaponDataSet
+            switch (currentWeaponIndex)
+            {
+                case 0:
+                    armAnimator.SetBool("Arcane Equipped", true);
+                    break;
+                case 1:
+                    armAnimator.SetBool("Lantern Equipped", true);
+                    break;
+                case 2:
+                    armAnimator.SetBool("Heatray Equipped", true);
+                    break;
+                case 3:
+                    armAnimator.SetBool("Arcshatter Equipped", true);
+                    break;
+            }
+        }
+    }
+
+    //re-generates the tiny tower model on your hand. called when entering build mode. (or exiting, in which case just sets inactive)
+    private void toggleTowerDisplay(GameObject currentTower, bool turnOn)
+    {
+        if (turnOn)
         {
-            case 0:
-                armAnimator.SetBool("Arcane Equipped", true);
-                break;
-            case 1:
-                armAnimator.SetBool("Lantern Equipped", true);
-                break;
-            case 2:
-                armAnimator.SetBool("Heatray Equipped", true);
-                break;
-            case 3:
-                armAnimator.SetBool("Arcshatter Equipped", true);
-                break;
+            ctDisplay.SetActive(true);
+            if (ctDisplay.transform.childCount > 1)
+                Destroy(ctDisplay.transform.GetChild(1).gameObject);
+            GameObject t = Instantiate(currentTower.GetComponent<TowerBehavior>().towerInfo.NonfuncModel, ctDisplay.transform.position, ctDisplay.transform.rotation, ctDisplay.transform);
+            t.transform.SetSiblingIndex(1);
+            t.transform.localScale = Vector3.one * .01f;
+        }
+        else
+        {
+            ctDisplay.SetActive(false);
         }
     }
 
