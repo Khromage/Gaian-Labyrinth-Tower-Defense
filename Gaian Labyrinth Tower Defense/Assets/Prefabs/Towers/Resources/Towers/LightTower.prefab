@@ -276,7 +276,7 @@ MonoBehaviour:
   InteractionIndicator: {fileID: 5392681474844564774}
   partToRotate: {fileID: 0}
   turnSpeed: 5
-  projectilePrefab: {fileID: 5076419468359751239, guid: 63c95c92c9e2b5047bf1ea9838289fc3, type: 3}
+  projectilePrefab: {fileID: 5460506940467439282, guid: 63c95c92c9e2b5047bf1ea9838289fc3, type: 3}
   firePoint: {fileID: 6788566222244839869}
   enemies: []
   detectionZone: {fileID: 0}
@@ -286,7 +286,10 @@ MonoBehaviour:
   lv3_1_cost: 30
   lv3_2_cost: 30
   lv3_3_cost: 30
+  totalSpent: 0
+  sellRatio: 0
   currentLevel: 1
+  currentBranch: 0
   gridLocation: {fileID: 0}
   aimSource: {fileID: 4004462490552015032}
   frame: {fileID: 1597718847836237341}

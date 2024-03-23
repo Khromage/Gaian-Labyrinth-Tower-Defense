@@ -150,7 +150,7 @@ public class Level : MonoBehaviour
     private void gainCurrency(EnemyBehavior enemy)
     {
         //move currencyGain from Player to here.
-        player.GetComponent<Player>().GainCurrency(enemy);
+        player.GetComponent<Player>().UpdateCurrency(enemy.worth);
         enemy.OnEnemyReachedGoal -= LoseLives;
         enemy.OnEnemyDeath -= gainCurrency;
     }

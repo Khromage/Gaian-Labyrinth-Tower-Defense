@@ -17,9 +17,10 @@ public class LightningTowerBehavior : TowerBehavior
         base.Update();
     }
 
+    //maybe just override lv1_attack? just need the pierce thing right? just give the projectile the pierceAMT
     protected override void Shoot()
     {
-        ProjectileBehavior projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as ProjectileBehavior;
+        ProjectileBehavior projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation).GetComponent<ProjectileBehavior>();
         projectile.damage = damage;
         projectile.GetComponent<ArcBehavior>().pierceAMT = 2;
         if (projectile != null)

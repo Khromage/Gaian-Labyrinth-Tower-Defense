@@ -733,12 +733,8 @@ public class Player : UnitBehavior
     }   
     */
 
-    public void GainCurrency(EnemyBehavior enemyWhoDied)
-    {
-        UpdateCurrency(enemyWhoDied.worth);
-    }
 
-    private void UpdateCurrency(int val)
+    public void UpdateCurrency(int val)
     {
         currency += val;
         LevelManager.Instance.Currency = currency;
