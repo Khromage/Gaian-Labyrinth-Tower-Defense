@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: WindTowerInfo
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Wind
-  <Damage>k__BackingField: 6
+  <Damage>k__BackingField: 0.2
   <Range>k__BackingField: 10
   <FireRate>k__BackingField: 0.5
   <Cost>k__BackingField: 15
   <Description>k__BackingField: wind bomb, brief
   <Level2>k__BackingField:
     <Name>k__BackingField: Level 2
-    <Damage>k__BackingField: 8
+    <Damage>k__BackingField: 0.5
     <Range>k__BackingField: 10
     <FireRate>k__BackingField: 0.5
     <Cost>k__BackingField: 20
@@ -33,7 +33,7 @@ MonoBehaviour:
     <Cost>k__BackingField: 35
     <Description>k__BackingField: Wind blades. high single target dps
   - <Name>k__BackingField: Tornado
-    <Damage>k__BackingField: 8
+    <Damage>k__BackingField: 1
     <Range>k__BackingField: 10
     <FireRate>k__BackingField: 0.4
     <Cost>k__BackingField: 30

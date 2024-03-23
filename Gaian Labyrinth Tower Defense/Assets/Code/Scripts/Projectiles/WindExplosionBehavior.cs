@@ -19,10 +19,10 @@ public class WindExplosionBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        damage = .17f;
-        duration = 3f;
+        //damage = .17f;
+        //duration = 3f;
         knockback = .09f;
-        dmgInterval = .17f;
+        dmgInterval = .2f;
         TimetoDMG = dmgInterval;
         initialScale = 1f;
         radius = 3f;

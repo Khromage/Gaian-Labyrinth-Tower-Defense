@@ -224,6 +224,9 @@ MonoBehaviour:
   currentLevel: 1
   currentBranch: 0
   gridLocation: {fileID: 0}
+  lv1_duration: 1
+  lv2_duration: 3
+  duration: 0
   bladePrefab: {fileID: 1248641760893778226, guid: e7ffea71e05729b40b818fd19e60247d, type: 3}
   tornadoPrefab: {fileID: 1248641760893778226, guid: 87d516e88cbb4fb4b844f7391dbd6ae8, type: 3}
 --- !u!1 &2660176201313847061
