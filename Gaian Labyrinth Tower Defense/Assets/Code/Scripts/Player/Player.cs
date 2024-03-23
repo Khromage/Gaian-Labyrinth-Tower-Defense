@@ -20,7 +20,10 @@ public class Player : UnitBehavior
     public delegate void TowerSold(GridTile tileOn);
     public static event TowerSold OnTowerSold;
 
-    public delegate void AdjustMana(float diff, bool animate);
+    public delegate void AdjustHealth(float diff, bool animate);
+    public static event AdjustHealth OnAdjustHealth;
+
+    public delegate void AdjustMana(float newAmount, bool animate);
     public static event AdjustMana OnAdjustMana;
 
     public delegate void TowerSelect(int index, GameObject towerObj);
@@ -391,6 +394,27 @@ public class Player : UnitBehavior
             InteractionTarget.Interact();
     }
 
+    public void changeHealth(float changeAmount, bool animated)
+    {
+        if (health + changeAmount > maxHealth) //if we'd exceed max hp
+        {
+            changeAmount = maxHealth - (health - changeAmount);
+            health = maxHealth;
+        }
+        else if (health + changeAmount < 0) //if we'd dip below 0 hp
+        {
+            changeAmount = health;
+            Debug.LogWarning("YOU HAVE DIED");
+            health = 0;
+        }
+        else //normal change
+        {
+            health += changeAmount;
+        }
+
+        if (Mathf.Abs(changeAmount) > 0)
+            OnAdjustHealth?.Invoke(changeAmount / maxHealth, animated);
+    }
 
     private void regenMana()
     {
@@ -422,7 +446,7 @@ public class Player : UnitBehavior
         }
 
         if (Mathf.Abs(changeAmount) > 0)
-            OnAdjustMana?.Invoke(changeAmount / maxMana, animated);
+            OnAdjustMana?.Invoke(mana, animated);
     }
 
     private void updateAnimationState()
