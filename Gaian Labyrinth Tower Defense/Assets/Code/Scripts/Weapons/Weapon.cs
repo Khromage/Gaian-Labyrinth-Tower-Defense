@@ -25,8 +25,7 @@ public class Weapon : MonoBehaviour
     public GameObject aimTarget;
     public Vector3 aimHitPos;
 
-    [SerializeField]
-    private WeaponInfo weaponInfo;
+    public WeaponInfo weaponInfo;
 
     // Start is called before the first frame update
     protected virtual void Start()

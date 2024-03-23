@@ -10,7 +10,7 @@ public class WindBombBehavior : TrackingBulletBehavior
     public float duration; 
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         base.Update();
         //transform.Rotate(0, 20, 0, Space.Self);
