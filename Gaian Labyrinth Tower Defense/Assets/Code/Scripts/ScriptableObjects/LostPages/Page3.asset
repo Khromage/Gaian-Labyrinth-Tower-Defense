@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707e68cd908cf98409e17d123d971355, type: 3}
   m_Name: Page3
   m_EditorClassIdentifier: 
-  pageTitle: 
+  id: 2
+  pageTitle: The Rise of the Purists
   pageContent: 'Page 3: The Rise of the Purists
 
     But not all were content. A

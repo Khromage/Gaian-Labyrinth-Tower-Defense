@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707e68cd908cf98409e17d123d971355, type: 3}
   m_Name: Page7
   m_EditorClassIdentifier: 
-  pageTitle: 
+  id: 6
+  pageTitle: The World Now
   pageContent: "Page 7: The World Now\n A mysterious character rises from the ruins
     of the ritual, trying to find his path in all this chaos. Eldoria, once a city
     of marvel, lay in partial ruins. The Purists and their allies vanished into the

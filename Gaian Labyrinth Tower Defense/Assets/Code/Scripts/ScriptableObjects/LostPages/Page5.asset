@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707e68cd908cf98409e17d123d971355, type: 3}
   m_Name: Page5
   m_EditorClassIdentifier: 
-  pageTitle: 
+  id: 4
+  pageTitle: Radical Resolutions
   pageContent: 'Page 5: Radical Resolutions
 
     While their cause was noble, their

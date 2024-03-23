@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707e68cd908cf98409e17d123d971355, type: 3}
   m_Name: Page4
   m_EditorClassIdentifier: 
-  pageTitle: 
+  id: 3
+  pageTitle: Strain on the Land
   pageContent: 'Page 4: Strain on the Land
 
     As demand for crystalline ore grew,

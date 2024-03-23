@@ -52,6 +52,8 @@ public class UIManager_CMenu : MonoBehaviour
     [SerializeField] private Text contentText; // Assign in the Inspector
     [SerializeField] private Image pageImage; // Assign in the Inspector
 
+    public GameObject indexView; // Assign this with your Index View container in the inspector.
+    public GameObject pageView; // Assign this with your Page View container in the inspector.
 
     [SerializeField] 
     private GameObject activeTowerPanel;
@@ -254,30 +256,41 @@ public class UIManager_CMenu : MonoBehaviour
     }
 
     */
+    public void OpenIndexView()
+    {
+        indexView.SetActive(true);
+        pageView.SetActive(false);
+    }
 
     public void DisplayEncyclopediaInfo(int id)
     {
-        // Find the entry that matches the given id
         LostPage page = lostPages.Find(p => p.id == id);
-
         if (page != null)
         {
-            // Set the UI components with the page's data
             titleText.text = page.pageTitle;
             contentText.text = page.pageContent;
             pageImage.sprite = page.pageImage;
 
-            // Make sure the encyclopedia panel is active
-            encyclopediaListPanel.SetActive(true);
+            indexView.SetActive(false);
+            pageView.SetActive(true);
         }
         else
         {
             Debug.LogError("Lost page with id " + id + " not found.");
         }
     }
-    public void DisplayFirstEncyclopediaEntry()
+    public void CloseEncyclopediaPanel()
     {
-        DisplayEncyclopediaInfo(0); // Example using the first entry
+        // When closing, we want to reset back to the index view.
+        OpenIndexView();
+
+        // Also, set the whole encyclopedia panel to inactive.
+        encyclopediaListPanel.SetActive(false);
+    }
+
+    public void OnLostPageButtonClicked(int pageId)
+    {
+        DisplayEncyclopediaInfo(pageId);
     }
 
     public void DisplayTowerInfo(int id)

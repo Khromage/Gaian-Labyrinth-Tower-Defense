@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707e68cd908cf98409e17d123d971355, type: 3}
   m_Name: Page2
   m_EditorClassIdentifier: 
-  pageTitle: 
+  id: 1
+  pageTitle: The Heartbeat of Magic
   pageContent: "Page 2: The Heartbeat of Magic\nAt the core of Gaian's bloom stood
     the Crystallic Ore\u2014 an arcane mineral throbbing with magical essence. Its
     potency not only brought Eldoria to life but also ushered unforeseen adversities.

@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707e68cd908cf98409e17d123d971355, type: 3}
   m_Name: Page1
   m_EditorClassIdentifier: 
-  pageTitle: 
+  id: 0
+  pageTitle: A Realm in Harmony
   pageContent: 'Page 1: A Realm in Harmony
 
     Gaia is a realm where nature and
     magic coexist. Towering mountains, deep forests, vast deserts, and the enigmatic
     Ethereal Sea painted its landscape. Eldoria, the heart of Gaian, stood as a beacon
     of progress.'
-  pageImage: {fileID: 0}
+  pageImage: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
