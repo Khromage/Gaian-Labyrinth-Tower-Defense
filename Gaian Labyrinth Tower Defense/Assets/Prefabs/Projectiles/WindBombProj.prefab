@@ -105,7 +105,7 @@ MonoBehaviour:
   enemies: []
   range: 0
   turnSpeed: 0
-  WindExplosionPrefab: {fileID: 1248641760893778226, guid: 8ab5f31f86d856647ab385b2c9905bbb, type: 3}
+  WindExplosionPrefab: {fileID: 1248641760893778226, guid: a55503c548b594e479d05b5019199ef2, type: 3}
 --- !u!1 &1666504350675009157
 GameObject:
   m_ObjectHideFlags: 0
