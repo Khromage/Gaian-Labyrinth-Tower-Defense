@@ -113,7 +113,7 @@ MonoBehaviour:
   InteractionIndicator: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
   partToRotate: {fileID: 576702084041083807}
   turnSpeed: 5
-  projectilePrefab: {fileID: -8115949130670682756, guid: d79976aa3f5b93d46b5fa50b5cb5e129, type: 3}
+  projectilePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
   firePoint: {fileID: 6788566222244839869}
   enemies: []
   detectionZone: {fileID: 0}

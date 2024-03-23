@@ -17,8 +17,10 @@ public class WindTornadoProj : TrackingBulletBehavior
     public float radius;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        speed = 10f;
+
         damage = .17f;
         duration = 3f;
         knockback = .09f;
@@ -31,25 +33,34 @@ public class WindTornadoProj : TrackingBulletBehavior
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
+        if (Vector3.SqrMagnitude(transform.position - target.transform.position) < radius)
+        {
+            speed = 3f;
+        }
+        else
+        {
+            speed = 10f;
+        }
+
         TimetoDMG += Time.deltaTime;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
         if (TimetoDMG >= dmgInterval)
         {
-            //making this list each time bc enemies might die/ mvoe out and more might move in
-            Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-            foreach (Collider collider in colliders)
+            if (other.tag == "Enemy")
             {
-                if(collider.tag == "Enemy")
-                {
-                    EnemyBehavior e = collider.gameObject.GetComponent<EnemyBehavior>();
-                    e.takeDamage(damage, gameObject);
-                    e.transform.Translate(e.transform.forward * knockback);
-                }
+                EnemyBehavior e = other.gameObject.GetComponent<EnemyBehavior>();
+                e.takeDamage(damage, gameObject);
+                e.transform.Translate(e.transform.forward * knockback);
             }
             TimetoDMG = 0;
         }
-        
     }
 
     public override void HitTarget(GameObject hitEnemy)
