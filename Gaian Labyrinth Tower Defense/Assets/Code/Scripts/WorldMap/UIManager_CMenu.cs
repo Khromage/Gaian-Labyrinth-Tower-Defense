@@ -44,6 +44,14 @@ public class UIManager_CMenu : MonoBehaviour
 
     private Dictionary<GameObject, Vector2> panelDictionary = new Dictionary<GameObject, Vector2>();
     */
+    [SerializeField]
+    private GameObject encyclopediaListPanel;
+
+    [SerializeField] private List<LostPage> lostPages; // Assign this in the Inspector
+    [SerializeField] private Text titleText; // Assign in the Inspector
+    [SerializeField] private Text contentText; // Assign in the Inspector
+    [SerializeField] private Image pageImage; // Assign in the Inspector
+
 
     [SerializeField] 
     private GameObject activeTowerPanel;
@@ -247,6 +255,30 @@ public class UIManager_CMenu : MonoBehaviour
 
     */
 
+    public void DisplayEncyclopediaInfo(int id)
+    {
+        // Find the entry that matches the given id
+        LostPage page = lostPages.Find(p => p.id == id);
+
+        if (page != null)
+        {
+            // Set the UI components with the page's data
+            titleText.text = page.pageTitle;
+            contentText.text = page.pageContent;
+            pageImage.sprite = page.pageImage;
+
+            // Make sure the encyclopedia panel is active
+            encyclopediaListPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Lost page with id " + id + " not found.");
+        }
+    }
+    public void DisplayFirstEncyclopediaEntry()
+    {
+        DisplayEncyclopediaInfo(0); // Example using the first entry
+    }
 
     public void DisplayTowerInfo(int id)
     {

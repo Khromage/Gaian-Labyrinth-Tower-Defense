@@ -10209,7 +10209,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1261089448}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983929132}
+        m_TargetAssemblyTypeName: UIManager_CMenu, Assembly-CSharp
+        m_MethodName: SetActivePanel
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 764789997}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1261089448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20014,6 +20026,12 @@ MonoBehaviour:
   towerList: {fileID: 11400000, guid: c7308b4a69207f64bb0f7eee266f1e7a, type: 2}
   metaCurrency: 0
   ActivePanel: {fileID: 0}
+  encyclopediaListPanel: {fileID: 4130576957472173595, guid: c4519175fb2c93645ad217e098253561, type: 3}
+  encyclopediaEntries:
+  - {fileID: 11400000, guid: aa89d81f710761b42b5d61c085dabe84, type: 2}
+  titleText: {fileID: 0}
+  descriptionText: {fileID: 0}
+  entryImage: {fileID: 0}
   activeTowerPanel: {fileID: 1165946421}
   towerInfoPanel: {fileID: 1948401918}
 --- !u!4 &1983929133
