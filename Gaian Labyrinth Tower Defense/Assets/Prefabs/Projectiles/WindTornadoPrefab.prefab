@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 1982000403888184003}
   - component: {fileID: 2800398475075820617}
   - component: {fileID: -6261478917100386037}
-  - component: {fileID: 4186278301039833689}
   - component: {fileID: -7010156111209389248}
   m_Layer: 0
-  m_Name: WindExplosionProj
+  m_Name: WindTornadoPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,25 +84,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4186278301039833689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1248641760893778226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8008d3562e9755f41a4e33d9c2a2063a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0
-  damage: 0
-  knockback: 0
-  dmgInterval: 0
-  TimetoDMG: 0
-  initialScale: 0
-  radius: 0
 --- !u!114 &-7010156111209389248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +91,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1248641760893778226}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a6e7017be74e544eaeab94e3b4d1089, type: 3}
   m_Name: 
