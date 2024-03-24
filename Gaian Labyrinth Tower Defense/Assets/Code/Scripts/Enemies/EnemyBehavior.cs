@@ -48,6 +48,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     private EnemyInfo info;
 
+    //public Vector3 posToMoveToward;
+
     // Start is called before the first frame update
     public virtual void Start()
     {
