@@ -23,7 +23,7 @@ public class Player : UnitBehavior
     public delegate void AdjustHealth(float diff, bool animate);
     public static event AdjustHealth OnAdjustHealth;
 
-    public delegate void AdjustMana(float newAmount, bool animate);
+    public delegate void AdjustMana(float newAmount, float maxMana, bool animate);
     public static event AdjustMana OnAdjustMana;
 
     public delegate void TowerSelect(int index, GameObject towerObj);
@@ -150,7 +150,7 @@ public class Player : UnitBehavior
         health = maxHealth;
         maxMana = 100f;
         mana = maxMana;
-        manaRegenRate = 30f;
+        manaRegenRate = 5f;
 
         towerSet = new GameObject[6];
         FillLoadout();
@@ -161,7 +161,7 @@ public class Player : UnitBehavior
     public void Update() 
      {
         setVelocityComponents();
-
+        regenMana();
         // Check if NOT in menu mode
 
         if(currentMode != playerMode.Menu)
@@ -187,7 +187,6 @@ public class Player : UnitBehavior
 
     public void FixedUpdate()
     {
-        regenMana();
         movePlayer();
     }
     
@@ -446,7 +445,7 @@ public class Player : UnitBehavior
         }
 
         if (Mathf.Abs(changeAmount) > 0)
-            OnAdjustMana?.Invoke(mana, animated);
+            OnAdjustMana?.Invoke(mana, maxMana, animated);
     }
 
     private void updateAnimationState()
