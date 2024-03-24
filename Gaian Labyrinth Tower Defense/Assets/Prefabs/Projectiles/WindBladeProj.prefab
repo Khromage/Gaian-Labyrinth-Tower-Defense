@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1982000403888184003}
   - component: {fileID: 2800398475075820617}
   - component: {fileID: -6261478917100386037}
-  - component: {fileID: 6148102336075918232}
+  - component: {fileID: 9032314768855207869}
   m_Layer: 0
   m_Name: WindBladeProj
   m_TagString: Untagged
@@ -84,7 +84,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6148102336075918232
+--- !u!114 &9032314768855207869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1248641760893778226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21ec20274111cd44798a5badc9d0bef7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d7cbb2f2293b7b4b896f876e1678aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targeting: 
@@ -103,8 +103,12 @@ MonoBehaviour:
   HitEnemies: []
   target: {fileID: 0}
   enemies: []
-  range: 0
-  turnSpeed: 0
+  range: 5
+  turnSpeed: 20
+  DistTilOrbit: 0
+  rotationSpeed: 30
+  rotationDuration: 2
+  desiredRotations: 0
 --- !u!1 &6412450941984789959
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: WindTowerInfo
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Wind
-  <Damage>k__BackingField: 0.2
+  <Damage>k__BackingField: 6
   <Range>k__BackingField: 10
   <FireRate>k__BackingField: 0.5
   <Cost>k__BackingField: 15
   <Description>k__BackingField: wind bomb, brief
   <Level2>k__BackingField:
     <Name>k__BackingField: Level 2
-    <Damage>k__BackingField: 0.5
+    <Damage>k__BackingField: 8
     <Range>k__BackingField: 10
     <FireRate>k__BackingField: 0.5
     <Cost>k__BackingField: 20
@@ -33,7 +33,7 @@ MonoBehaviour:
     <Cost>k__BackingField: 35
     <Description>k__BackingField: Wind blades. high single target dps
   - <Name>k__BackingField: Tornado
-    <Damage>k__BackingField: 1
+    <Damage>k__BackingField: 8
     <Range>k__BackingField: 10
     <FireRate>k__BackingField: 0.4
     <Cost>k__BackingField: 30
@@ -45,5 +45,5 @@ MonoBehaviour:
     <Cost>k__BackingField: 25
     <Description>k__BackingField: Slows enemies in headwind, damages enemies in tailwind.
   <Icon>k__BackingField: {fileID: 21300000, guid: 630409f738c9ef04b8fffb917aada31c, type: 3}
-  <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: 49ca02f0fe56a254f958e716ab6e5fdd, type: 3}
+  <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: 5604650e20221644a9622b9225f2c28f, type: 3}
   <NonfuncModel>k__BackingField: {fileID: 4137109062845976413, guid: 9732dc54fefa038448cb02e0e8fdbea9, type: 3}

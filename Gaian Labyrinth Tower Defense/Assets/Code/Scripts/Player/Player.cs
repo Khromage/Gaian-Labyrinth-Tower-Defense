@@ -110,8 +110,7 @@ public class Player : UnitBehavior
     [Header("Weapon List")]
     public GameObject weaponHolder;
     public GameObject currentWeapon;
-    public WeaponList weaponList;
-    public GameObject[] weaponSet;
+    public List<GameObject> weaponList;
     private int currentWeaponIndex = 0;
 
     [Header("Tower List")]
@@ -154,10 +153,7 @@ public class Player : UnitBehavior
         manaRegenRate = 5f;
 
         towerSet = new GameObject[6];
-        weaponSet = new GameObject[3];
         FillLoadout();
-        currentWeapon = Instantiate(weaponSet[0], weaponHolder.transform.position, weaponHolder.transform.rotation, weaponHolder.transform);
-
         InitializeKeybinds();
     }
 
@@ -479,18 +475,18 @@ public class Player : UnitBehavior
             armAnimator.SetBool("Build Mode", false);
 
             //update this to use weapon ID's from the WeaponList SO's WeaponDataSet
-            switch (weaponSet[currentWeaponIndex].GetComponent<Weapon>().weaponInfo.name)
+            switch (currentWeaponIndex)
             {
-                case "ArcaneShot":
+                case 0:
                     armAnimator.SetBool("Arcane Equipped", true);
                     break;
-                case "Lantern":
+                case 1:
                     armAnimator.SetBool("Lantern Equipped", true);
                     break;
-                case "Heatray":
+                case 2:
                     armAnimator.SetBool("Heatray Equipped", true);
                     break;
-                case "Arcshatter":
+                case 3:
                     armAnimator.SetBool("Arcshatter Equipped", true);
                     break;
             }
@@ -641,14 +637,14 @@ public class Player : UnitBehavior
         if (input == nextWeaponKey)
         {
             currentWeaponIndex++;
-            if (currentWeaponIndex >= (weaponSet.Length))
+            if (currentWeaponIndex >= (weaponList.Count))
                 currentWeaponIndex = 0;
         }
         if (input == prevWeaponKey)
         {
             currentWeaponIndex--;
             if (currentWeaponIndex < 0)
-                currentWeaponIndex = weaponSet.Length - 1;
+                currentWeaponIndex = weaponList.Count - 1;
         }
 
         //in the hierarchy, the 1st weapon was originally at: .411, .121, 0
@@ -656,7 +652,7 @@ public class Player : UnitBehavior
 
         Destroy(currentWeapon);
 
-        currentWeapon = Instantiate(weaponSet[currentWeaponIndex], cwt.position, cwt.rotation, weaponHolder.transform);
+        currentWeapon = Instantiate(weaponList[currentWeaponIndex], cwt.position, cwt.rotation, weaponHolder.transform);
         OnSwapWeapon?.Invoke(currentWeaponIndex);
     }
 
@@ -760,8 +756,12 @@ public class Player : UnitBehavior
     }   
     */
 
+    public void GainCurrency(EnemyBehavior enemyWhoDied)
+    {
+        UpdateCurrency(enemyWhoDied.worth);
+    }
 
-    public void UpdateCurrency(int val)
+    private void UpdateCurrency(int val)
     {
         currency += val;
         LevelManager.Instance.Currency = currency;
@@ -784,11 +784,9 @@ public class Player : UnitBehavior
         }
 
         //fill in the active weapon slots with their respective weapon icons...
-        for (int i = 0; i < weaponSet.Length; i++)
+        for (int i = 0; i < weaponList.Count; i++)
         {
             //SSS fill in the weapons from save data
-            if (weaponLoadout[i] != -1) // -1 is the default/empty value
-                weaponSet[i] = weaponList.WeaponDataSet[towerLoadout[i]].Prefab;
         }
     }
 
