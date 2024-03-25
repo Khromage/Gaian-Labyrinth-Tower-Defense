@@ -23,7 +23,7 @@ public class EnemyBehavior : MonoBehaviour
     protected bool isAlive;
 
     [SerializeField]
-    private EnemyHealthBar HealthBar;
+    protected EnemyHealthBar HealthBar;
     protected int enemyID;
     protected float maxHealth;
     public float currentHealth;
@@ -54,7 +54,7 @@ public class EnemyBehavior : MonoBehaviour
         //change these to pull from the scriptableObject
         harm = 1;
         worth = 5;
-        maxHealth = 12f;
+        maxHealth = 32f;
         moveSpeed = 3f;
         isAlive = true;
         currentHealth = maxHealth;

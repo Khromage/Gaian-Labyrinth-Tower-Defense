@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d80d171a6602a9847983329c7ba56477, type: 2}
+  - {fileID: 2100000, guid: 5c68fb5b5a64d134d89bf97eba7f2938, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 3214069984486414179}
   - component: {fileID: 2495053062151640516}
   m_Layer: 0
-  m_Name: Centaur
+  m_Name: EnemyCentaur
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,8 +408,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3
-  m_Acceleration: 8
+  m_Speed: 5
+  m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -437,14 +437,14 @@ MonoBehaviour:
   Grid:
     serializedVersion: 2
     m_Bits: 0
-  HealthBar: {fileID: 0}
+  HealthBar: {fileID: 8524468329408580060}
   currentHealth: 0
   enemyWeight: 0
-  damageIndicator: {fileID: 0}
+  damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0
   EnemyHurtSFX: {fileID: 0}
-  info: {fileID: 0}
+  info: {fileID: 11400000, guid: d6bfc0af82e1ed342b046fb9b6a6aabe, type: 2}
 --- !u!1 &5907145547198309030
 GameObject:
   m_ObjectHideFlags: 0
