@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy_2 : EnemyBehavior
 {
     // Start is called before the first frame update
-    public override void Start()
+    void Start()
     {
         maxHealth = 50f;
         currentHealth = maxHealth;

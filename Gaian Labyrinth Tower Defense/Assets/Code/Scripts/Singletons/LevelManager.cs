@@ -6,10 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : SpawnableSingleton<LevelManager>
 {
-    public delegate void SceneManagementEvent(int ID);
-    public event SceneManagementEvent OnSceneLoaded;
-
-
+    public delegate void LevelManagementEvent(LevelInfo level);
+    public event LevelManagementEvent OnLevelLoaded;
+    public event LevelManagementEvent OnLevelUnloaded;
 
     public LevelInfo currentLevel;
     public int Lives, Wave, Countdown, Currency;
@@ -17,50 +16,15 @@ public class LevelManager : SpawnableSingleton<LevelManager>
     public void LoadLevel(LevelInfo level)
     {
         currentLevel = level;
+        Debug.Log(currentLevel.Name + " LEVEL SET VIA LEVELMANAGER");
+        Debug.Log("LOADING " + currentLevel.Name + " SCENE");
+        SceneManager.LoadScene(currentLevel.Name);
+        // Load level passed in
+        // Could be scene changing using LevelInfo. its all how you decide to do it
         
-        if(SceneManager.GetSceneByName("campaignMenu") != null)
-        {
-            SceneManager.UnloadSceneAsync("campaignMenu");
-        }
+        // Spawn Player
+        // Start Level Laoded (Waves etc)
         
-        // StartCoroutine
-        SceneManager.LoadSceneAsync(currentLevel.Name, LoadSceneMode.Additive);
-        
-        // CHANGE INT TO INDEX OF SCENE IN DATALIST SO
-        StartCoroutine(LoadingScene(SceneManager.GetSceneByName(currentLevel.Name), 2));
-
-
+        OnLevelLoaded?.Invoke(level);
     }
-
-    public void LoadCampaign()
-    {
-        if(currentLevel != null)
-        {
-            SceneManager.UnloadSceneAsync(currentLevel.Name);
-            currentLevel = null;
-        }
-
-        SceneManager.LoadSceneAsync("campaignMenu", LoadSceneMode.Additive);
-
-        // CHANGE INT TO INDEX OF SCENE IN DATALIST SO
-        StartCoroutine(LoadingScene(SceneManager.GetSceneByName("campaignMenu"), 1));
-
-    }
-
-    IEnumerator LoadingScene(Scene scene, int ID)
-    {
-        while(!scene.isLoaded)
-        {
-            Debug.Log("SCENE LOADING");
-            yield return null;
-        }
-        SceneManager.SetActiveScene(scene);
-        
-        // CHANGE INT TO INDEX OF SCENE IN DATALIST SO
-        OnSceneLoaded?.Invoke(ID);
-
-    }
-
-
-
 }

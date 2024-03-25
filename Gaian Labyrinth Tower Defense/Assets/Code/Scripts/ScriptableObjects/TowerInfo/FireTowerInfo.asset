@@ -12,45 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3698e0e3b3110f4490f8aa66bc88b94, type: 3}
   m_Name: FireTowerInfo
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Fire
-  <Damage>k__BackingField: 3
-  <Range>k__BackingField: 10
-  <FireRate>k__BackingField: 1
-  <Cost>k__BackingField: 30
-  <Description>k__BackingField: Burns things a lot. Explodes dealing {Damage} damage
-    in a small area
-  <Level2>k__BackingField:
-    <Name>k__BackingField: Level 2
-    <Damage>k__BackingField: 4
-    <Range>k__BackingField: 10
-    <FireRate>k__BackingField: 1.5
-    <Cost>k__BackingField: 35
-    <Description>k__BackingField: This is Level 2
-  <Branches>k__BackingField:
-  - <Name>k__BackingField: Branch 1
-    <Damage>k__BackingField: 3
-    <Range>k__BackingField: 12
-    <FireRate>k__BackingField: 4
-    <Cost>k__BackingField: 55
-    <Description>k__BackingField: 'This is Branch 1
-
-      Sun'
-  - <Name>k__BackingField: Branch 2
-    <Damage>k__BackingField: 15
-    <Range>k__BackingField: 25
-    <FireRate>k__BackingField: 0.25
-    <Cost>k__BackingField: 45
-    <Description>k__BackingField: 'This is Branch 2
-
-      Mortar'
-  - <Name>k__BackingField: Branch 3
-    <Damage>k__BackingField: 2
-    <Range>k__BackingField: 6
-    <FireRate>k__BackingField: 6
-    <Cost>k__BackingField: 60
-    <Description>k__BackingField: 'This is Branch 3
-
-      Volcano'
+  Prefab: {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
+  BaseCost: 50
+  Lv2Cost: 40
+  Lv3Cost: 640000006e00000082000000
   <Icon>k__BackingField: {fileID: 21300000, guid: fb0e4e9a7949e5f43bdeb28346757ba3, type: 3}
-  <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: eb4fe43b9b7109140992e994d9bc7a74, type: 3}
-  <NonfuncModel>k__BackingField: {fileID: 4137109062845976413, guid: efe44d68aa18e0e40a24d7055e47619f, type: 3}
+  <Description>k__BackingField: Burns things a lot

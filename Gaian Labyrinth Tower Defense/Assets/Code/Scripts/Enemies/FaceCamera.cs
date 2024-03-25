@@ -10,9 +10,6 @@ public class FaceCamera : MonoBehaviour
     }
     private void Update()
     {
-        transform.LookAt(Camera.transform, Camera.transform.up);
-        
-        //if(transform.parent.parent.tag == "Enemy")
-       
+        transform.LookAt(Camera.transform, Vector3.up);
     }
 }

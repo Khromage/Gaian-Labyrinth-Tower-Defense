@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "GLTD/TowerList", fileName = "TowerList")]
@@ -25,6 +26,6 @@ public class TowerList : ScriptableObject
 
     public int GetTowerCost(int ID)
     {
-        return TowerDataSet[ID].Cost;
+        return TowerDataSet[ID].BaseCost;
     }
 }

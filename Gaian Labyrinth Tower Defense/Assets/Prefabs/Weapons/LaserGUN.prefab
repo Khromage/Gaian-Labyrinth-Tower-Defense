@@ -185,8 +185,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7a3bcbd5d4a488b5d4ac1be23519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aimTarget: {fileID: 0}
-  weaponInfo: {fileID: 11400000, guid: aa536a273e63aee408c2308419ade212, type: 2}
+  Damage: 20
+  BulletRange: 500
+  manaCost: 0
+  FireCooldown: 0.5
+  Automatic: 1
+  CurrentCooldown: 0
   Beam: {fileID: 4276113069247697066, guid: eeba0579d3f171044a63673a984dbcd9, type: 3}
   LaserFireSFX: {fileID: 3853284518516146763}
 --- !u!82 &3853284518516146763

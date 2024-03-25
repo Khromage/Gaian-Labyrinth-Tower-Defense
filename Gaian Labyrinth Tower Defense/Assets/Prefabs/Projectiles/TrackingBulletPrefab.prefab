@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targeting: 
-  damage: 1
   speed: 50
+  damage: 1
   pierceAMT: 0
   HitEnemies: []
   target: {fileID: 0}

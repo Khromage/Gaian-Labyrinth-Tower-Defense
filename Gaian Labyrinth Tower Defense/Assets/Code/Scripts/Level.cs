@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using UnityEngine.AI;
 
-//if (currentLevelInfo.Name == "TestScene1")   drop these once we decide on nav mesh or tiles
 
 //wave start as an event? invoke
 
@@ -41,9 +40,6 @@ public class Level : MonoBehaviour
 
     public int remainingLives;
 
-    [SerializeField]
-    private GameObject player;
-
     //gameMode? (difficulty?)
 
     // Start is called before the first frame update
@@ -64,6 +60,8 @@ public class Level : MonoBehaviour
         waveCountdown = 0f;
         FinishedSpawnPoints = 0;
         remainingLives = 25;
+
+        SceneManager.LoadScene("InGameHUD", LoadSceneMode.Additive);
 
         RemainingEnemiesInWave = new int[enemyList.EnemyDataSet.Length];
     }
@@ -118,6 +116,8 @@ public class Level : MonoBehaviour
             {
                 enemy.GetComponent<NavMeshAgent>().SetDestination(goalTile.transform.position);
             }
+            Debug.Log("Enemy spawned at spawnpoint (" + spawnSet[i] + ") during wave (" + currWave + ")");
+
             FinishedSpawnPoints++;
         }
     }
@@ -134,7 +134,7 @@ public class Level : MonoBehaviour
     private void enemySpawned(EnemyBehavior enemy)
     {
         enemy.OnEnemyReachedGoal += LoseLives;
-        enemy.OnEnemyDeath += gainCurrency;
+        enemy.OnEnemyDeath += nothingRN;
         //remainingEnemies.enemies.Add(enemy.gameObject); //removed from list in EnemyBehavior's LateUpdate()
     }
 
@@ -145,14 +145,13 @@ public class Level : MonoBehaviour
         remainingLives -= harm;
 
         enemy.OnEnemyReachedGoal -= LoseLives;
-        enemy.OnEnemyDeath -= gainCurrency;
+        enemy.OnEnemyDeath -= nothingRN;
     }
-    private void gainCurrency(EnemyBehavior enemy)
+    private void nothingRN(EnemyBehavior enemy)
     {
         //move currencyGain from Player to here.
-        player.GetComponent<Player>().UpdateCurrency(enemy.worth);
         enemy.OnEnemyReachedGoal -= LoseLives;
-        enemy.OnEnemyDeath -= gainCurrency;
+        enemy.OnEnemyDeath -= nothingRN;
     }
 
 
@@ -160,10 +159,9 @@ public class Level : MonoBehaviour
     private void recalcFlowField_NewTower(GridTile towerTile)
     {
         Debug.Log("tower placed event in level manager. recalcing field");
-        if (currentLevelInfo.Name == "TestScene1")
-        {
-            flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
-        }
+
+        flowFieldGenerator.GenerateField(goalTile.GetComponent<GridTile>(), 0);
+
         /*
         thinking of doing A* from the tower tile's predecessor until it finds tiles with lower goalDist than the tower tile,
         then from there GenerateField on part of the map.

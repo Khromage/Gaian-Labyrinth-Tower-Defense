@@ -15,6 +15,7 @@ public class LightTowerBehavior : TowerBehavior
     public override void Start()
     {
         base.Start();
+        towerName = "light";
 
         cost = 40;
         lv2_cost = 50;
@@ -53,21 +54,21 @@ public class LightTowerBehavior : TowerBehavior
     protected override void lv2_upgrade()
     {
         base.lv2_upgrade();
-        damage = 7f;
+        currentDamage = 7f;
     }
 
     //rainbow
     protected override void lv3_1_upgrade()
     {
         base.lv3_1_upgrade();
-        damage = 9f;
+        currentDamage = 9f;
         projectilePrefab.GetComponent<ExplodingBulletBehavior>().blastRadius += 2f;
     }
     //laser, ramps in damage
     protected override void lv3_2_upgrade()
     {
         base.lv3_2_upgrade();
-        damage = 2f;
+        currentDamage = 2f;
         fireRate = 5f;
     }
     //beacon
@@ -75,7 +76,7 @@ public class LightTowerBehavior : TowerBehavior
     {
         base.lv3_3_upgrade();
         Debug.Log("Beacon upgrade. not implemented yet");
-        damage = 1f;
+        currentDamage = 1f;
         fireRate = 4f;
     }
 }
