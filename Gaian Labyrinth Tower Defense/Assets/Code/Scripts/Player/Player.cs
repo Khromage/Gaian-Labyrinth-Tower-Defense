@@ -38,6 +38,7 @@ public class Player : UnitBehavior
 
     public delegate void TowerSelection();
     public static event TowerSelection OnTowerSelection;
+    public static event TowerSelection OnTowerSelectionClosed;
 
     //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
@@ -410,6 +411,9 @@ public class Player : UnitBehavior
             {
                 // Key was released before 0.05 seconds
                 SwapMode();
+            } else
+            {
+                OnTowerSelectionClosed();
             }
             // Reset the flag when the key is released
             isTowerWheelOpen = false;
@@ -431,6 +435,12 @@ public class Player : UnitBehavior
     {
         // send event to LevelModule to enable TowerSelectionWheel UI Module
         OnTowerSelection?.Invoke();
+    }
+
+    private void CloseTowerSelectionWheel()
+    {
+        // send event to LevelModule to dsable TowerSelectionWheel UI Module
+        OnTowerSelectionClosed?.Invoke();
     }
     private void checkInteractable()
     {
