@@ -22,6 +22,19 @@ public class PlayerHUD : MonoBehaviour
     private GameObject textboxPrefab;
 
     [SerializeField]
+    private Image healthBar;
+    private Coroutine healthBarAnimCoroutine;
+
+
+    [SerializeField]
+    private GameObject[] weaponLayouts;
+
+    [SerializeField]
+    private GameObject[] manaPips;
+
+
+
+    [SerializeField]
     private Image manaBar;
     private Coroutine manaBarAnimCoroutine;
 
@@ -44,8 +57,6 @@ public class PlayerHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //int cw;
-        //cw = levelManager.GetComponent<LevelManager>().currWave;
         WavesText.text = "Wave: " + LevelManager.Instance.Wave.ToString();
         TimeText.text = "Next Wave: " + LevelManager.Instance.Countdown.ToString();
         LivesText.text = "Lives:\n" + LevelManager.Instance.Lives.ToString();
@@ -58,8 +69,83 @@ public class PlayerHUD : MonoBehaviour
 
     void WaveStart () {}
 
-    private void player_updateManaBar(float changeAmount, bool animate)
+    private void player_updateHealthBar(float changeAmount, bool animate)
     {
+        if (animate)
+        {
+            //Debug.Log($"starting mana bar animation, change amount = {changeAmount}");
+            if (healthBarAnimCoroutine != null)
+            {
+                StopCoroutine(healthBarAnimCoroutine);
+            }
+
+            healthBarAnimCoroutine = StartCoroutine(animateHealthBar(changeAmount));
+        }
+        else
+        {
+            healthBar.fillAmount += changeAmount;
+        }
+        
+        if (healthBar.fillAmount == 1)
+        {
+            // blue particle aura
+        }
+        else if (healthBar.fillAmount < .2f)
+        {
+            //border is more and more glowy red/crimson based on how low it is
+        }
+        else
+        {
+            //border is gray/normal
+        }
+    }
+    private IEnumerator animateHealthBar(float delta)
+    {
+        float elapsedTime = 0f;
+        float initialHealth = healthBar.fillAmount;
+
+        float totalChange = 0f;
+        float changeDuringThisLoop = 0f;
+
+        //if delta > 1/10th of total bar, then do that whole diff in 1/8th of a second
+        float animSpeed = 8f;
+        //otherwise do it at rate of delta in 1/delta of a second
+        if (Mathf.Abs(delta) < .1f)
+        {
+            animSpeed = 1f / Mathf.Abs(delta);
+        }
+
+        while (elapsedTime < 1)
+        {
+            if (delta < -.5f) //if spending mana, make bar purple, and transition back to blue over time
+                healthBar.color = new Color(delta - elapsedTime * delta, 0f + .32f * elapsedTime, 1f, 1f);
+
+            changeDuringThisLoop = delta * Time.deltaTime * animSpeed;
+            healthBar.fillAmount += changeDuringThisLoop;
+            totalChange += changeDuringThisLoop;
+
+            //lerp directly sets fillAmount (doesn't account for changes in value midway through animation, so I'm using += instead)
+            //healthBar.fillAmount = Mathf.Lerp(initialMana, initialMana + delta, elapsedTime);
+            elapsedTime += Time.deltaTime * animSpeed;
+
+            yield return null;
+        }
+
+        healthBar.color = new Color(0f, .32f, 1f, 1f);
+        healthBar.fillAmount += delta - totalChange;
+        //healthBar.fillAmount = initialMana + delta;
+        //Debug.Log("mana should now be at " + (healthBar.fillAmount * 100f) + "%");
+    }
+
+
+    private void player_updateManaBar(float newManaAmount, bool animate)
+    {
+        int numFullManaPips = (int)newManaAmount / 10;
+        for(int i=0; i < numFullManaPips; i++)
+        {
+            manaPips[i].transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = 1;
+        }
+        
         if (animate)
         {
             //Debug.Log($"starting mana bar animation, change amount = {changeAmount}");
@@ -68,11 +154,11 @@ public class PlayerHUD : MonoBehaviour
                 StopCoroutine(manaBarAnimCoroutine);
             }
 
-            manaBarAnimCoroutine = StartCoroutine(animateManaBar(changeAmount));
+            //manaBarAnimCoroutine = StartCoroutine(animateManaBar(changeAmount));
         }
         else
         {
-            manaBar.fillAmount += changeAmount;
+            //manaBar.fillAmount += changeAmount;
         }
         
         if (manaBar.fillAmount == 1)
@@ -88,6 +174,7 @@ public class PlayerHUD : MonoBehaviour
             //border is gray/normal
         }
     }
+    /*
     private IEnumerator animateManaBar(float delta)
     {
         float elapsedTime = 0f;
@@ -125,6 +212,7 @@ public class PlayerHUD : MonoBehaviour
         //manaBar.fillAmount = initialMana + delta;
         //Debug.Log("mana should now be at " + (manaBar.fillAmount * 100f) + "%");
     }
+    */
 
     private void player_selectTower(int towerIndex, GameObject towerObj)
     {
@@ -198,18 +286,18 @@ public class PlayerHUD : MonoBehaviour
 
     private void OnEnable()
     {
+        Player.OnAdjustHealth += player_updateHealthBar;
         Player.OnAdjustMana += player_updateManaBar;
         Player.OnTowerSelect += player_selectTower;
         Player.OnEnterCombatMode += player_enterCombatMode;
         Player.OnSwapWeapon += player_swapWeapon;
-
     }
     private void OnDisable()
     {
+        Player.OnAdjustHealth -= player_updateHealthBar;
         Player.OnAdjustMana -= player_updateManaBar;
         Player.OnTowerSelect -= player_selectTower;
         Player.OnEnterCombatMode -= player_enterCombatMode;
         Player.OnSwapWeapon -= player_swapWeapon;
-
     }
 }

@@ -10,6 +10,7 @@ public class TowerUIManager : MonoBehaviour
 
     public delegate void TowerUIEvent(TowerBehavior towerScript);
     public static event TowerUIEvent OnExitButtonClicked;
+    public static event TowerUIEvent OnSellButtonClicked;
 
     public TowerBehavior tower;
     public Image towerIcon;
@@ -17,6 +18,8 @@ public class TowerUIManager : MonoBehaviour
     public TMP_Text towerValue;
     public TMP_Text towerDescription;
     public UpgradeOption[] upgradeOptions;
+
+    public TMP_Text towerSellValue;
     
     public void OnEnable()
     {
@@ -29,6 +32,8 @@ public class TowerUIManager : MonoBehaviour
         towerIcon.sprite = selectedTower.towerInfo.Icon;
         towerValue.text = "Value: " + selectedTower.cost;
         towerDescription.text = selectedTower.GetDescription();
+
+        towerSellValue.text = "Sell\n" + (int)(tower.totalSpent * tower.sellRatio);
 
         for(int i=0; i<upgradeOptions.Length; i++)
             upgradeOptions[i].Tile.SetActive(false);
@@ -58,16 +63,34 @@ public class TowerUIManager : MonoBehaviour
         switch (tower.currentLevel)
         {
             case 1:
-                tower.upgradeTower(0);
-                Debug.Log("Tower upgraded to level 2");
+                if (Player.currency >= tower.towerInfo.Level2.Cost)
+                {
+                    tower.upgradeTower(0);
+                    Debug.Log("Tower upgraded to level 2");
+                }
+                else
+                {
+                    Debug.Log("We require more vespene gas.");
+                }
                 break;
             case 2:
-                tower.upgradeTower(option);
-                Debug.Log("Tower upgraded to level 3 - Branch " + option);
+                if (Player.currency >= tower.towerInfo.Branches[option-1].Cost)
+                {
+                    tower.upgradeTower(option);
+                    Debug.Log("Tower upgraded to level 3 - Branch " + option);
+                }
+                else
+                {
+                    Debug.Log("We require more vespene gas.");
+                }
                 break;
         }
     }
-
+    public void SellButtonClicked()
+    {
+        OnSellButtonClicked?.Invoke(tower);
+        tower.sellTower();
+    }
     public void ExitButtonClicked()
     {
         OnExitButtonClicked?.Invoke(tower);

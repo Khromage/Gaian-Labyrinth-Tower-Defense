@@ -48,6 +48,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     private EnemyInfo info;
 
+    //public Vector3 posToMoveToward;
+
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -70,9 +72,7 @@ public class EnemyBehavior : MonoBehaviour
         
         if (currTile is GoalTile)
         {
-            //Debug.Log("reached end, presumably");
             OnEnemyReachedGoal?.Invoke(this);
-            //OnEnemyDeath?.Invoke(gameObject);
             isAlive = false;
         }
     }
@@ -81,7 +81,6 @@ public class EnemyBehavior : MonoBehaviour
     {
         if(!isAlive)
         {
-            Debug.Log("destroying enemy");
             Destroy(gameObject);
             Destroy(HealthBar.gameObject);
         }
@@ -98,7 +97,6 @@ public class EnemyBehavior : MonoBehaviour
         EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
-            Debug.Log("enemy death event");
             OnEnemyDeath?.Invoke(this);
             isAlive = false;
         }

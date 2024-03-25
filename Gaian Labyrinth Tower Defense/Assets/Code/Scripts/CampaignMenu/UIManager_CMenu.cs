@@ -19,6 +19,8 @@ public class UIManager_CMenu : MonoBehaviour
 
     [SerializeField]
     private TowerList towerList;
+    [SerializeField]
+    private WeaponList weaponList;
 
 
     //need a name for this currency
@@ -47,6 +49,8 @@ public class UIManager_CMenu : MonoBehaviour
 
     [SerializeField] 
     private GameObject activeTowerPanel;
+    [SerializeField]
+    private GameObject activeWeaponPanel;
 
     [SerializeField]
     private GameObject towerInfoPanel;
@@ -274,7 +278,7 @@ public class UIManager_CMenu : MonoBehaviour
                 towerInfoPanel.transform.GetChild(0).GetComponent<Image>().color = new Color(.1f, .1f, .8f, .8f);
                 break;
         }
-        //switch case "fire" "arcane" "ice" etc
+        //using the tower datalist SO
         //populate the 5 buttons on the background image, and title+description+picture/gif
         //each button will change the active picture/gif and description (maybe also make the title a button to give default/general description)
 
@@ -284,7 +288,7 @@ public class UIManager_CMenu : MonoBehaviour
     //called by the buttons on the tower info panel (the pictures of each tower level)
     public void ChangeTowerInfoDescription(int lvl)
     {
-        //using an array of strings belonging to the tower type's class, change the text in the info panel
+        //using the tower's SO, switch out the description shown in the panel
     }
     private void OpenTowerInfoPanel(int id)
     {
@@ -350,7 +354,7 @@ public class UIManager_CMenu : MonoBehaviour
     {
         Debug.Log("About to fill the UI display of tower loadout");
         int[] activeTowerSet = LoadoutManager.Instance.GetTowerLoadout();
-
+        int[] activeWeaponSet = LoadoutManager.Instance.GetWeaponLoadout();
 
         string printStr = "";
         for (int i = 0; i < 6; i++)
@@ -360,12 +364,24 @@ public class UIManager_CMenu : MonoBehaviour
             else
                 printStr += "__, ";
         }
-        Debug.Log("UIManager's initial fill. List from LoadoutManager: " + printStr);
+        Debug.Log("UIManager's initial fill. Tower List from LoadoutManager: " + printStr);
+        for (int i = 0; i < 3; i++)
+        {
+            if (activeWeaponSet[i] != -1)
+                printStr += activeWeaponSet[i] + ", ";
+            else
+                printStr += "__, ";
+        }
+        Debug.Log("UIManager's initial fill. Weapon List from LoadoutManager: " + printStr);
 
 
         for (int i = 0; i < 6; i++)
         {
             activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(activeTowerSet[i]);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            activeWeaponPanel.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = weaponList.GetWeaponIcon(activeWeaponSet[i]);
         }
     }
 
@@ -413,11 +429,31 @@ public class UIManager_CMenu : MonoBehaviour
         LoadoutManager.Instance.EquippedTowerIDs = activeTowerSet;
     }
 
-    public void UpdateActiveWeaponSet(string type, int indexOfChange)
+    public void UpdateActiveWeaponSet(int id, int indexOfChange)
     {
+        int[] activeWeaponSet = LoadoutManager.Instance.EquippedWeaponIDs;
 
-        savedData.ActiveWeapons = activeWeaponSet;
+        //swap slots
+        for (int i = 0; i < activeWeaponSet.Length; i++)
+        {
+            if (activeWeaponSet[i] == id)
+            {
+                //Sprite spriteToChange;
+                activeWeaponSet[i] = activeWeaponSet[indexOfChange];
+                //change the sprite at the position that already had the placed weapon to the one that the indexOfChange had.
+                activeWeaponPanel.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = towerList.GetTowerIcon(activeWeaponSet[indexOfChange]);
+            }
+        }
+
+        activeWeaponSet[indexOfChange] = id;
         changedData = true;
+
+        for (int i = 0; i < 3; i++)
+        {
+            activeWeaponPanel.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = weaponList.GetWeaponIcon(activeWeaponSet[i]);
+        }
+
+        LoadoutManager.Instance.EquippedWeaponIDs = activeWeaponSet;
     }
 
     #region obsoleteLoad
@@ -452,7 +488,7 @@ public class UIManager_CMenu : MonoBehaviour
     {
         //LevelMarker.OnLevelInvestigate += RemoveActivePanel;
         UIDragDrop.OnActiveTowerChange += UpdateActiveTowerSet;
-
+        UIWeaponDragDrop.OnActiveWeaponChange += UpdateActiveWeaponSet;
 
         //SaveManager.Instance.InitializeFreshSave();
         Debug.Log("started up SaveManager from UIManager?");
@@ -464,6 +500,8 @@ public class UIManager_CMenu : MonoBehaviour
     {
         //LevelMarker.OnLevelInvestigate -= RemoveActivePanel;
         UIDragDrop.OnActiveTowerChange -= UpdateActiveTowerSet;
+        UIWeaponDragDrop.OnActiveWeaponChange -= UpdateActiveWeaponSet;
+
         SaveManager.Instance.OnSaveFileLoaded -= InitialFillUI;
 
         //SaveManager.Instance.SaveData();

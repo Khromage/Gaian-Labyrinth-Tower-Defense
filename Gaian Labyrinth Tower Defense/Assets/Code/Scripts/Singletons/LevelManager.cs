@@ -17,9 +17,6 @@ public class LevelManager : SpawnableSingleton<LevelManager>
     public void LoadLevel(LevelInfo level)
     {
         currentLevel = level;
-        Debug.Log(currentLevel.Name + " LEVEL SET VIA LEVELMANAGER");
-        Debug.Log("LOADING " + currentLevel.Name + " SCENE");
-        
         
         if(SceneManager.GetSceneByName("campaignMenu") != null)
         {
