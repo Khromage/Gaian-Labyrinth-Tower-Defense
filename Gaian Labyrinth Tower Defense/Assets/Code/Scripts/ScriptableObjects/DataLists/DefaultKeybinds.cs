@@ -15,6 +15,7 @@ public class DefaultKeybinds : ScriptableObject
     public KeyCode prevWeaponKey;
     //Build Mode
     public KeyCode modeChangeKey;
+    public KeyCode towerSelectionKey;
     public KeyCode[] towerKeys;
     public KeyCode sellKey;
     public KeyCode[] updatePathKeys;

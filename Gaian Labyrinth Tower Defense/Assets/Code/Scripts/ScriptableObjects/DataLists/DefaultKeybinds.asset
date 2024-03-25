@@ -15,9 +15,9 @@ MonoBehaviour:
   jumpKey: 32
   interactKey: 102
   nextWeaponKey: 101
-  prevWeaponKey: 113
+  prevWeaponKey: 0
   modeChangeKey: 9
+  towerSelectionKey: 113
   towerKeys: 310000003200000033000000340000003500000036000000
   sellKey: 48
-  upgradeCurrentTowerKey: 118
   updatePathKeys: 6a0000006b0000006c000000
