@@ -6,6 +6,7 @@ public class FireflyProj : TrackingBulletBehavior
 {
     public GameObject enemyTarget;
 
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -31,7 +32,6 @@ public class FireflyProj : TrackingBulletBehavior
         {
             if (enemyTarget == null)
             {
-                Debug.Log("Retargeting");
                 GetTargetInfo();
             }
             else

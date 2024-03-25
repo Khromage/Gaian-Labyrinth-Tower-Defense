@@ -12,9 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3698e0e3b3110f4490f8aa66bc88b94, type: 3}
   m_Name: LightningTowerInfo
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 0}
-  BaseCost: 0
-  Lv2Cost: 0
-  Lv3Cost: 
+  <Name>k__BackingField: Lightning
+  <Damage>k__BackingField: 4
+  <Range>k__BackingField: 10
+  <FireRate>k__BackingField: 1
+  <Cost>k__BackingField: 45
+  <Description>k__BackingField: Fires arcs of lightning that bounce for {Damage}
+    damage and SHOCK enemies.
+  <Level2>k__BackingField:
+    <Name>k__BackingField: Level 2
+    <Damage>k__BackingField: 5
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 1.2
+    <Cost>k__BackingField: 40
+    <Description>k__BackingField: Level 2 increases to {Damage} damage, fires faster
+      and bounces more.
+  <Branches>k__BackingField:
+  - <Name>k__BackingField: Arc
+    <Damage>k__BackingField: 6
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 1.5
+    <Cost>k__BackingField: 70
+    <Description>k__BackingField: More arcing
+  - <Name>k__BackingField: Strike
+    <Damage>k__BackingField: 30
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 0.3
+    <Cost>k__BackingField: 90
+    <Description>k__BackingField: Call forth a lightning strike for massive damage
+  - <Name>k__BackingField: Static or tesla idk
+    <Damage>k__BackingField: 2
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 6
+    <Cost>k__BackingField: 55
+    <Description>k__BackingField: Aoe minor stuns
   <Icon>k__BackingField: {fileID: 21300000, guid: 67e0a4ffacd26554ba39fe19d3331da7, type: 3}
-  <Description>k__BackingField: 
+  <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: 753c8719bd1158c4999eac1d46aaab9e, type: 3}
+  <NonfuncModel>k__BackingField: {fileID: 4137109062845976413, guid: 990a5d3a2501188479c6249b9bb38cf7, type: 3}

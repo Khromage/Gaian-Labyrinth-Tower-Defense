@@ -16,8 +16,8 @@ MonoBehaviour:
   <Prefab>k__BackingField: {fileID: 0}
   <Waves>k__BackingField:
   - <SpawnPoints>k__BackingField:
-    - SpawnSet: 000000000000000000000000
-    - SpawnSet: 0000000000000000
+    - SpawnSet: 00000000000000000000000003000000
+    - SpawnSet: 000000000000000003000000
   - <SpawnPoints>k__BackingField:
     - SpawnSet: 00000000000000000000000000000000
     - SpawnSet: 010000000100000001000000
