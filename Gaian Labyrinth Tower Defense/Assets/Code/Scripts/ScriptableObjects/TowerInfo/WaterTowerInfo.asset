@@ -12,9 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3698e0e3b3110f4490f8aa66bc88b94, type: 3}
   m_Name: WaterTowerInfo
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 0}
-  BaseCost: 0
-  Lv2Cost: 0
-  Lv3Cost: 
+  <Name>k__BackingField: Water
+  <Damage>k__BackingField: 7
+  <Range>k__BackingField: 10
+  <FireRate>k__BackingField: 0.4
+  <Cost>k__BackingField: 30
+  <Description>k__BackingField: Launches a wave for {Damage} damage.
+  <Level2>k__BackingField:
+    <Name>k__BackingField: Level 2
+    <Damage>k__BackingField: 9
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 0.5
+    <Cost>k__BackingField: 25
+    <Description>k__BackingField: Launches a smart wave that tracks down enemies
+      and does {Damage} damage.
+  <Branches>k__BackingField:
+  - <Name>k__BackingField: Riptide
+    <Damage>k__BackingField: 2
+    <Range>k__BackingField: 2
+    <FireRate>k__BackingField: 3
+    <Cost>k__BackingField: 35
+    <Description>k__BackingField: Places a whirlpool that slows enemies more the
+      closer they are to the center.
+  - <Name>k__BackingField: Tidal Wave
+    <Damage>k__BackingField: 10
+    <Range>k__BackingField: 10
+    <FireRate>k__BackingField: 0.6
+    <Cost>k__BackingField: 40
+    <Description>k__BackingField: Fires a wave that splits down the track, flooding
+      the area for {Damage} damage.
+  - <Name>k__BackingField: Bubble Prison
+    <Damage>k__BackingField: 0
+    <Range>k__BackingField: 8
+    <FireRate>k__BackingField: 0.5
+    <Cost>k__BackingField: 30
+    <Description>k__BackingField: Bubbles cover the area, imprisoning enemies
   <Icon>k__BackingField: {fileID: 21300000, guid: 4e5ca202d7ad0f344a607fd7fce195f6, type: 3}
-  <Description>k__BackingField: 
+  <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: dfe2954f0b48d6c48a2bb4af87f6ce16, type: 3}
+  <NonfuncModel>k__BackingField: {fileID: 4137109062845976413, guid: c588465569a33564d9217229645859da, type: 3}
