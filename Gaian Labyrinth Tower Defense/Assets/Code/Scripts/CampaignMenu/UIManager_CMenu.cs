@@ -47,7 +47,7 @@ public class UIManager_CMenu : MonoBehaviour
     private Dictionary<GameObject, Vector2> panelDictionary = new Dictionary<GameObject, Vector2>();
     */
     [SerializeField]
-    private GameObject encyclopediaListPanel;
+    private GameObject encyclopedia;
 
     [SerializeField] private List<LostPage> lostPages; // Assign this in the Inspector
     [SerializeField] private Text titleText; // Assign in the Inspector
@@ -260,41 +260,11 @@ public class UIManager_CMenu : MonoBehaviour
     }
 
     */
-    public void OpenIndexView()
-    {
-        indexView.SetActive(true);
-        pageView.SetActive(false);
-    }
-
-    public void DisplayEncyclopediaInfo(int id)
-    {
-        LostPage page = lostPages.Find(p => p.id == id);
-        if (page != null)
-        {
-            titleText.text = page.pageTitle;
-            contentText.text = page.pageContent;
-            pageImage.sprite = page.pageImage;
-
-            indexView.SetActive(false);
-            pageView.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("Lost page with id " + id + " not found.");
-        }
-    }
+    
     public void CloseEncyclopediaPanel()
     {
-        // When closing, we want to reset back to the index view.
-        OpenIndexView();
-
         // Also, set the whole encyclopedia panel to inactive.
-        encyclopediaListPanel.SetActive(false);
-    }
-
-    public void OnLostPageButtonClicked(int pageId)
-    {
-        DisplayEncyclopediaInfo(pageId);
+        encyclopedia.SetActive(false);
     }
 
     public void DisplayTowerInfo(int id)
@@ -539,6 +509,7 @@ public class UIManager_CMenu : MonoBehaviour
         Debug.Log("started up SaveManager from UIManager?");
 
         SaveManager.Instance.OnSaveFileLoaded += InitialFillUI;
+        Encyclopedia.OnCloseEncyclopedia += CloseEncyclopediaPanel;
 
     }
     private void OnDisable()
@@ -548,6 +519,7 @@ public class UIManager_CMenu : MonoBehaviour
         UIWeaponDragDrop.OnActiveWeaponChange -= UpdateActiveWeaponSet;
 
         SaveManager.Instance.OnSaveFileLoaded -= InitialFillUI;
+        Encyclopedia.OnCloseEncyclopedia -= CloseEncyclopediaPanel;
 
         //SaveManager.Instance.SaveData();
     }
