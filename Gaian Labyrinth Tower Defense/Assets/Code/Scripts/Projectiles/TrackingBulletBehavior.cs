@@ -18,8 +18,6 @@ public class TrackingBulletBehavior : BulletBehavior
         speed = 25f;
         range = 5f;
         turnSpeed = 35f;
-        //how many enemies you wanna pierce
-        pierceAMT = 0;
         Destroy(gameObject, 5);
 
     }
