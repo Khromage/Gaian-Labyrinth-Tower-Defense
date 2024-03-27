@@ -33,11 +33,11 @@ public class LightningProjBehavior : TrackingBulletBehavior
             Debug.Log($"Instantiating visual lightning bolt. {remChain} more enemies to hit");
             visualObj = Instantiate(arcVisual, transform.position, transform.rotation, visualObjParent.transform);
             Destroy(visualObj, .5f);
-            //DOING THESE IN LightningArcBehavior
+
             //set the angle and scale the length of the visual to hit the next enemy
-            //vectorTowardTarget = target.position - transform.position;
-            //visualObj.transform.rotation = Quaternion.LookRotation(vectorTowardTarget, transform.up);
-            //visualObj.transform.localScale = new Vector3(1f, 1f, vectorTowardTarget.magnitude/2f);
+            vectorTowardTarget = target.position - transform.position;
+            visualObj.transform.rotation = Quaternion.LookRotation(vectorTowardTarget, transform.up);
+            visualObj.transform.localScale = new Vector3(1f, 1f, vectorTowardTarget.magnitude/2f);
             visualObj.GetComponent<LightningArcBehavior>().SetStartAndEnd(prevTarget, target);
 
             //move to and Hit target

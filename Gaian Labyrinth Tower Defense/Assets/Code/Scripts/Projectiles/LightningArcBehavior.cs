@@ -28,6 +28,7 @@ public class LightningArcBehavior : MonoBehaviour
             transform.position = root.position;
 
             vectorTowardTarget = target.position - transform.position;
+            Debug.Log($"Vector toward target: {vectorTowardTarget}");
             //rotate toward target
             transform.rotation = Quaternion.LookRotation(vectorTowardTarget, transform.up);
             //scale to target
