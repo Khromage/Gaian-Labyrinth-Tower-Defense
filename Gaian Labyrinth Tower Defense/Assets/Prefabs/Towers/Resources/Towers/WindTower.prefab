@@ -97,7 +97,7 @@ AudioSource:
   m_GameObject: {fileID: 1362173102988795995}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 80899558623374298, guid: e1dbfb1277348524a8b190c335c6ee33, type: 2}
   m_audioClip: {fileID: 8300000, guid: 9564a547f5cc1494b9dc773a232728a9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -226,7 +226,6 @@ MonoBehaviour:
   gridLocation: {fileID: 0}
   lv1_duration: 1
   lv2_duration: 3
-  duration: 0
   bladePrefab: {fileID: 1248641760893778226, guid: e7ffea71e05729b40b818fd19e60247d, type: 3}
   tornadoPrefab: {fileID: 1248641760893778226, guid: 87d516e88cbb4fb4b844f7391dbd6ae8, type: 3}
 --- !u!1 &2660176201313847061
