@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56c966cc926264648b9104d3514da7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHUD: {fileID: 8992110631804767177}
-  towerInteractionUI: {fileID: 9152472324594216085}
-  towerSelectionWheel: {fileID: 730122946255220305}
+  PlayerHUD: {fileID: 8992110631804767177}
+  TowerInteractionUI: {fileID: 9152472324594216085}
+  TowerSelectionWheel: {fileID: 730122946255220305}
 --- !u!1001 &241103762062291221
 PrefabInstance:
   m_ObjectHideFlags: 0

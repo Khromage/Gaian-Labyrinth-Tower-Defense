@@ -36,9 +36,6 @@ public class Player : UnitBehavior
     public delegate void SwapWeaponEvent(int newIndex);
     public static event SwapWeaponEvent OnSwapWeapon;
 
-    public delegate void TowerSelection();
-    public static event TowerSelection OnTowerSelection;
-
     //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
     public float moveSpeed;
@@ -427,7 +424,7 @@ public class Player : UnitBehavior
     private void OpenTowerSelectionWheel()
     {
         // send event to LevelModule to enable TowerSelectionWheel UI Module
-        OnTowerSelection?.Invoke();
+        EnterMenuMode();
     }
     private void checkInteractable()
     {
