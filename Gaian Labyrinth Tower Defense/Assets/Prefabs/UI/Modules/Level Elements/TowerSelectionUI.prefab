@@ -1857,18 +1857,6 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1522231497036163208, guid: 5b3d3dd9646a29f45b788ea1dc007a10, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1522231497036163208, guid: 5b3d3dd9646a29f45b788ea1dc007a10, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1522231497036163208, guid: 5b3d3dd9646a29f45b788ea1dc007a10, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1590645776039611526, guid: 5b3d3dd9646a29f45b788ea1dc007a10, type: 3}
       propertyPath: m_Name
       value: Slot 1
@@ -1915,14 +1903,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4555383730187538605, guid: 5b3d3dd9646a29f45b788ea1dc007a10, type: 3}
       propertyPath: m_ShowMaskGraphic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5742347921235855714, guid: 5b3d3dd9646a29f45b788ea1dc007a10, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5742347921235855714, guid: 5b3d3dd9646a29f45b788ea1dc007a10, type: 3}
-      propertyPath: m_PreserveAspect
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7945006415103055486, guid: 5b3d3dd9646a29f45b788ea1dc007a10, type: 3}
