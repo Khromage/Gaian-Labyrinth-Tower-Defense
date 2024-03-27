@@ -443,8 +443,8 @@ MonoBehaviour:
   nextWeaponKey: 0
   prevWeaponKey: 0
   modeChangeKey: 0
-  towerKeys: 
-  sellKey: 0
+  towerSelectionKey: 0
+  weaponKeys: 
   updatePathKeys: 
   whatIsGround:
     serializedVersion: 2
@@ -465,12 +465,14 @@ MonoBehaviour:
   InteractRange: 0
   Body: {fileID: 4835368386127021285}
   InteractionPoint: {fileID: 7985478383346782855}
+  weaponList: {fileID: 11400000, guid: f38a4fd1840f59e48a66c1ac7f42383b, type: 2}
   weaponHolder: {fileID: 632453636332426054}
   currentWeapon: {fileID: 8465823638316583725}
-  weaponList:
-  - {fileID: 7064573255150436022, guid: 88b1612eb36a7d64baa4e95bf5f1a650, type: 3}
-  - {fileID: 1864724351924341100, guid: f4a358b4967485f40b7b05240f2451f1, type: 3}
-  - {fileID: 540254898023021, guid: 2be78b499b0976844a9f339d7f8f9475, type: 3}
+  lastWeapon: {fileID: 0}
+  weaponSet:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   towerList: {fileID: 11400000, guid: c7308b4a69207f64bb0f7eee266f1e7a, type: 2}
   currentTower: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerSet:
@@ -626,7 +628,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3266892479513722274}
   serializedVersion: 2
-  m_LocalRotation: {x: -3e-45, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 1e-45, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1138,7 +1140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7251585544851350419}
   serializedVersion: 2
-  m_LocalRotation: {x: -3e-45, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 1e-45, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
