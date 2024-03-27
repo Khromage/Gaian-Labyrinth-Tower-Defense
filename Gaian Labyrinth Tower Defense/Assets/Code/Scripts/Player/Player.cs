@@ -62,7 +62,8 @@ public class Player : UnitBehavior
     //Build Mode
     public KeyCode modeChangeKey;
     public KeyCode towerSelectionKey;
-    public KeyCode[] weaponKeys;
+    public KeyCode[] towerKeys;
+    public KeyCode sellKey;
     public KeyCode[] updatePathKeys;
 
 
@@ -112,12 +113,9 @@ public class Player : UnitBehavior
     public GameObject InteractionPoint;
 
     [Header("Weapon List")]
-    [SerializeField]
-    private WeaponList weaponList;
     public GameObject weaponHolder;
     public GameObject currentWeapon;
     public WeaponList weaponList;
-    public GameObject lastWeapon;
     public GameObject[] weaponSet;
     private int currentWeaponIndex = 0;
 
@@ -271,10 +269,11 @@ public class Player : UnitBehavior
         // Combat
         nextWeaponKey = defaultKeybinds.nextWeaponKey;
         prevWeaponKey = defaultKeybinds.prevWeaponKey;
-        weaponKeys = defaultKeybinds.weaponKeys;
         //Build Mode
         modeChangeKey = defaultKeybinds.modeChangeKey;
         towerSelectionKey = defaultKeybinds.towerSelectionKey;
+        towerKeys = defaultKeybinds.towerKeys;
+        sellKey = defaultKeybinds.sellKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
     }
 
@@ -324,11 +323,39 @@ public class Player : UnitBehavior
             Invoke(nameof(resetJump), jumpCooldown);
         }
 
-
         /***
             Setting player mode (Combat/Build/Menu)
         ***/
 
+
+
+
+        // Change selected tower and set Build Mode
+        for (int i = 0; i < towerKeys.Length; i++)
+        {
+            if (Input.GetKeyDown(towerKeys[i])) 
+            {
+                if (towerSet[i] != null)
+                {
+                    currentTower = towerSet[i];
+                    OnTowerSelect?.Invoke(i, towerSet[i]);
+                    Debug.Log("Tower Slot " + (i+1) + "Chosen");
+                    currentMode = playerMode.Build;
+
+                    currentWeapon.SetActive(false);
+                    toggleTowerDisplay(currentTower, true);
+                } else 
+                {
+                    Debug.Log("No tower in slot " + (i+1));
+                }
+            }
+        }
+        
+        if ( (Input.GetKeyDown(sellKey)))
+        {
+            currentTower = null;
+            currentMode = playerMode.Sell;
+        }
 
         // Change chosen weapon and set Combat mode
         if (Input.GetKeyDown(nextWeaponKey))
@@ -337,16 +364,13 @@ public class Player : UnitBehavior
             toggleTowerDisplay(currentTower, false);
 
             SwapWeapon(nextWeaponKey);
-            /*
             currentMode = playerMode.Combat;
             if (tempDisplayHolder != null)
                 Destroy(this.tempDisplayHolder);
             if (highlightedTile != null)
                 highlightedTile.highlight(false);
             OnEnterCombatMode?.Invoke(currentWeaponIndex);
-            */
-        }
-        /* 
+        } 
         else if (Input.GetKeyDown(prevWeaponKey))
         {
             currentWeapon.SetActive(true);
@@ -360,22 +384,6 @@ public class Player : UnitBehavior
                 highlightedTile.highlight(false);
             OnEnterCombatMode?.Invoke(currentWeaponIndex);  
         }
-        */
-
-        for (int i = 0; i < weaponSet.Length; i++)
-        {
-            if (Input.GetKeyDown(weaponKeys[i])) 
-            {
-                if (weaponSet[i] != null)
-                {
-                    SwapWeapon(weaponKeys[i]);
-                } else 
-                {
-                    Debug.Log("No weapon in slot " + (i+1));
-                }
-            }
-        }
-
 
         // Player uses interaction key. If menu opens, set menu mode.
         if(Input.GetKeyDown(interactKey))
@@ -437,6 +445,7 @@ public class Player : UnitBehavior
             Debug.Log("Player received towerSlotIndex == " + towerSlotIndex);
             Debug.Log("Current PlayerMode: " + currentMode.ToString());
             Debug.Log("Last PlayerMode: " + lastMode.ToString());
+
 
             changeTower(towerSlotIndex);
         }
@@ -592,11 +601,11 @@ public class Player : UnitBehavior
         }
     }
 
-    private void changeTower(int selectedTowerIndex)
+    private void changeTower(int slotIndex)
     {
-        if (towerSet[selectedTowerIndex] != null)
+        if (towerSet[slotIndex] != null)
             {
-                currentTower = towerSet[selectedTowerIndex];
+                currentTower = towerSet[slotIndex];
                 currentMode = playerMode.Build;
 
                 Debug.Log("Player Mode set to Build");
@@ -610,7 +619,7 @@ public class Player : UnitBehavior
                 Debug.Log("ERROR WHEN ACCESSING towerSet[slotIndex]");
             }
     }
-
+    
     //re-generates the tiny tower model on your hand. called when entering build mode. (or exiting, in which case just sets inactive)
     private void toggleTowerDisplay(GameObject currentTower, bool turnOn)
     {
@@ -674,6 +683,7 @@ public class Player : UnitBehavior
     {
         readyToJump = true;
     }
+
 
     protected override void beginRotation(Transform gravSource)
     {
@@ -751,16 +761,17 @@ public class Player : UnitBehavior
     private void SwapWeapon(KeyCode input)
     {
 
-        currentWeapon.SetActive(true);
-        toggleTowerDisplay(currentTower, false);
-
         if (input == nextWeaponKey)
         {
             currentWeaponIndex++;
             if (currentWeaponIndex >= (weaponSet.Length))
                 currentWeaponIndex = 0;
-        } else{
-            currentWeaponIndex = Array.IndexOf(weaponKeys, input);
+        }
+        if (input == prevWeaponKey)
+        {
+            currentWeaponIndex--;
+            if (currentWeaponIndex < 0)
+                currentWeaponIndex = weaponSet.Length - 1;
         }
 
         //in the hierarchy, the 1st weapon was originally at: .411, .121, 0
@@ -902,9 +913,6 @@ public class Player : UnitBehavior
         //fill in the active weapon slots with their respective weapon icons...
         for (int i = 0; i < weaponSet.Length; i++)
         {
-            if(weaponLoadout[i] != -1)
-                weaponSet[i] = weaponList.GetWeapon(i);
-            
             //SSS fill in the weapons from save data
         }
     }
