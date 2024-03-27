@@ -116,7 +116,6 @@ public class Player : UnitBehavior
     private WeaponList weaponList;
     public GameObject weaponHolder;
     public GameObject currentWeapon;
-    public WeaponList weaponList;
     public GameObject lastWeapon;
     public GameObject[] weaponSet;
     private int currentWeaponIndex = 0;
