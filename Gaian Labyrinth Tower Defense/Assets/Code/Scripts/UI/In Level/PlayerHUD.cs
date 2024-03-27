@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 //using static System.Net.Mime.MediaTypeNames;
 
 public class PlayerHUD : MonoBehaviour
@@ -139,21 +138,14 @@ public class PlayerHUD : MonoBehaviour
     }
 
 
-    private void player_updateManaBar(float mana, float maxMana, bool animate)
+    private void player_updateManaBar(float newManaAmount, bool animate)
     {
-        int numFullManaPips = (int)mana / 10;
+        int numFullManaPips = (int)newManaAmount / 10;
         for(int i=0; i < numFullManaPips; i++)
         {
             manaPips[i].transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = 1;
         }
-        for(int i=numFullManaPips; i < manaPips.Length; i++)
-        {
-            manaPips[i].transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = 0;
-        }
         
-        if(mana % 10 != 0)
-            manaPips[numFullManaPips].transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = (mana % 10) / (maxMana / manaPips.Length);
-
         if (animate)
         {
             //Debug.Log($"starting mana bar animation, change amount = {changeAmount}");
