@@ -37,7 +37,7 @@ public class Player : UnitBehavior
     public static event SwapWeaponEvent OnSwapWeapon;
 
     public delegate void TowerSelection();
-    public static event TowerSelection OnTowerSelectionOpened;
+    public static event TowerSelection OnTowerSelection;
     public static event TowerSelection OnTowerSelectionClosed;
 
     //Variables to control and determine player's jumping abiltiy
@@ -102,6 +102,7 @@ public class Player : UnitBehavior
     public GameObject towerDisplayPrefab;
     private GameObject tempDisplayHolder;
     private GridTile highlightedTile;
+
     public static int currency { get; private set; }
 
     bool colerable = false;
@@ -130,7 +131,6 @@ public class Player : UnitBehavior
     private bool isTowerWheelOpen = false;
     private float TowerWheelOpenTime;
 
-    private bool goingToBuildMode;
     public Animator armAnimator;
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
@@ -162,14 +162,10 @@ public class Player : UnitBehavior
         maxMana = 100f;
         mana = maxMana;
         manaRegenRate = 5f;
-        goingToBuildMode = false;
 
         towerSet = new GameObject[6];
         FillLoadout();
         InitializeKeybinds();
-
-        currentMode = playerMode.Combat;
-        lastMode = playerMode.Build;
     }
 
     //Method to be checked on every frame of the game
@@ -179,14 +175,14 @@ public class Player : UnitBehavior
         regenMana();
         
         getUserKeyMenu();
-        updateAnimationState();
         
         // Check if NOT in menu mode
 
         if(currentMode != playerMode.Menu)
         {
-            getUserKey();
             checkInteractable();
+            getUserKey();
+            updateAnimationState();
             playerSpeedControl();
         }
 
@@ -215,7 +211,7 @@ public class Player : UnitBehavior
         LevelModule.OnMenuOpened += EnterMenuMode;
         LevelModule.OnMenuClosed += ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell += UpdateCurrency;
-        TowerSelectionWheel.OnTowerSelected += TowerSelected;
+        TowerSelectionWheel.OnTowerSelected += changeTower;
     }
 
     private void OnDisable()
@@ -225,7 +221,7 @@ public class Player : UnitBehavior
         LevelModule.OnMenuOpened -= EnterMenuMode;
         LevelModule.OnMenuClosed -= ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell -= UpdateCurrency;
-        TowerSelectionWheel.OnTowerSelected -= TowerSelected;
+        TowerSelectionWheel.OnTowerSelected -= changeTower;
     }
 
     private void EnterMenuMode()
@@ -238,12 +234,7 @@ public class Player : UnitBehavior
 
     private void ExitMenuMode()
     {
-        if(goingToBuildMode)
-        {
-            currentMode = playerMode.Build;
-        } else {
-            currentMode = playerMode.Combat;
-        }
+        currentMode = (playerMode)lastMode;
 
         // set lastMode accordingly to allow Q tap mode switching to work
         if(currentMode == playerMode.Combat)
@@ -254,6 +245,7 @@ public class Player : UnitBehavior
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
 
     public playerMode checkCurrentMode()
     {
@@ -275,17 +267,6 @@ public class Player : UnitBehavior
         towerKeys = defaultKeybinds.towerKeys;
         sellKey = defaultKeybinds.sellKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
-    }
-
-    private void SwapMode()
-    {
-        currentMode = (playerMode)lastMode;
-
-        // set lastMode accordingly to allow Q tap mode switching to work
-        if(currentMode == playerMode.Combat)
-            lastMode = playerMode.Build;
-        if(currentMode == playerMode.Build)
-            lastMode = playerMode.Combat;
     }
 
     //Getting WASD and jump inputs
@@ -412,7 +393,7 @@ public class Player : UnitBehavior
         }
 
         // Check if the key is being held down AND if the Tower Wheel has not opened yet
-        if (isTowerKeyPressed && !isTowerWheelOpen && (Time.time - TowerWheelOpenTime) > 0.1f)
+        if (isTowerKeyPressed && !isTowerWheelOpen && (Time.time - TowerWheelOpenTime) > 0.05f)
         {
             OpenTowerSelectionWheel();
             isTowerWheelOpen = true;
@@ -429,34 +410,28 @@ public class Player : UnitBehavior
                 SwapMode();
             } else
             {
-                CloseTowerSelectionWheel();
+                OnTowerSelectionClosed();
             }
             // Reset the flag when the key is released
             isTowerWheelOpen = false;
         }
     }
 
-    private void TowerSelected(int towerSlotIndex)
+    private void SwapMode()
     {
-        if(towerSlotIndex != -1)
-        {
-            goingToBuildMode = true;
-            
-            Debug.Log("Player received towerSlotIndex == " + towerSlotIndex);
-            Debug.Log("Current PlayerMode: " + currentMode.ToString());
-            Debug.Log("Last PlayerMode: " + lastMode.ToString());
+        currentMode = (playerMode)lastMode;
 
-
-            changeTower(towerSlotIndex);
-        }
+        // set lastMode accordingly to allow Q tap mode switching to work
+        if(currentMode == playerMode.Combat)
+            lastMode = playerMode.Build;
+        if(currentMode == playerMode.Build)
+            lastMode = playerMode.Combat;
     }
-
-
 
     private void OpenTowerSelectionWheel()
     {
         // send event to LevelModule to enable TowerSelectionWheel UI Module
-        OnTowerSelectionOpened?.Invoke();
+        OnTowerSelection?.Invoke();
     }
 
     private void CloseTowerSelectionWheel()
@@ -607,10 +582,6 @@ public class Player : UnitBehavior
             {
                 currentTower = towerSet[slotIndex];
                 currentMode = playerMode.Build;
-
-                Debug.Log("Player Mode set to Build");
-                Debug.Log("Current PlayerMode: " + currentMode.ToString());
-                Debug.Log("Last PlayerMode: " + lastMode.ToString());
 
                 currentWeapon.SetActive(false);
                 toggleTowerDisplay(currentTower, true);

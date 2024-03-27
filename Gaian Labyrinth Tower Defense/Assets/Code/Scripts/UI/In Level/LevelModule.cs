@@ -29,9 +29,8 @@ public class LevelModule : MonoBehaviour
 
     void OnEnable()
     {
-        Player.OnTowerSelectionOpened += enableTowerSelection;
-        Player.OnTowerSelectionClosed += disableTowerSelection;
-
+        Player.OnTowerSelection += enableTowerSelection;
+        TowerSelectionWheel.OnTowerSelected += disableTowerSelection;
         TowerBehavior.OnOpenInteractionPanel += enableTowerUI;
         TowerBehavior.OnCloseInteractionPanel += disableTowerUI;
         TowerUIManager.OnExitButtonClicked += disableTowerUI;
@@ -40,9 +39,8 @@ public class LevelModule : MonoBehaviour
 
     void OnDisable()
     {
-        Player.OnTowerSelectionOpened -= enableTowerSelection;
-        Player.OnTowerSelectionClosed -= disableTowerSelection;
-
+        Player.OnTowerSelection -= enableTowerSelection;
+        TowerSelectionWheel.OnTowerSelected -= disableTowerSelection;
         TowerBehavior.OnOpenInteractionPanel -= enableTowerUI;
         TowerBehavior.OnCloseInteractionPanel -= disableTowerUI;
         TowerUIManager.OnExitButtonClicked -= disableTowerUI;
@@ -79,16 +77,13 @@ public class LevelModule : MonoBehaviour
         OnMenuOpened?.Invoke();
     }
 
-    private void disableTowerSelection()
+    private void disableTowerSelection(int towerID)
     {
-        // Tower Selection Wheel handling hovered slot
-        towerSelectionWheel.GetComponent<TowerSelectionWheel>().SlotSelected();
-        
-        // Disable Selection Wheel
-        towerSelectionWheel.SetActive(false);
+        // Enable Selection Wheel
+        towerSelectionWheel.SetActive(true);
 
-        // Send Broadcast to Player to exit Menu Mode
-        OnMenuClosed?.Invoke();
+        // Send Broadcast to Player to set Menu Mode
+        OnMenuOpened?.Invoke();
     }
 
 }

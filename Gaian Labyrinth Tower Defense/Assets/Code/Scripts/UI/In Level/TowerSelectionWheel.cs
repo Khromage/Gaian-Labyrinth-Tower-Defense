@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TowerSelectionWheel : MonoBehaviour
 {
 
-    public delegate void TowerWheelSelection(int hoveredSlotIndex);
+    public delegate void TowerWheelSelection(int towerID);
     public static event TowerWheelSelection OnTowerSelected;
 
     [SerializeField]
@@ -15,10 +15,6 @@ public class TowerSelectionWheel : MonoBehaviour
     private int[] EquippedTowerIDs;
     [SerializeField]
     private GameObject[] TowerSelectionSlots;
-
-    [SerializeField]
-    private int hoveredSlot;
-
     [SerializeField]
     private GameObject BackToCombatLayout;
     [SerializeField]
@@ -51,35 +47,21 @@ public class TowerSelectionWheel : MonoBehaviour
         
     }
 
-    // called when player cursor hovers a section of the screen corresponding to a slot
     public void HighlightSlot(GameObject Slot)
     {
         Slot.transform.localScale *= 1.1f;
-        hoveredSlot = Array.IndexOf(TowerSelectionSlots, Slot.transform.parent.gameObject);
-        Debug.Log("hovered slot index: " + hoveredSlot);
-        Debug.Log("selected slot: " + Slot.name);
+        Debug.Log("Mouse entered Tower Selection Slot. The tower in this slot is: " + towerList.GetTower(Array.IndexOf(TowerSelectionSlots, Slot)).name);
     }
-
-    // called when the cursor leaves the slot area to reset hovered slot
     public void UnHighlightSlot(GameObject Slot)
     {
         Slot.transform.localScale /= 1.1f;
-        hoveredSlot = -1;
         Debug.Log("Mouse exited Tower Selection Slot. Resetting scale");
     }
 
-    // called when player releases Q
-    public void SlotSelected()
+    public void SlotSelected(int slotIndex)
     {
-        OnTowerSelected?.Invoke(hoveredSlot);
-    }
-
-    void OnEnable()
-    {
-    }
-
-    void OnDisable()
-    {
+        // int towerID = EquippedTowerIDs[slotIndex];
+        OnTowerSelected?.Invoke(slotIndex);
     }
 
 }
