@@ -294,8 +294,11 @@ public class Player : UnitBehavior
                 Destroy(this.tempDisplayHolder);
             if (highlightedTile != null)
                 highlightedTile.highlight(false);
+            
+            currentWeapon.SetActive(true);
+            toggleTowerDisplay(currentTower, false);
+            
             OnEnterCombatMode?.Invoke(currentWeaponIndex);
-
         }
 
         // going to Build mode
@@ -305,7 +308,6 @@ public class Player : UnitBehavior
 
             currentWeapon.SetActive(false);
             toggleTowerDisplay(currentTower, true);
-
         }
     }
 

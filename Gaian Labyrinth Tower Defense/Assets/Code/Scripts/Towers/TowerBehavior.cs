@@ -109,7 +109,11 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public void RemoveEnemy(EnemyBehavior enemy)
     {
         if(enemy == null)
+        {
+            enemies.RemoveAll(nullEnemy => nullEnemy == null);
+            Debug.Log("CLEARED NULL ELEMENTS FROM TOWER LIST");
             return;
+        }
         if(!enemies.Contains(enemy.gameObject))
             return;
 

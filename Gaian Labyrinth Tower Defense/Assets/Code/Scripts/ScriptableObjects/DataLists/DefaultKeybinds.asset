@@ -18,6 +18,6 @@ MonoBehaviour:
   prevWeaponKey: 0
   modeChangeKey: 9
   towerSelectionKey: 113
-  towerKeys: 310000003200000033000000340000003500000036000000
+  weaponKeys: 310000003200000033000000
   sellKey: 48
   updatePathKeys: 6a0000006b0000006c000000
