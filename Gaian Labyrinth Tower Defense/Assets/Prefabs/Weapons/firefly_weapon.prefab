@@ -2075,6 +2075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimTarget: {fileID: 0}
+  aimHitPos: {x: 0, y: 0, z: 0}
   weaponInfo: {fileID: 11400000, guid: fb63a361eb35888428bbb07f882b6286, type: 2}
   fireflyProj: {fileID: 5023416352272721925, guid: 32c7995cf0d32a44db6bb6f23a8ae433, type: 3}
   fireflySFX1: {fileID: 8202115589477042519}
@@ -2092,7 +2093,7 @@ AudioSource:
   m_GameObject: {fileID: 1864724351924341100}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 80899558623374298, guid: e1dbfb1277348524a8b190c335c6ee33, type: 2}
   m_audioClip: {fileID: 8300000, guid: 38d188f518a157a428c2b172dc8f56f8, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
