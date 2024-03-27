@@ -11,14 +11,13 @@ public class LevelModule : MonoBehaviour
 
     
     public GameObject PlayerHUD;
-    public GameObject TowerInteractionUI;
-    public GameObject TowerSelectionWheel;
+    public GameObject TowerUI;
     
     // Start is called before the first frame update
     void Start()
     {
         PlayerHUD.SetActive(true);
-        TowerInteractionUI.SetActive(false);
+        TowerUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -47,10 +46,10 @@ public class LevelModule : MonoBehaviour
     private void enableTowerUI(TowerBehavior tower)
     {
         // Enable UI Elements
-        TowerInteractionUI.SetActive(true);
+        TowerUI.SetActive(true);
         
         // Set Info
-        TowerUIManager towerUI = TowerInteractionUI.GetComponent<TowerUIManager>();
+        TowerUIManager towerUI = TowerUI.GetComponent<TowerUIManager>();
         towerUI.SetTowerInfo(tower);
 
         // Send Broadcast to Player to set Menu Mode
@@ -59,7 +58,7 @@ public class LevelModule : MonoBehaviour
 
     private void disableTowerUI(TowerBehavior tower)
     {
-        TowerInteractionUI.SetActive(false);
+        TowerUI.SetActive(false);
         OnMenuClosed?.Invoke();
         Debug.Log("Closing interaction UI panel for " + tower.name + "tower");
     }
