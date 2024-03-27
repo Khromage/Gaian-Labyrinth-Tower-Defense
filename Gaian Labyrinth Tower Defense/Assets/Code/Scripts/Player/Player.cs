@@ -168,7 +168,6 @@ public class Player : UnitBehavior
         towerSet = new GameObject[6];
         weaponSet = new GameObject[3];
         FillLoadout();
-        currentWeapon = Instantiate(weaponSet[0], weaponHolder.transform.position, weaponHolder.transform.rotation, weaponHolder.transform);
 
         InitializeKeybinds();
 
@@ -245,6 +244,7 @@ public class Player : UnitBehavior
         if(goingToBuildMode)
         {
             currentMode = playerMode.Build;
+            goingToBuildMode = false;
         } else {
             currentMode = playerMode.Combat;
         }
@@ -282,13 +282,31 @@ public class Player : UnitBehavior
 
     private void SwapMode()
     {
+        
         currentMode = (playerMode)lastMode;
 
-        // set lastMode accordingly to allow Q tap mode switching to work
+        // going to Combat mode
         if(currentMode == playerMode.Combat)
+        {
             lastMode = playerMode.Build;
+
+            if (tempDisplayHolder != null)
+                Destroy(this.tempDisplayHolder);
+            if (highlightedTile != null)
+                highlightedTile.highlight(false);
+            OnEnterCombatMode?.Invoke(currentWeaponIndex);
+
+        }
+
+        // going to Build mode
         if(currentMode == playerMode.Build)
+        {
             lastMode = playerMode.Combat;
+
+            currentWeapon.SetActive(false);
+            toggleTowerDisplay(currentTower, true);
+
+        }
     }
 
     //Getting WASD and jump inputs
@@ -335,41 +353,19 @@ public class Player : UnitBehavior
         // Change chosen weapon and set Combat mode
         if (Input.GetKeyDown(nextWeaponKey))
         {
-            // currentWeapon.SetActive(true);
-            // toggleTowerDisplay(currentTower, false);
-
+            if(currentMode == playerMode.Build)
+                SwapMode();
             SwapWeapon(nextWeaponKey);
-            /*
-            currentMode = playerMode.Combat;
-            if (tempDisplayHolder != null)
-                Destroy(this.tempDisplayHolder);
-            if (highlightedTile != null)
-                highlightedTile.highlight(false);
-            OnEnterCombatMode?.Invoke(currentWeaponIndex);
-            */
         }
-        /* 
-        else if (Input.GetKeyDown(prevWeaponKey))
-        {
-            currentWeapon.SetActive(true);
-            toggleTowerDisplay(currentTower, false);
 
-            SwapWeapon(prevWeaponKey);
-            currentMode = playerMode.Combat;
-            if (tempDisplayHolder != null)
-                Destroy(this.tempDisplayHolder);
-            if (highlightedTile != null)
-                highlightedTile.highlight(false);
-            OnEnterCombatMode?.Invoke(currentWeaponIndex);  
-        }
-        */
-
-        for (int i = 0; i < weaponSet.Length; i++)
+        for (int i = 0; i < weaponKeys.Length; i++)
         {
             if (Input.GetKeyDown(weaponKeys[i])) 
             {
                 if (weaponSet[i] != null)
                 {
+                    if(currentMode == playerMode.Build)
+                        SwapMode();
                     SwapWeapon(weaponKeys[i]);
                 } else 
                 {
@@ -398,7 +394,7 @@ public class Player : UnitBehavior
     private void getUserKeyMenu()
     {
         // Check if the Q key is pressed down
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(towerSelectionKey))
         {
             isTowerKeyPressed = true;
             isTowerWheelOpen = false;
@@ -413,7 +409,7 @@ public class Player : UnitBehavior
         }
 
         // Check if the Q key is released
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (Input.GetKeyUp(towerSelectionKey))
         {
             isTowerKeyPressed = false;
 
@@ -904,8 +900,33 @@ public class Player : UnitBehavior
                 weaponSet[i] = weaponList.GetWeapon(i);
             
             //SSS fill in the weapons from save data
-            if (weaponLoadout[i] != -1) // -1 is the default/empty value
-                weaponSet[i] = weaponList.WeaponDataSet[towerLoadout[i]].Prefab;
+            // if (weaponLoadout[i] != -1) // -1 is the default/empty value
+                // weaponSet[i] = weaponList.WeaponDataSet[towerLoadout[i]].Prefab;
+        }
+
+
+        // setting initial/default equips
+        bool filledTowerSlot = false;
+        int j = 0;
+        while(!filledTowerSlot && j < towerSet.Length)
+        {
+            if(towerSet[j] != null)
+            {
+                filledTowerSlot = true;
+                currentTower = towerSet[j];
+            }
+            j++;
+        }
+        bool filledWeaponSlot = false;
+        int k = 0;
+        while(!filledWeaponSlot && k < weaponSet.Length)
+        {
+            if(weaponSet[k] != null)
+            {
+                filledWeaponSlot = true;
+                currentWeapon = Instantiate(weaponSet[k], weaponHolder.transform.position, weaponHolder.transform.rotation, weaponHolder.transform);
+            }
+            k++;
         }
     }
 
