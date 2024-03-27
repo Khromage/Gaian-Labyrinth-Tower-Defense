@@ -67,7 +67,7 @@ public class LevelModule : MonoBehaviour
     {
         towerInteractionUI.SetActive(false);
         OnMenuClosed?.Invoke();
-        Debug.Log("Closing interaction UI panel for " + tower.name + "tower");
+        // Debug.Log("Closing interaction UI panel for " + tower.name + "tower");
     }
 
     private void enableTowerSelection()

@@ -56,8 +56,8 @@ public class TowerSelectionWheel : MonoBehaviour
     {
         Slot.transform.localScale *= 1.1f;
         hoveredSlot = Array.IndexOf(TowerSelectionSlots, Slot.transform.parent.gameObject);
-        Debug.Log("hovered slot index: " + hoveredSlot);
-        Debug.Log("selected slot: " + Slot.name);
+        // Debug.Log("hovered slot index: " + hoveredSlot);
+        // Debug.Log("selected slot: " + Slot.name);
     }
 
     // called when the cursor leaves the slot area to reset hovered slot
@@ -65,7 +65,7 @@ public class TowerSelectionWheel : MonoBehaviour
     {
         Slot.transform.localScale /= 1.1f;
         hoveredSlot = -1;
-        Debug.Log("Mouse exited Tower Selection Slot. Resetting scale");
+        // Debug.Log("Mouse exited Tower Selection Slot. Resetting scale");
     }
 
     // called when player releases Q
