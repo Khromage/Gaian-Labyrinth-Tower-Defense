@@ -332,8 +332,8 @@ public class Player : UnitBehavior
         // Change chosen weapon and set Combat mode
         if (Input.GetKeyDown(nextWeaponKey))
         {
-            currentWeapon.SetActive(true);
-            toggleTowerDisplay(currentTower, false);
+            // currentWeapon.SetActive(true);
+            // toggleTowerDisplay(currentTower, false);
 
             SwapWeapon(nextWeaponKey);
             /*
