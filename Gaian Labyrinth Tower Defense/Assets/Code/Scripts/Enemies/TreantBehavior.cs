@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TreantBehavior : EnemyBehavior
 {
@@ -16,6 +17,7 @@ public class TreantBehavior : EnemyBehavior
     {
         base.Start();
         //Put these into Treant's scriptable object
+        GetComponent<NavMeshAgent>().speed = 1.5f;
         healthTimer = 0f;
         healthTimerDelay = 2f;
         healthRegenPercent = 5f;
