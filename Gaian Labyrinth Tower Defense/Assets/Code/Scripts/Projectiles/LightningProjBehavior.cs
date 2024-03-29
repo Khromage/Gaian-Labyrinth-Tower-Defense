@@ -29,24 +29,29 @@ public class LightningProjBehavior : TrackingBulletBehavior
         Debug.Log($"pierceAMT: {pierceAMT}, before any chaining, in Start");
         for (int remChain = pierceAMT; remChain >= 0; remChain--)
         {
-            //instantiate the visual
-            Debug.Log($"Instantiating visual lightning bolt. {remChain} more enemies to hit");
-            visualObj = Instantiate(arcVisual, transform.position, transform.rotation, visualObjParent.transform);
-            Destroy(visualObj, .5f);
+            //should only instantiate visual if there is a nearby target
+            if (target)
+            {
+                //instantiate the visual
+                Debug.Log($"Instantiating visual lightning bolt. {remChain} more enemies to hit");
+                visualObj = Instantiate(arcVisual, transform.position, transform.rotation, visualObjParent.transform);
+                Destroy(visualObj, .5f);
 
-            //set the angle and scale the length of the visual to hit the next enemy
-            vectorTowardTarget = target.position - transform.position;
-            visualObj.transform.rotation = Quaternion.LookRotation(vectorTowardTarget, transform.up);
-            visualObj.transform.localScale = new Vector3(1f, 1f, vectorTowardTarget.magnitude/2f);
-            visualObj.GetComponent<LightningArcBehavior>().SetStartAndEnd(prevTarget, target);
+                //set the angle and scale the length of the visual to hit the next enemy
+                vectorTowardTarget = target.position - transform.position;
+                visualObj.transform.rotation = Quaternion.LookRotation(vectorTowardTarget, transform.up);
+                visualObj.transform.localScale = new Vector3(1f, 1f, vectorTowardTarget.magnitude / 2f);
+                visualObj.GetComponent<LightningArcBehavior>().SetStartAndEnd(prevTarget, target);
 
-            //move to and Hit target
-            transform.position = target.position;
-            prevTarget = target;
-            HitTarget(target.gameObject);
-            //if more to pierce, update target.
-            if (remChain > 0)
-                GetTargetInfo();
+                //move to and Hit target
+                transform.position = target.position;
+                prevTarget = target;
+                HitTarget(target.gameObject);
+                //if more to pierce, update target.
+                if (remChain > 0)
+                    GetTargetInfo();
+            }
+            
         }
 
         //for the dumb implementation
