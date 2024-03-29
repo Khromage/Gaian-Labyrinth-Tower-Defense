@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimTarget: {fileID: 0}
+  aimHitPos: {x: 0, y: 0, z: 0}
   weaponInfo: {fileID: 11400000, guid: aa536a273e63aee408c2308419ade212, type: 2}
   Beam: {fileID: 4276113069247697066, guid: eeba0579d3f171044a63673a984dbcd9, type: 3}
   LaserFireSFX: {fileID: 3853284518516146763}
@@ -198,7 +199,7 @@ AudioSource:
   m_GameObject: {fileID: 5926663804712910904}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: e1dbfb1277348524a8b190c335c6ee33, type: 2}
+  OutputAudioMixerGroup: {fileID: 80899558623374298, guid: e1dbfb1277348524a8b190c335c6ee33, type: 2}
   m_audioClip: {fileID: 8300000, guid: c305d16baaed7d84ca82090054397211, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
