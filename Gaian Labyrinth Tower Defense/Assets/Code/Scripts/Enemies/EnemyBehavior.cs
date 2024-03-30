@@ -75,6 +75,11 @@ public class EnemyBehavior : MonoBehaviour
             OnEnemyReachedGoal?.Invoke(this);
             isAlive = false;
         }
+
+        if(!isAlive)
+        {
+            OnEnemyDeath?.Invoke(this);
+        }
     }
 
     void LateUpdate()
@@ -97,7 +102,6 @@ public class EnemyBehavior : MonoBehaviour
         EnemyHurtSFX.Play();
         if(currentHealth <= 0)
         {
-            OnEnemyDeath?.Invoke(this);
             isAlive = false;
         }
         
