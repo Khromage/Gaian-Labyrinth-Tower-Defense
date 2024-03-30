@@ -112,6 +112,7 @@ public class Level : MonoBehaviour
             yield return new WaitForSeconds(defaultDelay);
 
             GameObject enemy = Instantiate(enemyList.GetEnemy(spawnSet[i]), spawnPoint.transform.position, spawnPoint.transform.rotation);
+            enemySpawned(enemy.GetComponent<EnemyBehavior>());
             
             //for nav mesh test
             if (currentLevelInfo.Name == "NavTestScene")
