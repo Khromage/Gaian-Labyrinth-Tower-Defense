@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -854023295297194275}
   - component: {fileID: 2306761962504678061}
   m_Layer: 2
-  m_Name: WindBladeTower
+  m_Name: WindTower
   m_TagString: towerbuilding
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,7 +209,7 @@ MonoBehaviour:
   InteractionIndicator: {fileID: 5392681474844564774}
   partToRotate: {fileID: 576702084041083807}
   turnSpeed: 5
-  projectilePrefab: {fileID: 9032314768855207869, guid: e7ffea71e05729b40b818fd19e60247d, type: 3}
+  projectilePrefab: {fileID: 1248641760893778226, guid: b73e3ea0dea70354185f63e2f979be2e, type: 3}
   firePoint: {fileID: 6788566222244839869}
   enemies: []
   detectionZone: {fileID: 0}
@@ -224,6 +224,11 @@ MonoBehaviour:
   currentLevel: 1
   currentBranch: 0
   gridLocation: {fileID: 0}
+  lv1_duration: 1
+  lv2_duration: 3
+  duration: 0
+  bladePrefab: {fileID: 1248641760893778226, guid: e7ffea71e05729b40b818fd19e60247d, type: 3}
+  tornadoPrefab: {fileID: 1248641760893778226, guid: 87d516e88cbb4fb4b844f7391dbd6ae8, type: 3}
 --- !u!1 &2660176201313847061
 GameObject:
   m_ObjectHideFlags: 0

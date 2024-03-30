@@ -23,4 +23,16 @@ public class LoadoutManager : SpawnableSingleton<LoadoutManager>
             return SaveManager.Instance.EquippedTowerIDs;
         }
     }
+    public int[] GetWeaponLoadout()
+    {
+        if (EquippedWeaponIDs != null)
+        {
+            return EquippedWeaponIDs;
+        }
+        else
+        {
+            Debug.Log("Attempted to grab Weapon Loadout from LoadoutManager, but no loadout initialized, so grabbing SaveManager's instead.");
+            return SaveManager.Instance.EquippedWeaponIDs;
+        }
+    }
 }

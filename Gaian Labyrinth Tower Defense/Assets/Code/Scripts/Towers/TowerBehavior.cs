@@ -36,7 +36,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public Transform partToRotate;
     public float turnSpeed = 5f;
 
-    public ProjectileBehavior projectilePrefab;
+    public GameObject projectilePrefab;
     public Transform firePoint;
 
     public List<GameObject> enemies = new List<GameObject>();
@@ -314,7 +314,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     //Specific attack behaviors based on level/branch. To be overridden by specific tower behaviors. 
     protected virtual void lv1_Attack()
     {
-        ProjectileBehavior projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as ProjectileBehavior;
+        ProjectileBehavior projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation).GetComponent<ProjectileBehavior>();
         projectile.damage = damage;
         Debug.Log($"projectile damage: {damage}");
         if (projectile != null)

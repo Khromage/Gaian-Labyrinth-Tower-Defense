@@ -18,6 +18,6 @@ MonoBehaviour:
   <Automatic>k__BackingField: 1
   <ProjectileRange>k__BackingField: 9
   Prefab: {fileID: 1864724351924341100, guid: f4a358b4967485f40b7b05240f2451f1, type: 3}
-  <Icon>k__BackingField: {fileID: 21300000, guid: 7551655953b14e74383cfa90565498d9, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: ace5e3fa7ee46c94f9a3fd0246133280, type: 3}
   <Description>k__BackingField: Unleash innumerable homing fireflies.
   <Upgrades>k__BackingField: []

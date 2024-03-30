@@ -165,7 +165,9 @@ public class Player : UnitBehavior
         goingToBuildMode = false;
 
         towerSet = new GameObject[6];
+        weaponSet = new GameObject[3];
         FillLoadout();
+        currentWeapon = Instantiate(weaponSet[0], weaponHolder.transform.position, weaponHolder.transform.rotation, weaponHolder.transform);
 
         InitializeKeybinds();
 
@@ -574,19 +576,19 @@ public class Player : UnitBehavior
         {
             armAnimator.SetBool("Build Mode", false);
 
-            //update this to use weapon ID's from the weaponSet SO's WeaponDataSet
-            switch (currentWeaponIndex)
+            //update this to use weapon ID's from the WeaponList SO's WeaponDataSet
+            switch (weaponSet[currentWeaponIndex].GetComponent<Weapon>().weaponInfo.name)
             {
-                case 0:
+                case "ArcaneShot":
                     armAnimator.SetBool("Arcane Equipped", true);
                     break;
-                case 1:
+                case "Lantern":
                     armAnimator.SetBool("Lantern Equipped", true);
                     break;
-                case 2:
+                case "Heatray":
                     armAnimator.SetBool("Heatray Equipped", true);
                     break;
-                case 3:
+                case "Arcshatter":
                     armAnimator.SetBool("Arcshatter Equipped", true);
                     break;
             }
@@ -873,12 +875,8 @@ public class Player : UnitBehavior
     }   
     */
 
-    public void GainCurrency(EnemyBehavior enemyWhoDied)
-    {
-        UpdateCurrency(enemyWhoDied.worth);
-    }
 
-    private void UpdateCurrency(int val)
+    public void UpdateCurrency(int val)
     {
         currency += val;
         LevelManager.Instance.Currency = currency;
