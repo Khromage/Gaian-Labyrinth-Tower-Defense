@@ -167,7 +167,6 @@ public class Player : UnitBehavior
         towerSet = new GameObject[6];
         weaponSet = new GameObject[3];
         FillLoadout();
-        currentWeapon = Instantiate(weaponSet[0], weaponHolder.transform.position, weaponHolder.transform.rotation, weaponHolder.transform);
         lastWeapon = currentWeapon;
 
         InitializeKeybinds();
@@ -184,14 +183,15 @@ public class Player : UnitBehavior
         
         getUserKeyMenu();
         updateAnimationState();
+        playerSpeedControl();
         
         // Check if NOT in menu mode
 
         if(currentMode != playerMode.Menu)
         {
             getUserKey();
+            movePlayer();
             checkInteractable();
-            playerSpeedControl();
         }
 
         //setGravityDir();  // this call was to UnitBehavior function using raycast to determine gravity dir. unused
@@ -209,7 +209,6 @@ public class Player : UnitBehavior
 
     public void FixedUpdate()
     {
-        movePlayer();
     }
     
     private void OnEnable()
@@ -647,13 +646,13 @@ public class Player : UnitBehavior
         moveDirection = Vector3.Cross(orientation.right, -currGravDir) * verticalInput 
             + Vector3.Cross(-currGravDir, orientation.forward) * horizontalInput;
 
-        rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        rb.AddForce(moveDirection.normalized * moveSpeed * 1000f * Time.deltaTime, ForceMode.Force);
 
         //if on the ground
         if (grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * moveSpeed * 1000f * Time.deltaTime, ForceMode.Force);
         else if (!grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * moveSpeed * 1000f * airMultiplier * Time.deltaTime, ForceMode.Force);
     }
 
     //Method to set a limit to the players velocity

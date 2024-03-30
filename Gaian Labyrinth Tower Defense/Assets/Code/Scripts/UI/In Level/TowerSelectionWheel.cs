@@ -40,7 +40,7 @@ public class TowerSelectionWheel : MonoBehaviour
         for(int i=0; i < TowerSelectionSlots.Length; i++)
         {
             // if there is a tower in the slot, fill in icon image
-            if(EquippedTowerIDs[i] != 1)
+            if(EquippedTowerIDs[i] != -1)
             {
                 // enable icon
                 TowerSelectionSlots[i].transform.GetChild(1).GetChild(0).GetChild(0).gameObject.SetActive(true);
