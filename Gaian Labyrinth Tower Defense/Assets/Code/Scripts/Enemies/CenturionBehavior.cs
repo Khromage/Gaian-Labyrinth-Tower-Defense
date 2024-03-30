@@ -34,7 +34,7 @@ public class CenturionBehavior : EnemyBehavior
         if (currentStatus == status.Head)
         {
             segmentNum = 0;
-            Debug.Log("am a head");
+            //Debug.Log("am a head");
             GetComponent<Rigidbody>().isKinematic = true;
             StartCoroutine(spawnBody(bodySegmentCount));
         }
@@ -57,7 +57,7 @@ public class CenturionBehavior : EnemyBehavior
         //if prevSegment becomes null / dies, then this segment becomes a head
         if (!prevSegment)
         {
-            Debug.Log("prev segment is null, making this a head");
+            //Debug.Log("prev segment is null, making this a head");
             BecomeHead();
         }
     }
@@ -85,8 +85,8 @@ public class CenturionBehavior : EnemyBehavior
             prev = currB.GetComponent<CenturionBehavior>();
             spawned++;
             segmentNum = spawned;
-            Debug.Log($"segment {segmentNum}'s prevSegment = {currB.GetComponent<CenturionBehavior>().prevSegment}");
-            Debug.Log($"segment {segmentNum}'s spring's connected body = {currB.GetComponent<SpringJoint>().connectedBody}");
+            //Debug.Log($"segment {segmentNum}'s prevSegment = {currB.GetComponent<CenturionBehavior>().prevSegment}");
+            //Debug.Log($"segment {segmentNum}'s spring's connected body = {currB.GetComponent<SpringJoint>().connectedBody}");
             yield return new WaitForSeconds(.05f);
         }
     }

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Unity.VisualScripting;
 
 public class TowerSelectionWheel : MonoBehaviour
 {
@@ -20,9 +22,15 @@ public class TowerSelectionWheel : MonoBehaviour
     private int hoveredSlot;
 
     [SerializeField]
-    private GameObject BackToCombatLayout;
+    private GameObject BackToGameLayout;
     [SerializeField]
     private GameObject HoveredTowerLayout;
+
+    public TMP_Text hoveredName;
+    public Image hoveredIcon;
+    public TMP_Text hoveredDescription;
+    public TMP_Text hoveredCost;
+
     
     // Start is called before the first frame update
     void Start()
@@ -44,27 +52,46 @@ public class TowerSelectionWheel : MonoBehaviour
         }
     }
     
-    
     // Update is called once per frame
     void Update()
     {
         
     }
 
+    public void HighlightCenterTile(GameObject centerTile)
+    {
+        HoveredTowerLayout.SetActive(false);
+        BackToGameLayout.SetActive(true);
+
+        centerTile.transform.localScale *= 1.05f;
+        hoveredSlot = -1;
+    }
+
+    public void UnHighlightCenterTile(GameObject centerTile)
+    {
+        centerTile.transform.localScale /= 1.05f;
+    }
+    
+    
     // called when player cursor hovers a section of the screen corresponding to a slot
     public void HighlightSlot(GameObject Slot)
     {
+        BackToGameLayout.SetActive(false);
+        HoveredTowerLayout.SetActive(true);
+        
         Slot.transform.localScale *= 1.1f;
         hoveredSlot = Array.IndexOf(TowerSelectionSlots, Slot.transform.parent.gameObject);
-        // Debug.Log("hovered slot index: " + hoveredSlot);
-        // Debug.Log("selected slot: " + Slot.name);
+        
+        hoveredName.text = towerList.GetTowerName(EquippedTowerIDs[hoveredSlot]);
+        hoveredIcon.sprite = towerList.GetTowerIcon(EquippedTowerIDs[hoveredSlot]);
+        hoveredDescription.text = towerList.GetTowerDescription(EquippedTowerIDs[hoveredSlot]);
+        hoveredCost.text = "Cost: " + towerList.GetTowerCost(EquippedTowerIDs[hoveredSlot]);
     }
 
     // called when the cursor leaves the slot area to reset hovered slot
     public void UnHighlightSlot(GameObject Slot)
     {
         Slot.transform.localScale /= 1.1f;
-        hoveredSlot = -1;
         // Debug.Log("Mouse exited Tower Selection Slot. Resetting scale");
     }
 
@@ -76,6 +103,8 @@ public class TowerSelectionWheel : MonoBehaviour
 
     void OnEnable()
     {
+        HighlightCenterTile(BackToGameLayout);
+
     }
 
     void OnDisable()

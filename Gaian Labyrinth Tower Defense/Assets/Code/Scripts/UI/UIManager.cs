@@ -78,27 +78,27 @@ public class UIManager : MonoBehaviour
     private void SetMainMenuUI()
     {
         ClearUI();
-        Debug.Log("UI CLEARED");
+        //Debug.Log("UI CLEARED");
         MainMenuModule.SetActive(true);
         currentModule = MainMenuModule;
-        Debug.Log("Main Menu UI SET");
+        //Debug.Log("Main Menu UI SET");
 
     }
     private void SetCampaignUI()
     {
         ClearUI();
-        Debug.Log("UI CLEARED");
+        //Debug.Log("UI CLEARED");
         CampaignMenuModule.SetActive(true);
         currentModule = CampaignMenuModule;
-        Debug.Log("Campaign UI SET");
+        //Debug.Log("Campaign UI SET");
     }
     private void SetLevelUI()
     {
         ClearUI();
-        Debug.Log("UI CLEARED");
+        //Debug.Log("UI CLEARED");
         LevelModule.SetActive(true);
         currentModule = LevelModule;
-        Debug.Log("LEVEL UI SET");
+        //Debug.Log("LEVEL UI SET");
     }
 
     private void ClearUI()
@@ -106,7 +106,7 @@ public class UIManager : MonoBehaviour
         if (currentModule != null)
         {
             currentModule.SetActive(false);
-            Debug.Log("Module Destroyed");
+            //Debug.Log("Module Destroyed");
             currentModule = null;
         }
     }

@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 400, y: 50}
+  m_SizeDelta: {x: 400, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9129346904431434176
 CanvasRenderer:
@@ -92,12 +92,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 43.85
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -143,6 +143,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5826249829515718836}
+  - component: {fileID: 7152571503163937317}
   m_Layer: 0
   m_Name: Center Info Tile
   m_TagString: Untagged
@@ -167,6 +168,51 @@ Transform:
   - {fileID: 9136189340476422024}
   m_Father: {fileID: 4095666991555722661}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7152571503163937317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4027016280300581349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1373528926285507219}
+          m_TargetAssemblyTypeName: TowerSelectionWheel, Assembly-CSharp
+          m_MethodName: HighlightCenterTile
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 4027016280300581349}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1373528926285507219}
+          m_TargetAssemblyTypeName: TowerSelectionWheel, Assembly-CSharp
+          m_MethodName: UnHighlightCenterTile
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 4027016280300581349}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &4071053109782570394
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7829328973929567731
 RectTransform:
   m_ObjectHideFlags: 0
@@ -634,8 +680,12 @@ MonoBehaviour:
   - {fileID: 6580622061283171980}
   - {fileID: 599425005416178353}
   hoveredSlot: 0
-  BackToCombatLayout: {fileID: 7650751345142142409}
+  BackToGameLayout: {fileID: 7650751345142142409}
   HoveredTowerLayout: {fileID: 4319505862361847975}
+  hoveredName: {fileID: 206696004707291797}
+  hoveredIcon: {fileID: 6821487150970390707}
+  hoveredDescription: {fileID: 1832787163948729790}
+  hoveredCost: {fileID: 2127763744701527824}
 --- !u!1 &7650751345142142409
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,12 +696,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4481038961543137728}
   m_Layer: 0
-  m_Name: Back to Combat Mode Layout
+  m_Name: Back to Game Layout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4481038961543137728
 Transform:
   m_ObjectHideFlags: 0
@@ -867,7 +917,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Back To Combat Mode
+  m_text: Cancel
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cd12a0b7fb95b4e2493fc0ea8c55ce68, type: 2}
   m_sharedMaterial: {fileID: -2623980622689993115, guid: cd12a0b7fb95b4e2493fc0ea8c55ce68, type: 2}
@@ -894,12 +944,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 67.65
+  m_fontSize: 100
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 80
+  m_fontSizeMax: 100
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512

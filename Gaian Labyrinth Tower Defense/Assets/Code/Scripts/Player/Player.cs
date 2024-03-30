@@ -27,8 +27,7 @@ public class Player : UnitBehavior
     public delegate void AdjustMana(float newAmount, float maxMana, bool animate);
     public static event AdjustMana OnAdjustMana;
 
-    public delegate void TowerSelect(int index, GameObject towerObj);
-    public static event TowerSelect OnTowerSelect;
+
 
     public delegate void EnterCombatMode(int weaponIndex);
     public static event EnterCombatMode OnEnterCombatMode;
@@ -403,10 +402,10 @@ public class Player : UnitBehavior
         }
 
         // Check if the key is being held down AND if the Tower Wheel has not opened yet
-        if (isTowerKeyPressed && !isTowerWheelOpen && (Time.time - TowerWheelOpenTime) > 0.1f)
+        if (isTowerKeyPressed && !isTowerWheelOpen && ((Time.time - TowerWheelOpenTime) > 0.1f) )
         {
-            OpenTowerSelectionWheel();
             isTowerWheelOpen = true;
+            OpenTowerSelectionWheel();
         }
 
         // Check if the Q key is released
@@ -418,9 +417,12 @@ public class Player : UnitBehavior
             {
                 // Key was released before 0.05 seconds
                 SwapMode();
+                Debug.Log("Q RELEASED AFTER " + (Time.time - TowerWheelOpenTime) + " TIME AND MODE SWAPPED");
+
             } else
             {
                 CloseTowerSelectionWheel();
+                Debug.Log("Q RELEASED AFTER " + (Time.time - TowerWheelOpenTime) + " TIME AND TOWER SELECTION WHEEL CLOSED");
             }
             // Reset the flag when the key is released
             isTowerWheelOpen = false;

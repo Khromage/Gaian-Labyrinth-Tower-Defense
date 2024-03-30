@@ -141,8 +141,13 @@ public class TowerBehavior : MonoBehaviour, Interactable
             string printstuff = "";
             foreach(GameObject enemy in enemies)
             {
+                if(enemy == null)
+                {
+                    enemies.RemoveAll(nullEnemy => nullEnemy == null);
+                    return;
+                } else {
                 printstuff += enemy.name;
-                    
+                }
             }
             Debug.Log(printstuff);
             switch (targetingMode)
