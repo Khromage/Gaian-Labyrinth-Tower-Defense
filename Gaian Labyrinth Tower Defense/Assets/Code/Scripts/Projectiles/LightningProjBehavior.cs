@@ -26,14 +26,14 @@ public class LightningProjBehavior : TrackingBulletBehavior
         prevTarget = transform;
         visualObjParent = new GameObject("Lightning bolt visuals");
         //visualObj = visualObjParent;
-        Debug.Log($"pierceAMT: {pierceAMT}, before any chaining, in Start");
+        //Debug.Log($"pierceAMT: {pierceAMT}, before any chaining, in Start");
         for (int remChain = pierceAMT; remChain >= 0; remChain--)
         {
             //should only instantiate visual if there is a nearby target
             if (target)
             {
                 //instantiate the visual
-                Debug.Log($"Instantiating visual lightning bolt. {remChain} more enemies to hit");
+                //Debug.Log($"Instantiating visual lightning bolt. {remChain} more enemies to hit");
                 visualObj = Instantiate(arcVisual, transform.position, transform.rotation, visualObjParent.transform);
                 Destroy(visualObj, .5f);
 
@@ -53,42 +53,11 @@ public class LightningProjBehavior : TrackingBulletBehavior
             }
             
         }
-
-        //for the dumb implementation
-        //timer = .2f;
-        //origPos = transform.localPosition;
     }
+
     // Update is called once per frame
     protected override void Update()
     {
-        //rotate each visual, starting from parent
-        
-
-
-        //lightning arc
-
-
-        /* DUMB IMPLEMENTATION. proj travels and shifts laterally a lot while leaving a trail
-        base.Update();
-        timer -= Time.deltaTime;
-
-        /*
-        if (timer <= 0)
-        {
-            timer = Random.value * .01f;
-            timeCap = timer;
-            origPos = new Vector3(sphereProj.transform.localPosition.x, sphereProj.transform.localPosition.y);
-            lateralTarget = Random.insideUnitCircle * .5f;
-            Debug.Log($"outer pos: {transform.position}");
-            Debug.Log($"inner pos: {sphereProj.transform.position}");
-            Debug.Log($"inner localpos: {sphereProj.transform.localPosition}");
-        }
-        
-
-        //sphereProj.transform.localPosition = Vector3.Lerp(origPos, lateralTarget, timer / timeCap);
-        sphereProj.transform.localPosition = Random.insideUnitCircle * .6f;
-        */
-
-
+        //nothing here
     }
 }
