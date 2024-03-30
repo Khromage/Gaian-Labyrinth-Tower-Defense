@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class LightningTowerBehavior : TowerBehavior
 {
+    [SerializeField]
+    private GameObject strikeProj;
+    [SerializeField]
+    private GameObject pulseProj;
 
     private int chainCount;
 
@@ -29,25 +33,26 @@ public class LightningTowerBehavior : TowerBehavior
         if (projectile != null)
             projectile.SetTarget(target.transform);
         projectile.targeting = targetingMode;
-
-        Debug.Log($"lightning proj chainCount: {chainCount}");
-        Debug.Log($"lightning proj pierceAMT: {projectile.GetComponent<LightningProjBehavior>().pierceAMT}");
-        Debug.Log($"lightning proj target: {projectile.GetComponent<LightningProjBehavior>().target}");
-
-
-        //IN ArcBehavior
-        //call GetTargetInfo(); //for scanning and changing target
-        //foreach pierce, instantiate a visual toward target, hit the target enemy, if(i>0) find next target
-        //Or instead:
-        //if pierce > 0, get new target, make a new guy aiming at new target (and pass the HitEnemies List) with -1 pierceAMT
+    }
+    protected override void lv3_3_Attack()
+    {
+        GameObject pulse = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        pulse.transform.localScale = Vector3.one * range;
+        Destroy(pulse, fireRate / 4f);
+        
+        foreach (Collider e in Physics.OverlapSphere(firePoint.position, range))
+        {
+            if (e.CompareTag("Enemy"))
+            {
+                e.GetComponent<EnemyBehavior>().takeDamage(damage, pulse);
+            }
+        }
     }
 
     //better arc
     protected override void lv2_upgrade()
     {
         base.lv2_upgrade();
-        damage = 10f;
-        fireRate = 1.5f;
         chainCount = 3;
     }
 
@@ -55,24 +60,21 @@ public class LightningTowerBehavior : TowerBehavior
     protected override void lv3_1_upgrade()
     {
         base.lv3_1_upgrade();
-        damage = 14f;
-        fireRate = 2f;
         chainCount = 4;
     }
     //lightning strike
     protected override void lv3_2_upgrade()
     {
         base.lv3_2_upgrade();
-        damage = 25f;
         chainCount = 0;
+        projectilePrefab = strikeProj;
     }
     //static/ball lightning 
     protected override void lv3_3_upgrade()
     {
         base.lv3_3_upgrade();
-        damage = 2f;
-        fireRate = 4f;
-        chainCount = 1;
+        chainCount = 0;
+        projectilePrefab = pulseProj;
     }
 
 }

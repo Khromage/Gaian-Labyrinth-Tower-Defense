@@ -10,9 +10,6 @@ public class LightningArcBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (root exists, shift my position to match the root.
-        //if the target exists, rotate towards it.
-        //if either don't exist, destroy me after .1s maybe? (shoulnd't be instant in case this killed the enemy. still need a visual to exist at some point)
         FitTransform();
     }
 
@@ -28,7 +25,8 @@ public class LightningArcBehavior : MonoBehaviour
             transform.position = root.position;
 
             vectorTowardTarget = target.position - transform.position;
-            Debug.Log($"Vector toward target: {vectorTowardTarget}");
+            //Debug.Log($"Vector toward target: {vectorTowardTarget}");
+
             //rotate toward target
             transform.rotation = Quaternion.LookRotation(vectorTowardTarget, transform.up);
             //scale to target
@@ -36,6 +34,7 @@ public class LightningArcBehavior : MonoBehaviour
         }
     }
 
+    //get initial start and end points
     public void SetStartAndEnd(Transform root, Transform target)
     {
         this.root = root;
