@@ -168,6 +168,7 @@ public class Player : UnitBehavior
         weaponSet = new GameObject[3];
         FillLoadout();
         currentWeapon = Instantiate(weaponSet[0], weaponHolder.transform.position, weaponHolder.transform.rotation, weaponHolder.transform);
+        lastWeapon = currentWeapon;
 
         InitializeKeybinds();
 
