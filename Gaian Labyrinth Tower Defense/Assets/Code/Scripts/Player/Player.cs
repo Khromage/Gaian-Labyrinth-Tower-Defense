@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Video;
@@ -23,17 +24,20 @@ public class Player : UnitBehavior
     public delegate void AdjustHealth(float diff, bool animate);
     public static event AdjustHealth OnAdjustHealth;
 
-    public delegate void AdjustMana(float newAmount, bool animate);
+    public delegate void AdjustMana(float newAmount, float maxMana, bool animate);
     public static event AdjustMana OnAdjustMana;
 
-    public delegate void TowerSelect(int index, GameObject towerObj);
-    public static event TowerSelect OnTowerSelect;
+
 
     public delegate void EnterCombatMode(int weaponIndex);
     public static event EnterCombatMode OnEnterCombatMode;
 
     public delegate void SwapWeaponEvent(int newIndex);
     public static event SwapWeaponEvent OnSwapWeapon;
+
+    public delegate void TowerSelection();
+    public static event TowerSelection OnTowerSelectionOpened;
+    public static event TowerSelection OnTowerSelectionClosed;
 
     //Variables to control and determine player's jumping abiltiy
     [Header("Movement")]
@@ -56,8 +60,8 @@ public class Player : UnitBehavior
     public KeyCode prevWeaponKey;
     //Build Mode
     public KeyCode modeChangeKey;
-    public KeyCode[] towerKeys;
-    public KeyCode sellKey;
+    public KeyCode towerSelectionKey;
+    public KeyCode[] weaponKeys;
     public KeyCode[] updatePathKeys;
 
 
@@ -96,7 +100,6 @@ public class Player : UnitBehavior
     public GameObject towerDisplayPrefab;
     private GameObject tempDisplayHolder;
     private GridTile highlightedTile;
-
     public static int currency { get; private set; }
 
     bool colerable = false;
@@ -108,9 +111,11 @@ public class Player : UnitBehavior
     public GameObject InteractionPoint;
 
     [Header("Weapon List")]
+    [SerializeField]
+    private WeaponList weaponList;
     public GameObject weaponHolder;
     public GameObject currentWeapon;
-    public WeaponList weaponList;
+    public GameObject lastWeapon;
     public GameObject[] weaponSet;
     private int currentWeaponIndex = 0;
 
@@ -121,6 +126,11 @@ public class Player : UnitBehavior
     public GameObject[] towerSet;
     public GameObject ctDisplay;
 
+    private bool isTowerKeyPressed = false;
+    private bool isTowerWheelOpen = false;
+    private float TowerWheelOpenTime;
+
+    private bool goingToBuildMode;
     public Animator armAnimator;
 
     //The Modes the Player will be in, Combat = with weapons, Build = ability to edit towers
@@ -151,29 +161,37 @@ public class Player : UnitBehavior
         health = maxHealth;
         maxMana = 100f;
         mana = maxMana;
-        manaRegenRate = 30f;
+        manaRegenRate = 5f;
+        goingToBuildMode = false;
 
         towerSet = new GameObject[6];
         weaponSet = new GameObject[3];
         FillLoadout();
-        currentWeapon = Instantiate(weaponSet[0], weaponHolder.transform.position, weaponHolder.transform.rotation, weaponHolder.transform);
+        lastWeapon = currentWeapon;
 
         InitializeKeybinds();
+
+        currentMode = playerMode.Combat;
+        lastMode = playerMode.Build;
     }
 
     //Method to be checked on every frame of the game
     public void Update() 
      {
         setVelocityComponents();
-
+        regenMana();
+        
+        getUserKeyMenu();
+        updateAnimationState();
+        playerSpeedControl();
+        
         // Check if NOT in menu mode
 
         if(currentMode != playerMode.Menu)
         {
-            checkInteractable();
             getUserKey();
-            updateAnimationState();
-            playerSpeedControl();
+            movePlayer();
+            checkInteractable();
         }
 
         //setGravityDir();  // this call was to UnitBehavior function using raycast to determine gravity dir. unused
@@ -191,8 +209,6 @@ public class Player : UnitBehavior
 
     public void FixedUpdate()
     {
-        regenMana();
-        movePlayer();
     }
     
     private void OnEnable()
@@ -202,6 +218,7 @@ public class Player : UnitBehavior
         LevelModule.OnMenuOpened += EnterMenuMode;
         LevelModule.OnMenuClosed += ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell += UpdateCurrency;
+        TowerSelectionWheel.OnTowerSelected += TowerSelected;
     }
 
     private void OnDisable()
@@ -211,6 +228,7 @@ public class Player : UnitBehavior
         LevelModule.OnMenuOpened -= EnterMenuMode;
         LevelModule.OnMenuClosed -= ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell -= UpdateCurrency;
+        TowerSelectionWheel.OnTowerSelected -= TowerSelected;
     }
 
     private void EnterMenuMode()
@@ -223,12 +241,23 @@ public class Player : UnitBehavior
 
     private void ExitMenuMode()
     {
-        currentMode = (playerMode)lastMode;
-        lastMode = null;
+        if(goingToBuildMode)
+        {
+            currentMode = playerMode.Build;
+            goingToBuildMode = false;
+        } else {
+            currentMode = playerMode.Combat;
+        }
+
+        // set lastMode accordingly to allow Q tap mode switching to work
+        if(currentMode == playerMode.Combat)
+            lastMode = playerMode.Build;
+        if(currentMode == playerMode.Build)
+            lastMode = playerMode.Combat;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-
 
     public playerMode checkCurrentMode()
     {
@@ -244,11 +273,42 @@ public class Player : UnitBehavior
         // Combat
         nextWeaponKey = defaultKeybinds.nextWeaponKey;
         prevWeaponKey = defaultKeybinds.prevWeaponKey;
+        weaponKeys = defaultKeybinds.weaponKeys;
         //Build Mode
         modeChangeKey = defaultKeybinds.modeChangeKey;
-        towerKeys = defaultKeybinds.towerKeys;
-        sellKey = defaultKeybinds.sellKey;
+        towerSelectionKey = defaultKeybinds.towerSelectionKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
+    }
+
+    private void SwapMode()
+    {
+        
+        currentMode = (playerMode)lastMode;
+
+        // going to Combat mode
+        if(currentMode == playerMode.Combat)
+        {
+            lastMode = playerMode.Build;
+
+            if (tempDisplayHolder != null)
+                Destroy(this.tempDisplayHolder);
+            if (highlightedTile != null)
+                highlightedTile.highlight(false);
+            
+            currentWeapon.SetActive(true);
+            toggleTowerDisplay(currentTower, false);
+            
+            OnEnterCombatMode?.Invoke(currentWeaponIndex);
+        }
+
+        // going to Build mode
+        if(currentMode == playerMode.Build)
+        {
+            lastMode = playerMode.Combat;
+
+            currentWeapon.SetActive(false);
+            toggleTowerDisplay(currentTower, true);
+        }
     }
 
     //Getting WASD and jump inputs
@@ -286,64 +346,36 @@ public class Player : UnitBehavior
             Invoke(nameof(resetJump), jumpCooldown);
         }
 
+
         /***
             Setting player mode (Combat/Build/Menu)
         ***/
 
-        // Change selected tower and set Build Mode
-        for (int i = 0; i < towerKeys.Length; i++)
-        {
-            if (Input.GetKeyDown(towerKeys[i])) 
-            {
-                if (towerSet[i] != null)
-                {
-                    currentTower = towerSet[i];
-                    OnTowerSelect?.Invoke(i, towerSet[i]);
-                    Debug.Log("Tower Slot " + (i+1) + "Chosen");
-                    currentMode = playerMode.Build;
-
-                    currentWeapon.SetActive(false);
-                    toggleTowerDisplay(currentTower, true);
-                } else 
-                {
-                    Debug.Log("No tower in slot " + (i+1));
-                }
-            }
-        }
-        
-        if ( (Input.GetKeyDown(sellKey)))
-        {
-            currentTower = null;
-            currentMode = playerMode.Sell;
-        }
 
         // Change chosen weapon and set Combat mode
         if (Input.GetKeyDown(nextWeaponKey))
         {
-            currentWeapon.SetActive(true);
-            toggleTowerDisplay(currentTower, false);
-
+            if(currentMode == playerMode.Build)
+                SwapMode();
             SwapWeapon(nextWeaponKey);
-            currentMode = playerMode.Combat;
-            if (tempDisplayHolder != null)
-                Destroy(this.tempDisplayHolder);
-            if (highlightedTile != null)
-                highlightedTile.highlight(false);
-            OnEnterCombatMode?.Invoke(currentWeaponIndex);
-        } 
-        else if (Input.GetKeyDown(prevWeaponKey))
-        {
-            currentWeapon.SetActive(true);
-            toggleTowerDisplay(currentTower, false);
-
-            SwapWeapon(prevWeaponKey);
-            currentMode = playerMode.Combat;
-            if (tempDisplayHolder != null)
-                Destroy(this.tempDisplayHolder);
-            if (highlightedTile != null)
-                highlightedTile.highlight(false);
-            OnEnterCombatMode?.Invoke(currentWeaponIndex);  
         }
+
+        for (int i = 0; i < weaponKeys.Length; i++)
+        {
+            if (Input.GetKeyDown(weaponKeys[i])) 
+            {
+                if (weaponSet[i] != null)
+                {
+                    if(currentMode == playerMode.Build)
+                        SwapMode();
+                    SwapWeapon(weaponKeys[i]);
+                } else 
+                {
+                    Debug.Log("No weapon in slot " + (i+1));
+                }
+            }
+        }
+
 
         // Player uses interaction key. If menu opens, set menu mode.
         if(Input.GetKeyDown(interactKey))
@@ -361,6 +393,71 @@ public class Player : UnitBehavior
 
     }
 
+    private void getUserKeyMenu()
+    {
+        // Check if the Q key is pressed down
+        if (Input.GetKeyDown(towerSelectionKey))
+        {
+            isTowerKeyPressed = true;
+            isTowerWheelOpen = false;
+            TowerWheelOpenTime = Time.time;
+        }
+
+        // Check if the key is being held down AND if the Tower Wheel has not opened yet
+        if (isTowerKeyPressed && !isTowerWheelOpen && ((Time.time - TowerWheelOpenTime) > 0.1f) )
+        {
+            isTowerWheelOpen = true;
+            OpenTowerSelectionWheel();
+        }
+
+        // Check if the Q key is released
+        if (Input.GetKeyUp(towerSelectionKey))
+        {
+            isTowerKeyPressed = false;
+
+            if (!isTowerWheelOpen)
+            {
+                // Key was released before 0.05 seconds
+                SwapMode();
+                Debug.Log("Q RELEASED AFTER " + (Time.time - TowerWheelOpenTime) + " TIME AND MODE SWAPPED");
+
+            } else
+            {
+                CloseTowerSelectionWheel();
+                Debug.Log("Q RELEASED AFTER " + (Time.time - TowerWheelOpenTime) + " TIME AND TOWER SELECTION WHEEL CLOSED");
+            }
+            // Reset the flag when the key is released
+            isTowerWheelOpen = false;
+        }
+    }
+
+    private void TowerSelected(int towerSlotIndex)
+    {
+        if(towerSlotIndex != -1)
+        {
+            goingToBuildMode = true;
+            
+            Debug.Log("Player received towerSlotIndex == " + towerSlotIndex);
+            Debug.Log("Current PlayerMode: " + currentMode.ToString());
+            Debug.Log("Last PlayerMode: " + lastMode.ToString());
+
+            changeTower(towerSlotIndex);
+        }
+    }
+
+
+
+    private void OpenTowerSelectionWheel()
+    {
+        // send event to LevelModule to enable TowerSelectionWheel UI Module
+        OnTowerSelectionOpened?.Invoke();
+    }
+
+    private void CloseTowerSelectionWheel()
+    {
+        // send event to LevelModule to dsable TowerSelectionWheel UI Module
+        OnTowerSelectionClosed?.Invoke();
+    }
     private void checkInteractable()
     {
         // Visualization for raycast debugging
@@ -450,7 +547,7 @@ public class Player : UnitBehavior
         }
 
         if (Mathf.Abs(changeAmount) > 0)
-            OnAdjustMana?.Invoke(mana, animated);
+            OnAdjustMana?.Invoke(mana, maxMana, animated);
     }
 
     private void updateAnimationState()
@@ -498,6 +595,25 @@ public class Player : UnitBehavior
         }
     }
 
+    private void changeTower(int selectedTowerIndex)
+    {
+        if (towerSet[selectedTowerIndex] != null)
+            {
+                currentTower = towerSet[selectedTowerIndex];
+                currentMode = playerMode.Build;
+
+                Debug.Log("Player Mode set to Build");
+                Debug.Log("Current PlayerMode: " + currentMode.ToString());
+                Debug.Log("Last PlayerMode: " + lastMode.ToString());
+
+                currentWeapon.SetActive(false);
+                toggleTowerDisplay(currentTower, true);
+            } else 
+            {
+                Debug.Log("ERROR WHEN ACCESSING towerSet[slotIndex]");
+            }
+    }
+
     //re-generates the tiny tower model on your hand. called when entering build mode. (or exiting, in which case just sets inactive)
     private void toggleTowerDisplay(GameObject currentTower, bool turnOn)
     {
@@ -530,13 +646,13 @@ public class Player : UnitBehavior
         moveDirection = Vector3.Cross(orientation.right, -currGravDir) * verticalInput 
             + Vector3.Cross(-currGravDir, orientation.forward) * horizontalInput;
 
-        rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        rb.AddForce(moveDirection.normalized * moveSpeed * 1000f * Time.deltaTime, ForceMode.Force);
 
         //if on the ground
         if (grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * moveSpeed * 1000f * Time.deltaTime, ForceMode.Force);
         else if (!grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * moveSpeed * 1000f * airMultiplier * Time.deltaTime, ForceMode.Force);
     }
 
     //Method to set a limit to the players velocity
@@ -561,7 +677,6 @@ public class Player : UnitBehavior
     {
         readyToJump = true;
     }
-
 
     protected override void beginRotation(Transform gravSource)
     {
@@ -639,17 +754,16 @@ public class Player : UnitBehavior
     private void SwapWeapon(KeyCode input)
     {
 
+        currentWeapon.SetActive(true);
+        toggleTowerDisplay(currentTower, false);
+
         if (input == nextWeaponKey)
         {
             currentWeaponIndex++;
             if (currentWeaponIndex >= (weaponSet.Length))
                 currentWeaponIndex = 0;
-        }
-        if (input == prevWeaponKey)
-        {
-            currentWeaponIndex--;
-            if (currentWeaponIndex < 0)
-                currentWeaponIndex = weaponSet.Length - 1;
+        } else{
+            currentWeaponIndex = Array.IndexOf(weaponKeys, input);
         }
 
         //in the hierarchy, the 1st weapon was originally at: .411, .121, 0
@@ -787,9 +901,37 @@ public class Player : UnitBehavior
         //fill in the active weapon slots with their respective weapon icons...
         for (int i = 0; i < weaponSet.Length; i++)
         {
+            if(weaponLoadout[i] != -1)
+                weaponSet[i] = weaponList.GetWeapon(i);
+            
             //SSS fill in the weapons from save data
-            if (weaponLoadout[i] != -1) // -1 is the default/empty value
-                weaponSet[i] = weaponList.WeaponDataSet[towerLoadout[i]].Prefab;
+            // if (weaponLoadout[i] != -1) // -1 is the default/empty value
+                // weaponSet[i] = weaponList.WeaponDataSet[towerLoadout[i]].Prefab;
+        }
+
+
+        // setting initial/default equips
+        bool filledTowerSlot = false;
+        int j = 0;
+        while(!filledTowerSlot && j < towerSet.Length)
+        {
+            if(towerSet[j] != null)
+            {
+                filledTowerSlot = true;
+                currentTower = towerSet[j];
+            }
+            j++;
+        }
+        bool filledWeaponSlot = false;
+        int k = 0;
+        while(!filledWeaponSlot && k < weaponSet.Length)
+        {
+            if(weaponSet[k] != null)
+            {
+                filledWeaponSlot = true;
+                currentWeapon = Instantiate(weaponSet[k], weaponHolder.transform.position, weaponHolder.transform.rotation, weaponHolder.transform);
+            }
+            k++;
         }
     }
 

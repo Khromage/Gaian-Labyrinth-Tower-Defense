@@ -110,7 +110,7 @@ public class SaveManager : SpawnableSingleton<SaveManager>
             else
                 printStr += "__, ";
         }
-        Debug.Log("SaveManager LoadData(),     SaveManager's list: " + printStr);
+        //Debug.Log("SaveManager LoadData(),     SaveManager's list: " + printStr);
 
         printStr = "";
         int[] printArr = LoadoutManager.Instance.EquippedTowerIDs;
@@ -121,7 +121,7 @@ public class SaveManager : SpawnableSingleton<SaveManager>
             else
                 printStr += "__, ";
         }
-        Debug.Log("SaveManager LoadData(), LoadoutManager's list: " + printStr);
+       // Debug.Log("SaveManager LoadData(), LoadoutManager's list: " + printStr);
 
 
         OnSaveFileLoaded?.Invoke();

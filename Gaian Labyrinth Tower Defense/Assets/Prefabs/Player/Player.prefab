@@ -411,8 +411,8 @@ MonoBehaviour:
   nextWeaponKey: 0
   prevWeaponKey: 0
   modeChangeKey: 0
-  towerKeys: 
-  sellKey: 0
+  towerSelectionKey: 0
+  weaponKeys: 
   updatePathKeys: 
   whatIsGround:
     serializedVersion: 2
@@ -433,6 +433,7 @@ MonoBehaviour:
   InteractRange: 0
   Body: {fileID: 4835368386127021285}
   InteractionPoint: {fileID: 7985478383346782855}
+  weaponList: {fileID: 11400000, guid: f38a4fd1840f59e48a66c1ac7f42383b, type: 2}
   weaponHolder: {fileID: 632453636332426054}
   currentWeapon: {fileID: 0}
   weaponList: {fileID: 11400000, guid: f38a4fd1840f59e48a66c1ac7f42383b, type: 2}

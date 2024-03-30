@@ -26,7 +26,7 @@ public class WindBladeBehavior : TrackingBulletBehavior
     {
         Debug.Log(isRotating);
         //if the bullet is DistTilOrbit far from the target
-        if (!isRotating)
+        if (!isRotating && (target != null) )
         {
             // Calculate direction and distance
             Vector3 direction = target.position - transform.position;
@@ -52,7 +52,7 @@ public class WindBladeBehavior : TrackingBulletBehavior
             {
                 //maybe go towards another target?
                 Destroy(gameObject);         
-                      
+                return;
             }
 
             Debug.Log("i am rotating and i should not be moving");
