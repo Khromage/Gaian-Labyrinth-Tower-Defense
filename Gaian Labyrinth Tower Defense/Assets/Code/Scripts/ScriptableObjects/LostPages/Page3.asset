@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Page3
   m_EditorClassIdentifier: 
   id: 2
-  pageTitle: The Rise of the Purists
-  pageContent: 'Page 3: The Rise of the Purists
+  pageTitle: 'Page 3: The Rise of the Purists'
+  pageContent: '
 
-    But not all were content. A
-    faction named the Purists emerged. The Purists, seeing the negative impacts of
-    the crystalline ore, sought to halt its extraction and return Gaian to its natural
-    magical balance. They viewed the unchecked consumption of these ores as a pathway
-    to inevitable catastrophe.'
+    But not all were content. A faction named the Purists emerged.
+    The Purists, seeing the negative impacts of the crystalline ore, sought to halt
+    its extraction and return Gaian to its natural magical balance. They viewed the
+    unchecked consumption of these ores as a pathway to inevitable catastrophe.'
   pageImage: {fileID: 0}

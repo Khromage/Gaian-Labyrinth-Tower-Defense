@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: Page1
   m_EditorClassIdentifier: 
   id: 0
-  pageTitle: A Realm in Harmony
-  pageContent: 'Page 1: A Realm in Harmony
+  pageTitle: 'Page 1: A Realm in Harmony'
+  pageContent: '
 
-    Gaia is a realm where nature and
-    magic coexist. Towering mountains, deep forests, vast deserts, and the enigmatic
-    Ethereal Sea painted its landscape. Eldoria, the heart of Gaian, stood as a beacon
-    of progress.'
-  pageImage: {fileID: 21300000, guid: b4fe33a1ff51f654f9b8a7a58573853c, type: 3}
+    Gaia is a realm where nature and magic coexist. Towering mountains,
+    deep forests, vast deserts, and the enigmatic Ethereal Sea painted its landscape.
+    Eldoria, the heart of Gaian, stood as a beacon of progress.'
+  pageImage: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
