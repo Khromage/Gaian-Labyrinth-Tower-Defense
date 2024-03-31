@@ -436,11 +436,11 @@ public class Player : UnitBehavior
         if(towerSlotIndex != -1)
         {
             goingToBuildMode = true;
-            
+            /*
             Debug.Log("Player received towerSlotIndex == " + towerSlotIndex);
             Debug.Log("Current PlayerMode: " + currentMode.ToString());
             Debug.Log("Last PlayerMode: " + lastMode.ToString());
-
+            */
             changeTower(towerSlotIndex);
         }
     }
@@ -601,11 +601,11 @@ public class Player : UnitBehavior
             {
                 currentTower = towerSet[selectedTowerIndex];
                 currentMode = playerMode.Build;
-
+                /*
                 Debug.Log("Player Mode set to Build");
                 Debug.Log("Current PlayerMode: " + currentMode.ToString());
                 Debug.Log("Last PlayerMode: " + lastMode.ToString());
-
+                */
                 currentWeapon.SetActive(false);
                 toggleTowerDisplay(currentTower, true);
             } else 
