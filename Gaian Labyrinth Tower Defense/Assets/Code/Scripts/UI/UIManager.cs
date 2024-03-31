@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     
     private GameObject currentModule;
 
+    public DefaultKeybinds defaultKeybinds;
+
     
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,10 @@ public class UIManager : MonoBehaviour
         
         CampaignMenuModule.SetActive(false);
         LevelModule.SetActive(false);
+        SaveManager.Instance.defaultKeybinds = defaultKeybinds;
+        SaveManager.Instance.saveFileName = "MyProgress";
+        SaveManager.Instance.LoadData();
+        
 
     }
 

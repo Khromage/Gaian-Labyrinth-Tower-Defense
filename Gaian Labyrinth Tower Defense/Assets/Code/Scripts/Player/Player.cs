@@ -268,15 +268,15 @@ public class Player : UnitBehavior
     private void InitializeKeybinds()
     {
         // General
-        jumpKey = defaultKeybinds.jumpKey;
-        interactKey = defaultKeybinds.interactKey;
+        jumpKey = LoadoutManager.Instance.jumpKey;
+        interactKey = LoadoutManager.Instance.interactKey;
         // Combat
-        nextWeaponKey = defaultKeybinds.nextWeaponKey;
-        prevWeaponKey = defaultKeybinds.prevWeaponKey;
-        weaponKeys = defaultKeybinds.weaponKeys;
+        nextWeaponKey = LoadoutManager.Instance.nextWeaponKey;
+        prevWeaponKey = LoadoutManager.Instance.prevWeaponKey;
+        weaponKeys = LoadoutManager.Instance.weaponKeys;
         //Build Mode
-        modeChangeKey = defaultKeybinds.modeChangeKey;
-        towerSelectionKey = defaultKeybinds.towerSelectionKey;
+        modeChangeKey = LoadoutManager.Instance.modeChangeKey;
+        towerSelectionKey = LoadoutManager.Instance.towerSelectionKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
     }
 
