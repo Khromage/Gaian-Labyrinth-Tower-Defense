@@ -12,13 +12,13 @@ public class Encyclopedia : MonoBehaviour
      [SerializeField]
     private GameObject encyclopediaListPanel;
 
-    [SerializeField] private LostPage[] lostPages; // Assign this in the Inspector
-    [SerializeField] private Text titleText; // Assign in the Inspector
-    [SerializeField] private Text contentText; // Assign in the Inspector
-    [SerializeField] private Image pageImage; // Assign in the Inspector
+    [SerializeField] private LostPage[] lostPages; 
+    [SerializeField] private TMPro.TextMeshProUGUI titleText;
+    [SerializeField] private TMPro.TextMeshProUGUI contentText;
+    [SerializeField] private Image pageImage; 
 
-    public GameObject indexView; // Assign this with your Index View container in the inspector.
-    public GameObject pageView; // Assign this with your Page View container in the inspector.
+    public GameObject indexView; 
+    public GameObject pageView; 
 void Start()
     {
         OpenIndexView();
@@ -47,6 +47,7 @@ public void CloseEncyclopedia()
 }
     public void DisplayEncyclopediaInfo(int id)
     {
+        Debug.Log($"Displaying Encyclopedia Info for ID: {id}");
         LostPage page = lostPages[id];
         if (page != null)
         {
@@ -64,6 +65,7 @@ public void CloseEncyclopedia()
     }
     public void OnLostPageButtonClicked(int pageId)
     {
+         Debug.Log($"Lost Page Button Clicked: {pageId}");
         DisplayEncyclopediaInfo(pageId);
     }
 
