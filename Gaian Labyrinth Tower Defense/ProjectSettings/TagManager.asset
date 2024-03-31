@@ -11,6 +11,7 @@ TagManager:
   - goalTile
   - gravCore
   - DragElement
+  - ActiveWeaponSlot
   layers:
   - Default
   - TransparentFX

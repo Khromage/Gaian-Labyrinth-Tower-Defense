@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 //using static System.Net.Mime.MediaTypeNames;
 
 public class PlayerHUD : MonoBehaviour
@@ -27,6 +28,10 @@ public class PlayerHUD : MonoBehaviour
 
 
     [SerializeField]
+    private Image currentTowerIcon;
+    
+    
+    [SerializeField]
     private GameObject[] weaponLayouts;
 
     [SerializeField]
@@ -45,13 +50,20 @@ public class PlayerHUD : MonoBehaviour
 
     [SerializeField]
     private TowerList towerList;
+    private int[] towerSet;
+    private int[] weaponSet;
 
     void Start()
     {
         //get list of all spawnpoints
         //every time wave start, get all enemies
 
+        InitializeHUD();
+        
+        
         FillEquipHUD();
+
+
     }
 
     // Update is called once per frame
@@ -67,7 +79,21 @@ public class PlayerHUD : MonoBehaviour
         //CountText.text = GetComponent<SpawnPoint>().waveSet[cw -1].waveEnemies.Length.ToString();
     }
 
-    void WaveStart () {}
+
+    private void InitializeHUD()
+    {
+        towerSet = LoadoutManager.Instance.EquippedTowerIDs;
+        weaponSet = LoadoutManager.Instance.EquippedWeaponIDs;
+
+        for(int i=0; i<towerSet.Length; i++)
+        {
+            if(towerSet[i] != -1)
+            {
+                currentTowerIcon.sprite = towerList.GetTowerIcon(towerSet[i]);
+                return;
+            }
+        }
+    }
 
     private void player_updateHealthBar(float changeAmount, bool animate)
     {
@@ -138,14 +164,21 @@ public class PlayerHUD : MonoBehaviour
     }
 
 
-    private void player_updateManaBar(float newManaAmount, bool animate)
+    private void player_updateManaBar(float mana, float maxMana, bool animate)
     {
-        int numFullManaPips = (int)newManaAmount / 10;
+        int numFullManaPips = (int)mana / 10;
         for(int i=0; i < numFullManaPips; i++)
         {
             manaPips[i].transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = 1;
         }
+        for(int i=numFullManaPips; i < manaPips.Length; i++)
+        {
+            manaPips[i].transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = 0;
+        }
         
+        if(mana % 10 != 0)
+            manaPips[numFullManaPips].transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = (mana % 10) / (maxMana / manaPips.Length);
+
         if (animate)
         {
             //Debug.Log($"starting mana bar animation, change amount = {changeAmount}");
@@ -214,17 +247,14 @@ public class PlayerHUD : MonoBehaviour
     }
     */
 
-    private void player_selectTower(int towerIndex, GameObject towerObj)
+    private void player_selectTower(int towerIndex)
     {
-        if (towerObj != null)
+        if(towerIndex != -1)
         {
-            Debug.Log($"Tower {towerObj} in slot index {towerIndex}");
-            //set highlight on UI
+            currentTowerIcon.sprite = towerList.GetTowerIcon(towerSet[towerIndex]);
+            Debug.Log($"Tower in slot index {towerIndex} selected");
         }
-        else
-        {
-            noTowerInSlot_Indicator(towerIndex);
-        }
+
     }
     private void noTowerInSlot_Indicator(int towerIndex)
     {
@@ -272,8 +302,6 @@ public class PlayerHUD : MonoBehaviour
 
     private void FillEquipHUD()
     {
-        int[] towerSet = LoadoutManager.Instance.EquippedTowerIDs;
-        int[] weaponSet = LoadoutManager.Instance.EquippedWeaponIDs;
         for (int i = 0; i < towerSet.Length; i++)
         {
             activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
@@ -288,16 +316,16 @@ public class PlayerHUD : MonoBehaviour
     {
         Player.OnAdjustHealth += player_updateHealthBar;
         Player.OnAdjustMana += player_updateManaBar;
-        Player.OnTowerSelect += player_selectTower;
         Player.OnEnterCombatMode += player_enterCombatMode;
         Player.OnSwapWeapon += player_swapWeapon;
+        TowerSelectionWheel.OnTowerSelected += player_selectTower;
     }
     private void OnDisable()
     {
         Player.OnAdjustHealth -= player_updateHealthBar;
         Player.OnAdjustMana -= player_updateManaBar;
-        Player.OnTowerSelect -= player_selectTower;
         Player.OnEnterCombatMode -= player_enterCombatMode;
         Player.OnSwapWeapon -= player_swapWeapon;
+        TowerSelectionWheel.OnTowerSelected -= player_selectTower;
     }
 }

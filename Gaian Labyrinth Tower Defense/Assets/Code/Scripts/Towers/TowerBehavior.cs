@@ -109,7 +109,11 @@ public class TowerBehavior : MonoBehaviour, Interactable
     public void RemoveEnemy(EnemyBehavior enemy)
     {
         if(enemy == null)
+        {
+            enemies.RemoveAll(nullEnemy => nullEnemy == null);
+            Debug.Log("CLEARED NULL ELEMENTS FROM TOWER LIST");
             return;
+        }
         if(!enemies.Contains(enemy.gameObject))
             return;
 
@@ -137,8 +141,13 @@ public class TowerBehavior : MonoBehaviour, Interactable
             string printstuff = "";
             foreach(GameObject enemy in enemies)
             {
+                if(enemy == null)
+                {
+                    enemies.RemoveAll(nullEnemy => nullEnemy == null);
+                    return;
+                } else {
                 printstuff += enemy.name;
-                    
+                }
             }
             Debug.Log(printstuff);
             switch (targetingMode)

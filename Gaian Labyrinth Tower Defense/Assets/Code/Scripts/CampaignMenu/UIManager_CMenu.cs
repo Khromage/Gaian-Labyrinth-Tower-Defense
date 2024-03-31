@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 //ctrl+f SSS for thing to do (saving animation, etc)
@@ -19,6 +20,8 @@ public class UIManager_CMenu : MonoBehaviour
 
     [SerializeField]
     private TowerList towerList;
+    [SerializeField]
+    private WeaponList weaponList;
 
 
     //need a name for this currency
@@ -47,6 +50,8 @@ public class UIManager_CMenu : MonoBehaviour
 
     [SerializeField] 
     private GameObject activeTowerPanel;
+    [SerializeField]
+    private GameObject activeWeaponPanel;
 
     [SerializeField]
     private GameObject towerInfoPanel;
@@ -350,7 +355,7 @@ public class UIManager_CMenu : MonoBehaviour
     {
         Debug.Log("About to fill the UI display of tower loadout");
         int[] activeTowerSet = LoadoutManager.Instance.GetTowerLoadout();
-
+        int[] activeWeaponSet = LoadoutManager.Instance.GetWeaponLoadout();
 
         string printStr = "";
         for (int i = 0; i < 6; i++)
@@ -360,12 +365,24 @@ public class UIManager_CMenu : MonoBehaviour
             else
                 printStr += "__, ";
         }
-        Debug.Log("UIManager's initial fill. List from LoadoutManager: " + printStr);
+        Debug.Log("UIManager's initial fill. Tower List from LoadoutManager: " + printStr);
+        for (int i = 0; i < 3; i++)
+        {
+            if (activeWeaponSet[i] != -1)
+                printStr += activeWeaponSet[i] + ", ";
+            else
+                printStr += "__, ";
+        }
+        Debug.Log("UIManager's initial fill. Weapon List from LoadoutManager: " + printStr);
 
 
         for (int i = 0; i < 6; i++)
         {
             activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(activeTowerSet[i]);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            activeWeaponPanel.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = weaponList.GetWeaponIcon(activeWeaponSet[i]);
         }
     }
 
@@ -413,11 +430,31 @@ public class UIManager_CMenu : MonoBehaviour
         LoadoutManager.Instance.EquippedTowerIDs = activeTowerSet;
     }
 
-    public void UpdateActiveWeaponSet(string type, int indexOfChange)
+    public void UpdateActiveWeaponSet(int id, int indexOfChange)
     {
+        int[] activeWeaponSet = LoadoutManager.Instance.EquippedWeaponIDs;
 
-        savedData.ActiveWeapons = activeWeaponSet;
+        //swap slots
+        for (int i = 0; i < activeWeaponSet.Length; i++)
+        {
+            if (activeWeaponSet[i] == id)
+            {
+                //Sprite spriteToChange;
+                activeWeaponSet[i] = activeWeaponSet[indexOfChange];
+                //change the sprite at the position that already had the placed weapon to the one that the indexOfChange had.
+                activeWeaponPanel.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = towerList.GetTowerIcon(activeWeaponSet[indexOfChange]);
+            }
+        }
+
+        activeWeaponSet[indexOfChange] = id;
         changedData = true;
+
+        for (int i = 0; i < 3; i++)
+        {
+            activeWeaponPanel.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = weaponList.GetWeaponIcon(activeWeaponSet[i]);
+        }
+
+        LoadoutManager.Instance.EquippedWeaponIDs = activeWeaponSet;
     }
 
     #region obsoleteLoad
@@ -452,7 +489,7 @@ public class UIManager_CMenu : MonoBehaviour
     {
         //LevelMarker.OnLevelInvestigate += RemoveActivePanel;
         UIDragDrop.OnActiveTowerChange += UpdateActiveTowerSet;
-
+        UIWeaponDragDrop.OnActiveWeaponChange += UpdateActiveWeaponSet;
 
         //SaveManager.Instance.InitializeFreshSave();
         Debug.Log("started up SaveManager from UIManager?");
@@ -464,6 +501,8 @@ public class UIManager_CMenu : MonoBehaviour
     {
         //LevelMarker.OnLevelInvestigate -= RemoveActivePanel;
         UIDragDrop.OnActiveTowerChange -= UpdateActiveTowerSet;
+        UIWeaponDragDrop.OnActiveWeaponChange -= UpdateActiveWeaponSet;
+
         SaveManager.Instance.OnSaveFileLoaded -= InitialFillUI;
 
         //SaveManager.Instance.SaveData();

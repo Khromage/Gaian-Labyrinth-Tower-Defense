@@ -7,7 +7,7 @@ public class EnemyScout : EnemyBehavior
 
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
         isAlive = true;
         //half as tanky as normal unit

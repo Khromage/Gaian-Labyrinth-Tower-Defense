@@ -22,7 +22,7 @@ public class WaveTowerBehavior : TowerBehavior
         waveMaster.GetComponent<WaveMaster>().waterWaves.Add(attackWave);
     }
 
-    void Update()
+    public override void Update()
     {
         base.Update();
     }
