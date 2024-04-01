@@ -18,6 +18,7 @@ public class WaveTowerBehavior : TowerBehavior
         GridTile targetTile = target.GetComponent<EnemyBehavior>().currTile;
         GameObject attackWave = Instantiate(WavePrefab, targetTile.transform.position + new Vector3(0f, .1f, 0f), target.transform.rotation, waveMaster.transform); 
         attackWave.GetComponent<WaveWaterBehavior>().tilesLeft = WaveDistance;
+        attackWave.GetComponent<WaveWaterBehavior>().damage = damage;
         // attackWave.GetComponent<WaveWaterBehavior>().damage = currentDamage;
         waveMaster.GetComponent<WaveMaster>().waterWaves.Add(attackWave);
     }
