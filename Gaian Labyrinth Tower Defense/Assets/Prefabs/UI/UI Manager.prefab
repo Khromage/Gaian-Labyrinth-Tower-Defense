@@ -123,6 +123,7 @@ MonoBehaviour:
   CampaignMenuModule: {fileID: 6812637644995389606}
   LevelModule: {fileID: 4297403220921835436}
   OptionsMenu: {fileID: 1239178968652115563}
+  defaultKeybinds: {fileID: 11400000, guid: 79342df42de94434f8a365383e842d6e, type: 2}
 --- !u!82 &6501361678478622812
 AudioSource:
   m_ObjectHideFlags: 0
