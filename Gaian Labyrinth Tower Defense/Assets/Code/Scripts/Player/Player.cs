@@ -268,15 +268,15 @@ public class Player : UnitBehavior
     private void InitializeKeybinds()
     {
         // General
-        jumpKey = defaultKeybinds.jumpKey;
-        interactKey = defaultKeybinds.interactKey;
+        jumpKey = LoadoutManager.Instance.jumpKey;
+        interactKey = LoadoutManager.Instance.interactKey;
         // Combat
-        nextWeaponKey = defaultKeybinds.nextWeaponKey;
-        prevWeaponKey = defaultKeybinds.prevWeaponKey;
-        weaponKeys = defaultKeybinds.weaponKeys;
+        nextWeaponKey = LoadoutManager.Instance.nextWeaponKey;
+        prevWeaponKey = LoadoutManager.Instance.prevWeaponKey;
+        weaponKeys = LoadoutManager.Instance.weaponKeys;
         //Build Mode
-        modeChangeKey = defaultKeybinds.modeChangeKey;
-        towerSelectionKey = defaultKeybinds.towerSelectionKey;
+        modeChangeKey = LoadoutManager.Instance.modeChangeKey;
+        towerSelectionKey = LoadoutManager.Instance.towerSelectionKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
     }
 
@@ -436,11 +436,11 @@ public class Player : UnitBehavior
         if(towerSlotIndex != -1)
         {
             goingToBuildMode = true;
-            
+            /*
             Debug.Log("Player received towerSlotIndex == " + towerSlotIndex);
             Debug.Log("Current PlayerMode: " + currentMode.ToString());
             Debug.Log("Last PlayerMode: " + lastMode.ToString());
-
+            */
             changeTower(towerSlotIndex);
         }
     }
@@ -601,11 +601,11 @@ public class Player : UnitBehavior
             {
                 currentTower = towerSet[selectedTowerIndex];
                 currentMode = playerMode.Build;
-
+                /*
                 Debug.Log("Player Mode set to Build");
                 Debug.Log("Current PlayerMode: " + currentMode.ToString());
                 Debug.Log("Last PlayerMode: " + lastMode.ToString());
-
+                */
                 currentWeapon.SetActive(false);
                 toggleTowerDisplay(currentTower, true);
             } else 

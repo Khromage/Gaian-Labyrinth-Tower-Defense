@@ -23,6 +23,7 @@ public class TowerSelectionWheel : MonoBehaviour
 
     [SerializeField]
     private GameObject BackToGameLayout;
+    private GameObject backToGameTile;
     [SerializeField]
     private GameObject HoveredTowerLayout;
 
@@ -65,11 +66,14 @@ public class TowerSelectionWheel : MonoBehaviour
 
         centerTile.transform.localScale *= 1.05f;
         hoveredSlot = -1;
+        backToGameTile = centerTile;
     }
 
     public void UnHighlightCenterTile(GameObject centerTile)
     {
         centerTile.transform.localScale /= 1.05f;
+        // Debug.Log("Resetting scale of CENTER");
+
     }
     
     
@@ -79,9 +83,9 @@ public class TowerSelectionWheel : MonoBehaviour
         BackToGameLayout.SetActive(false);
         HoveredTowerLayout.SetActive(true);
         
-        Slot.transform.localScale *= 1.1f;
-        hoveredSlot = Array.IndexOf(TowerSelectionSlots, Slot.transform.parent.gameObject);
-        
+        Slot.transform.localScale *= 1.05f;
+        hoveredSlot = Array.IndexOf(TowerSelectionSlots, Slot);
+        // Debug.Log("hoveredSlot: " + hoveredSlot);
         hoveredName.text = towerList.GetTowerName(EquippedTowerIDs[hoveredSlot]);
         hoveredIcon.sprite = towerList.GetTowerIcon(EquippedTowerIDs[hoveredSlot]);
         hoveredDescription.text = towerList.GetTowerDescription(EquippedTowerIDs[hoveredSlot]);
@@ -91,19 +95,25 @@ public class TowerSelectionWheel : MonoBehaviour
     // called when the cursor leaves the slot area to reset hovered slot
     public void UnHighlightSlot(GameObject Slot)
     {
-        Slot.transform.localScale /= 1.1f;
-        // Debug.Log("Mouse exited Tower Selection Slot. Resetting scale");
+        Slot.transform.localScale /= 1.05f;
+        // Debug.Log("Resetting scale of SLOT");
     }
 
     // called when player releases Q
     public void SlotSelected()
     {
         OnTowerSelected?.Invoke(hoveredSlot);
+        if(hoveredSlot == -1)
+        {
+            UnHighlightCenterTile(backToGameTile);
+        } else {
+            UnHighlightSlot(transform.GetChild(hoveredSlot+1).gameObject);
+        }
+
     }
 
     void OnEnable()
     {
-        HighlightCenterTile(BackToGameLayout);
 
     }
 
