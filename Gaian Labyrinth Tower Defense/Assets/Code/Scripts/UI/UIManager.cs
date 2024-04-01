@@ -27,7 +27,8 @@ public class UIManager : MonoBehaviour
         
         CampaignMenuModule.SetActive(false);
         LevelModule.SetActive(false);
-        SaveManager.Instance.defaultKeybinds = defaultKeybinds;
+        //SaveManager.Instance.defaultKeybinds = defaultKeybinds;
+        SaveManager.Instance.PassDefaultBindings(defaultKeybinds);
         SaveManager.Instance.saveFileName = "MyProgress";
         SaveManager.Instance.LoadData();
         
@@ -59,6 +60,7 @@ public class UIManager : MonoBehaviour
     public void CloseOptions()
     {
         OptionsMenu.SetActive(false);
+        SaveManager.Instance.SaveData();
     }
 
     private void SetUIModule(int ID)
