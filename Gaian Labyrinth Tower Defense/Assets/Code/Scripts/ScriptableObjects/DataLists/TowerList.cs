@@ -14,6 +14,11 @@ public class TowerList : ScriptableObject
         return TowerDataSet[ID].Prefab;
     }
 
+    public string GetTowerName(int ID)
+    {
+        return TowerDataSet[ID].Name;
+    }
+
     public Sprite GetTowerIcon(int ID)
     {
         if (ID < 0 || ID >= TowerDataSet.Length)
@@ -26,5 +31,14 @@ public class TowerList : ScriptableObject
     public int GetTowerCost(int ID)
     {
         return TowerDataSet[ID].Cost;
+    }
+
+    public string GetTowerDescription(int ID)
+    {
+        return TowerDataSet[ID].Description.Replace("{Name}", TowerDataSet[ID].Name)
+                                    .Replace("{Damage}", TowerDataSet[ID].Damage.ToString())
+                                    .Replace("{Range}", TowerDataSet[ID].Range.ToString())
+                                    .Replace("{FireRate}", TowerDataSet[ID].FireRate.ToString())
+                                    .Replace("{Cost}", TowerDataSet[ID].Cost.ToString());
     }
 }

@@ -5,17 +5,14 @@ using UnityEngine;
 public class BulletBehavior : ProjectileBehavior
 {
     public float speed;
-    public float pierceAMT;
+    public int pierceAMT;
     public List<EnemyBehavior> HitEnemies = new List<EnemyBehavior>();
 
     // Update is called once per frame
     protected virtual void Start()
     {
         speed = 50f;
-        //how many enemies you wanna pierce
-        pierceAMT = 1;
         Destroy(gameObject, 5);
-
     }
 
     protected virtual void Update()
@@ -47,6 +44,11 @@ public class BulletBehavior : ProjectileBehavior
         GetTargetInfo();
 
         
+    }
+
+    public void SetPierceAMT(int pierceAMT)
+    {
+        this.pierceAMT = pierceAMT;
     }
 
     public virtual void GetTargetInfo()

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 //when starting a new save file, these values should all get initially set. probably in LoadData? If the GetString didn't pick anything up?
@@ -34,14 +36,36 @@ public class SaveManager : SpawnableSingleton<SaveManager>
     public int[] lifetimeTowerDamage;
     public int[] lifetimeTowerPlacement;
 
+    //using this SO variable and trying to set it like a reference during runtime doesn't really work
+    public DefaultKeybinds defaultKeybinds;
+
+    //Movement
+    public KeyCode jumpKey;
+    //Combat
+    public KeyCode interactKey;
+    public KeyCode nextWeaponKey;
+    public KeyCode prevWeaponKey;
+    //Build Mode
+    public KeyCode modeChangeKey;
+    public KeyCode towerSelectionKey;
+    public KeyCode[] weaponKeys;
+    public KeyCode[] updatePathKeys;
+
+    //DEFAULTS
+    public KeyCode defJumpKey;
+    //Combat
+    public KeyCode defInteractKey;
+    public KeyCode defNextWeaponKey;
+    public KeyCode defPrevWeaponKey;
+    //Build Mode
+    public KeyCode defModeChangeKey;
+    public KeyCode defTowerSelectionKey;
+    public KeyCode[] defWeaponKeys;
+    public KeyCode[] defUpdatePathKeys;
+
 
     private void Start()
     {
-        //temporary name
-        saveFileName = "MyProgress";
-
-        //this needs to get called after the specific save file name has been set, so it loads the correct file, so maybe don't call this in Start()?
-        LoadData();
     }
 
 
@@ -49,7 +73,6 @@ public class SaveManager : SpawnableSingleton<SaveManager>
     //change these #s as we change the total weapons and towers and levels, etc. maybe make some constants for the totals.
     private void InitializeFreshSave()
     {
-        Debug.Log("Initializing fresh save in SaveManager.");
 
         BloodOfGaia = 0;
         levelScores = new int[18];
@@ -64,6 +87,21 @@ public class SaveManager : SpawnableSingleton<SaveManager>
 
         lifetimeTowerDamage = new int[12];
         lifetimeTowerPlacement = new int[12];
+
+        jumpKey = defJumpKey;
+        interactKey = defInteractKey;
+        // Combat
+        nextWeaponKey = defNextWeaponKey;
+        prevWeaponKey = defPrevWeaponKey;
+        weaponKeys = defWeaponKeys;
+        //Build Mode
+        modeChangeKey = defModeChangeKey;
+        towerSelectionKey = defTowerSelectionKey;
+        updatePathKeys = defUpdatePathKeys;
+        string jsonData = JsonUtility.ToJson(Instance);
+        PlayerPrefs.SetString(saveFileName, jsonData);
+        PlayerPrefs.Save();
+
     }
 
     //should take string parameter for the save file's name to save to (and use for PlayerPrefs.GetString's parameter)
@@ -74,6 +112,14 @@ public class SaveManager : SpawnableSingleton<SaveManager>
         EquippedTowerIDs = LoadoutManager.Instance.EquippedTowerIDs;
         EquippedWeaponIDs = LoadoutManager.Instance.EquippedWeaponIDs;
         EquippedTechNodes = LoadoutManager.Instance.EquippedTechNodes;
+        jumpKey =  LoadoutManager.Instance.jumpKey;
+        interactKey = LoadoutManager.Instance.interactKey;
+        nextWeaponKey = LoadoutManager.Instance.nextWeaponKey;
+        prevWeaponKey = LoadoutManager.Instance.prevWeaponKey;
+        modeChangeKey = LoadoutManager.Instance.modeChangeKey;
+        towerSelectionKey = LoadoutManager.Instance.towerSelectionKey ;
+        weaponKeys = LoadoutManager.Instance.weaponKeys ;
+        updatePathKeys = LoadoutManager.Instance.updatePathKeys;
 
         string jsonData = JsonUtility.ToJson(Instance);
         //Save Json string
@@ -88,17 +134,31 @@ public class SaveManager : SpawnableSingleton<SaveManager>
         //Convert to Class but don't create new Save Object. Re-use loadedData and overwrite old data in it
         string jsonData = PlayerPrefs.GetString(saveFileName);
         JsonUtility.FromJsonOverwrite(jsonData, Instance);
-
+        /*Debug.Log("Json");
+        Debug.Log(EquippedTowerIDs);
+        Debug.Log(EquippedTowerIDs.Length);*/
         //if didn't load a previous save
-        if (EquippedTowerIDs.Length == 0)
+        if (EquippedTowerIDs == null)
         {
             InitializeFreshSave();
         }
+        
 
         //pass saved loadout to LoadoutManager
         LoadoutManager.Instance.EquippedTowerIDs = EquippedTowerIDs;
         LoadoutManager.Instance.EquippedWeaponIDs = EquippedWeaponIDs;
         LoadoutManager.Instance.EquippedTechNodes = EquippedTechNodes;
+        SetToDefaults();
+        LoadoutManager.Instance.jumpKey = jumpKey;
+        LoadoutManager.Instance.interactKey = interactKey;
+        LoadoutManager.Instance.nextWeaponKey = nextWeaponKey;
+        LoadoutManager.Instance.prevWeaponKey = prevWeaponKey;
+        LoadoutManager.Instance.modeChangeKey = modeChangeKey;
+        LoadoutManager.Instance.towerSelectionKey = towerSelectionKey;
+        LoadoutManager.Instance.weaponKeys = weaponKeys;
+        LoadoutManager.Instance.updatePathKeys = updatePathKeys;
+
+
 
 
         //SOME DEBUG.LOG PRINTING
@@ -110,7 +170,6 @@ public class SaveManager : SpawnableSingleton<SaveManager>
             else
                 printStr += "__, ";
         }
-        Debug.Log("SaveManager LoadData(),     SaveManager's list: " + printStr);
 
         printStr = "";
         int[] printArr = LoadoutManager.Instance.EquippedTowerIDs;
@@ -121,10 +180,49 @@ public class SaveManager : SpawnableSingleton<SaveManager>
             else
                 printStr += "__, ";
         }
-        Debug.Log("SaveManager LoadData(), LoadoutManager's list: " + printStr);
 
 
         OnSaveFileLoaded?.Invoke();
     }
 
+    private void SetToDefaults() {
+        Debug.Log("setting Defaults");
+        //jumpKey = defaultKeybinds.jumpKey;
+        if (jumpKey == KeyCode.None) {
+            Debug.Log("setting Jump");
+            jumpKey = defJumpKey;
+        }
+        if(interactKey == KeyCode.None) {
+            interactKey = defInteractKey;
+        }
+        if(nextWeaponKey == KeyCode.None) {
+            nextWeaponKey = defNextWeaponKey;
+        }
+        if(prevWeaponKey == KeyCode.None) {
+            prevWeaponKey = defPrevWeaponKey;
+        }
+        if(modeChangeKey == KeyCode.None){
+            modeChangeKey = defModeChangeKey;
+        }
+        if(towerSelectionKey == KeyCode.None) {
+            towerSelectionKey = defTowerSelectionKey;
+        }
+        
+    }
+
+    public void PassDefaultBindings(DefaultKeybinds d)
+    {
+        defJumpKey = d.jumpKey;
+        defInteractKey = d.interactKey;
+        // Combat
+        defNextWeaponKey = d.nextWeaponKey;
+        defPrevWeaponKey = d.prevWeaponKey;
+        defWeaponKeys = d.weaponKeys;
+        //Build Mode
+        defModeChangeKey = d.modeChangeKey;
+        defTowerSelectionKey = d.towerSelectionKey;
+        defUpdatePathKeys = d.updatePathKeys;
+
+        Debug.Log($"SaveManager has been passed: {d}");
+    }
 }
