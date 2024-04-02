@@ -19,7 +19,7 @@ public class EnemyBehavior : MonoBehaviour
     public GridTile currTile;
     public GridTile successorTile;
     public LayerMask Grid;
-    protected float moveSpeed;
+    public float moveSpeed;
     protected bool isAlive;
 
     [SerializeField]
