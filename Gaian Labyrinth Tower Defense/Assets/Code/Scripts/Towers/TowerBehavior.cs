@@ -85,7 +85,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
     private void OnEnable()
     {
         targetingMode = "Close";
-        detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
 
         HideInteractButton();
@@ -324,7 +323,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     {
         ProjectileBehavior projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation).GetComponent<ProjectileBehavior>();
         projectile.damage = damage;
-        Debug.Log($"projectile damage: {damage}");
+        // Debug.Log($"projectile damage: {damage}");
         if (projectile != null)
             projectile.SetTarget(target.transform);
         projectile.targeting = targetingMode;

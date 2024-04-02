@@ -104,6 +104,15 @@ public class EnemyBehavior : MonoBehaviour
 
         currentHealth -= finalDamage;
 
+        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
+        if(isVulnerable)
+        {
+            printMsg += "TRUE";
+        } else {
+            printMsg += "FALSE";
+        }
+        Debug.Log(printMsg);
+
         deployDamageIndicator(finalDamage);
 
         float spd = 5 + 5 * finalDamage / maxHealth;

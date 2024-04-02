@@ -8,6 +8,9 @@ public class ArcaneTowerBehavior : TowerBehavior
 
     [SerializeField]
     private GameObject VulnerabilityZone;
+    
+    [SerializeField]
+    private GameObject PulseZone;
 
     // Start is called before the first frame update
     public override void Start()
@@ -60,16 +63,21 @@ public class ArcaneTowerBehavior : TowerBehavior
     {
         base.lv3_2_upgrade();
         //change model
-        VulnerabilityZone.SetActive(true);
-        VulnerabilityZone.transform.localScale = new Vector3(range, range, range);
-        gameObject.GetComponent<SphereCollider>().radius = range;
         //change projectile, if necessary
+        VulnerabilityZone.SetActive(true);
+        VulnerabilityZone.transform.localScale = new Vector3(range*2, range*2, range*2);
+        // tower sphere collider disabled (zone handles trigger enter/exit now)
+        gameObject.GetComponent<SphereCollider>().enabled = false;
     }
     protected override void lv3_3_upgrade()
     {
         base.lv3_3_upgrade();
         //change model
         //change projectile, if necessary
+        PulseZone.SetActive(true);
+        PulseZone.transform.localScale = new Vector3(range*2, range/20.0f, range*2);
+        // tower sphere collider disabled (zone handles trigger enter/exit now)
+        gameObject.GetComponent<SphereCollider>().enabled = false;
     }
 
 
@@ -81,7 +89,11 @@ public class ArcaneTowerBehavior : TowerBehavior
     protected override void lv3_3_Attack()
     {
         //PULSE DAMAGE AROUND TOWER
-        lv1_Attack();
+        // lv1_Attack(); no projectile attack, pulse damage zone
+        foreach (GameObject enemy in enemies)
+        {
+            enemy.GetComponent<EnemyBehavior>().takeDamage(damage, PulseZone);
+        }
     }
 
 }
