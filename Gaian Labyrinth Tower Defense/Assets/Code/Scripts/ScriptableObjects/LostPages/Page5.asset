@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 707e68cd908cf98409e17d123d971355, type: 3}
+  m_Name: Page5
+  m_EditorClassIdentifier: 
+  id: 4
+  pageTitle: 'Page 5: Radical Resolutions'
+  pageContent: '
+
+    While their cause was noble, their methods became increasingly
+    radical as peaceful protests escalated to acts of magical terrorism against mining
+    sites and ore transportation. The Purists, with rogue mages, hatched a bold plan.
+    The ''Ultimate Ritual'' was devised to tap directly into Gaian''s core magic,
+    promising unlimited power and a return to ancient purity.'
+  pageImage: {fileID: 0}
