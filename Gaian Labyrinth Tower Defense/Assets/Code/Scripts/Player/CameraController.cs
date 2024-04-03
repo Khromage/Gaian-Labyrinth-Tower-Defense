@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
 
     private Camera cam;
     private float targetFOV;
-    private bool isZoomed = false;
+    private bool isZoomed = false; //is this bool even used in anything?
 
     void Start()
     {

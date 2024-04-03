@@ -85,7 +85,6 @@ public class TowerBehavior : MonoBehaviour, Interactable
     private void OnEnable()
     {
         targetingMode = "Close";
-        detectionZone = GetComponent<SphereCollider>();
         detectionZone.radius = range;
 
         HideInteractButton();
@@ -105,6 +104,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
         enemies.Add(enemy.gameObject);
         enemy.OnEnemyDeath += RemoveEnemy;
         enemy.OnEnemyReachedGoal += RemoveEnemy;
+        
     }
     public void RemoveEnemy(EnemyBehavior enemy)
     {
@@ -123,13 +123,20 @@ public class TowerBehavior : MonoBehaviour, Interactable
         enemy.OnEnemyReachedGoal -= RemoveEnemy;
     }
 
-    void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        AddEnemy(other.GetComponent<EnemyBehavior>());
+        if(other.tag == "Enemy")
+        {
+            AddEnemy(other.GetComponent<EnemyBehavior>());
+            //Debug.Log(other.gameObject);
+        }
     }
-    void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
-        RemoveEnemy(other.GetComponent<EnemyBehavior>());
+        if(other.tag == "Enemy")
+        {
+            RemoveEnemy(other.GetComponent<EnemyBehavior>());
+        }
     }
 
     void UpdateTarget()
@@ -149,7 +156,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
                 printstuff += enemy.name;
                 }
             }
-            Debug.Log(printstuff);
+            // Debug.Log(printstuff);
             switch (targetingMode)
             {
                 case "Close":
@@ -316,7 +323,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     {
         ProjectileBehavior projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation).GetComponent<ProjectileBehavior>();
         projectile.damage = damage;
-        Debug.Log($"projectile damage: {damage}");
+        // Debug.Log($"projectile damage: {damage}");
         if (projectile != null)
             projectile.SetTarget(target.transform);
         projectile.targeting = targetingMode;

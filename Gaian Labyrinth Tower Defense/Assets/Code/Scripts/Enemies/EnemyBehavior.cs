@@ -23,12 +23,16 @@ public class EnemyBehavior : MonoBehaviour
     protected bool isAlive;
 
     [SerializeField]
-    private EnemyHealthBar HealthBar;
+    protected EnemyHealthBar HealthBar;
     protected int enemyID;
     protected float maxHealth;
     public float currentHealth;
-    protected float maxSheild;
-    public float currentSheild;
+    public enum Weight { light, medium, heavy };
+    public Weight enemyWeight;
+
+    // keeps track of the number of zones the enemy is inside (in case tower ranges overlap)
+    private int vulnerabilityZones;
+    public bool isVulnerable;
 
     public GameObject damageIndicator;
 
@@ -56,9 +60,11 @@ public class EnemyBehavior : MonoBehaviour
         //change these to pull from the scriptableObject
         harm = 1;
         worth = 5;
-        maxHealth = 12f;
+        maxHealth = 32f;
         moveSpeed = 3f;
         isAlive = true;
+        isVulnerable = false;
+        vulnerabilityZones = 0;
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
     }
@@ -92,11 +98,24 @@ public class EnemyBehavior : MonoBehaviour
     }
     public void takeDamage(float damage, GameObject damagerBullet)
     {
-        currentHealth -= damage;
+        float finalDamage = damage;
+        if(isVulnerable)
+            finalDamage *= 1.25f;
 
-        deployDamageIndicator(damage);
+        currentHealth -= finalDamage;
 
-        float spd = 5 + 5 * damage / maxHealth;
+        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
+        if(isVulnerable)
+        {
+            printMsg += "TRUE";
+        } else {
+            printMsg += "FALSE";
+        }
+        Debug.Log(printMsg);
+
+        deployDamageIndicator(finalDamage);
+
+        float spd = 5 + 5 * finalDamage / maxHealth;
         HealthBar.SetHealth(currentHealth / maxHealth, spd);
 
         EnemyHurtSFX.Play();
@@ -160,4 +179,20 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+
+    public void enterVulnerabilityZone()
+    {
+        vulnerabilityZones++;
+        // Debug.Log("enemy entered arcane zone. enemy is inside of " + vulnerabilityZones + "arcane vuln zones");
+        isVulnerable = true;
+    }
+    public void exitVulnerabilityZone()
+    {
+        vulnerabilityZones--;
+        if(vulnerabilityZones < 1)
+        {
+            isVulnerable = false;
+            // Debug.Log("No more vuln zones, isVulnerable being set to false");
+        }
+    }
 }

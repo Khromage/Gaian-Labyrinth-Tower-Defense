@@ -7,6 +7,7 @@ public class Enemy_2 : EnemyBehavior
     // Start is called before the first frame update
     public override void Start()
     {
+        base.Start();
         maxHealth = 50f;
         currentHealth = maxHealth;
         moveSpeed = 2f;

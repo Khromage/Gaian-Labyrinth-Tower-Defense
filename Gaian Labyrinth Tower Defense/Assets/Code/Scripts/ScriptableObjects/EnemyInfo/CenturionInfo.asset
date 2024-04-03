@@ -21,3 +21,4 @@ MonoBehaviour:
   maxHealth: 0
   worth: 0
   harm: 0
+  currentWeight: 1
