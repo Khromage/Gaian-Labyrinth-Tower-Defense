@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7746743253069209908}
   - component: {fileID: 5246249724988905885}
   - component: {fileID: 6505466437564927404}
-  - component: {fileID: 8860183989119382842}
   - component: {fileID: -854023295297194275}
+  - component: {fileID: -4715697768809372682}
   m_Layer: 2
   m_Name: WaveTower
   m_TagString: towerbuilding
@@ -88,49 +88,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8860183989119382842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1362173102988795995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8ead70c2cdabe5489e3d8cecb51a54f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  towerInfo: {fileID: 11400000, guid: cf15361deceb0dd4294bd629309c385e, type: 2}
-  towerName: water
-  target: {fileID: 0}
-  targetingMode: 
-  range: 10
-  fireRate: 0
-  fireCountdown: 0
-  damage: 0
-  targetCooldown: 0
-  enemyTag: Enemy
-  InteractionIndicator: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
-  partToRotate: {fileID: 576702084041083807}
-  turnSpeed: 5
-  projectilePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
-  firePoint: {fileID: 6788566222244839869}
-  enemies: []
-  detectionZone: {fileID: 0}
-  placedSFX: {fileID: -854023295297194275}
-  cost: 10
-  lv2_cost: 20
-  lv3_1_cost: 30
-  lv3_2_cost: 30
-  lv3_3_cost: 30
-  totalSpent: 0
-  sellRatio: 0
-  currentLevel: 1
-  currentBranch: 0
-  gridLocation: {fileID: 0}
-  WaveDistance: 7
-  WavePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
-  MasterList: []
 --- !u!82 &-854023295297194275
 AudioSource:
   m_ObjectHideFlags: 0
@@ -227,6 +184,51 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-4715697768809372682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362173102988795995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf3a5c34db46c2d459d377b93c15a335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerInfo: {fileID: 0}
+  towerName: 
+  target: {fileID: 0}
+  targetingMode: 
+  range: 0
+  fireRate: 0
+  fireCountdown: 0
+  damage: 0
+  targetCooldown: 0
+  enemyTag: Enemy
+  InteractionIndicator: {fileID: 0}
+  partToRotate: {fileID: 0}
+  turnSpeed: 5
+  projectilePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
+  firePoint: {fileID: 0}
+  enemies: []
+  detectionZone: {fileID: 0}
+  placedSFX: {fileID: 0}
+  cost: 0
+  lv2_cost: 0
+  lv3_1_cost: 0
+  lv3_2_cost: 0
+  lv3_3_cost: 0
+  totalSpent: 0
+  sellRatio: 0
+  currentLevel: 0
+  currentBranch: 0
+  gridLocation: {fileID: 0}
+  lv1_distance: 0
+  lv2_distance: 0
+  MasterList: []
+  wavePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
+  riptidePrefab: {fileID: 0}
 --- !u!1 &2660176201313847061
 GameObject:
   m_ObjectHideFlags: 0
