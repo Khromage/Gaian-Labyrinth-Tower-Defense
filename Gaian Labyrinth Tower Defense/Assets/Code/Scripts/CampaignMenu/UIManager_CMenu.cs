@@ -47,6 +47,16 @@ public class UIManager_CMenu : MonoBehaviour
 
     private Dictionary<GameObject, Vector2> panelDictionary = new Dictionary<GameObject, Vector2>();
     */
+    [SerializeField]
+    private GameObject encyclopedia;
+
+    [SerializeField] private List<LostPage> lostPages; // Assign this in the Inspector
+    [SerializeField] private Text titleText; // Assign in the Inspector
+    [SerializeField] private Text contentText; // Assign in the Inspector
+    [SerializeField] private Image pageImage; // Assign in the Inspector
+
+    public GameObject indexView; // Assign this with your Index View container in the inspector.
+    public GameObject pageView; // Assign this with your Page View container in the inspector.
 
     [SerializeField] 
     private GameObject activeTowerPanel;
@@ -251,7 +261,12 @@ public class UIManager_CMenu : MonoBehaviour
     }
 
     */
-
+    
+    public void CloseEncyclopediaPanel()
+    {
+        // Also, set the whole encyclopedia panel to inactive.
+        encyclopedia.SetActive(false);
+    }
 
     public void DisplayTowerInfo(int id)
     {
@@ -495,6 +510,7 @@ public class UIManager_CMenu : MonoBehaviour
         Debug.Log("started up SaveManager from UIManager?");
 
         SaveManager.Instance.OnSaveFileLoaded += InitialFillUI;
+        Encyclopedia.OnCloseEncyclopedia += CloseEncyclopediaPanel;
 
     }
     private void OnDisable()
@@ -504,6 +520,7 @@ public class UIManager_CMenu : MonoBehaviour
         UIWeaponDragDrop.OnActiveWeaponChange -= UpdateActiveWeaponSet;
 
         SaveManager.Instance.OnSaveFileLoaded -= InitialFillUI;
+        Encyclopedia.OnCloseEncyclopedia -= CloseEncyclopediaPanel;
 
         //SaveManager.Instance.SaveData();
     }
