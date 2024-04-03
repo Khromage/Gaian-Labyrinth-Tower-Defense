@@ -30,6 +30,10 @@ public class EnemyBehavior : MonoBehaviour
     public enum Weight { light, medium, heavy };
     public Weight enemyWeight;
 
+    // keeps track of the number of zones the enemy is inside (in case tower ranges overlap)
+    private int vulnerabilityZones;
+    public bool isVulnerable;
+
     public GameObject damageIndicator;
 
     private Camera cameraToWatch;
@@ -59,6 +63,8 @@ public class EnemyBehavior : MonoBehaviour
         maxHealth = 32f;
         moveSpeed = 3f;
         isAlive = true;
+        isVulnerable = false;
+        vulnerabilityZones = 0;
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
     }
@@ -92,11 +98,24 @@ public class EnemyBehavior : MonoBehaviour
     }
     public void takeDamage(float damage, GameObject damagerBullet)
     {
-        currentHealth -= damage;
+        float finalDamage = damage;
+        if(isVulnerable)
+            finalDamage *= 1.25f;
 
-        deployDamageIndicator(damage);
+        currentHealth -= finalDamage;
 
-        float spd = 5 + 5 * damage / maxHealth;
+        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
+        if(isVulnerable)
+        {
+            printMsg += "TRUE";
+        } else {
+            printMsg += "FALSE";
+        }
+        Debug.Log(printMsg);
+
+        deployDamageIndicator(finalDamage);
+
+        float spd = 5 + 5 * finalDamage / maxHealth;
         HealthBar.SetHealth(currentHealth / maxHealth, spd);
 
         EnemyHurtSFX.Play();
@@ -160,4 +179,20 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+
+    public void enterVulnerabilityZone()
+    {
+        vulnerabilityZones++;
+        // Debug.Log("enemy entered arcane zone. enemy is inside of " + vulnerabilityZones + "arcane vuln zones");
+        isVulnerable = true;
+    }
+    public void exitVulnerabilityZone()
+    {
+        vulnerabilityZones--;
+        if(vulnerabilityZones < 1)
+        {
+            isVulnerable = false;
+            // Debug.Log("No more vuln zones, isVulnerable being set to false");
+        }
+    }
 }
