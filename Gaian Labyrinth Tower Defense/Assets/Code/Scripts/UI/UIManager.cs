@@ -5,6 +5,11 @@ using UnityEngine.PlayerLoop;
 
 public class UIManager : MonoBehaviour
 {
+    public delegate void UIManagement();
+    public static event UIManagement OnOptionsOpened;
+    public static event UIManagement OnOptionsClosed;
+    
+    
     [SerializeField]
 
     public GameObject MainMenuModule;
@@ -38,7 +43,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        GetUserKeyOptions();
     }
 
     void OnEnable()
@@ -53,14 +58,52 @@ public class UIManager : MonoBehaviour
 
     }
     
-    public void OpenOptions()
+    public void GetUserKeyOptions()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            // if options menu/module is not open, open it and set menu mode for player
+            if(!OptionsMenu.activeInHierarchy)
+            {
+                if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
+                {
+                    PauseGame();
+                }
+                OpenOptions();
+                OnOptionsOpened?.Invoke();
+            }
+            // if already open, close and exit menu mode for player
+            else if(OptionsMenu.activeInHierarchy)
+            {
+                if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
+                {
+                    ResumeGame();
+                }
+                CloseOptions();
+                OnOptionsClosed?.Invoke();
+            }
+        }
+    }
+    
+    
+    private void OpenOptions()
     {
         OptionsMenu.SetActive(true);
     }
-    public void CloseOptions()
+    private void CloseOptions()
     {
         OptionsMenu.SetActive(false);
         SaveManager.Instance.SaveData();
+    }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    private void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 
     private void SetUIModule(int ID)

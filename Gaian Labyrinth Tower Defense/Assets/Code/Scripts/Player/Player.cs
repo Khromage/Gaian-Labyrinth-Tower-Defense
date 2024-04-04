@@ -215,6 +215,8 @@ public class Player : UnitBehavior
     {
         //EnemyBehavior.OnEnemyDeath += GainCurrency;
         Weapon.OnFire += spentMana;
+        UIManager.OnOptionsOpened += EnterMenuMode;
+        UIManager.OnOptionsClosed += ExitMenuMode;
         LevelModule.OnMenuOpened += EnterMenuMode;
         LevelModule.OnMenuClosed += ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell += UpdateCurrency;
@@ -225,6 +227,8 @@ public class Player : UnitBehavior
     {
         //EnemyBehavior.OnEnemyDeath -= GainCurrency;
         Weapon.OnFire -= spentMana;
+        UIManager.OnOptionsOpened -= EnterMenuMode;
+        UIManager.OnOptionsClosed -= ExitMenuMode;
         LevelModule.OnMenuOpened -= EnterMenuMode;
         LevelModule.OnMenuClosed -= ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell -= UpdateCurrency;
