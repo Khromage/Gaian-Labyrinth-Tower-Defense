@@ -22,7 +22,7 @@ public class WindExplosionBehavior : MonoBehaviour
         //damage = .17f;
         //duration = 3f;
         knockback = .09f;
-        dmgInterval = .2f;
+        dmgInterval = .3f;
         TimetoDMG = dmgInterval;
         initialScale = 1f;
         radius = 3f;
