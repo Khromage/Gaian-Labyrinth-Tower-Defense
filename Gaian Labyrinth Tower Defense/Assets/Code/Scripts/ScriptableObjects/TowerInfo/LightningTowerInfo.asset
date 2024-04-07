@@ -37,7 +37,7 @@ MonoBehaviour:
   - <Name>k__BackingField: Strike
     <Damage>k__BackingField: 30
     <Range>k__BackingField: 10
-    <FireRate>k__BackingField: 0.3
+    <FireRate>k__BackingField: 1
     <Cost>k__BackingField: 85
     <Description>k__BackingField: Cease your existence. {Damage} damage.
   - <Name>k__BackingField: Static or tesla idk

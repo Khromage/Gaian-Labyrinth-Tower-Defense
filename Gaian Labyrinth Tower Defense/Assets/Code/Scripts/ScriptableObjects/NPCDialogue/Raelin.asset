@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df75c3021cf7854c8d3cce4ef874448, type: 3}
+  m_Name: Raelin
+  m_EditorClassIdentifier: 
+  dialogueLines:
+  - Ah, greetings, traveler. I'm Raelin, once a scholar of Eldoria, now a humble
+    alchemist wandering the lands of Gaian in search of knowledge and rare ingredients.
+  - Through my travels, I've encountered herbs of unparalleled potency and texts
+    of ancient wisdom, altered by the very disaster that set me on this path.
+  - As you journey through Gaian, keep an eye out for the unusual. The land holds
+    many secrets, and what may seem mundane at first glance could reveal profound
+    mysteries under closer inspection.
+  - Farewell, for now. May your travels be safe and your discoveries many. Remember,
+    the answers we seek often lie in the connections between the natural and the
+    mystical.

@@ -789,9 +789,9 @@ public class Player : UnitBehavior
             highlightedTile.highlight(false);
 
         Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-        if ((Physics.Raycast(ray, out RaycastHit hit, 30f, Grid)))
+        if (Physics.Raycast(ray, out RaycastHit hit, 30f, Grid))
         {
-            if ((hit.transform.tag.Equals("GridTile")))
+            if (hit.transform.tag.Equals("GridTile"))
             {
                 GridTile currTileScript = hit.transform.GetComponent<GridTile>();
                 highlightedTile = currTileScript;
@@ -807,7 +807,7 @@ public class Player : UnitBehavior
                         if (currency >= currentTower.GetComponent<TowerBehavior>().towerInfo.Cost)
                         {
                             //Vector3 towerPlacement = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
-                            GameObject currTower = Instantiate(currentTower, hit.transform.position, hit.transform.rotation);
+                            GameObject currTower = Instantiate(currentTower, hit.transform.position - hit.transform.up * 0.35f, hit.transform.rotation);
                             TowerBehavior tower = currTower.GetComponent<TowerBehavior>();
                             tower.gridLocation = currTileScript;
 

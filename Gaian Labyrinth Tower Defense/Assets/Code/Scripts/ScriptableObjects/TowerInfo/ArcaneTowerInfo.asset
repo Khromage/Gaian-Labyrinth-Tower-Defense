@@ -38,7 +38,7 @@ MonoBehaviour:
       fire projectiles'
   - <Name>k__BackingField: Branch 2
     <Damage>k__BackingField: 0
-    <Range>k__BackingField: 10
+    <Range>k__BackingField: 5
     <FireRate>k__BackingField: 0
     <Cost>k__BackingField: 25
     <Description>k__BackingField: 'This is upgrade Level 3 - Branch 2

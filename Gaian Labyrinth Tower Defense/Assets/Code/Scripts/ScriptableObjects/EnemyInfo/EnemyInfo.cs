@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static EnemyBehavior;
 
 [CreateAssetMenu(menuName = "GLTD/EnemyInfo", fileName = "EnemyInfo")]
 public class EnemyInfo : ScriptableObject
@@ -24,6 +25,7 @@ public class EnemyInfo : ScriptableObject
     public float maxHealth;
     public int worth;
     public int harm;
+    public Weight currentWeight;
 
     //maybe include damageIndicator and healthbar? might be more efficient to put those in here than in their behavior scripts?
 }

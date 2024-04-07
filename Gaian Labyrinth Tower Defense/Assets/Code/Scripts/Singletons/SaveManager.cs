@@ -36,7 +36,9 @@ public class SaveManager : SpawnableSingleton<SaveManager>
     public int[] lifetimeTowerDamage;
     public int[] lifetimeTowerPlacement;
 
+    //using this SO variable and trying to set it like a reference during runtime doesn't really work
     public DefaultKeybinds defaultKeybinds;
+
     //Movement
     public KeyCode jumpKey;
     //Combat
@@ -48,6 +50,18 @@ public class SaveManager : SpawnableSingleton<SaveManager>
     public KeyCode towerSelectionKey;
     public KeyCode[] weaponKeys;
     public KeyCode[] updatePathKeys;
+
+    //DEFAULTS
+    public KeyCode defJumpKey;
+    //Combat
+    public KeyCode defInteractKey;
+    public KeyCode defNextWeaponKey;
+    public KeyCode defPrevWeaponKey;
+    //Build Mode
+    public KeyCode defModeChangeKey;
+    public KeyCode defTowerSelectionKey;
+    public KeyCode[] defWeaponKeys;
+    public KeyCode[] defUpdatePathKeys;
 
 
     private void Start()
@@ -74,16 +88,16 @@ public class SaveManager : SpawnableSingleton<SaveManager>
         lifetimeTowerDamage = new int[12];
         lifetimeTowerPlacement = new int[12];
 
-        jumpKey = defaultKeybinds.jumpKey;
-        interactKey = defaultKeybinds.interactKey;
+        jumpKey = defJumpKey;
+        interactKey = defInteractKey;
         // Combat
-        nextWeaponKey = defaultKeybinds.nextWeaponKey;
-        prevWeaponKey = defaultKeybinds.prevWeaponKey;
-        weaponKeys = defaultKeybinds.weaponKeys;
+        nextWeaponKey = defNextWeaponKey;
+        prevWeaponKey = defPrevWeaponKey;
+        weaponKeys = defWeaponKeys;
         //Build Mode
-        modeChangeKey = defaultKeybinds.modeChangeKey;
-        towerSelectionKey = defaultKeybinds.towerSelectionKey;
-        updatePathKeys = defaultKeybinds.updatePathKeys;
+        modeChangeKey = defModeChangeKey;
+        towerSelectionKey = defTowerSelectionKey;
+        updatePathKeys = defUpdatePathKeys;
         string jsonData = JsonUtility.ToJson(Instance);
         PlayerPrefs.SetString(saveFileName, jsonData);
         PlayerPrefs.Save();
@@ -173,26 +187,42 @@ public class SaveManager : SpawnableSingleton<SaveManager>
 
     private void SetToDefaults() {
         Debug.Log("setting Defaults");
-        if(jumpKey == KeyCode.None) {
+        //jumpKey = defaultKeybinds.jumpKey;
+        if (jumpKey == KeyCode.None) {
             Debug.Log("setting Jump");
-            jumpKey = defaultKeybinds.jumpKey;
+            jumpKey = defJumpKey;
         }
         if(interactKey == KeyCode.None) {
-            interactKey = defaultKeybinds.interactKey;
+            interactKey = defInteractKey;
         }
         if(nextWeaponKey == KeyCode.None) {
-            nextWeaponKey = defaultKeybinds.nextWeaponKey;
+            nextWeaponKey = defNextWeaponKey;
         }
         if(prevWeaponKey == KeyCode.None) {
-            prevWeaponKey = defaultKeybinds.prevWeaponKey;
+            prevWeaponKey = defPrevWeaponKey;
         }
         if(modeChangeKey == KeyCode.None){
-            modeChangeKey = defaultKeybinds.modeChangeKey;
+            modeChangeKey = defModeChangeKey;
         }
         if(towerSelectionKey == KeyCode.None) {
-            towerSelectionKey = defaultKeybinds.towerSelectionKey;
+            towerSelectionKey = defTowerSelectionKey;
         }
         
     }
 
+    public void PassDefaultBindings(DefaultKeybinds d)
+    {
+        defJumpKey = d.jumpKey;
+        defInteractKey = d.interactKey;
+        // Combat
+        defNextWeaponKey = d.nextWeaponKey;
+        defPrevWeaponKey = d.prevWeaponKey;
+        defWeaponKeys = d.weaponKeys;
+        //Build Mode
+        defModeChangeKey = d.modeChangeKey;
+        defTowerSelectionKey = d.towerSelectionKey;
+        defUpdatePathKeys = d.updatePathKeys;
+
+        Debug.Log($"SaveManager has been passed: {d}");
+    }
 }

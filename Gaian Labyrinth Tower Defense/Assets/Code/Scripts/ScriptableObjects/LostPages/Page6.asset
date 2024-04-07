@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 707e68cd908cf98409e17d123d971355, type: 3}
+  m_Name: Page6
+  m_EditorClassIdentifier: 
+  id: 5
+  pageTitle: 'Page 6: The Night of Catastrophe'
+  pageContent: "\nThey believed in a ritual that would cleanse the world of the ores'
+    influence, restoring Gaian to its original state. But something went terribly
+    wrong; someone inside the Purist made a mistake. The ritual, instead of channeling
+    the magic, fractured it. A blinding flash lit the sky. The next morning, Gaian
+    was transformed\u2014its terrains twisted, gravity unreliable, and the once harmonious
+    magic now a rampant force of corruption."
+  pageImage: {fileID: 0}
