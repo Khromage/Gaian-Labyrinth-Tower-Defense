@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3a5c34db46c2d459d377b93c15a335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerInfo: {fileID: 0}
+  towerInfo: {fileID: 11400000, guid: cf15361deceb0dd4294bd629309c385e, type: 2}
   towerName: 
   target: {fileID: 0}
   targetingMode: 
