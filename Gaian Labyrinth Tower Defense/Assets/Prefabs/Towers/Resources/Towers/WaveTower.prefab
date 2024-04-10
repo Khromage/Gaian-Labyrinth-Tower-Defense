@@ -207,9 +207,9 @@ MonoBehaviour:
   targetCooldown: 0
   enemyTag: Enemy
   InteractionIndicator: {fileID: 0}
-  partToRotate: {fileID: 0}
+  partToRotate: {fileID: 576702084041083807}
   turnSpeed: 5
-  projectilePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
+  projectilePrefab: {fileID: 7818044678873102962, guid: 746ddf57336d4594f9ab614fba54a3cf, type: 3}
   firePoint: {fileID: 0}
   enemies: []
   detectionZone: {fileID: 0}
