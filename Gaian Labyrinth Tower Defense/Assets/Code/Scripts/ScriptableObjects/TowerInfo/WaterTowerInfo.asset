@@ -47,6 +47,6 @@ MonoBehaviour:
     <FireRate>k__BackingField: 0.5
     <Cost>k__BackingField: 30
     <Description>k__BackingField: Bubbles cover the area, imprisoning enemies
-  <Icon>k__BackingField: {fileID: 21300000, guid: 4e5ca202d7ad0f344a607fd7fce195f6, type: 3}
+  <Icon>k__BackingField: {fileID: -81499697, guid: 1641fefd84d5af54891d4bf716f5538c, type: 3}
   <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: dfe2954f0b48d6c48a2bb4af87f6ce16, type: 3}
   <NonfuncModel>k__BackingField: {fileID: 4137109062845976413, guid: c588465569a33564d9217229645859da, type: 3}
