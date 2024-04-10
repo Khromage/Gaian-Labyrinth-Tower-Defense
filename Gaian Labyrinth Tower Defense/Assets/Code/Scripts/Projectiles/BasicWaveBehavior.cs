@@ -12,7 +12,7 @@ public class BasicWaveBehavior : MonoBehaviour
     public float damage; //some number
     //public GameObject WavePrefab;
     //WaveMaster WaveMaster;
-    public bool lowLevel;
+    public bool lowLevel = false;
 
     void Start()
     {
@@ -20,12 +20,15 @@ public class BasicWaveBehavior : MonoBehaviour
         Destroy(gameObject, 5);
 
         //temp
-        tilesLeft = 5;
+        //tilesLeft = 5;
+        //lowLevel = false;
     }
     void Update()
     {
         updateCurrTile();
         moveAlongPathReverse();
+        Debug.Log("i travel for " + tilesLeft + " tiles");
+
         if (tilesLeft <= 0)
             Destroy(gameObject);
     }
@@ -49,19 +52,19 @@ public class BasicWaveBehavior : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 10f, Grid))
         {
-            
 
+            currTile = hit.transform.GetComponent<GridTile>();
             //if not branching, keep going
-            if (currTile.predecessorList.Count == 1)
-            {
+            //if (currTile.predecessorList.Count == 1)
+            //{
                 nextTile = currTile.predecessorList[0];
                 Debug.Log(nextTile);
             
-            //
             
-            }
-            else
-                Destroy(gameObject);
+            
+            //}
+            //else
+            //    Destroy(gameObject);
         }
         else
         {

@@ -228,7 +228,7 @@ MonoBehaviour:
   lv2_distance: 0
   MasterList: []
   wavePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
-  riptidePrefab: {fileID: 0}
+  riptidePrefab: {fileID: 1248641760893778226, guid: 8dad859cb63cdaa4bae6bdc0711ab610, type: 3}
 --- !u!1 &2660176201313847061
 GameObject:
   m_ObjectHideFlags: 0
