@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class LightningTowerBehavior : TowerBehavior
 {
+    [SerializeField]
+    private GameObject strikeProj;
+    [SerializeField]
+    private GameObject pulseProj;
+
+    private int chainCount;
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
+        chainCount = 2;
     }
 
     // Update is called once per frame
@@ -17,43 +24,57 @@ public class LightningTowerBehavior : TowerBehavior
         base.Update();
     }
 
-    //maybe just override lv1_attack? just need the pierce thing right? just give the projectile the pierceAMT
-    protected override void Shoot()
+    //This function gets called at lvl1, lvl2, and lvl3_1
+    protected override void lv1_Attack()
     {
-        ProjectileBehavior projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation).GetComponent<ProjectileBehavior>();
+        LightningProjBehavior projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation).GetComponent<LightningProjBehavior>();
         projectile.damage = damage;
-        projectile.GetComponent<ArcBehavior>().pierceAMT = 2;
+        projectile.GetComponent<LightningProjBehavior>().SetPierceAMT(chainCount);
         if (projectile != null)
             projectile.SetTarget(target.transform);
         projectile.targeting = targetingMode;
-
-        Debug.Log($"lightning proj target: {projectile.GetComponent<ArcBehavior>().target}");
+    }
+    protected override void lv3_3_Attack()
+    {
+        GameObject pulse = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        pulse.transform.localScale = Vector3.one * range;
+        Destroy(pulse, fireRate / 4f);
+        
+        foreach (Collider e in Physics.OverlapSphere(firePoint.position, range))
+        {
+            if (e.CompareTag("Enemy"))
+            {
+                e.GetComponent<EnemyBehavior>().takeDamage(damage, pulse);
+            }
+        }
     }
 
+    //better arc
     protected override void lv2_upgrade()
     {
         base.lv2_upgrade();
-        damage = 10f;
-        fireRate = 1.5f;
-        projectilePrefab.GetComponent<TrackingBulletBehavior>().pierceAMT = 3;
+        chainCount = 3;
     }
+
+    //best arc
     protected override void lv3_1_upgrade()
     {
         base.lv3_1_upgrade();
-        damage = 14f;
-        fireRate = 2f;
-        projectilePrefab.GetComponent<TrackingBulletBehavior>().pierceAMT = 4;
+        chainCount = 4;
     }
+    //lightning strike
     protected override void lv3_2_upgrade()
     {
         base.lv3_2_upgrade();
-        damage = 25f;
+        chainCount = 0;
+        projectilePrefab = strikeProj;
     }
+    //static/ball lightning 
     protected override void lv3_3_upgrade()
     {
         base.lv3_3_upgrade();
-        damage = 2f;
-        fireRate = 4f;
+        chainCount = 0;
+        projectilePrefab = pulseProj;
     }
 
 }

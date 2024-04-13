@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,8 +16,21 @@ public class OptionsMenu : MonoBehaviour
     public GameObject DisplayVGroup;
     public GameObject AudioVGroup;
     public GameObject GraphicsVGroup;
-    public GameObject ControlsVGroup;
     public Slider AudioSlider;
+    private string currentKeyAction;
+    public GameObject waitingForKeyPressUI; // Some UI to show that the game is waiting for a key press
+    private Action<KeyCode> onKeySelected; // Delegate to store the callback when a key is selected
+    public TMP_Text jumpButtonText;
+    public TMP_Text interactButtonText;
+    public TMP_Text nextWeaponButtonText;
+    public TMP_Text prevWeaponButtonText;
+    public TMP_Text modeChangeButtonText;
+    public TMP_Text towerSelectionButtonText;
+    public TMP_Text waitingText;
+
+
+
+
     void Start()
     {
         resolutions = Screen.resolutions;
@@ -25,7 +40,13 @@ public class OptionsMenu : MonoBehaviour
         DisplayVGroup.SetActive(false);
         AudioVGroup.SetActive(false);
         GraphicsVGroup.SetActive(false);
-        ControlsVGroup.SetActive(false);
+        waitingText.gameObject.SetActive(false);
+        jumpButtonText.text = LoadoutManager.Instance.jumpKey.ToString();
+        interactButtonText.text = LoadoutManager.Instance.interactKey.ToString();
+        nextWeaponButtonText.text = LoadoutManager.Instance.nextWeaponKey.ToString();
+        prevWeaponButtonText.text = LoadoutManager.Instance.prevWeaponKey.ToString();
+        modeChangeButtonText.text = LoadoutManager.Instance.modeChangeKey.ToString();
+        towerSelectionButtonText.text = LoadoutManager.Instance.towerSelectionKey.ToString();
 
     }
     void Awake()
@@ -59,6 +80,11 @@ public class OptionsMenu : MonoBehaviour
         audioMixer.SetFloat("Master", Mathf.Log10(volume)*20);
     }
 
+    public void SetSFXVolume(float svolume) 
+    {
+        audioMixer.SetFloat("SFX", Mathf.Log10(svolume)*20);
+    }
+
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
@@ -86,5 +112,58 @@ public class OptionsMenu : MonoBehaviour
                 Application.targetFrameRate = int.Parse(stringFPS);
             }
     }
+// Call this method from the button's OnClick event
+    public void StartRebindForKey(string keyAction)
+    {
+        currentKeyAction = keyAction;
+        LoadoutManager lm = FindObjectOfType<LoadoutManager>();
+        Debug.Log(keyAction);
+        lm.SetKeyToRebind(keyAction);
+        waitingForKeyPressUI.SetActive(true); // Show the UI that we are waiting for key press
+        StartCoroutine(WaitForKeyPress());
+    }
 
+    private IEnumerator WaitForKeyPress()
+    {
+        Debug.Log("started coroutine");
+        bool keyFound = false;
+        KeyCode newKey = KeyCode.None;
+        
+        while (!keyFound)
+        {
+            foreach (KeyCode keyCode in Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(keyCode))
+                {
+                    newKey = keyCode;
+                    keyFound = true;
+                    break;
+                }
+            }
+            yield return null; // Wait until next frame
+        }
+
+        // Callback to inform the Player class about the new key
+        onKeySelected?.Invoke(newKey);
+        // Update UI
+        jumpButtonText.text = LoadoutManager.Instance.jumpKey.ToString();
+        interactButtonText.text = LoadoutManager.Instance.interactKey.ToString();
+        nextWeaponButtonText.text = LoadoutManager.Instance.nextWeaponKey.ToString();
+        prevWeaponButtonText.text = LoadoutManager.Instance.prevWeaponKey.ToString();
+        modeChangeButtonText.text = LoadoutManager.Instance.modeChangeKey.ToString();
+        towerSelectionButtonText.text = LoadoutManager.Instance.towerSelectionKey.ToString();
+        waitingForKeyPressUI.SetActive(false);
+    }
+
+// Use this method to subscribe the Player's method to the delegate
+    public void RegisterOnKeySelectedCallback(Action<KeyCode> callback)
+    {
+        onKeySelected += callback;
+    }
+
+// Use this method to unsubscribe when needed
+    public void UnregisterOnKeySelectedCallback(Action<KeyCode> callback)
+    {
+        onKeySelected -= callback;
+    }
 }

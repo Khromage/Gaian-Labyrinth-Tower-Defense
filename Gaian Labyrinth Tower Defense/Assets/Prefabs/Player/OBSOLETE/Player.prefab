@@ -374,9 +374,8 @@ MonoBehaviour:
   nextWeaponKey: 0
   prevWeaponKey: 0
   modeChangeKey: 0
-  towerKeys: 
-  sellKey: 0
-  upgradeCurrentTowerKey: 0
+  towerSelectionKey: 0
+  weaponKeys: 
   updatePathKeys: 
   whatIsGround:
     serializedVersion: 2
@@ -394,16 +393,14 @@ MonoBehaviour:
   playerCam: {fileID: 0}
   towerPrefab: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerDisplayPrefab: {fileID: 3248011058118863728, guid: f94bb3fe3267d3545a2495bcc73ce8c9, type: 3}
-  currency: 0
   InteractRange: 0
   Body: {fileID: 1691354757834458748}
   InteractionPoint: {fileID: 4188418000377053000}
+  weaponList: {fileID: 0}
   weaponHolder: {fileID: 0}
   currentWeapon: {fileID: 957661321286321295}
-  weaponList:
-  - {fileID: 5926663804712910904, guid: 3141bae83dc9d4a4a95f36562421b01f, type: 3}
-  - {fileID: 5926663804712910904, guid: 1cc1147431a6d404fb6acfa7af10157e, type: 3}
-  - {fileID: 1864724351924341100, guid: f4a358b4967485f40b7b05240f2451f1, type: 3}
+  lastWeapon: {fileID: 0}
+  weaponSet: []
   towerList: {fileID: 11400000, guid: c7308b4a69207f64bb0f7eee266f1e7a, type: 2}
   currentTower: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   towerSet:
@@ -413,6 +410,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  ctDisplay: {fileID: 0}
+  armAnimator: {fileID: 0}
   currentMode: 0
 --- !u!75 &2392563291835466655
 ConstantForce:

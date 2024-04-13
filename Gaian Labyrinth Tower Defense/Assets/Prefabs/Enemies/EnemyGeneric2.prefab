@@ -272,7 +272,7 @@ MonoBehaviour:
     m_Bits: 8
   HealthBar: {fileID: 8524468329408580060}
   currentHealth: 0
-  currentSheild: 0
+  enemyWeight: 0
   damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0
@@ -308,7 +308,7 @@ AudioSource:
   m_GameObject: {fileID: 2921004111766893944}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: e1dbfb1277348524a8b190c335c6ee33, type: 2}
+  OutputAudioMixerGroup: {fileID: 80899558623374298, guid: e1dbfb1277348524a8b190c335c6ee33, type: 2}
   m_audioClip: {fileID: 8300000, guid: 4d4ca6c3a8c7b4b4896e42b68e02b035, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
