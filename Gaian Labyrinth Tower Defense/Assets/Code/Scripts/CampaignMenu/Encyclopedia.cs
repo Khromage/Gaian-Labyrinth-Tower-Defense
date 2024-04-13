@@ -17,6 +17,8 @@ public class Encyclopedia : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI contentText;
     [SerializeField] private Image pageImage; 
     private int currentPageIndex = 0;
+    [SerializeField] private TowerData[] towers;
+    [SerializeField] private EnemyData[] enemies;
 
     public GameObject indexView; 
     public GameObject pageView; 
@@ -78,6 +80,58 @@ public void CloseEncyclopedia()
     
     DisplayEncyclopediaInfo(currentPageIndex);
 }
+
+public void DisplayTowerInfo(int id)
+{
+    if (id >= 0 && id < towers.Length)
+    {
+        TowerData tower = towers[id];
+        if (tower != null)
+        {
+            titleText.text = tower.towerName;
+            contentText.text = tower.description;
+            pageImage.sprite = tower.towerImage;
+
+            indexView.SetActive(false);
+            pageView.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Tower with id " + id + " not found.");
+        }
+    }
+    else
+    {
+        Debug.LogError("Tower id out of range: " + id);
+    }
+}
+
+public void DisplayEnemyInfo(int id)
+{
+    if (id >= 0 && id < enemies.Length)
+    {
+        EnemyData enemy = enemies[id];
+        if (enemy != null)
+        {
+            titleText.text = enemy.enemyName;
+            contentText.text = enemy.description;
+            pageImage.sprite = enemy.enemyImage;
+
+            indexView.SetActive(false);
+            pageView.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Enemy with id " + id + " not found.");
+        }
+    }
+    else
+    {
+        Debug.LogError("Enemy id out of range: " + id);
+    }
+}
+
+
 public void DisplayPreviousPage()
 {
     // Check if there is a previous page; if not, wrap around or set to the last page
@@ -105,5 +159,16 @@ public void OnNextPageButtonClicked()
          Debug.Log($"Lost Page Button Clicked: {pageId}");
         DisplayEncyclopediaInfo(pageId);
     }
+public void OnTowerButtonClicked(int towerId)
+{
+    Debug.Log($"Tower Button Clicked: {towerId}");
+    DisplayTowerInfo(towerId);
+}
+public void OnEnemyButtonClicked(int enemyId)
+{
+    Debug.Log($"Enemy Button Clicked: {enemyId}");
+    DisplayEnemyInfo(enemyId);
+}
+
 
 }
