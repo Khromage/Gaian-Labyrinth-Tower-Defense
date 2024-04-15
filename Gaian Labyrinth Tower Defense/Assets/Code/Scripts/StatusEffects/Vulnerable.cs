@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Vulnerable : StatusEffect
@@ -19,12 +20,20 @@ public class Vulnerable : StatusEffect
         this.amplification = amplification;
     }
 
-    public override void Effect(EnemyBehavior subject)
+    public override void Effect(GameObject subject, List<StatusEffect> vulnList)
     {
-        subject.isVulnerable = true;
+        /*
+        float highest = vulnList[0].amplification;
+        foreach (StatusEffect v in vulnList) 
+        {
+        
+        }
+
+        subject.dmgMulti = true;
         if (amplification > subject.vulnMulti)
         {
             subject.vulnMulti = amplification;
         }
+        */
     }
 }

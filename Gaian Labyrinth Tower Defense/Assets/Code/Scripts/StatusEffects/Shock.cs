@@ -14,15 +14,17 @@ public class Shock : StatusEffect
     {
         this.duration = duration;
         this.stunDuration = stunDuration;
+        id = DebuffList.shockID;
     }
     public Shock(float duration, float stunDuration, float tickRate)
     {
         this.duration = duration;
         this.stunDuration = stunDuration;
         this.tickRate = tickRate;
+        id = DebuffList.shockID;
     }
 
-    public override void Effect(EnemyBehavior subject)
+    public override void Effect(GameObject subject, List<StatusEffect> vulnList)
     {
         if (remainingTicks > 0 && !ticking && timeElapsed > duration - remainingTicks * tickRate)
         {
@@ -32,7 +34,7 @@ public class Shock : StatusEffect
         }
         else if (ticking && timeElapsed - tickStartTime <= stunDuration)
         {
-            subject.AddMovementModifier(0f);
+            subject.GetComponent<EnemyBehavior>().AddMovementModifier(0f);
         }
         else
         {

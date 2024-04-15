@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class ZoneEffect
 {
-
+    protected GameObject source;
+    public int id;
 }

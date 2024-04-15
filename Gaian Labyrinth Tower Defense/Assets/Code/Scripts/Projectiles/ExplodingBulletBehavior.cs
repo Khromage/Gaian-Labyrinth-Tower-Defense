@@ -25,10 +25,11 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
         {
             if(collider.tag == "Enemy")
             {
-                EnemyBehavior e = collider.gameObject.GetComponent<EnemyBehavior>();
+                StatusEffects es = collider.gameObject.GetComponent<StatusEffects>();
+                EnemyBehavior eb = collider.gameObject.GetComponent<EnemyBehavior>();
                 var burn = new Burn(2f, 1f);
-                e.ApplyStatusEffect(0, burn);
-                e.takeDamage(damage, gameObject);
+                es.ApplyStatusEffect(burn);
+                eb.takeDamage(damage, gameObject);
             }
         }
         GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);

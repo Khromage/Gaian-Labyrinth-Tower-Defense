@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Burn : StatusEffect
 {
+    
     private float damagePerTick;
 
     [SerializeField]
@@ -17,6 +18,7 @@ public class Burn : StatusEffect
         this.damagePerTick = damagePerTick;
         remainingTicks = (int)(duration * tickRate);
         Debug.Log($"New Burn's total remaining ticks: {remainingTicks}");
+        id = DebuffList.burnID;
     }
     public Burn(float duration, float damagePerTick, float tickRate)
     {
@@ -24,15 +26,28 @@ public class Burn : StatusEffect
         this.damagePerTick = damagePerTick;
         this.tickRate = tickRate;
         remainingTicks = (int)(duration * tickRate);
+        id = DebuffList.burnID;
     }
 
-    public override void Effect(EnemyBehavior subject)
+    public override void Effect(GameObject enemy, List<StatusEffect> vulnList)
     {
-        if (remainingTicks > 0 && timeElapsed > duration - (remainingTicks / tickRate))
+        if (enemy.tag == "Enemy")
         {
-            Debug.Log("Dealing a tick of burn damage!");
-            subject.takeDamage(damagePerTick);
-            remainingTicks--;
+            EnemyBehavior e = enemy.GetComponent<EnemyBehavior>();
+            if (remainingTicks > 0 && timeElapsed > duration - (remainingTicks / tickRate))
+            {
+                if (e.enemyWeight == EnemyBehavior.Weight.light)
+                {
+                    //weight stuff idk
+                }
+                Debug.Log("Dealing a tick of burn damage!");
+                e.takeDamage(damagePerTick);
+                remainingTicks--;
+            }
+        }
+        else
+        {
+            Debug.Log("Trying to burn a non-enemy");
         }
     }
 }

@@ -18,6 +18,7 @@ public class EnemyBehavior : MonoBehaviour
     public delegate void EnemyReachedGoal(EnemyBehavior enemy);
     public event EnemyReachedGoal OnEnemyReachedGoal;
 
+
     public GridTile currTile;
     public GridTile successorTile;
     public LayerMask Grid;
@@ -35,7 +36,11 @@ public class EnemyBehavior : MonoBehaviour
     // keeps track of the number of zones the enemy is inside (in case tower ranges overlap)
     private int vulnerabilityZones;
     public bool isVulnerable;
-    public float vulnMulti;
+    public float dmgMulti;
+
+
+    protected List<float> moveSpeedModifiers;
+    protected List<float> damageModifiers;
 
     public GameObject damageIndicator;
 
@@ -51,9 +56,6 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     protected AudioSource EnemyHurtSFX;
 
-    //protected List<StatusEffect> StatusEffectList;
-    protected List<StatusEffect>[] StatusEffectList;
-    protected List<float> moveSpeedModifiers;
 
     [SerializeField]
     private EnemyInfo info;
@@ -75,19 +77,15 @@ public class EnemyBehavior : MonoBehaviour
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
 
-        StatusEffectList = new List<StatusEffect>[DebuffList.length];
-        for (int i = 0; i < StatusEffectList.Length; i++)
-        {
-            StatusEffectList[i] = new List<StatusEffect>();
-        }
         moveSpeedModifiers = new List<float>();
+        damageModifiers = new List<float>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        EffectsOnMe();
         ApplyMovementModifiers();
+        ApplyDamageModifiers();
         //setGravityDir();
         updateCurrTile();
         moveAlongPath();
@@ -114,9 +112,7 @@ public class EnemyBehavior : MonoBehaviour
     }
     public void takeDamage(float damage, GameObject damagerBullet)
     {
-        float finalDamage = damage;
-        if(isVulnerable)
-            finalDamage *= vulnMulti;
+        float finalDamage = damage * dmgMulti;
 
         currentHealth -= finalDamage;
 
@@ -146,7 +142,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         float finalDamage = damage;
         if (isVulnerable)
-            finalDamage *= vulnMulti;
+            finalDamage *= dmgMulti;
 
         currentHealth -= finalDamage;
 
@@ -228,28 +224,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
 
-    protected void EffectsOnMe()
-    {
-        //throught the array of types
-        for (int s = 0; s < StatusEffectList.Length; s++) {
-            //through the List of each type
-            for (int i = StatusEffectList[s].Count - 1; i >= 0; i--)
-            {
-                Debug.Log("Affecting enemy with Status effect: " + StatusEffectList[s][i]);
-                //if time-based do this
-                if (StatusEffectList[s][0].duration != -1)
-                {
-                    StatusEffectList[s][i].timeElapsed += Time.deltaTime;
-                    if (StatusEffectList[s][i].timeElapsed >= StatusEffectList[s][i].duration)
-                    {
-                        StatusEffectList[s].Remove(StatusEffectList[s][i]);
-                    }
-                }
 
-                StatusEffectList[s][i].Effect(this);
-            }
-        }
-    }
 
     public void AddMovementModifier(float mod)
     {
@@ -265,43 +240,20 @@ public class EnemyBehavior : MonoBehaviour
         moveSpeedModifiers.Clear();
         GetComponent<NavMeshAgent>().speed = moveSpeed * totalModifier;
     }
-    //THIS MAYBE SHOULDN'T TAKE StatusEffect as a parameter, instead taking the values and then creating a status effect in here (would need polymorphs for that)
-    public void ApplyStatusEffect(int id, StatusEffect effect)
+
+    public void AddDamageModifier(float mod)
     {
-        Debug.Log("Applying Status Effect: " + effect);
-        StatusEffectList[id].Add(effect);
-        
-        /*
-        public T newDebuff<T>(int id, float dur, float val)
-        {
-            switch (id)
-            {
-                case 0:
-                    return Burn;
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                default: 
-                    break;
-            }
-        }
-        */
+        damageModifiers.Add(mod);
     }
-    public void ApplyStatusEffect(int id, float dur, float val, float rate)
+    protected void ApplyDamageModifiers()
     {
-        //StatusEffectList[id].Add(statusEffect);
+        float totalModifier = 1f;
+        foreach (float m in damageModifiers)
+        {
+            totalModifier *= m;
+        }
+        damageModifiers.Clear();
+        dmgMulti = totalModifier;
     }
 
 
