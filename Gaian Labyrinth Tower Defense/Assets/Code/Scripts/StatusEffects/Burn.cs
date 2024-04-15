@@ -16,6 +16,7 @@ public class Burn : StatusEffect
         this.duration = duration;
         this.damagePerTick = damagePerTick;
         remainingTicks = (int)(duration * tickRate);
+        Debug.Log($"New Burn's total remaining ticks: {remainingTicks}");
     }
     public Burn(float duration, float damagePerTick, float tickRate)
     {
@@ -27,8 +28,9 @@ public class Burn : StatusEffect
 
     public override void Effect(EnemyBehavior subject)
     {
-        if (remainingTicks > 0 && timeElapsed > duration - remainingTicks * tickRate)
+        if (remainingTicks > 0 && timeElapsed > duration - (remainingTicks / tickRate))
         {
+            Debug.Log("Dealing a tick of burn damage!");
             subject.takeDamage(damagePerTick);
             remainingTicks--;
         }

@@ -74,6 +74,13 @@ public class EnemyBehavior : MonoBehaviour
         vulnerabilityZones = 0;
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
+
+        StatusEffectList = new List<StatusEffect>[DebuffList.length];
+        for (int i = 0; i < StatusEffectList.Length; i++)
+        {
+            StatusEffectList[i] = new List<StatusEffect>();
+        }
+        moveSpeedModifiers = new List<float>();
     }
 
     // Update is called once per frame
@@ -224,11 +231,11 @@ public class EnemyBehavior : MonoBehaviour
     protected void EffectsOnMe()
     {
         //throught the array of types
-        for (int s = 0; s < StatusEffectList.Count(); s++) {
+        for (int s = 0; s < StatusEffectList.Length; s++) {
             //through the List of each type
             for (int i = StatusEffectList[s].Count - 1; i >= 0; i--)
             {
-
+                Debug.Log("Affecting enemy with Status effect: " + StatusEffectList[s][i]);
                 //if time-based do this
                 if (StatusEffectList[s][0].duration != -1)
                 {
@@ -259,9 +266,10 @@ public class EnemyBehavior : MonoBehaviour
         GetComponent<NavMeshAgent>().speed = moveSpeed * totalModifier;
     }
     //THIS MAYBE SHOULDN'T TAKE StatusEffect as a parameter, instead taking the values and then creating a status effect in here (would need polymorphs for that)
-    public void ApplyStatusEffect(int id, float dur, float val)
+    public void ApplyStatusEffect(int id, StatusEffect effect)
     {
-        //StatusEffectList[id].Add(DebuffList.newDebuff(id, dur, val));
+        Debug.Log("Applying Status Effect: " + effect);
+        StatusEffectList[id].Add(effect);
         
         /*
         public T newDebuff<T>(int id, float dur, float val)

@@ -26,7 +26,8 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
             if(collider.tag == "Enemy")
             {
                 EnemyBehavior e = collider.gameObject.GetComponent<EnemyBehavior>();
-                //e.ApplyStatusEffect(0, new Burn(2f, 1f));
+                var burn = new Burn(2f, 1f);
+                e.ApplyStatusEffect(0, burn);
                 e.takeDamage(damage, gameObject);
             }
         }

@@ -5,6 +5,7 @@ using UnityEngine;
 public static class DebuffList
 {
     public static int length = 8;
+
     public static int burnID = 0;
     public static int chillID = 1;
     public static int shockID = 2;
