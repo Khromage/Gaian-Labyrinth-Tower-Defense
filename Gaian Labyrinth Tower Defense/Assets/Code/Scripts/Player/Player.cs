@@ -957,4 +957,10 @@ public class Player : UnitBehavior
         }
     }
 
+    public void setStatus (string status) {
+        Debug.Log("Player has entered zone");
+        if (status == "spored") {
+        }
+    }
+
 }

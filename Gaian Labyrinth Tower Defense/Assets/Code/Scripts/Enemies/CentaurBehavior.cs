@@ -31,18 +31,18 @@ public class CentaurBehavior : EnemyBehavior
         }
     }
 
-    public void getNextCorner(){
+    private void getNextCorner(){
         nextCorner = GetComponent<NavMeshAgent>().steeringTarget;
         Debug.Log(nextCorner);
     }
 
-    public void speedUp(){
+    private void speedUp(){
         if (GetComponent<NavMeshAgent>().speed < 1f){
             GetComponent<NavMeshAgent>().speed = maxSpeed;
         }
     }
 
-    public void slowDown(){
+    private void slowDown(){
         if (GetComponent<NavMeshAgent>().speed > 1f){
             GetComponent<NavMeshAgent>().speed = slowestSpeed;
         }
