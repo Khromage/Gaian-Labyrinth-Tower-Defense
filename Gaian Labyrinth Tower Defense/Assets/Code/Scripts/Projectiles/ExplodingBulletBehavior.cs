@@ -19,20 +19,21 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
         turnSpeed = 180f;
     }
     public override void HitTarget(GameObject hitEnemy)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, blastRadius);
+        foreach (Collider collider in colliders)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, blastRadius);
-            foreach (Collider collider in colliders)
+            if(collider.tag == "Enemy")
             {
-                if(collider.tag == "Enemy")
-                {
-                    EnemyBehavior e = collider.gameObject.GetComponent<EnemyBehavior>();
-                    e.takeDamage(damage, gameObject);
-                }
+                EnemyBehavior e = collider.gameObject.GetComponent<EnemyBehavior>();
+                //e.ApplyStatusEffect(0, new Burn(2f, 1f));
+                e.takeDamage(damage, gameObject);
             }
-            GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
-            ParticleSystem explosionVFX = explosion.GetComponent<ParticleSystem>();
-            explosionVFX.Play(true);
-            Destroy(explosion, 1);
-            Destroy(gameObject);
         }
+        GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
+        ParticleSystem explosionVFX = explosion.GetComponent<ParticleSystem>();
+        explosionVFX.Play(true);
+        Destroy(explosion, 1);
+        Destroy(gameObject);
+    }
 }

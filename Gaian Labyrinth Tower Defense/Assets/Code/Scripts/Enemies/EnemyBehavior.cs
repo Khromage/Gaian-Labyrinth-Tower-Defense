@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 //currentTile
 //goalTile = path.end  (set by spawnPoint when it gives the initial path? but there might not be a path when a wave starts if it's all blocked off...)
@@ -33,6 +35,7 @@ public class EnemyBehavior : MonoBehaviour
     // keeps track of the number of zones the enemy is inside (in case tower ranges overlap)
     private int vulnerabilityZones;
     public bool isVulnerable;
+    public float vulnMulti;
 
     public GameObject damageIndicator;
 
@@ -48,6 +51,9 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     protected AudioSource EnemyHurtSFX;
 
+    //protected List<StatusEffect> StatusEffectList;
+    protected List<StatusEffect>[] StatusEffectList;
+    protected List<float> moveSpeedModifiers;
 
     [SerializeField]
     private EnemyInfo info;
@@ -58,10 +64,11 @@ public class EnemyBehavior : MonoBehaviour
     public virtual void Start()
     {
         //change these to pull from the scriptableObject
-        harm = 1;
-        worth = 5;
-        maxHealth = 32f;
-        moveSpeed = 3f;
+        harm = info.harm;
+        worth = info.worth;
+        maxHealth = info.maxHealth;
+        moveSpeed = info.moveSpeed;
+        enemyWeight = info.currentWeight;
         isAlive = true;
         isVulnerable = false;
         vulnerabilityZones = 0;
@@ -72,6 +79,8 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        EffectsOnMe();
+        ApplyMovementModifiers();
         //setGravityDir();
         updateCurrTile();
         moveAlongPath();
@@ -100,7 +109,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         float finalDamage = damage;
         if(isVulnerable)
-            finalDamage *= 1.25f;
+            finalDamage *= vulnMulti;
 
         currentHealth -= finalDamage;
 
@@ -124,6 +133,38 @@ public class EnemyBehavior : MonoBehaviour
             isAlive = false;
         }
         
+    }
+    //polymorph without the bullet object...
+    public void takeDamage(float damage)
+    {
+        float finalDamage = damage;
+        if (isVulnerable)
+            finalDamage *= vulnMulti;
+
+        currentHealth -= finalDamage;
+
+        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
+        if (isVulnerable)
+        {
+            printMsg += "TRUE";
+        }
+        else
+        {
+            printMsg += "FALSE";
+        }
+        Debug.Log(printMsg);
+
+        deployDamageIndicator(finalDamage);
+
+        float spd = 5 + 5 * finalDamage / maxHealth;
+        HealthBar.SetHealth(currentHealth / maxHealth, spd);
+
+        EnemyHurtSFX.Play();
+        if (currentHealth <= 0)
+        {
+            isAlive = false;
+        }
+
     }
 
     private void deployDamageIndicator(float damage)
@@ -180,6 +221,83 @@ public class EnemyBehavior : MonoBehaviour
     }
 
 
+    protected void EffectsOnMe()
+    {
+        //throught the array of types
+        for (int s = 0; s < StatusEffectList.Count(); s++) {
+            //through the List of each type
+            for (int i = StatusEffectList[s].Count - 1; i >= 0; i--)
+            {
+
+                //if time-based do this
+                if (StatusEffectList[s][0].duration != -1)
+                {
+                    StatusEffectList[s][i].timeElapsed += Time.deltaTime;
+                    if (StatusEffectList[s][i].timeElapsed >= StatusEffectList[s][i].duration)
+                    {
+                        StatusEffectList[s].Remove(StatusEffectList[s][i]);
+                    }
+                }
+
+                StatusEffectList[s][i].Effect(this);
+            }
+        }
+    }
+
+    public void AddMovementModifier(float mod)
+    {
+        moveSpeedModifiers.Add(mod);
+    }
+    protected void ApplyMovementModifiers()
+    {
+        float totalModifier = 1f;
+        foreach (float m in moveSpeedModifiers)
+        {
+            totalModifier *= m;
+        }
+        moveSpeedModifiers.Clear();
+        GetComponent<NavMeshAgent>().speed = moveSpeed * totalModifier;
+    }
+    //THIS MAYBE SHOULDN'T TAKE StatusEffect as a parameter, instead taking the values and then creating a status effect in here (would need polymorphs for that)
+    public void ApplyStatusEffect(int id, float dur, float val)
+    {
+        //StatusEffectList[id].Add(DebuffList.newDebuff(id, dur, val));
+        
+        /*
+        public T newDebuff<T>(int id, float dur, float val)
+        {
+            switch (id)
+            {
+                case 0:
+                    return Burn;
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                default: 
+                    break;
+            }
+        }
+        */
+    }
+    public void ApplyStatusEffect(int id, float dur, float val, float rate)
+    {
+        //StatusEffectList[id].Add(statusEffect);
+    }
+
+
+    //OBSOLETE
     public void enterVulnerabilityZone()
     {
         vulnerabilityZones++;
