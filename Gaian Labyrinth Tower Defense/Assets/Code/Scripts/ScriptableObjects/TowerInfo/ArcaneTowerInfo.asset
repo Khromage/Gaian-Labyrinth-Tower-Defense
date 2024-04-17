@@ -54,6 +54,6 @@ MonoBehaviour:
 
       Pulse
       area damage'
-  <Icon>k__BackingField: {fileID: 21300000, guid: b99b7ecd57baf4841a10867bab165779, type: 3}
+  <Icon>k__BackingField: {fileID: 1101405601, guid: 1641fefd84d5af54891d4bf716f5538c, type: 3}
   <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   <NonfuncModel>k__BackingField: {fileID: 4137109062845976413, guid: bbceb05f4d833ea4790fbc7865680f05, type: 3}

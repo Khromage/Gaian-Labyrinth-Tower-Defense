@@ -105,6 +105,20 @@ public class GridTile : MonoBehaviour
                     adjacentTiles.Add(col.gameObject.GetComponent<GridTile>());
             }
         }
+        else if (hex)
+        {
+            //gets an array of all colliders we can hit within (this tile's width * .6) on the same layer as this tile (3rd parameter is a layer mask, so I bitshifted the layer)
+            Collider[] adjTileColliders = Physics.OverlapSphere(transform.position, (3f), (1 << gameObject.layer));
+            //adds the game object of each of those colliders to our adjacentTiles list
+
+            foreach (Collider col in adjTileColliders)
+            {
+                //Debug.Log($"attempting to add col: {col}, gameObj: {col.gameObject}");
+                if (col.gameObject != gameObject)
+                    adjacentTiles.Add(col.gameObject.GetComponent<GridTile>());
+            }
+            writeTileInfo();
+        }
     }
 
     public GridTile recalcSuccessor()

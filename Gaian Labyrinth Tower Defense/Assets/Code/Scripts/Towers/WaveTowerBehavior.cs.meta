@@ -3,7 +3,17 @@ guid: d8ead70c2cdabe5489e3d8cecb51a54f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - towerInfo: {instanceID: 0}
+  - target: {instanceID: 0}
+  - InteractionIndicator: {instanceID: 0}
+  - partToRotate: {instanceID: 0}
+  - projectilePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
+  - firePoint: {instanceID: 0}
+  - detectionZone: {instanceID: 0}
+  - placedSFX: {instanceID: 0}
+  - gridLocation: {instanceID: 0}
+  - WavePrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
