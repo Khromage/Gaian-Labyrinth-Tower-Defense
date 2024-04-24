@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 [CreateAssetMenu(menuName = "New Tech")]
-public class Technology : ScriptableObject
+public class Tech : ScriptableObject
 {
-    public string Definition;
-    //public 
+    public string definition;
+    public Texture2D image;
 }
