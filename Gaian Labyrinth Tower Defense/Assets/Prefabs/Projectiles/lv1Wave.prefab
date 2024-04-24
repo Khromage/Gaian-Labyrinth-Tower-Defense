@@ -121,7 +121,8 @@ MonoBehaviour:
   currTile: {fileID: 0}
   Grid:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   tilesLeft: 0
   nextTile: {fileID: 0}
   damage: 0
+  lowLevel: 0

@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: ScoutEnemyInfo
   m_EditorClassIdentifier: 
   Prefab: {fileID: 2921004111766893944, guid: 19d07072fce426942ac6fbc7fa660410, type: 3}
-  Delay: 0
+  Delay: 0.7
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Fast dude. Cooler than generic enemy.
-  moveSpeed: 0
-  maxHealth: 0
-  worth: 0
-  harm: 0
+  moveSpeed: 5
+  maxHealth: 12
+  worth: 6
+  harm: 1
+  currentWeight: 0
