@@ -20,6 +20,7 @@ public class WaveWaterBehavior : MonoBehaviour
     {
         WaveMaster = transform.parent.gameObject.GetComponent<WaveMaster>();
         Destroy(gameObject, 5);
+        //Debug.Log("wave created");
     }
 
     // Update is called once per frame
@@ -27,6 +28,7 @@ public class WaveWaterBehavior : MonoBehaviour
     {
         updateCurrTile();
         moveAlongPathReverse();
+        //Debug.Log("i travel for " + tilesLeft + " tiles");
         if(tilesLeft <= 0)
             Destroy(gameObject);
     }

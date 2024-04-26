@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Type2EnemyInfo
   m_EditorClassIdentifier: 
   Prefab: {fileID: 2921004111766893944, guid: 8a5591e72414aa745951350efbb7aeec, type: 3}
-  Delay: 0
+  Delay: 1
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Has come in 2nd place all his life.
-  moveSpeed: 0
-  maxHealth: 0
-  worth: 0
-  harm: 0
+  moveSpeed: 1
+  maxHealth: 1
+  worth: 1
+  harm: 1
   currentWeight: 2

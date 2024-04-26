@@ -27,6 +27,7 @@ public class WaterRiptideProj : MonoBehaviour
 
         radius = 3f;
         Destroy(gameObject, duration);
+        Debug.Log("riptide created");
 
     }
 
@@ -44,7 +45,7 @@ public class WaterRiptideProj : MonoBehaviour
                 {
                     EnemyBehavior e = collider.gameObject.GetComponent<EnemyBehavior>();
                     e.takeDamage(damage, gameObject);
-                    e.moveSpeed *= slow;
+                    //e.moveSpeed *= slow;
                     //e.transform.Translate(e.transform.forward * knockback);
                 }
             }

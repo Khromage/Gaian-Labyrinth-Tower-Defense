@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: TreantEnemyInfo
   m_EditorClassIdentifier: 
   Prefab: {fileID: 2921004111766893944, guid: 5bb20055aa00a7a4d82d9c8d8e037e01, type: 3}
-  Delay: 0
+  Delay: 2
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Oh lord hes healing
-  moveSpeed: 0
-  maxHealth: 0
-  worth: 0
-  harm: 0
+  moveSpeed: 2.5
+  maxHealth: 25
+  worth: 24
+  harm: 2
   currentWeight: 1
