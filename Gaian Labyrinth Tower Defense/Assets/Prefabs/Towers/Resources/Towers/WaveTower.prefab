@@ -206,13 +206,13 @@ MonoBehaviour:
   damage: 0
   targetCooldown: 0
   enemyTag: Enemy
-  InteractionIndicator: {fileID: 0}
+  InteractionIndicator: {fileID: 5392681474844564774}
   partToRotate: {fileID: 576702084041083807}
   turnSpeed: 5
   projectilePrefab: {fileID: 7818044678873102962, guid: 746ddf57336d4594f9ab614fba54a3cf, type: 3}
   firePoint: {fileID: 0}
   enemies: []
-  detectionZone: {fileID: 0}
+  detectionZone: {fileID: 5246249724988905885}
   placedSFX: {fileID: 0}
   cost: 0
   lv2_cost: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
   lv2_distance: 0
   MasterList: []
   wavePrefab: {fileID: 7818044678873102962, guid: 110cce8bae9baef419b96c084028d256, type: 3}
-  riptidePrefab: {fileID: 0}
+  riptidePrefab: {fileID: 1248641760893778226, guid: 8dad859cb63cdaa4bae6bdc0711ab610, type: 3}
 --- !u!1 &2660176201313847061
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,7 +807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
       propertyPath: m_LocalScale.x
@@ -877,5 +877,10 @@ PrefabInstance:
 --- !u!4 &5201936240235053637 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+  m_PrefabInstance: {fileID: 5696209960028169158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5392681474844564774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
   m_PrefabInstance: {fileID: 5696209960028169158}
   m_PrefabAsset: {fileID: 0}

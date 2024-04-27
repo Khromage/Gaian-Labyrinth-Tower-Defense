@@ -16,6 +16,7 @@ public class OptionsMenu : MonoBehaviour
     public GameObject DisplayVGroup;
     public GameObject AudioVGroup;
     public GameObject GraphicsVGroup;
+    public GameObject ControlsVGroup;
     public Slider AudioSlider;
     private string currentKeyAction;
     public GameObject waitingForKeyPressUI; // Some UI to show that the game is waiting for a key press
@@ -40,6 +41,7 @@ public class OptionsMenu : MonoBehaviour
         DisplayVGroup.SetActive(false);
         AudioVGroup.SetActive(false);
         GraphicsVGroup.SetActive(false);
+        ControlsVGroup.SetActive(false);
         waitingText.gameObject.SetActive(false);
         jumpButtonText.text = LoadoutManager.Instance.jumpKey.ToString();
         interactButtonText.text = LoadoutManager.Instance.interactKey.ToString();

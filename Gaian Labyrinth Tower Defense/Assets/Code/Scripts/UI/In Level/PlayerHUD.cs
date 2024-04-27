@@ -50,19 +50,14 @@ public class PlayerHUD : MonoBehaviour
 
     [SerializeField]
     private TowerList towerList;
-    private int[] towerSet;
+
+    [SerializeField]
+    public int[] towerSet;
     private int[] weaponSet;
 
     void Start()
     {
-        //get list of all spawnpoints
-        //every time wave start, get all enemies
-
-        InitializeHUD();
-        
-        
-        FillEquipHUD();
-
+  
 
     }
 
@@ -319,6 +314,8 @@ public class PlayerHUD : MonoBehaviour
         Player.OnEnterCombatMode += player_enterCombatMode;
         Player.OnSwapWeapon += player_swapWeapon;
         TowerSelectionWheel.OnTowerSelected += player_selectTower;
+        LevelMarker.OnLevelStart += InitializeHUD;
+        LevelMarker.OnLevelStart += FillEquipHUD;
     }
     private void OnDisable()
     {
@@ -327,5 +324,7 @@ public class PlayerHUD : MonoBehaviour
         Player.OnEnterCombatMode -= player_enterCombatMode;
         Player.OnSwapWeapon -= player_swapWeapon;
         TowerSelectionWheel.OnTowerSelected -= player_selectTower;
+        LevelMarker.OnLevelStart -= InitializeHUD;
+        LevelMarker.OnLevelStart -= FillEquipHUD;
     }
 }

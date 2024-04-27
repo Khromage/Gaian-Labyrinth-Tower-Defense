@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: CentaurEnemyInfo
   m_EditorClassIdentifier: 
   Prefab: {fileID: 2921004111766893944, guid: 2c56793e1bc6e594da6343df853470ef, type: 3}
-  Delay: 0
+  Delay: 2
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: '*insert prince from clash royale charging sound*'
-  moveSpeed: 0
-  maxHealth: 0
-  worth: 0
-  harm: 0
+  moveSpeed: 2
+  maxHealth: 25
+  worth: 16
+  harm: 2
   currentWeight: 1

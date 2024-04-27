@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: CenturionInfo
   m_EditorClassIdentifier: 
   Prefab: {fileID: 8082728119782324012, guid: bf819678f6d04ad448b105e4679ab39a, type: 3}
-  Delay: 0
+  Delay: 3
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Giant centipede with multiple segments that get faster
     as they split.
-  moveSpeed: 0
-  maxHealth: 0
-  worth: 0
-  harm: 0
+  moveSpeed: 2.5
+  maxHealth: 15
+  worth: 10
+  harm: 5
   currentWeight: 1
