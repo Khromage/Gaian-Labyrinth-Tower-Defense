@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public delegate void UIManagement();
     public static event UIManagement OnOptionsOpened;
     public static event UIManagement OnOptionsClosed;
+    public static event UIManagement OnLevelUILoaded;
     
     
     [SerializeField]
@@ -146,10 +147,11 @@ public class UIManager : MonoBehaviour
     private void SetLevelUI()
     {
         ClearUI();
-        //Debug.Log("UI CLEARED");
+        // Debug.Log("UI CLEARED");
         LevelModule.SetActive(true);
         currentModule = LevelModule;
-        //Debug.Log("LEVEL UI SET");
+        // Debug.Log("LEVEL UI SET");
+        OnLevelUILoaded?.Invoke();
     }
 
     private void ClearUI()

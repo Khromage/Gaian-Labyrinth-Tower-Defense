@@ -90,6 +90,18 @@ public class PlayerHUD : MonoBehaviour
         }
     }
 
+    private void FillEquipHUD()
+    {
+        for (int i = 0; i < towerSet.Length; i++)
+        {
+            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
+        }
+        for (int i = 0; i < weaponSet.Length; i++)
+        {
+            //SSS fill in the active weapon slots with their respective weapon icons...
+        }
+    }
+
     private void player_updateHealthBar(float changeAmount, bool animate)
     {
         if (animate)
@@ -295,17 +307,6 @@ public class PlayerHUD : MonoBehaviour
     }
 
 
-    private void FillEquipHUD()
-    {
-        for (int i = 0; i < towerSet.Length; i++)
-        {
-            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
-        }
-        for (int i = 0; i < weaponSet.Length; i++)
-        {
-            //SSS fill in the active weapon slots with their respective weapon icons...
-        }
-    }
 
     private void OnEnable()
     {
@@ -314,8 +315,9 @@ public class PlayerHUD : MonoBehaviour
         Player.OnEnterCombatMode += player_enterCombatMode;
         Player.OnSwapWeapon += player_swapWeapon;
         TowerSelectionWheel.OnTowerSelected += player_selectTower;
-        LevelMarker.OnLevelStart += InitializeHUD;
-        LevelMarker.OnLevelStart += FillEquipHUD;
+
+        UIManager.OnLevelUILoaded += InitializeHUD;
+        UIManager.OnLevelUILoaded += FillEquipHUD;
     }
     private void OnDisable()
     {
@@ -324,7 +326,8 @@ public class PlayerHUD : MonoBehaviour
         Player.OnEnterCombatMode -= player_enterCombatMode;
         Player.OnSwapWeapon -= player_swapWeapon;
         TowerSelectionWheel.OnTowerSelected -= player_selectTower;
-        LevelMarker.OnLevelStart -= InitializeHUD;
-        LevelMarker.OnLevelStart -= FillEquipHUD;
+
+        UIManager.OnLevelUILoaded -= InitializeHUD;
+        UIManager.OnLevelUILoaded -= FillEquipHUD;
     }
 }

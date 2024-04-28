@@ -601,8 +601,10 @@ public class Player : UnitBehavior
 
     private void changeTower(int selectedTowerIndex)
     {
+        Debug.Log("changing to tower in slot: " + selectedTowerIndex);
         if (towerSet[selectedTowerIndex] != null)
             {
+
                 currentTower = towerSet[selectedTowerIndex];
                 currentMode = playerMode.Build;
                 /*
