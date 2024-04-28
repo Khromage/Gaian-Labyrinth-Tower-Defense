@@ -750,33 +750,33 @@ MonoBehaviour:
   targetingMode: 
   range: 10
   fireRate: 1
-  fireCountdown: 0
-  damage: 0
-  targetCooldown: 0
+  fireCountdown: 1
+  damage: 5
+  targetCooldown: 1
   enemyTag: Enemy
-  InteractionIndicator: {fileID: 0}
-  partToRotate: {fileID: 0}
+  InteractionIndicator: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+  partToRotate: {fileID: 5404639075544788335}
   turnSpeed: 5
-  projectilePrefab: {fileID: 0}
-  firePoint: {fileID: 0}
+  projectilePrefab: {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+  firePoint: {fileID: 4355594515396197102}
   enemies: []
-  detectionZone: {fileID: 0}
-  placedSFX: {fileID: 0}
+  detectionZone: {fileID: 8626194719188779296}
+  placedSFX: {fileID: 1235698149711563039}
   cost: 10
   lv2_cost: 20
   lv3_1_cost: 30
   lv3_2_cost: 30
   lv3_3_cost: 30
   totalSpent: 0
-  sellRatio: 0
+  sellRatio: 10
   currentLevel: 1
   currentBranch: 0
   gridLocation: {fileID: 0}
   lv1_duration: 0
   vinePrefab: {fileID: 0}
-  flowerSeedPrefab: {fileID: 0}
+  flowerSeedPrefab: {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
   flowerTypes: []
-  enhancedFlowerPrefab: {fileID: 0}
+  enhancedFlowerPrefab: {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
   animalDogpilePrefab: {fileID: 0}
 --- !u!1 &5314868812377423412
 GameObject:
@@ -1157,6 +1157,10 @@ PrefabInstance:
     - target: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 422115698101583584, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 521852083242295683, guid: a239b9715fd1b9f4bb93def53a62a5c0, type: 3}
       propertyPath: m_LocalScale.x

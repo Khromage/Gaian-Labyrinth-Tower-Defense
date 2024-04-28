@@ -11,12 +11,65 @@ public class NatureTowerBehavior : TowerBehavior
     private float rootDuration;
      public GameObject enhancedFlowerPrefab;  // A prefab for more powerful flowers
     public GameObject animalDogpilePrefab;  // A prefab for the animal dogpile
+    private List<GameObject> enemiesInRange = new List<GameObject>();
+    private GameObject currentTarget;
 
 
     public override void Start()
     {
         base.Start();
         rootDuration = lv1_duration;  // Assuming similar structure for duration or effect intensities as in your examples.
+        StartCoroutine(TargetAndAttackRoutine());
+    }
+    public override void Update()
+    {
+        base.Update();
+        SelectClosestTarget(); // Select the closest enemy as the current target
+    }
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            enemiesInRange.Add(other.gameObject);
+        }
+    }
+
+    protected override void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            enemiesInRange.Remove(other.gameObject);
+        }
+    }
+    private IEnumerator TargetAndAttackRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1 / fireRate); // Cooldown based on the fire rate
+            if (currentTarget != null)
+            {
+                lv1_Attack();
+            }
+        }
+    }
+
+    private void SelectClosestTarget()
+    {
+        float closestDistanceSqr = Mathf.Infinity;
+        GameObject nearestEnemy = null;
+
+        foreach (GameObject enemy in enemiesInRange)
+        {
+            Vector3 directionToTarget = enemy.transform.position - transform.position;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+            if (dSqrToTarget < closestDistanceSqr)
+            {
+                closestDistanceSqr = dSqrToTarget;
+                nearestEnemy = enemy;
+            }
+        }
+
+        currentTarget = nearestEnemy; // This will be null if no enemies are in range
     }
 
     protected override void lv1_Attack()
