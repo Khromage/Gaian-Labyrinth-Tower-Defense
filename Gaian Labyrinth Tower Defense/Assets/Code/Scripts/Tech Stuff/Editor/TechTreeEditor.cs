@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.UI;
 using UnityEngine;
 
 [CustomEditor(typeof(Techtree))]
@@ -28,7 +30,7 @@ public class TechTreeEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        TechTree targetTree = (Techtree)target; // get the tech tree
+        Techtree targetTree = (Techtree)target; // get the tech tree
 
         //mouse events
         Event currentEvent = Event.current;
@@ -43,7 +45,7 @@ public class TechTreeEditor : Editor
         //techtree view
         EditorGUILayout.BeginScrollView(Vector2.zero, GUILayout.MinHeight(720));
 
-        for(int nodeIdx = 0; nodeIdx<targetTree.tree.Count; nodeIdx++)
+        for(int nodeIdx = 0; nodeIdx < targetTree.tree.Count; nodeIdx++)
         {
             //draw node
             Rect nodeRect = new Rect(targetTree.tree[nodeIdx].UIposition - scrollPosition, nodeSize);
@@ -51,6 +53,138 @@ public class TechTreeEditor : Editor
             EditorGUI.LabelField(new Rect(targetTree.tree[nodeIdx].UIposition - scrollPosition + nextLineVec, nodeLabelSize), "Research cost");
             targetTree.tree[nodeIdx].researchCost = EditorGUI.IntField(new Rect(targetTree.tree[nodeIdx].UIposition - scrollPosition + nextLineVec + indentVec, nodeContentSize), targetTree.tree[nodeIdx].researchCost);
             EditorGUI.LabelField(new Rect(targetTree.tree[nodeIdx].UIposition - scrollPosition + nextLineVec * 2, nodeLabelSize), "Invested");
+            targetTree.tree[nodeIdx].researchInvested = EditorGUI.IntField(new Rect(targetTree.tree[nodeIdx].UIposition - scrollPosition + nextLineVec * 2 + indentVec, nodeContentSize), targetTree.tree[nodeIdx].researchInvested);
+            EditorGUI.EndFoldoutHeaderGroup();
+
+            //draw connections
+            foreach(Tech req in targetTree.tree[nodeIdx].requirements)
+            {
+                int reqIdx = targetTree.FindTechIndex(req);
+                if (reqIdx != -1)
+                {
+                    //draw connecting curvature
+                    Handles.DrawBezier(targetTree.tree[nodeIdx].UIposition - scrollPosition + outgoingEdgeVec,
+                        targetTree.tree[reqIdx].UIposition - scrollPosition + incomingEdgeVec,
+                        targetTree.tree[nodeIdx].UIposition - scrollPosition + outgoingEdgeVec + Vector2.left * 100,
+                        targetTree.tree[reqIdx].UIposition - scrollPosition + incomingEdgeVec + Vector2.right * 100,
+                        Color.white,
+                        null,
+                        3f);
+
+                    //draw arrow
+                    Handles.DrawLine(targetTree.tree[nodeIdx].UIposition - scrollPosition + outgoingEdgeVec, targetTree.tree[nodeIdx].UIposition - scrollPosition + outgoingEdgeVec + upArrowVec);
+                    Handles.DrawLine(targetTree.tree[nodeIdx].UIposition - scrollPosition + outgoingEdgeVec, targetTree.tree[nodeIdx].UIposition - scrollPosition + outgoingEdgeVec + downArrowVec);
+                }
+                else
+                    Debug.Log("missing tech " + req.name);
+            }
+
+            //if cursor on node
+            if(nodeRect.Contains(currentEvent.mousePosition))
+            {
+                if(UIEvent == EventType.MouseDown)
+                {
+                    //set active node
+                    //left click
+                    if (currentEvent.button == 0)
+                    {
+                        activeNode = targetTree.tree[nodeIdx];
+                        mouseSelectionOffset = activeNode.UIposition - currentEvent.mousePosition;
+                    }
+                    else 
+                    
+                    //right click
+                    if(currentEvent.button == 1)
+                    {
+                        selectedNode = targetTree.tree[nodeIdx];
+                        Repaint();
+                    }
+                }
+
+                else
+                
+                //create destroy connections
+                if(UIEvent == EventType.MouseUp) // on mouse release
+                {
+                    //and selectnode is not empty
+                    if(currentEvent.button == 1 && selectedNode != null && selectedNode != targetTree.tree[nodeIdx]) 
+                    {
+                        //remove connections
+                        if (targetTree.tree[nodeIdx].requirements.Contains(selectedNode.tech))
+                            targetTree.tree[nodeIdx].requirements.Remove(selectedNode.tech);
+                        else if (selectedNode.requirements.Contains(targetTree.tree[nodeIdx].tech))
+                            selectedNode.requirements.Remove(targetTree.tree[nodeIdx].tech);
+                        else
+
+                        //otherwise make connections
+                        if (targetTree.IsConnectible(targetTree.tree.IndexOf(selectedNode), nodeIdx))
+                        {
+                            targetTree.tree[nodeIdx].requirements.Add(selectedNode.tech);
+
+                            //make sure it didnt fuck up other connections
+                            for (int k = 0; k < targetTree.tree.Count; k++)
+                                targetTree.CorrectRequirementsCascades(k);
+                        }
+                    }
+                }
+            }
         }
+
+        //scroll with middle mouse button
+        if(currentEvent.button == 2)
+        {
+            //if button down
+            if (currentEvent.type == EventType.MouseDown)
+                //store coordinate
+                scrollStartPos = (currentEvent.mousePosition + scrollPosition);
+            //if held down
+            else if (currentEvent.type == EventType.MouseDrag)
+            {
+                scrollPosition = -(currentEvent.mousePosition - scrollStartPos);// move the screen
+                Repaint();//repaint gui
+            }
+        }
+
+        //draw guiding connections on mouse hold pos
+        //if right mouse hold and no selection
+        if (selectedNode != null && currentEvent.button == 1)
+        {
+            //draw connection between selected node and mouse pos
+            Handles.DrawBezier(currentEvent.mousePosition,
+                selectedNode.UIposition - scrollPosition + incomingEdgeVec,
+                currentEvent.mousePosition + Vector2.left * 100,
+                selectedNode.UIposition - scrollPosition + incomingEdgeVec + Vector2.right * 100,
+                Color.white,
+                null,
+                1.5f);
+            Repaint();
+        }
+
+        //move nodes with left click
+        //if you let go
+        if(UIEvent == EventType.MouseUp)
+        {
+            //drop it
+            activeNode = null;
+        }
+        else 
+
+        if(UIEvent == EventType.MouseDrag) 
+            if(activeNode != null)
+                activeNode.UIposition = currentEvent.mousePosition + mouseSelectionOffset;
+
+        //import new tech
+        if (currentEvent.type == EventType.DragUpdated)
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+        else if(currentEvent.type == EventType.DragPerform)
+        {
+            for(int i = 0; i < DragAndDrop.objectReferences.Length; i++)
+            {
+                if (DragAndDrop.objectReferences[i] is Tech)
+                    targetTree.AddNode(DragAndDrop.objectReferences[i] as Tech, currentEvent.mousePosition + scrollPosition);
+            }
+        }
+
+        EditorGUILayout.EndScrollView();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-[CreateAssetMenu(menuName = "New Tech")]
+[CreateAssetMenu(menuName = "GLTD/Tech", fileName = "Tech")]
 public class Tech : ScriptableObject
 {
     public string definition;

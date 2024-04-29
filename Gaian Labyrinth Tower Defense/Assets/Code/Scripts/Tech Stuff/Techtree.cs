@@ -23,7 +23,7 @@ public class TechNode
     }
 }
 
-[CreateAssetMenu(menuName = "GameCore/new Techtree")]
+[CreateAssetMenu(menuName = "GLTD/TechTree", fileName = "TechTree")]
 
 public class Techtree : ScriptableObject
 {
