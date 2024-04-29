@@ -50,19 +50,14 @@ public class PlayerHUD : MonoBehaviour
 
     [SerializeField]
     private TowerList towerList;
-    private int[] towerSet;
+
+    [SerializeField]
+    public int[] towerSet;
     private int[] weaponSet;
 
     void Start()
     {
-        //get list of all spawnpoints
-        //every time wave start, get all enemies
-
-        InitializeHUD();
-        
-        
-        FillEquipHUD();
-
+  
 
     }
 
@@ -92,6 +87,18 @@ public class PlayerHUD : MonoBehaviour
                 currentTowerIcon.sprite = towerList.GetTowerIcon(towerSet[i]);
                 return;
             }
+        }
+    }
+
+    private void FillEquipHUD()
+    {
+        for (int i = 0; i < towerSet.Length; i++)
+        {
+            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
+        }
+        for (int i = 0; i < weaponSet.Length; i++)
+        {
+            //SSS fill in the active weapon slots with their respective weapon icons...
         }
     }
 
@@ -300,17 +307,6 @@ public class PlayerHUD : MonoBehaviour
     }
 
 
-    private void FillEquipHUD()
-    {
-        for (int i = 0; i < towerSet.Length; i++)
-        {
-            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
-        }
-        for (int i = 0; i < weaponSet.Length; i++)
-        {
-            //SSS fill in the active weapon slots with their respective weapon icons...
-        }
-    }
 
     private void OnEnable()
     {
@@ -319,6 +315,9 @@ public class PlayerHUD : MonoBehaviour
         Player.OnEnterCombatMode += player_enterCombatMode;
         Player.OnSwapWeapon += player_swapWeapon;
         TowerSelectionWheel.OnTowerSelected += player_selectTower;
+
+        UIManager.OnLevelUILoaded += InitializeHUD;
+        UIManager.OnLevelUILoaded += FillEquipHUD;
     }
     private void OnDisable()
     {
@@ -327,5 +326,8 @@ public class PlayerHUD : MonoBehaviour
         Player.OnEnterCombatMode -= player_enterCombatMode;
         Player.OnSwapWeapon -= player_swapWeapon;
         TowerSelectionWheel.OnTowerSelected -= player_selectTower;
+
+        UIManager.OnLevelUILoaded -= InitializeHUD;
+        UIManager.OnLevelUILoaded -= FillEquipHUD;
     }
 }

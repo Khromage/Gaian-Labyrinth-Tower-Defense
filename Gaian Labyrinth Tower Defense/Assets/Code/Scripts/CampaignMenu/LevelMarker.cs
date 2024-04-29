@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class LevelMarker : MonoBehaviour
 {
-    //public delegate void LevelInvestigated(int num);
+    public delegate void LevelStartManagement();
+    public static event LevelStartManagement OnLevelStart;
+   
+   
+   //public delegate void LevelInvestigated(int num);
     //public static event LevelInvestigated OnLevelInvestigate;
 
     [SerializeField]
@@ -30,6 +34,8 @@ public class LevelMarker : MonoBehaviour
         LevelManager.Instance.currentLevel = Level;
         SaveManager.Instance.SaveData();
         LevelManager.Instance.LoadLevel(Level);
+        OnLevelStart?.Invoke();
+
     }
 
     public void OpenPanel()

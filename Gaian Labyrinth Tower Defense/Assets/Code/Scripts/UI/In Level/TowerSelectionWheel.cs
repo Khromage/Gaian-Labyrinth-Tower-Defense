@@ -84,7 +84,9 @@ public class TowerSelectionWheel : MonoBehaviour
         HoveredTowerLayout.SetActive(true);
         
         Slot.transform.localScale *= 1.05f;
+
         hoveredSlot = Array.IndexOf(TowerSelectionSlots, Slot);
+
         // Debug.Log("hoveredSlot: " + hoveredSlot);
         hoveredName.text = towerList.GetTowerName(EquippedTowerIDs[hoveredSlot]);
         hoveredIcon.sprite = towerList.GetTowerIcon(EquippedTowerIDs[hoveredSlot]);

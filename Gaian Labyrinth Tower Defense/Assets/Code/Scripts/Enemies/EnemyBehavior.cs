@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 //currentTile
 //goalTile = path.end  (set by spawnPoint when it gives the initial path? but there might not be a path when a wave starts if it's all blocked off...)
@@ -15,6 +17,7 @@ public class EnemyBehavior : MonoBehaviour
 
     public delegate void EnemyReachedGoal(EnemyBehavior enemy);
     public event EnemyReachedGoal OnEnemyReachedGoal;
+
 
     public GridTile currTile;
     public GridTile successorTile;
@@ -33,6 +36,11 @@ public class EnemyBehavior : MonoBehaviour
     // keeps track of the number of zones the enemy is inside (in case tower ranges overlap)
     private int vulnerabilityZones;
     public bool isVulnerable;
+    public float dmgMulti;
+
+
+    protected List<float> moveSpeedModifiers;
+    protected List<float> damageModifiers;
 
     public GameObject damageIndicator;
 
@@ -58,20 +66,26 @@ public class EnemyBehavior : MonoBehaviour
     public virtual void Start()
     {
         //change these to pull from the scriptableObject
-        harm = 1;
-        worth = 5;
-        maxHealth = 32f;
-        moveSpeed = 3f;
+        harm = info.harm;
+        worth = info.worth;
+        maxHealth = info.maxHealth;
+        moveSpeed = info.moveSpeed;
+        enemyWeight = info.currentWeight;
         isAlive = true;
         isVulnerable = false;
         vulnerabilityZones = 0;
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
+
+        moveSpeedModifiers = new List<float>();
+        damageModifiers = new List<float>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        ApplyMovementModifiers();
+        ApplyDamageModifiers();
         //setGravityDir();
         updateCurrTile();
         moveAlongPath();
@@ -98,9 +112,7 @@ public class EnemyBehavior : MonoBehaviour
     }
     public void takeDamage(float damage, GameObject damagerBullet)
     {
-        float finalDamage = damage;
-        if(isVulnerable)
-            finalDamage *= 1.25f;
+        float finalDamage = damage * dmgMulti;
 
         currentHealth -= finalDamage;
 
@@ -124,6 +136,38 @@ public class EnemyBehavior : MonoBehaviour
             isAlive = false;
         }
         
+    }
+    //polymorph without the bullet object...
+    public void takeDamage(float damage)
+    {
+        float finalDamage = damage;
+        if (isVulnerable)
+            finalDamage *= dmgMulti;
+
+        currentHealth -= finalDamage;
+
+        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
+        if (isVulnerable)
+        {
+            printMsg += "TRUE";
+        }
+        else
+        {
+            printMsg += "FALSE";
+        }
+        Debug.Log(printMsg);
+
+        deployDamageIndicator(finalDamage);
+
+        float spd = 5 + 5 * finalDamage / maxHealth;
+        HealthBar.SetHealth(currentHealth / maxHealth, spd);
+
+        EnemyHurtSFX.Play();
+        if (currentHealth <= 0)
+        {
+            isAlive = false;
+        }
+
     }
 
     private void deployDamageIndicator(float damage)
@@ -180,6 +224,40 @@ public class EnemyBehavior : MonoBehaviour
     }
 
 
+
+
+    public void AddMovementModifier(float mod)
+    {
+        moveSpeedModifiers.Add(mod);
+    }
+    protected void ApplyMovementModifiers()
+    {
+        float totalModifier = 1f;
+        foreach (float m in moveSpeedModifiers)
+        {
+            totalModifier *= m;
+        }
+        moveSpeedModifiers.Clear();
+        GetComponent<NavMeshAgent>().speed = moveSpeed * totalModifier;
+    }
+
+    public void AddDamageModifier(float mod)
+    {
+        damageModifiers.Add(mod);
+    }
+    protected void ApplyDamageModifiers()
+    {
+        float totalModifier = 1f;
+        foreach (float m in damageModifiers)
+        {
+            totalModifier *= m;
+        }
+        damageModifiers.Clear();
+        dmgMulti = totalModifier;
+    }
+
+
+    //OBSOLETE
     public void enterVulnerabilityZone()
     {
         vulnerabilityZones++;
