@@ -57,6 +57,7 @@ public class LevelManager : SpawnableSingleton<LevelManager>
         SceneManager.SetActiveScene(scene);
         
         // CHANGE INT TO INDEX OF SCENE IN DATALIST SO
+        // Also lets PlayerHUD know HUD is ready to be initi
         OnSceneLoaded?.Invoke(ID);
 
     }

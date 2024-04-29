@@ -215,6 +215,8 @@ public class Player : UnitBehavior
     {
         //EnemyBehavior.OnEnemyDeath += GainCurrency;
         Weapon.OnFire += spentMana;
+        UIManager.OnOptionsOpened += EnterMenuMode;
+        UIManager.OnOptionsClosed += ExitMenuMode;
         LevelModule.OnMenuOpened += EnterMenuMode;
         LevelModule.OnMenuClosed += ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell += UpdateCurrency;
@@ -225,6 +227,8 @@ public class Player : UnitBehavior
     {
         //EnemyBehavior.OnEnemyDeath -= GainCurrency;
         Weapon.OnFire -= spentMana;
+        UIManager.OnOptionsOpened -= EnterMenuMode;
+        UIManager.OnOptionsClosed -= ExitMenuMode;
         LevelModule.OnMenuOpened -= EnterMenuMode;
         LevelModule.OnMenuClosed -= ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell -= UpdateCurrency;
@@ -597,8 +601,10 @@ public class Player : UnitBehavior
 
     private void changeTower(int selectedTowerIndex)
     {
+        Debug.Log("changing to tower in slot: " + selectedTowerIndex);
         if (towerSet[selectedTowerIndex] != null)
             {
+
                 currentTower = towerSet[selectedTowerIndex];
                 currentMode = playerMode.Build;
                 /*
