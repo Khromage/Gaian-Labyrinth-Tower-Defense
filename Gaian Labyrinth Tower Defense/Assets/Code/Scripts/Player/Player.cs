@@ -778,6 +778,7 @@ public class Player : UnitBehavior
         Destroy(currentWeapon);
 
         currentWeapon = Instantiate(weaponSet[currentWeaponIndex], cwt.position, cwt.rotation, weaponHolder.transform);
+        currentWeapon.GetComponent<Weapon>().DmgModifiers();
         OnSwapWeapon?.Invoke(currentWeaponIndex);
     }
 

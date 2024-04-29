@@ -1,5 +1,6 @@
 using UnityEngine.Events;
 using UnityEngine;
+using System;
 
 public class Weapon : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class Weapon : MonoBehaviour
     public Vector3 aimHitPos;
 
     public WeaponInfo weaponInfo;
+
+    public Tech dmgincrease;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -100,6 +103,16 @@ public class Weapon : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    public void DmgModifiers()
+    {
+        Debug.Log("dmgmod called");
+        if (dmgincrease.invested == true)
+        {
+            Damage += 100;
+            Debug.Log("success dmg increase");
         }
     }
 }

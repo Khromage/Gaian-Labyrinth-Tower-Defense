@@ -186,5 +186,32 @@ public class TechTreeEditor : Editor
         }
 
         EditorGUILayout.EndScrollView();
+
+        //scrollview adjustments
+        scrollPosition.x = GUILayout.HorizontalScrollbar(scrollPosition.x, 20f, 0f, minTreeWidth);
+        scrollPosition.y = GUI.VerticalScrollbar(new Rect(0, 0, 20, 720), scrollPosition.y, 20f, 0f, minTreeHeight);
+
+        //show selectednode tech and gives option to delete node
+        EditorGUILayout.BeginHorizontal();
+        if(selectedNode == null || selectedNode.tech == null)
+        {
+            EditorGUILayout.LabelField("selected tech : none");
+        }
+        else
+        {
+            EditorGUILayout.LabelField("selected tech: " + selectedNode.tech.name);
+            if(GUILayout.Button("delete tech"))
+            {
+                targetTree.DeleteNode(selectedNode.tech);
+                if(activeNode == selectedNode)
+                    activeNode = null;
+                selectedNode = null;
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        //make changes persist
+        EditorUtility.SetDirty(targetTree);
     }
 }

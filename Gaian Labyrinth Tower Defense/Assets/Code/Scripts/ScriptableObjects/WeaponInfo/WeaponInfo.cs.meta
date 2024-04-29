@@ -3,7 +3,10 @@ guid: b9788681207984647803705bdc4b354f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Prefab: {instanceID: 0}
+  - <Icon>k__BackingField: {instanceID: 0}
+  - dmgIncrease: {fileID: 11400000, guid: f03fc394624a67e439e155b762c78a6a, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

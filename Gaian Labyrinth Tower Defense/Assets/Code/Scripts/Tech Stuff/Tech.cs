@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -8,5 +9,17 @@ using UnityEngine;
 public class Tech : ScriptableObject
 {
     public string definition;
-    public Texture2D image;
+    public bool invested;
+    public bool locked;
+    //public Texture2D image;
+
+    void Start()
+    {
+        invested = true;
+        //locked = true;
+    }
+    void Update()
+    {
+        invested = true;
+    }
 }
