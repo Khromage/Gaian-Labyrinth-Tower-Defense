@@ -38,6 +38,10 @@ public class EnemyBehavior : MonoBehaviour
     public bool isVulnerable;
     public float dmgMulti;
 
+    // keeps track of the number of zones the enemy is inside (in case tower ranges overlap)
+    private int buffZones;
+    public bool isBuffed;
+
 
     protected List<float> moveSpeedModifiers;
     protected List<float> damageModifiers;
@@ -82,13 +86,13 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         ApplyMovementModifiers();
         ApplyDamageModifiers();
         //setGravityDir();
-        updateCurrTile();
-        moveAlongPath();
+        //updateCurrTile();
+        //moveAlongPath();
         
         if (currTile is GoalTile)
         {
@@ -113,6 +117,7 @@ public class EnemyBehavior : MonoBehaviour
     public void takeDamage(float damage, GameObject damagerBullet)
     {
         float finalDamage = damage * dmgMulti;
+        Debug.Log("dmgMulti: " + dmgMulti);
 
         currentHealth -= finalDamage;
 
@@ -123,6 +128,14 @@ public class EnemyBehavior : MonoBehaviour
         } else {
             printMsg += "FALSE";
         }
+        if (isBuffed)
+        {
+            printMsg += " Buffed: TRUE";
+        }
+        else
+        {
+            printMsg += " Buffed: FALSE"; 
+        }   
         Debug.Log(printMsg);
 
         deployDamageIndicator(finalDamage);
@@ -141,7 +154,7 @@ public class EnemyBehavior : MonoBehaviour
     public void takeDamage(float damage)
     {
         float finalDamage = damage;
-        if (isVulnerable)
+        if (isVulnerable || isBuffed)
             finalDamage *= dmgMulti;
 
         currentHealth -= finalDamage;
@@ -155,6 +168,15 @@ public class EnemyBehavior : MonoBehaviour
         {
             printMsg += "FALSE";
         }
+        if (isBuffed)
+        {
+            printMsg += " Buffed: TRUE";
+        }
+        else
+        {
+            printMsg += " Buffed: FALSE"; 
+        }   
+
         Debug.Log(printMsg);
 
         deployDamageIndicator(finalDamage);
@@ -251,9 +273,12 @@ public class EnemyBehavior : MonoBehaviour
         foreach (float m in damageModifiers)
         {
             totalModifier *= m;
+            //Debug.Log("Modiier before: " + totalModifier);
+            dmgMulti = totalModifier;
         }
+        //Debug.Log("Modiier after: " + totalModifier);
         damageModifiers.Clear();
-        dmgMulti = totalModifier;
+        
     }
 
 
@@ -272,5 +297,21 @@ public class EnemyBehavior : MonoBehaviour
             isVulnerable = false;
             // Debug.Log("No more vuln zones, isVulnerable being set to false");
         }
+    }
+
+    public void enterBuffZone(int dmgMod)
+    {
+        buffZones++;
+        isBuffed = true;
+    }
+
+    public void exitBuffZone()
+    {
+        buffZones--;
+        if(buffZones < 1)
+        {
+            isBuffed = false;
+        }
+        dmgMulti = 1f;
     }
 }

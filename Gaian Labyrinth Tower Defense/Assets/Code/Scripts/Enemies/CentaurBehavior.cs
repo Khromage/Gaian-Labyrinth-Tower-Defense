@@ -19,8 +19,9 @@ public class CentaurBehavior : EnemyBehavior
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {   
+        base.Update();
         if (Vector3.Distance(transform.position, newCorner) > 5f){
             speedUp();
         }else{

@@ -18,11 +18,6 @@ public class ButterflyBehavior : EnemyBehavior
         sporeCollider = GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     protected void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player"){
