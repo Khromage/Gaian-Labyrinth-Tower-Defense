@@ -774,11 +774,14 @@ public class Player : UnitBehavior
 
         //in the hierarchy, the 1st weapon was originally at: .411, .121, 0
         Transform cwt = currentWeapon.transform;
-
+        Debug.Log(currentWeapon);
         Destroy(currentWeapon);
 
         currentWeapon = Instantiate(weaponSet[currentWeaponIndex], cwt.position, cwt.rotation, weaponHolder.transform);
-        currentWeapon.GetComponent<Weapon>().DmgModifiers();
+        Debug.Log("PPPPPPPPPP " + currentWeapon.GetComponent<Weapon>().Damage);
+
+        // currentWeapon.GetComponent<Weapon>().DmgModifiers();
+
         OnSwapWeapon?.Invoke(currentWeaponIndex);
     }
 

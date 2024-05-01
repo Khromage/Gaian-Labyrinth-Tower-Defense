@@ -52,7 +52,7 @@ public class Firefly : Weapon
         //pi/3, pi/3, pi/2 pattern
 
         GameObject proj = Instantiate(fireflyProj, FirePoint.transform.position, launchRot);
-        
+        proj.GetComponent<FireflyProj>().damage = Damage;
 
         //maybe set proj.layer here, to a layer that ignores the weapon hitbox
         Vector3 randPos = FirePoint.transform.position + (FirePoint.transform.up * (1 + Random.value))

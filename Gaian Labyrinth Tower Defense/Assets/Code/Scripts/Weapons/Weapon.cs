@@ -37,6 +37,8 @@ public class Weapon : MonoBehaviour
         CurrentCooldown = FireCooldown;
 
         Damage = weaponInfo.Damage;
+        DmgModifiers();
+
         FireCooldown = weaponInfo.FireCooldown;
         manaCost = weaponInfo.ManaCost;
         Automatic = weaponInfo.Automatic;
@@ -64,7 +66,7 @@ public class Weapon : MonoBehaviour
             {
                 FirePoint.rotation = Quaternion.LookRotation(aimRay.direction, transform.up);
             }
-
+            Debug.Log("my damage is: " + Damage);
             Fire();
             OnFire?.Invoke(-manaCost);
             CurrentCooldown = FireCooldown;
@@ -108,11 +110,13 @@ public class Weapon : MonoBehaviour
 
     public void DmgModifiers()
     {
-        Debug.Log("dmgmod called");
+        Debug.Log("dmgmod called");//gets called
+        if (dmgincrease == null)
+            Debug.Log("cucumber");
         if (dmgincrease.invested == true)
         {
             Damage += 100;
-            Debug.Log("success dmg increase");
+            Debug.Log("success dmg increase. DMG is now: " + Damage);//doesnt get called
         }
     }
 }

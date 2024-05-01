@@ -27,6 +27,13 @@ MonoBehaviour:
   - tech: {fileID: 11400000, guid: 052adfbf9709f1e4eb783b6990e909d2, type: 2}
     requirements:
     - {fileID: 11400000, guid: 47d08d9612df44b46b1ec085eb76916e, type: 2}
+    - {fileID: 11400000, guid: 6abfc7ded2f1c54449f71342c138988e, type: 2}
     researchCost: 0
     researchInvested: 0
     UIposition: {x: 776.6667, y: 573.3333}
+  - tech: {fileID: 11400000, guid: 6abfc7ded2f1c54449f71342c138988e, type: 2}
+    requirements:
+    - {fileID: 11400000, guid: f03fc394624a67e439e155b762c78a6a, type: 2}
+    researchCost: 0
+    researchInvested: 0
+    UIposition: {x: 538.6667, y: 656.6666}

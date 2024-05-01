@@ -19,6 +19,7 @@ public class Laser : Weapon
     // Update is called once per frame
     public override void Fire()
     {
+        Debug.Log("my FIREFIREFIREdamage is: " + Damage);
         LaserFireSFX.Play();
 
         GameObject laserInstance = Instantiate(Beam, FirePoint.position, FirePoint.rotation);
