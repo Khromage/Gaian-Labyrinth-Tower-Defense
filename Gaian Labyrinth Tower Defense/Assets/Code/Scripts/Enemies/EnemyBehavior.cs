@@ -126,7 +126,7 @@ public class EnemyBehavior : MonoBehaviour
 
         currentHealth -= finalDamage;
 
-        dmgPrint(damage, finalDamage);
+        //dmgPrint(damage, finalDamage);
 
         deployDamageIndicator(finalDamage);
 
@@ -149,7 +149,7 @@ public class EnemyBehavior : MonoBehaviour
 
         currentHealth -= finalDamage;
 
-        dmgPrint(damage, finalDamage);
+        //dmgPrint(damage, finalDamage);
 
         deployDamageIndicator(finalDamage);
 
@@ -243,9 +243,12 @@ public class EnemyBehavior : MonoBehaviour
         foreach (float m in damageModifiers)
         {
             totalModifier *= m;
+            //Debug.Log("totalModifier before: " + totalModifier);
+            dmgMulti = totalModifier;
         }
+        //Debug.Log("totalModifier after: " + totalModifier);   
         damageModifiers.Clear();
-        dmgMulti = totalModifier;
+        
         
     }
 
