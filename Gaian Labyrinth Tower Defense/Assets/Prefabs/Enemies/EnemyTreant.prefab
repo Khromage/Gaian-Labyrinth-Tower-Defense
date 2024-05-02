@@ -279,6 +279,7 @@ MonoBehaviour:
   enemyWeight: 0
   isVulnerable: 0
   dmgMulti: 0
+  isBuffed: 0
   damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0
@@ -448,8 +449,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.6
+  m_Radius: 0.7
+  m_Height: 2.8
   m_Direction: 1
   m_Center: {x: 0, y: 1.3, z: 0}
 --- !u!114 &-6962958935514072942

@@ -69,6 +69,7 @@ public class EnemyBehavior : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
+        dmgMulti = 1f;
         //change these to pull from the scriptableObject
         harm = info.harm;
         worth = info.worth;
@@ -98,6 +99,12 @@ public class EnemyBehavior : MonoBehaviour
         //moveAlongPath();
         
         if (currTile is GoalTile)
+        {
+            OnEnemyReachedGoal?.Invoke(this);
+            isAlive = false;
+        }
+
+        if (GetComponent<NavMeshAgent>().remainingDistance < 1f)
         {
             OnEnemyReachedGoal?.Invoke(this);
             isAlive = false;
@@ -246,6 +253,7 @@ public class EnemyBehavior : MonoBehaviour
             //Debug.Log("totalModifier before: " + totalModifier);
             dmgMulti = totalModifier;
         }
+        //dmgMulti = totalModifier;
         //Debug.Log("totalModifier after: " + totalModifier);   
         damageModifiers.Clear();
         
@@ -282,6 +290,7 @@ public class EnemyBehavior : MonoBehaviour
         if(buffZones < 1)
         {
             isBuffed = false;
+            dmgMulti = 1f;
         }
     }
 

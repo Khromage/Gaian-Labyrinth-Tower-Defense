@@ -279,6 +279,7 @@ MonoBehaviour:
   enemyWeight: 0
   isVulnerable: 0
   dmgMulti: 0
+  isBuffed: 0
   damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0
@@ -303,8 +304,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.7
+  m_Center: {x: 0, y: 0.4, z: 0}
 --- !u!82 &7286630038998008840
 AudioSource:
   m_ObjectHideFlags: 0
