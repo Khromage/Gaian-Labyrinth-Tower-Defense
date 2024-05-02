@@ -76,8 +76,12 @@ public class EnemyBehavior : MonoBehaviour
         moveSpeed = info.moveSpeed;
         enemyWeight = info.currentWeight;
         isAlive = true;
+
         isVulnerable = false;
+        isBuffed = false;
         vulnerabilityZones = 0;
+        buffZones = 0;
+
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
 
@@ -89,7 +93,6 @@ public class EnemyBehavior : MonoBehaviour
     public virtual void Update()
     {
         ApplyMovementModifiers();
-        ApplyDamageModifiers();
         //setGravityDir();
         //updateCurrTile();
         //moveAlongPath();
@@ -108,6 +111,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void LateUpdate()
     {
+        ApplyDamageModifiers();
         if(!isAlive)
         {
             Destroy(gameObject);
@@ -116,27 +120,13 @@ public class EnemyBehavior : MonoBehaviour
     }
     public void takeDamage(float damage, GameObject damagerBullet)
     {
-        float finalDamage = damage * dmgMulti;
-        Debug.Log("dmgMulti: " + dmgMulti);
+        float finalDamage = damage;
+        //if (isVulnerable || isBuffed)
+            finalDamage *= dmgMulti;
 
         currentHealth -= finalDamage;
 
-        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
-        if(isVulnerable)
-        {
-            printMsg += "TRUE";
-        } else {
-            printMsg += "FALSE";
-        }
-        if (isBuffed)
-        {
-            printMsg += " Buffed: TRUE";
-        }
-        else
-        {
-            printMsg += " Buffed: FALSE"; 
-        }   
-        Debug.Log(printMsg);
+        dmgPrint(damage, finalDamage);
 
         deployDamageIndicator(finalDamage);
 
@@ -154,30 +144,12 @@ public class EnemyBehavior : MonoBehaviour
     public void takeDamage(float damage)
     {
         float finalDamage = damage;
-        if (isVulnerable || isBuffed)
+        //if (isVulnerable || isBuffed)
             finalDamage *= dmgMulti;
 
         currentHealth -= finalDamage;
 
-        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
-        if (isVulnerable)
-        {
-            printMsg += "TRUE";
-        }
-        else
-        {
-            printMsg += "FALSE";
-        }
-        if (isBuffed)
-        {
-            printMsg += " Buffed: TRUE";
-        }
-        else
-        {
-            printMsg += " Buffed: FALSE"; 
-        }   
-
-        Debug.Log(printMsg);
+        dmgPrint(damage, finalDamage);
 
         deployDamageIndicator(finalDamage);
 
@@ -245,9 +217,6 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-
-
-
     public void AddMovementModifier(float mod)
     {
         moveSpeedModifiers.Add(mod);
@@ -267,17 +236,16 @@ public class EnemyBehavior : MonoBehaviour
     {
         damageModifiers.Add(mod);
     }
+
     protected void ApplyDamageModifiers()
     {
         float totalModifier = 1f;
         foreach (float m in damageModifiers)
         {
             totalModifier *= m;
-            //Debug.Log("Modiier before: " + totalModifier);
-            dmgMulti = totalModifier;
         }
-        //Debug.Log("Modiier after: " + totalModifier);
         damageModifiers.Clear();
+        dmgMulti = totalModifier;
         
     }
 
@@ -299,7 +267,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    public void enterBuffZone(int dmgMod)
+    public void enterBuffZone()
     {
         buffZones++;
         isBuffed = true;
@@ -312,6 +280,27 @@ public class EnemyBehavior : MonoBehaviour
         {
             isBuffed = false;
         }
-        dmgMulti = 1f;
+    }
+
+    void dmgPrint(float damage, float finalDamage){
+        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
+        if (isVulnerable)
+        {
+            printMsg += "TRUE";
+        }
+        else
+        {
+            printMsg += "FALSE";
+        }
+        if (isBuffed)
+        {
+            printMsg += " Buffed: TRUE";
+        }
+        else
+        {
+            printMsg += " Buffed: FALSE"; 
+        }
+        printMsg += ", dmgMulti: " + dmgMulti;   
+        Debug.Log(printMsg);
     }
 }

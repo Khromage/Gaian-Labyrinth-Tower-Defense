@@ -19,9 +19,8 @@ public class ElkBehavior : EnemyBehavior
     {
         if(other.tag == "Enemy")
         {
+            other.GetComponent<EnemyBehavior>().enterBuffZone();
             other.GetComponent<EnemyBehavior>().AddDamageModifier(0.5f);
-            other.GetComponent<EnemyBehavior>().isBuffed = true;
-
         }
     }
 
