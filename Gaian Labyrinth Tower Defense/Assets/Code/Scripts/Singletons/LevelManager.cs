@@ -22,6 +22,8 @@ public class LevelManager : SpawnableSingleton<LevelManager>
         {
             SceneManager.UnloadSceneAsync("campaignMenu");
         }
+
+        //Debug.Log($"About to load: {currentLevel.Name}");
         
         // StartCoroutine
         SceneManager.LoadSceneAsync(currentLevel.Name, LoadSceneMode.Additive);
@@ -49,6 +51,8 @@ public class LevelManager : SpawnableSingleton<LevelManager>
 
     IEnumerator LoadingScene(Scene scene, int ID)
     {
+        //Debug.Log($"in LoadingScene coroutine: {currentLevel.Name}");
+
         while(!scene.isLoaded)
         {
             Debug.Log("SCENE LOADING");
