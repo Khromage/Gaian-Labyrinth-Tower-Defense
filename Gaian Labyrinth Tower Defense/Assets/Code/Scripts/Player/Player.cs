@@ -813,7 +813,7 @@ public class Player : UnitBehavior
                 if (currTileScript.placeable && !currTileScript.enemyOnTile)
                 {
                     //displaying the potential placement spot for the tower
-                    tempDisplayHolder = Instantiate(towerDisplayPrefab, new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z), transform.rotation);
+                    tempDisplayHolder = Instantiate(towerDisplayPrefab, new Vector3(hit.transform.position.x, hit.transform.position.y, hit.transform.position.z), transform.rotation);
 
                     if (Input.GetKeyDown(KeyCode.Mouse0))
                     {
