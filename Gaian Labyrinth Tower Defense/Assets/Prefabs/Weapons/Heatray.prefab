@@ -52,6 +52,7 @@ MonoBehaviour:
   aimTarget: {fileID: 0}
   aimHitPos: {x: 0, y: 0, z: 0}
   weaponInfo: {fileID: 11400000, guid: aa536a273e63aee408c2308419ade212, type: 2}
+  dmgincrease: {fileID: 11400000, guid: f03fc394624a67e439e155b762c78a6a, type: 2}
   Beam: {fileID: 4276113069247697066, guid: eeba0579d3f171044a63673a984dbcd9, type: 3}
   LaserFireSFX: {fileID: 0}
 --- !u!82 &1789241699317581190

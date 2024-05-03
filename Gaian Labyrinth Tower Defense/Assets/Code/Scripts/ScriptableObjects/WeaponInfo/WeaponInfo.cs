@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "GLTD/WeaponInfo", fileName = "WeaponInfo")]
 public class WeaponInfo : ScriptableObject
 {
+
+
     [field: SerializeField]
     public float Damage { get; private set; }
 
@@ -31,4 +33,8 @@ public class WeaponInfo : ScriptableObject
 
     [field: SerializeField]
     public WeaponUpgrade[] Upgrades { get; private set; }
+
+    
+
+
 }

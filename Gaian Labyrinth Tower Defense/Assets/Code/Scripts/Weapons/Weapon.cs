@@ -1,5 +1,6 @@
 using UnityEngine.Events;
 using UnityEngine;
+using System;
 
 public class Weapon : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class Weapon : MonoBehaviour
 
     public WeaponInfo weaponInfo;
 
+    public Tech dmgincrease;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -34,6 +37,8 @@ public class Weapon : MonoBehaviour
         CurrentCooldown = FireCooldown;
 
         Damage = weaponInfo.Damage;
+        DmgModifiers();
+
         FireCooldown = weaponInfo.FireCooldown;
         manaCost = weaponInfo.ManaCost;
         Automatic = weaponInfo.Automatic;
@@ -61,7 +66,7 @@ public class Weapon : MonoBehaviour
             {
                 FirePoint.rotation = Quaternion.LookRotation(aimRay.direction, transform.up);
             }
-
+            Debug.Log("my damage is: " + Damage);
             Fire();
             OnFire?.Invoke(-manaCost);
             CurrentCooldown = FireCooldown;
@@ -100,6 +105,18 @@ public class Weapon : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    public void DmgModifiers()
+    {
+        Debug.Log("dmgmod called");//gets called
+        if (dmgincrease == null)
+            Debug.Log("cucumber");
+        if (dmgincrease.invested == true)
+        {
+            Damage += 100;
+            Debug.Log("success dmg increase. DMG is now: " + Damage);//doesnt get called
         }
     }
 }
