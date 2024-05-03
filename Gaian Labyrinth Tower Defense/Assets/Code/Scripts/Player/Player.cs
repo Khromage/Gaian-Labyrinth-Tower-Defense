@@ -221,6 +221,7 @@ public class Player : UnitBehavior
         LevelModule.OnMenuClosed += ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell += UpdateCurrency;
         TowerSelectionWheel.OnTowerSelected += TowerSelected;
+        //OptionsMenu.onKeySelected += changeKeybind;
     }
 
     private void OnDisable()
@@ -233,6 +234,7 @@ public class Player : UnitBehavior
         LevelModule.OnMenuClosed -= ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell -= UpdateCurrency;
         TowerSelectionWheel.OnTowerSelected -= TowerSelected;
+        //OptionsMenu.onKeySelected -= changeKeybind;
     }
 
     private void EnterMenuMode()
@@ -272,16 +274,21 @@ public class Player : UnitBehavior
     private void InitializeKeybinds()
     {
         // General
-        jumpKey = LoadoutManager.Instance.jumpKey;
-        interactKey = LoadoutManager.Instance.interactKey;
+        jumpKey = SaveManager.Instance.jumpKey;
+        interactKey = SaveManager.Instance.interactKey;
         // Combat
-        nextWeaponKey = LoadoutManager.Instance.nextWeaponKey;
-        prevWeaponKey = LoadoutManager.Instance.prevWeaponKey;
-        weaponKeys = LoadoutManager.Instance.weaponKeys;
+        nextWeaponKey = SaveManager.Instance.nextWeaponKey;
+        prevWeaponKey = SaveManager.Instance.prevWeaponKey;
+        weaponKeys = SaveManager.Instance.weaponKeys;
         //Build Mode
-        modeChangeKey = LoadoutManager.Instance.modeChangeKey;
-        towerSelectionKey = LoadoutManager.Instance.towerSelectionKey;
+        modeChangeKey = SaveManager.Instance.modeChangeKey;
+        towerSelectionKey = SaveManager.Instance.towerSelectionKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
+    }
+
+    public void changeKeybind(KeyCode pickle)
+    {
+        Debug.Log("rabbit" + pickle);
     }
 
     private void SwapMode()
