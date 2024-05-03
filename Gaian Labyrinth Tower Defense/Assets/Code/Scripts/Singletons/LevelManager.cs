@@ -12,7 +12,8 @@ public class LevelManager : SpawnableSingleton<LevelManager>
 
 
     public LevelInfo currentLevel;
-    public int Lives, Wave, Countdown, Currency;
+    public int Lives, Wave, Currency;
+    public float WaveTime;
 
     public void LoadLevel(LevelInfo level)
     {
@@ -62,7 +63,30 @@ public class LevelManager : SpawnableSingleton<LevelManager>
 
     }
 
-    
+
+    private void UpdateWaveInfo(int currentWave) {
+        Wave = currentWave;
+        
+        // RESETS TIMER UPON WAVE START
+        //WaveTime = 0f;
+
+    }
+
+    void Update() {
+        WaveTime += Time.deltaTime;
+    }
+
+    void OnEnable() {
+        //Debug.Log("IM ENABLED");
+        Level.OnWaveStart += UpdateWaveInfo;
+
+    }
+
+    void OnDisable() {
+        //Debug.Log("IM DISABLED");
+        Level.OnWaveStart -= UpdateWaveInfo;
+
+    }
 
 
 

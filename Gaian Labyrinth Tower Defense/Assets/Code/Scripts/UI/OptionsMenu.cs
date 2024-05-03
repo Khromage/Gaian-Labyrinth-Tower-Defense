@@ -39,7 +39,6 @@ public class OptionsMenu : MonoBehaviour
         resolutions = Screen.resolutions;
         PopulateResolutionDropdown();
         SetFPS();
-        gameObject.SetActive(false);
         DisplayVGroup.SetActive(false);
         AudioVGroup.SetActive(false);
         GraphicsVGroup.SetActive(false);
@@ -52,12 +51,12 @@ public class OptionsMenu : MonoBehaviour
         prevWeaponButtonText.text = SaveManager.Instance.prevWeaponKey.ToString();
         modeChangeButtonText.text = SaveManager.Instance.modeChangeKey.ToString();
         towerSelectionButtonText.text = SaveManager.Instance.towerSelectionKey.ToString();
-
     }
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
     }
+
     private void PopulateResolutionDropdown()
     {
         resolutionDropdown.ClearOptions();
