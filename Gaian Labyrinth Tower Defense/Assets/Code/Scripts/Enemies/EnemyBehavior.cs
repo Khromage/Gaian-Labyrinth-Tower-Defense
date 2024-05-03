@@ -60,6 +60,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     protected AudioSource EnemyHurtSFX;
 
+    private NavMeshAgent navMeshAgent;
+
 
     [SerializeField]
     private EnemyInfo info;
@@ -86,6 +88,8 @@ public class EnemyBehavior : MonoBehaviour
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
 
+        navMeshAgent = GetComponent<NavMeshAgent>();
+
         moveSpeedModifiers = new List<float>();
         damageModifiers = new List<float>();
     }
@@ -104,11 +108,12 @@ public class EnemyBehavior : MonoBehaviour
             isAlive = false;
         }
 
-        if (GetComponent<NavMeshAgent>().remainingDistance < 1f)
+        if (navMeshAgent.isOnNavMesh && navMeshAgent.remainingDistance < 1f)
         {
             OnEnemyReachedGoal?.Invoke(this);
             isAlive = false;
         }
+        //could add an else for if not on nav mesh and a timer; cause it to despawn if it's been off any navmeshes for too long
 
         if(!isAlive)
         {
