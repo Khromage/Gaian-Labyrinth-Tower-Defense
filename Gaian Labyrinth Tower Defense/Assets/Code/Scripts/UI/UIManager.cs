@@ -50,15 +50,26 @@ public class UIManager : MonoBehaviour
     void OnEnable()
     {
         LevelManager.Instance.OnSceneLoaded += SetUIModule;
-
+        Level.OnWinLevel += winCurrLevel;
+        Level.OnLoseLevel += loseCurrLevel;
     }
 
     void OnDisable()
     {
         LevelManager.Instance.OnSceneLoaded -= SetUIModule;
-
+        Level.OnWinLevel -= winCurrLevel;
+        Level.OnLoseLevel -= loseCurrLevel;
     }
     
+    private void winCurrLevel()
+    {
+        LevelModule.GetComponent<LevelModule>().EndLevel(true);
+    }
+    private void loseCurrLevel()
+    {
+        LevelModule.GetComponent<LevelModule>().EndLevel(false);
+    }
+
     public void GetUserKeyOptions()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -76,6 +87,12 @@ public class UIManager : MonoBehaviour
         }
     }
     
+
+    public void ReturnToCampaignMenu()
+    {
+        LevelManager.Instance.LoadCampaign();
+        CloseOptions();
+    }
     
     public void OpenOptions()
     {
