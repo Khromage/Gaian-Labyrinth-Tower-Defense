@@ -112,14 +112,14 @@ public class SaveManager : SpawnableSingleton<SaveManager>
         EquippedTowerIDs = LoadoutManager.Instance.EquippedTowerIDs;
         EquippedWeaponIDs = LoadoutManager.Instance.EquippedWeaponIDs;
         EquippedTechNodes = LoadoutManager.Instance.EquippedTechNodes;
-        jumpKey =  LoadoutManager.Instance.jumpKey;
-        interactKey = LoadoutManager.Instance.interactKey;
-        nextWeaponKey = LoadoutManager.Instance.nextWeaponKey;
-        prevWeaponKey = LoadoutManager.Instance.prevWeaponKey;
-        modeChangeKey = LoadoutManager.Instance.modeChangeKey;
-        towerSelectionKey = LoadoutManager.Instance.towerSelectionKey ;
-        weaponKeys = LoadoutManager.Instance.weaponKeys ;
-        updatePathKeys = LoadoutManager.Instance.updatePathKeys;
+        //jumpKey =  LoadoutManager.Instance.jumpKey;
+        //interactKey = LoadoutManager.Instance.interactKey;
+        //nextWeaponKey = LoadoutManager.Instance.nextWeaponKey;
+        //prevWeaponKey = LoadoutManager.Instance.prevWeaponKey;
+        //modeChangeKey = LoadoutManager.Instance.modeChangeKey;
+       // towerSelectionKey = LoadoutManager.Instance.towerSelectionKey ;
+        //weaponKeys = LoadoutManager.Instance.weaponKeys ;
+        //updatePathKeys = LoadoutManager.Instance.updatePathKeys;
 
         string jsonData = JsonUtility.ToJson(Instance);
         //Save Json string
@@ -149,6 +149,7 @@ public class SaveManager : SpawnableSingleton<SaveManager>
         LoadoutManager.Instance.EquippedWeaponIDs = EquippedWeaponIDs;
         LoadoutManager.Instance.EquippedTechNodes = EquippedTechNodes;
         SetToDefaults();
+        /*
         LoadoutManager.Instance.jumpKey = jumpKey;
         LoadoutManager.Instance.interactKey = interactKey;
         LoadoutManager.Instance.nextWeaponKey = nextWeaponKey;
@@ -156,7 +157,7 @@ public class SaveManager : SpawnableSingleton<SaveManager>
         LoadoutManager.Instance.modeChangeKey = modeChangeKey;
         LoadoutManager.Instance.towerSelectionKey = towerSelectionKey;
         LoadoutManager.Instance.weaponKeys = weaponKeys;
-        LoadoutManager.Instance.updatePathKeys = updatePathKeys;
+        LoadoutManager.Instance.updatePathKeys = updatePathKeys;*/
 
 
 
@@ -224,5 +225,61 @@ public class SaveManager : SpawnableSingleton<SaveManager>
         defUpdatePathKeys = d.updatePathKeys;
 
         Debug.Log($"SaveManager has been passed: {d}");
+    }
+
+    // Add a new public method to change keybindings
+    public void RebindKey(string keyAction, KeyCode newKey)
+    {
+        Debug.Log("about to rebind  " + keyAction + " into " + newKey);
+        switch (keyAction)
+        {
+            case "Jump":
+                jumpKey = newKey;
+                break;
+            case "Interact":
+                interactKey = newKey;
+                Debug.Log("set interact key");
+                break;
+            case "NextWeapon":
+                nextWeaponKey = newKey;
+                break;
+            case "PrevWeapon":
+                prevWeaponKey = newKey;
+                break;
+            case "ModeChange":
+                modeChangeKey = newKey;
+                break;
+            case "TowerSelection":
+                towerSelectionKey = newKey;
+                break;
+            // Add cases for each keybind you want to be rebindable
+        }
+    }
+    private string keyToRebind = null;
+
+    public void SetKeyToRebind(string keyName)
+    {
+        keyToRebind = keyName;
+    }
+
+    public void OnKeySelected(KeyCode newKey)
+    {
+        //Debug.Log("ONKEYSELECTED  = " + newKey);
+        if (newKey == null) return; // No key to rebind, just exit
+
+        RebindKey(keyToRebind, newKey);
+        keyToRebind = null; // Reset the key to rebind
+    }
+
+    void OnEnable() {
+        //Debug.Log("IM ENABLED");
+        OptionsMenu.onKeySelected += OnKeySelected;
+
+    }
+
+    void OnDisable() {
+        //Debug.Log("IM DISABLED");
+        OptionsMenu.onKeySelected -= OnKeySelected;
+
     }
 }
