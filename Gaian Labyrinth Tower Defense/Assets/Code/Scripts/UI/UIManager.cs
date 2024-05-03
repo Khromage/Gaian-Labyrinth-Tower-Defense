@@ -66,35 +66,39 @@ public class UIManager : MonoBehaviour
             // if options menu/module is not open, open it and set menu mode for player
             if(!OptionsMenu.activeInHierarchy)
             {
-                if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
-                {
-                    PauseGame();
-                }
                 OpenOptions();
-                OnOptionsOpened?.Invoke();
             }
             // if already open, close and exit menu mode for player
             else if(OptionsMenu.activeInHierarchy)
             {
-                if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
-                {
-                    ResumeGame();
-                }
                 CloseOptions();
-                OnOptionsClosed?.Invoke();
             }
         }
     }
     
     
-    private void OpenOptions()
+    public void OpenOptions()
     {
+        Debug.Log("Options Clicked");
+        if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
+        {
+            PauseGame();
+        }
         OptionsMenu.SetActive(true);
+        OnOptionsOpened?.Invoke();
+
     }
-    private void CloseOptions()
+    public void CloseOptions()
     {
         OptionsMenu.SetActive(false);
+        OnOptionsClosed?.Invoke();
         SaveManager.Instance.SaveData();
+
+        if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
+            {
+                ResumeGame();
+            }
+        
     }
 
     private void PauseGame()

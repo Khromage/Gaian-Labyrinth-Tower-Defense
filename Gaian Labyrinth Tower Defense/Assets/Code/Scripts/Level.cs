@@ -88,21 +88,23 @@ public class Level : MonoBehaviour
 
         // Update levelInfo
         LevelManager.Instance.Lives = remainingLives;
-        LevelManager.Instance.Countdown = (int)waveCountdown;
+        // LevelManager.Instance.Countdown = (int)waveCountdown;
     }
 
-    private void StartWave(int wave)
+    private void StartWave(int currentWave)
     {
         //can either reset the RemainingEnemiesInWave array each wave, or decrement it whenever an enemy dies or reaches the goal
         System.Array.Clear(RemainingEnemiesInWave, 0 , RemainingEnemiesInWave.Length);
 
         Debug.Log("Starting wave (" + currWave + ")");
 
-        for(int i = 0; i < currentLevelInfo.Waves[wave].SpawnPoints.Length; i++)
+        for(int i = 0; i < currentLevelInfo.Waves[currentWave].SpawnPoints.Length; i++)
         {
-            StartCoroutine(StartSpawning(1f, currentLevelInfo.Waves[wave].SpawnPoints[i].SpawnSet, SpawnPoints[i]));
-            AddEnemiesToTotal(currentLevelInfo.Waves[wave].SpawnPoints[i].SpawnSet);
+            StartCoroutine(StartSpawning(1f, currentLevelInfo.Waves[currentWave].SpawnPoints[i].SpawnSet, SpawnPoints[i]));
+            AddEnemiesToTotal(currentLevelInfo.Waves[currentWave].SpawnPoints[i].SpawnSet);
         }
+
+        OnWaveStart?.Invoke(currentWave);
     }
 
     IEnumerator StartSpawning(float defaultDelay, int[] spawnSet, GameObject spawnPoint)

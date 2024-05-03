@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System;
 //using static System.Net.Mime.MediaTypeNames;
 
 public class PlayerHUD : MonoBehaviour
@@ -38,11 +39,6 @@ public class PlayerHUD : MonoBehaviour
     private GameObject[] manaPips;
 
 
-
-    [SerializeField]
-    private Image manaBar;
-    private Coroutine manaBarAnimCoroutine;
-
     [SerializeField]
     private GameObject activeTowerPanel;
 
@@ -64,8 +60,12 @@ public class PlayerHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        WavesText.text = "Wave: " + LevelManager.Instance.Wave.ToString();
-        TimeText.text = "Next Wave: " + LevelManager.Instance.Countdown.ToString();
+        string currentWave = LevelManager.Instance.Wave.ToString();
+        string totalWave = LevelManager.Instance.currentLevel.Waves.Length.ToString();
+        WavesText.text = $"Wave {currentWave}/{totalWave}";
+
+        TimeSpan timeStamp = TimeSpan.FromSeconds(LevelManager.Instance.WaveTime);
+        TimeText.text = timeStamp.ToString("mm':'ss");
         LivesText.text = "Lives:\n" + LevelManager.Instance.Lives.ToString();
         CurrencyText.text = "$" + LevelManager.Instance.Currency.ToString();
         
@@ -94,7 +94,7 @@ public class PlayerHUD : MonoBehaviour
     {
         for (int i = 0; i < towerSet.Length; i++)
         {
-            activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
+            // activeTowerPanel.transform.GetChild(0).GetChild(i).GetChild(0).GetChild(1).GetComponent<Image>().sprite = towerList.GetTowerIcon(towerSet[i]);
         }
         for (int i = 0; i < weaponSet.Length; i++)
         {
@@ -186,6 +186,8 @@ public class PlayerHUD : MonoBehaviour
         if(mana % 10 != 0)
             manaPips[numFullManaPips].transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = (mana % 10) / (maxMana / manaPips.Length);
 
+        
+        /*
         if (animate)
         {
             //Debug.Log($"starting mana bar animation, change amount = {changeAmount}");
@@ -213,6 +215,7 @@ public class PlayerHUD : MonoBehaviour
         {
             //border is gray/normal
         }
+        */
     }
     /*
     private IEnumerator animateManaBar(float delta)
