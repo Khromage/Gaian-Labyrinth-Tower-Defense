@@ -138,12 +138,18 @@ public class UIManager : MonoBehaviour
         {
             case 0:
                 SetMainMenuUI();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 break;
             case 1:
                 SetCampaignUI();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 break;
             case 2:
                 SetLevelUI();
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 break;
             default:
                 Debug.Log("just cry");
