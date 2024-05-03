@@ -335,6 +335,7 @@ GameObject:
   - component: {fileID: 424291184941841206}
   - component: {fileID: 3214069984486414179}
   - component: {fileID: 5376600795978324578}
+  - component: {fileID: 3347216750778082216}
   m_Layer: 0
   m_Name: EnemyElk
   m_TagString: Enemy
@@ -556,6 +557,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.8
   m_Center: {x: 0, y: 0.4, z: 0}
+--- !u!114 &3347216750778082216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921004111766893944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e469f9eada4e1b741ad7bf9f4155542a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5907145547198309030
 GameObject:
   m_ObjectHideFlags: 0

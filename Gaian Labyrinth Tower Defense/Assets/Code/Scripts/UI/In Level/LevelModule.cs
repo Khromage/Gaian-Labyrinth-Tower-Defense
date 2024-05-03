@@ -33,6 +33,9 @@ public class LevelModule : MonoBehaviour
 
     void OnEnable()
     {
+        endScreen.SetActive(false);
+        Debug.Log("ENABLING LEVELMODULE");
+
         Player.OnTowerSelectionOpened += enableTowerSelection;
         Player.OnTowerSelectionClosed += disableTowerSelection;
 
@@ -92,6 +95,14 @@ public class LevelModule : MonoBehaviour
         towerSelectionWheel.SetActive(false);
 
         // Send Broadcast to Player to exit Menu Mode
+        OnMenuClosed?.Invoke();
+    }
+
+    //exit menu mode and set active false
+    public void resetLevel()
+    {
+        Debug.Log("RESETTING LEVEL");
+        endScreen.SetActive(false);
         OnMenuClosed?.Invoke();
     }
 

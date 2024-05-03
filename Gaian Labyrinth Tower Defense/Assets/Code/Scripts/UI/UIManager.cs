@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
 
     public DefaultKeybinds defaultKeybinds;
 
+    public GameObject endScreen;
+
     
     // Start is called before the first frame update
     void Start()
@@ -90,6 +92,8 @@ public class UIManager : MonoBehaviour
 
     public void ReturnToCampaignMenu()
     {
+        LevelModule.GetComponent<LevelModule>().resetLevel();
+        endScreen.SetActive(false);
         LevelManager.Instance.LoadCampaign();
         CloseOptions();
     }
