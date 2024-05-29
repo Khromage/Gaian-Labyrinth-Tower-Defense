@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     public DefaultKeybinds defaultKeybinds;
 
     public GameObject endScreen;
+    public GameObject MMPanel;
 
     
     // Start is called before the first frame update
@@ -99,7 +100,7 @@ public class UIManager : MonoBehaviour
     }
     
     public void OpenOptions()
-    {
+    {   
         Debug.Log("Options Clicked");
         if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
         {
@@ -107,6 +108,7 @@ public class UIManager : MonoBehaviour
         }
         OptionsMenu.SetActive(true);
         OnOptionsOpened?.Invoke();
+        MMPanel.SetActive(false);
 
     }
     public void CloseOptions()
@@ -119,7 +121,7 @@ public class UIManager : MonoBehaviour
             {
                 ResumeGame();
             }
-        
+        MMPanel.SetActive(true);
     }
 
     private void PauseGame()

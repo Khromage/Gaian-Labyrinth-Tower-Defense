@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -17,7 +18,11 @@ public class OptionsMenu : MonoBehaviour
     public GameObject AudioVGroup;
     public GameObject GraphicsVGroup;
     public GameObject ControlsVGroup;
-    public Slider AudioSlider;
+    public Slider MasterSlider;
+    public Slider SFXSlider;
+    public Toggle VSYNCToggle;
+    public Slider MouseSlider;
+    public FirstPersonCamera FirstpersoncameraController;
     private string currentKeyAction;
     public GameObject waitingForKeyPressUI; // Some UI to show that the game is waiting for a key press
    
@@ -36,6 +41,7 @@ public class OptionsMenu : MonoBehaviour
 
     void Start()
     {
+        FirstpersoncameraController = GameObject.Find("FirstPersonCam").GetComponent<FirstPersonCamera>();
         resolutions = Screen.resolutions;
         PopulateResolutionDropdown();
         SetFPS();
@@ -44,6 +50,13 @@ public class OptionsMenu : MonoBehaviour
         GraphicsVGroup.SetActive(false);
         ControlsVGroup.SetActive(false);
         waitingText.gameObject.SetActive(false);
+        float minvalue = 0.002f; 
+        float maxvalue = 1.0f;
+        MasterSlider.value = (minvalue + maxvalue) / 2;
+        SFXSlider.value = (minvalue + maxvalue) / 2;
+        MouseSlider.value = minvalue;
+        
+        VSYNCToggle.isOn = false;
         
         jumpButtonText.text = SaveManager.Instance.jumpKey.ToString();
         interactButtonText.text = SaveManager.Instance.interactKey.ToString();
@@ -110,6 +123,7 @@ public class OptionsMenu : MonoBehaviour
         if(FPSDropdown.value == 0)
         {
             Application.targetFrameRate = -1;
+            ActivateVSYNC();
         } else 
             {
                 string stringFPS = FPSDropdown.options[FPSDropdown.value].text;
@@ -163,5 +177,36 @@ public class OptionsMenu : MonoBehaviour
         waitingForKeyPressUI.SetActive(false);
     }
 
+    public void SetVSYNC()
+    {
+        if(VSYNCToggle.isOn)
+        {
+            QualitySettings.vSyncCount = 1;
+        }
+        else
+        {
+            QualitySettings.vSyncCount = 0;
+        }
+        
+    }
+
+     public void VSYNCBlock()
+    {
+        VSYNCToggle.interactable = false;
+        VSYNCToggle.isOn = false;
+    }
+
+    public void ActivateVSYNC()
+    {
+        VSYNCToggle.interactable = true;
+    }
+
+    public void SetMouseSensitivity()
+    {
+        if (FirstpersoncameraController != null)
+        {
+            FirstpersoncameraController.mouseSpeedModifier = Math.Clamp(MouseSlider.value, 0.01f, 10f);
+        }
+    }
 
 }
