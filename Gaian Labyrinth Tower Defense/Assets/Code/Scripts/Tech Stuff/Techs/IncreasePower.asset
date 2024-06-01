@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: IncreasePower
   m_EditorClassIdentifier: 
   definition: increases player bullet dmg by 100
-  invested: 1
+  invested: 0
   locked: 0

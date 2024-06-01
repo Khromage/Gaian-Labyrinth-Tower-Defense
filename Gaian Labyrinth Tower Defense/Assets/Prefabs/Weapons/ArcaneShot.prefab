@@ -183,5 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimTarget: {fileID: 0}
+  aimHitPos: {x: 0, y: 0, z: 0}
   weaponInfo: {fileID: 11400000, guid: aeb1fb3ebf58b3742a9bb55f4bc718f4, type: 2}
+  dmgincrease: {fileID: 11400000, guid: f03fc394624a67e439e155b762c78a6a, type: 2}
   Bullet: {fileID: 5460506940467439282, guid: 8e3b155c8cad5054385f5e15c414b13c, type: 3}
