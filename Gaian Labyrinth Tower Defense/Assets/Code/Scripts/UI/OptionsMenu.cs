@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -17,10 +18,16 @@ public class OptionsMenu : MonoBehaviour
     public GameObject AudioVGroup;
     public GameObject GraphicsVGroup;
     public GameObject ControlsVGroup;
-    public Slider AudioSlider;
+    public Slider MasterSlider;
+    public Slider SFXSlider;
+    public Toggle VSYNCToggle;
+    public Slider MouseSlider;
+    public FirstPersonCamera FirstpersoncameraController;
     private string currentKeyAction;
     public GameObject waitingForKeyPressUI; // Some UI to show that the game is waiting for a key press
-    private Action<KeyCode> onKeySelected; // Delegate to store the callback when a key is selected
+   
+    public delegate void changeKey(KeyCode keyToChange);
+    public static event changeKey onKeySelected; // Delegate to store the callback when a key is selected
     public TMP_Text jumpButtonText;
     public TMP_Text interactButtonText;
     public TMP_Text nextWeaponButtonText;
@@ -34,27 +41,35 @@ public class OptionsMenu : MonoBehaviour
 
     void Start()
     {
+        FirstpersoncameraController = GameObject.Find("FirstPersonCam").GetComponent<FirstPersonCamera>();
         resolutions = Screen.resolutions;
         PopulateResolutionDropdown();
         SetFPS();
-        gameObject.SetActive(false);
         DisplayVGroup.SetActive(false);
         AudioVGroup.SetActive(false);
         GraphicsVGroup.SetActive(false);
         ControlsVGroup.SetActive(false);
         waitingText.gameObject.SetActive(false);
-        jumpButtonText.text = LoadoutManager.Instance.jumpKey.ToString();
-        interactButtonText.text = LoadoutManager.Instance.interactKey.ToString();
-        nextWeaponButtonText.text = LoadoutManager.Instance.nextWeaponKey.ToString();
-        prevWeaponButtonText.text = LoadoutManager.Instance.prevWeaponKey.ToString();
-        modeChangeButtonText.text = LoadoutManager.Instance.modeChangeKey.ToString();
-        towerSelectionButtonText.text = LoadoutManager.Instance.towerSelectionKey.ToString();
-
+        float minvalue = 0.002f; 
+        float maxvalue = 1.0f;
+        MasterSlider.value = (minvalue + maxvalue) / 2;
+        SFXSlider.value = (minvalue + maxvalue) / 2;
+        MouseSlider.value = minvalue;
+        
+        VSYNCToggle.isOn = false;
+        
+        jumpButtonText.text = SaveManager.Instance.jumpKey.ToString();
+        interactButtonText.text = SaveManager.Instance.interactKey.ToString();
+        nextWeaponButtonText.text = SaveManager.Instance.nextWeaponKey.ToString();
+        prevWeaponButtonText.text = SaveManager.Instance.prevWeaponKey.ToString();
+        modeChangeButtonText.text = SaveManager.Instance.modeChangeKey.ToString();
+        towerSelectionButtonText.text = SaveManager.Instance.towerSelectionKey.ToString();
     }
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
     }
+
     private void PopulateResolutionDropdown()
     {
         resolutionDropdown.ClearOptions();
@@ -108,6 +123,7 @@ public class OptionsMenu : MonoBehaviour
         if(FPSDropdown.value == 0)
         {
             Application.targetFrameRate = -1;
+            ActivateVSYNC();
         } else 
             {
                 string stringFPS = FPSDropdown.options[FPSDropdown.value].text;
@@ -118,9 +134,9 @@ public class OptionsMenu : MonoBehaviour
     public void StartRebindForKey(string keyAction)
     {
         currentKeyAction = keyAction;
-        LoadoutManager lm = FindObjectOfType<LoadoutManager>();
+        SaveManager sm = FindObjectOfType<SaveManager>();
         Debug.Log(keyAction);
-        lm.SetKeyToRebind(keyAction);
+        sm.SetKeyToRebind(keyAction);
         waitingForKeyPressUI.SetActive(true); // Show the UI that we are waiting for key press
         StartCoroutine(WaitForKeyPress());
     }
@@ -131,6 +147,7 @@ public class OptionsMenu : MonoBehaviour
         bool keyFound = false;
         KeyCode newKey = KeyCode.None;
         
+        //why not just do    while (newKey == KeyCode.None)
         while (!keyFound)
         {
             foreach (KeyCode keyCode in Enum.GetValues(typeof(KeyCode)))
@@ -139,33 +156,57 @@ public class OptionsMenu : MonoBehaviour
                 {
                     newKey = keyCode;
                     keyFound = true;
+                    //Debug.Log("want to change to " + keyCode);
                     break;
                 }
             }
             yield return null; // Wait until next frame
         }
 
+        //Debug.Log("the key is " + newKey);
+        
         // Callback to inform the Player class about the new key
         onKeySelected?.Invoke(newKey);
         // Update UI
-        jumpButtonText.text = LoadoutManager.Instance.jumpKey.ToString();
-        interactButtonText.text = LoadoutManager.Instance.interactKey.ToString();
-        nextWeaponButtonText.text = LoadoutManager.Instance.nextWeaponKey.ToString();
-        prevWeaponButtonText.text = LoadoutManager.Instance.prevWeaponKey.ToString();
-        modeChangeButtonText.text = LoadoutManager.Instance.modeChangeKey.ToString();
-        towerSelectionButtonText.text = LoadoutManager.Instance.towerSelectionKey.ToString();
+        jumpButtonText.text = SaveManager.Instance.jumpKey.ToString();
+        interactButtonText.text = SaveManager.Instance.interactKey.ToString();
+        nextWeaponButtonText.text = SaveManager.Instance.nextWeaponKey.ToString();
+        prevWeaponButtonText.text = SaveManager.Instance.prevWeaponKey.ToString();
+        modeChangeButtonText.text = SaveManager.Instance.modeChangeKey.ToString();
+        towerSelectionButtonText.text = SaveManager.Instance.towerSelectionKey.ToString();
         waitingForKeyPressUI.SetActive(false);
     }
 
-// Use this method to subscribe the Player's method to the delegate
-    public void RegisterOnKeySelectedCallback(Action<KeyCode> callback)
+    public void SetVSYNC()
     {
-        onKeySelected += callback;
+        if(VSYNCToggle.isOn)
+        {
+            QualitySettings.vSyncCount = 1;
+        }
+        else
+        {
+            QualitySettings.vSyncCount = 0;
+        }
+        
     }
 
-// Use this method to unsubscribe when needed
-    public void UnregisterOnKeySelectedCallback(Action<KeyCode> callback)
+     public void VSYNCBlock()
     {
-        onKeySelected -= callback;
+        VSYNCToggle.interactable = false;
+        VSYNCToggle.isOn = false;
     }
+
+    public void ActivateVSYNC()
+    {
+        VSYNCToggle.interactable = true;
+    }
+
+    public void SetMouseSensitivity()
+    {
+        if (FirstpersoncameraController != null)
+        {
+            FirstpersoncameraController.mouseSpeedModifier = Math.Clamp(MouseSlider.value, 0.01f, 10f);
+        }
+    }
+
 }

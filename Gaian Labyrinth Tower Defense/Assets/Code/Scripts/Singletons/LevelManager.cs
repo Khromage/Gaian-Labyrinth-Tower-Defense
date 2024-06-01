@@ -12,7 +12,8 @@ public class LevelManager : SpawnableSingleton<LevelManager>
 
 
     public LevelInfo currentLevel;
-    public int Lives, Wave, Countdown, Currency;
+    public int Lives, Wave, Currency;
+    public float WaveTime;
 
     public void LoadLevel(LevelInfo level)
     {
@@ -22,6 +23,8 @@ public class LevelManager : SpawnableSingleton<LevelManager>
         {
             SceneManager.UnloadSceneAsync("campaignMenu");
         }
+
+        //Debug.Log($"About to load: {currentLevel.Name}");
         
         // StartCoroutine
         SceneManager.LoadSceneAsync(currentLevel.Name, LoadSceneMode.Additive);
@@ -49,6 +52,8 @@ public class LevelManager : SpawnableSingleton<LevelManager>
 
     IEnumerator LoadingScene(Scene scene, int ID)
     {
+        //Debug.Log($"in LoadingScene coroutine: {currentLevel.Name}");
+
         while(!scene.isLoaded)
         {
             Debug.Log("SCENE LOADING");
@@ -59,6 +64,31 @@ public class LevelManager : SpawnableSingleton<LevelManager>
         // CHANGE INT TO INDEX OF SCENE IN DATALIST SO
         // Also lets PlayerHUD know HUD is ready to be initi
         OnSceneLoaded?.Invoke(ID);
+
+    }
+
+
+    private void UpdateWaveInfo(int currentWave) {
+        Wave = currentWave;
+        
+        // RESETS TIMER UPON WAVE START
+        //WaveTime = 0f;
+
+    }
+
+    void Update() {
+        WaveTime += Time.deltaTime;
+    }
+
+    void OnEnable() {
+        //Debug.Log("IM ENABLED");
+        Level.OnWaveStart += UpdateWaveInfo;
+
+    }
+
+    void OnDisable() {
+        //Debug.Log("IM DISABLED");
+        Level.OnWaveStart -= UpdateWaveInfo;
 
     }
 

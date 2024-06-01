@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 424291184941841206}
   - component: {fileID: 3214069984486414179}
   - component: {fileID: 2495053062151640516}
+  - component: {fileID: 3497193529722391641}
   m_Layer: 0
   m_Name: EnemyCentaur
   m_TagString: Enemy
@@ -437,14 +438,29 @@ MonoBehaviour:
   Grid:
     serializedVersion: 2
     m_Bits: 0
+  moveSpeed: 0
   HealthBar: {fileID: 8524468329408580060}
   currentHealth: 0
   enemyWeight: 0
+  isVulnerable: 0
+  dmgMulti: 0
   damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0
   EnemyHurtSFX: {fileID: 0}
   info: {fileID: 11400000, guid: d6bfc0af82e1ed342b046fb9b6a6aabe, type: 2}
+--- !u!114 &3497193529722391641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921004111766893944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e469f9eada4e1b741ad7bf9f4155542a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5907145547198309030
 GameObject:
   m_ObjectHideFlags: 0

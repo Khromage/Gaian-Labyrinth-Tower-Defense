@@ -38,6 +38,10 @@ public class EnemyBehavior : MonoBehaviour
     public bool isVulnerable;
     public float dmgMulti;
 
+    // keeps track of the number of zones the enemy is inside (in case tower ranges overlap)
+    private int buffZones;
+    public bool isBuffed;
+
 
     protected List<float> moveSpeedModifiers;
     protected List<float> damageModifiers;
@@ -56,6 +60,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     protected AudioSource EnemyHurtSFX;
 
+    private NavMeshAgent navMeshAgent;
+
 
     [SerializeField]
     private EnemyInfo info;
@@ -65,6 +71,7 @@ public class EnemyBehavior : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
+        dmgMulti = 1f;
         //change these to pull from the scriptableObject
         harm = info.harm;
         worth = info.worth;
@@ -72,29 +79,41 @@ public class EnemyBehavior : MonoBehaviour
         moveSpeed = info.moveSpeed;
         enemyWeight = info.currentWeight;
         isAlive = true;
+
         isVulnerable = false;
+        isBuffed = false;
         vulnerabilityZones = 0;
+        buffZones = 0;
+
         currentHealth = maxHealth;
         EnemyHurtSFX = GetComponent<AudioSource>();
+
+        navMeshAgent = GetComponent<NavMeshAgent>();
 
         moveSpeedModifiers = new List<float>();
         damageModifiers = new List<float>();
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         ApplyMovementModifiers();
-        ApplyDamageModifiers();
         //setGravityDir();
-        updateCurrTile();
-        moveAlongPath();
+        //updateCurrTile();
+        //moveAlongPath();
         
         if (currTile is GoalTile)
         {
             OnEnemyReachedGoal?.Invoke(this);
             isAlive = false;
         }
+
+        if (navMeshAgent.isOnNavMesh && navMeshAgent.remainingDistance < 1f)
+        {
+            OnEnemyReachedGoal?.Invoke(this);
+            isAlive = false;
+        }
+        //could add an else for if not on nav mesh and a timer; cause it to despawn if it's been off any navmeshes for too long
 
         if(!isAlive)
         {
@@ -104,6 +123,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void LateUpdate()
     {
+        ApplyDamageModifiers();
         if(!isAlive)
         {
             Destroy(gameObject);
@@ -112,18 +132,13 @@ public class EnemyBehavior : MonoBehaviour
     }
     public void takeDamage(float damage, GameObject damagerBullet)
     {
-        float finalDamage = damage * dmgMulti;
+        float finalDamage = damage;
+        //if (isVulnerable || isBuffed)
+            finalDamage *= dmgMulti;
 
         currentHealth -= finalDamage;
 
-        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
-        if(isVulnerable)
-        {
-            printMsg += "TRUE";
-        } else {
-            printMsg += "FALSE";
-        }
-        Debug.Log(printMsg);
+        //dmgPrint(damage, finalDamage);
 
         deployDamageIndicator(finalDamage);
 
@@ -141,21 +156,12 @@ public class EnemyBehavior : MonoBehaviour
     public void takeDamage(float damage)
     {
         float finalDamage = damage;
-        if (isVulnerable)
+        //if (isVulnerable || isBuffed)
             finalDamage *= dmgMulti;
 
         currentHealth -= finalDamage;
 
-        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
-        if (isVulnerable)
-        {
-            printMsg += "TRUE";
-        }
-        else
-        {
-            printMsg += "FALSE";
-        }
-        Debug.Log(printMsg);
+        //dmgPrint(damage, finalDamage);
 
         deployDamageIndicator(finalDamage);
 
@@ -223,9 +229,6 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-
-
-
     public void AddMovementModifier(float mod)
     {
         moveSpeedModifiers.Add(mod);
@@ -245,15 +248,21 @@ public class EnemyBehavior : MonoBehaviour
     {
         damageModifiers.Add(mod);
     }
+
     protected void ApplyDamageModifiers()
     {
         float totalModifier = 1f;
         foreach (float m in damageModifiers)
         {
             totalModifier *= m;
+            //Debug.Log("totalModifier before: " + totalModifier);
+            dmgMulti = totalModifier;
         }
+        //dmgMulti = totalModifier;
+        //Debug.Log("totalModifier after: " + totalModifier);   
         damageModifiers.Clear();
-        dmgMulti = totalModifier;
+        
+        
     }
 
 
@@ -272,5 +281,43 @@ public class EnemyBehavior : MonoBehaviour
             isVulnerable = false;
             // Debug.Log("No more vuln zones, isVulnerable being set to false");
         }
+    }
+
+    public void enterBuffZone()
+    {
+        buffZones++;
+        isBuffed = true;
+    }
+
+    public void exitBuffZone()
+    {
+        buffZones--;
+        if(buffZones < 1)
+        {
+            isBuffed = false;
+            dmgMulti = 1f;
+        }
+    }
+
+    void dmgPrint(float damage, float finalDamage){
+        string printMsg = "Enemy took " + damage + "damage. Final damage was " + finalDamage + ". Vulnerable: ";
+        if (isVulnerable)
+        {
+            printMsg += "TRUE";
+        }
+        else
+        {
+            printMsg += "FALSE";
+        }
+        if (isBuffed)
+        {
+            printMsg += " Buffed: TRUE";
+        }
+        else
+        {
+            printMsg += " Buffed: FALSE"; 
+        }
+        printMsg += ", dmgMulti: " + dmgMulti;   
+        Debug.Log(printMsg);
     }
 }

@@ -23,6 +23,9 @@ public class UIManager : MonoBehaviour
 
     public DefaultKeybinds defaultKeybinds;
 
+    public GameObject endScreen;
+    public GameObject MMPanel;
+
     
     // Start is called before the first frame update
     void Start()
@@ -50,15 +53,26 @@ public class UIManager : MonoBehaviour
     void OnEnable()
     {
         LevelManager.Instance.OnSceneLoaded += SetUIModule;
-
+        Level.OnWinLevel += winCurrLevel;
+        Level.OnLoseLevel += loseCurrLevel;
     }
 
     void OnDisable()
     {
         LevelManager.Instance.OnSceneLoaded -= SetUIModule;
-
+        Level.OnWinLevel -= winCurrLevel;
+        Level.OnLoseLevel -= loseCurrLevel;
     }
     
+    private void winCurrLevel()
+    {
+        LevelModule.GetComponent<LevelModule>().EndLevel(true);
+    }
+    private void loseCurrLevel()
+    {
+        LevelModule.GetComponent<LevelModule>().EndLevel(false);
+    }
+
     public void GetUserKeyOptions()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -66,35 +80,48 @@ public class UIManager : MonoBehaviour
             // if options menu/module is not open, open it and set menu mode for player
             if(!OptionsMenu.activeInHierarchy)
             {
-                if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
-                {
-                    PauseGame();
-                }
                 OpenOptions();
-                OnOptionsOpened?.Invoke();
             }
             // if already open, close and exit menu mode for player
             else if(OptionsMenu.activeInHierarchy)
             {
-                if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
-                {
-                    ResumeGame();
-                }
                 CloseOptions();
-                OnOptionsClosed?.Invoke();
             }
         }
     }
     
-    
-    private void OpenOptions()
+
+    public void ReturnToCampaignMenu()
     {
-        OptionsMenu.SetActive(true);
+        LevelModule.GetComponent<LevelModule>().resetLevel();
+        endScreen.SetActive(false);
+        LevelManager.Instance.LoadCampaign();
+        CloseOptions();
     }
-    private void CloseOptions()
+    
+    public void OpenOptions()
+    {   
+        Debug.Log("Options Clicked");
+        if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
+        {
+            PauseGame();
+        }
+        OptionsMenu.SetActive(true);
+        OnOptionsOpened?.Invoke();
+        MMPanel.SetActive(false);
+
+    }
+    public void CloseOptions()
     {
         OptionsMenu.SetActive(false);
+        OnOptionsClosed?.Invoke();
         SaveManager.Instance.SaveData();
+
+        if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
+            {
+                ResumeGame();
+            }
+        MMPanel.SetActive(true);
     }
 
     private void PauseGame()
@@ -113,12 +140,18 @@ public class UIManager : MonoBehaviour
         {
             case 0:
                 SetMainMenuUI();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 break;
             case 1:
                 SetCampaignUI();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 break;
             case 2:
                 SetLevelUI();
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 break;
             default:
                 Debug.Log("just cry");

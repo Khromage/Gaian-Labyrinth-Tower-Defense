@@ -25,35 +25,26 @@ MonoBehaviour:
     <Range>k__BackingField: 10
     <FireRate>k__BackingField: 1.5
     <Cost>k__BackingField: 20
-    <Description>k__BackingField: This is upgrade Level 2
+    <Description>k__BackingField: Stats Upgrade
   <Branches>k__BackingField:
   - <Name>k__BackingField: Branch 1
     <Damage>k__BackingField: 2
     <Range>k__BackingField: 10
     <FireRate>k__BackingField: 6
     <Cost>k__BackingField: 30
-    <Description>k__BackingField: 'This is upgrade Level 3 - Branch 1
-
-      Rapid
-      fire projectiles'
+    <Description>k__BackingField: Rapid fire projectiles
   - <Name>k__BackingField: Branch 2
     <Damage>k__BackingField: 0
     <Range>k__BackingField: 5
     <FireRate>k__BackingField: 0
     <Cost>k__BackingField: 25
-    <Description>k__BackingField: 'This is upgrade Level 3 - Branch 2
-
-      Zone
-      of vulnerability'
+    <Description>k__BackingField: Zone of vulnerability
   - <Name>k__BackingField: Branch 3
     <Damage>k__BackingField: 8
     <Range>k__BackingField: 5
     <FireRate>k__BackingField: 0.5
     <Cost>k__BackingField: 40
-    <Description>k__BackingField: 'This is upgrade Level 3 - Branch 3
-
-      Pulse
-      area damage'
+    <Description>k__BackingField: Pulse area damage
   <Icon>k__BackingField: {fileID: 1101405601, guid: 1641fefd84d5af54891d4bf716f5538c, type: 3}
   <Prefab>k__BackingField: {fileID: 1362173102988795995, guid: 8fb8c4b1f36e1ce4f8c3b34fdf07528c, type: 3}
   <NonfuncModel>k__BackingField: {fileID: 4137109062845976413, guid: bbceb05f4d833ea4790fbc7865680f05, type: 3}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class LevelModule : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class LevelModule : MonoBehaviour
     public GameObject playerHUD;
     public GameObject towerInteractionUI;
     public GameObject towerSelectionWheel;
+
+    [SerializeField]
+    private GameObject endScreen;
     
     // Start is called before the first frame update
     void Start()
@@ -29,6 +33,9 @@ public class LevelModule : MonoBehaviour
 
     void OnEnable()
     {
+        endScreen.SetActive(false);
+        Debug.Log("ENABLING LEVELMODULE");
+
         Player.OnTowerSelectionOpened += enableTowerSelection;
         Player.OnTowerSelectionClosed += disableTowerSelection;
 
@@ -89,6 +96,29 @@ public class LevelModule : MonoBehaviour
 
         // Send Broadcast to Player to exit Menu Mode
         OnMenuClosed?.Invoke();
+    }
+
+    //exit menu mode and set active false
+    public void resetLevel()
+    {
+        Debug.Log("RESETTING LEVEL");
+        endScreen.SetActive(false);
+        OnMenuClosed?.Invoke();
+    }
+
+    public void EndLevel(bool victory)
+    {
+        endScreen.SetActive(true);
+        OnMenuOpened?.Invoke();
+        //PauseGame();
+        if (victory)
+        {
+            endScreen.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = "Victory";
+        }
+        else
+        {
+            endScreen.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = "Defeat";
+        }
     }
 
 }

@@ -1,28 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ButterflyBehavior : EnemyBehavior
 {
+    private Rigidbody rb;
+    private BoxCollider sporeCollider;
+    
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
+        rb = GetComponent<Rigidbody>();
+        sporeCollider = GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected void OnTriggerEnter(Collider other)
     {
-        getGroundOrientation();
-    }
-
-    void getGroundOrientation()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.0f))
-        {
-            transform.up = hit.normal;
+        if (other.tag == "Player"){
+            other.gameObject.GetComponent<Player>().setStatus("spored");
         }
     }
+
 }
+
+    

@@ -117,7 +117,7 @@ public class GridTile : MonoBehaviour
                 if (col.gameObject != gameObject)
                     adjacentTiles.Add(col.gameObject.GetComponent<GridTile>());
             }
-            writeTileInfo();
+            // writeTileInfo();
         }
     }
 

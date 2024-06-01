@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using UnityEngine.AI;
+using static Level;
 
 //if (currentLevelInfo.Name == "TestScene1")   drop these once we decide on nav mesh or tiles
 
@@ -18,7 +19,13 @@ public class Level : MonoBehaviour
 
     public delegate void LoadData(int[] towerSet, int[] weaponSet);
     public static event LoadData OnLoadData;
-    
+
+    public delegate void LoseLevel();
+    public static event LoseLevel OnLoseLevel;
+
+    public delegate void WinLevel();
+    public static event WinLevel OnWinLevel;
+
     public EnemyList enemyList;
     private LevelInfo currentLevelInfo;
 
@@ -88,21 +95,42 @@ public class Level : MonoBehaviour
 
         // Update levelInfo
         LevelManager.Instance.Lives = remainingLives;
-        LevelManager.Instance.Countdown = (int)waveCountdown;
+        // LevelManager.Instance.Countdown = (int)waveCountdown;
+
+        //checking for losing or winning level
+        if (remainingLives <= 0)
+        {
+            OnLoseLevel?.Invoke();
+        }
+        else if (currWave >= currentLevelInfo.Waves.Length)
+        {
+            bool noEnemiesLeft = true;
+            for (int i = 0; i < RemainingEnemiesInWave.Length; i++)
+            {
+                if (RemainingEnemiesInWave[i] > 0)
+                    noEnemiesLeft = false;
+            }
+            if (noEnemiesLeft)
+            {
+                OnWinLevel?.Invoke();
+            }
+        }
     }
 
-    private void StartWave(int wave)
+    private void StartWave(int currentWave)
     {
         //can either reset the RemainingEnemiesInWave array each wave, or decrement it whenever an enemy dies or reaches the goal
         System.Array.Clear(RemainingEnemiesInWave, 0 , RemainingEnemiesInWave.Length);
 
         Debug.Log("Starting wave (" + currWave + ")");
 
-        for(int i = 0; i < currentLevelInfo.Waves[wave].SpawnPoints.Length; i++)
+        for(int i = 0; i < currentLevelInfo.Waves[currentWave].SpawnPoints.Length; i++)
         {
-            StartCoroutine(StartSpawning(1f, currentLevelInfo.Waves[wave].SpawnPoints[i].SpawnSet, SpawnPoints[i]));
-            AddEnemiesToTotal(currentLevelInfo.Waves[wave].SpawnPoints[i].SpawnSet);
+            StartCoroutine(StartSpawning(1f, currentLevelInfo.Waves[currentWave].SpawnPoints[i].SpawnSet, SpawnPoints[i]));
+            AddEnemiesToTotal(currentLevelInfo.Waves[currentWave].SpawnPoints[i].SpawnSet);
         }
+
+        OnWaveStart?.Invoke(currentWave);
     }
 
     IEnumerator StartSpawning(float defaultDelay, int[] spawnSet, GameObject spawnPoint)
