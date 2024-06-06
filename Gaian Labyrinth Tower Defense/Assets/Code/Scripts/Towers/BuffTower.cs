@@ -5,58 +5,48 @@ using UnityEngine;
 public class BuffTower : TowerBehavior
 {
 
-    public GameObject pulsePrefab;
-
     [Header("Tower Stats")]
 
-    public float maxDamage = 5f;
-    //private float fireCountdown = 0f;
+    public List<GameObject> towers = new List<GameObject>();
 
-    //[Header("Unity Fields")]
-
-    //SphereCollider detectionZone;
-
-
-    // Call the targeting function twice a second to scan for enemies
     public override void Start()
     {
-        cost = 8;
-        fireRate = .3f;
-
-        //detectionZone = GetComponent<SphereCollider>();
-        //detectionZone.radius = range;
+        base.Start();
+        //scan in range for towers and add to tower list
     }
 
     private void OnEnable()
     {
+        targetingMode = "Close";
+        detectionZone.radius = range;
 
+        HideInteractButton();
     }
-    private void onDisable()
-    {
-		
-    }
+
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Hello something. love, pulse tower");
-        if (other.gameObject.tag == "Enemy")
+        Debug.Log("found a something");
+        if (other.gameObject.tag == "towerbuilding")
         {
-            Debug.Log("hello enemy. love, pulse tower");
-            enemies.Add(other.gameObject);
+            Debug.Log("its a tower");
+            towers.Add(other.gameObject);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
+        Debug.Log("lost a something");
+        if (other.gameObject.tag == "towerbuilding")
         {
-            enemies.Remove(other.gameObject);
+            Debug.Log("its a tower");
+            towers.Remove(other.gameObject);
         }
     }
 
-    private void removeEnemyFromList(GameObject enemyToRemove)
+    private void removeTowerFromList(GameObject towerToRemove)
     {
-        enemies.Remove(enemyToRemove);
+        towers.Remove(towerToRemove);
     }
 
 
@@ -64,19 +54,13 @@ public class BuffTower : TowerBehavior
     {
         if (fireCountdown <= 0)
         {
-            Pulse();
+            //buff a tower based on targetting mode
             fireCountdown = 1f / fireRate;
         }
 
         fireCountdown -= Time.deltaTime;
     }
 
-    void Pulse()
-    {
-        GameObject pulse = Instantiate(pulsePrefab, firePoint.position, firePoint.rotation, gameObject.transform);
-        //pulse.GetComponent<PulseBehavior>().maxRadius = range;
-        //pulse.GetComponent<PulseBehavior>().maxDamage = maxDamage;
-    }
 
     // Tower range visualization via gizmos 
     void OnDrawGizmosSelected()
