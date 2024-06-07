@@ -5,7 +5,7 @@ using UnityEngine;
 public class VineLash : StatusEffect
 {
     public float dmgPerLash;
-    public float cooldown;
+    
     public float range;
     public float width;
     public float speedOfLash;
@@ -33,16 +33,15 @@ public class VineLash : StatusEffect
         if (tower.tag == "towerbuilding")
         {
             TowerBehavior t = tower.GetComponent<TowerBehavior>();
-            //why dont i understand the second part of this, ask reese
-            if (remainingTicks > 0 && timeElapsed > duration - (remainingTicks / cooldown))
-            {
-                //play anim or summon vine
 
-                Debug.Log("Lashing Out!");
-                //damage dealing might be attached to a summon lash, kinda like wave
-                //t.target.takeDamage(dmgPerLash);
-                remainingTicks--;
-            }
+
+            //play anim or summon vine
+
+            Debug.Log("Lashing Out!");
+            //damage dealing might be attached to a summon lash, kinda like wave
+            //t.target.takeDamage(dmgPerLash);
+            //remainingTicks--;
+
         }
         else
         {

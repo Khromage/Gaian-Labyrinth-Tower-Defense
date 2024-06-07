@@ -54,7 +54,7 @@ public class BuffTower : TowerBehavior
     {
         if (fireCountdown <= 0)
         {
-            //buff a tower based on targetting mode
+            //givew a target the buff status
             fireCountdown = 1f / fireRate;
         }
 
