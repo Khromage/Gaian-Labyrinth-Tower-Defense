@@ -27,13 +27,13 @@ public class StatusEffects : MonoBehaviour
     }
     protected void EffectsOnMe()
     {
-        //throught the array of types
+        //through the array of types
         for (int s = 0; s < StatusEffectList.Length; s++)
         {
             //through the List of each type
             for (int i = StatusEffectList[s].Count - 1; i >= 0; i--)
             {
-                Debug.Log("Affecting enemy with Status effect: " + StatusEffectList[s][i]);
+                //Debug.Log("Affecting enemy with Status effect: " + StatusEffectList[s][i]);
                 //if time-based do this
                 if (StatusEffectList[s][0].duration != -1)
                 {
@@ -44,7 +44,16 @@ public class StatusEffects : MonoBehaviour
                     }
                 }
 
-                if (i == 0)
+                //THIS WILL BE DONE IN EACH INDIVIDUAL CLASS'S EFFECT CALL (Burn, Shock, etc)
+                //if (s == DebuffList.burnID)
+                    //add damage to runningTotal,
+                //else if (s == DebuffList.shockID)
+                    //add multiplicative stun dur to runningTotal,
+                //else if (s == DebuffList.chillID)
+                    //add multiplicative slow amount to runningTotal,
+
+                //enact the effect for a single instance of the status type
+                if (i == 0 && StatusEffectList[s].Count > 0)
                     StatusEffectList[s][i].Effect(this.gameObject, StatusEffectList[s]);
             }
         }

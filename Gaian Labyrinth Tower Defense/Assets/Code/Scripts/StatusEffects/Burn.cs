@@ -29,19 +29,28 @@ public class Burn : StatusEffect
         id = DebuffList.burnID;
     }
 
-    public override void Effect(GameObject enemy, List<StatusEffect> vulnList)
+    public override void Effect(GameObject enemy, List<StatusEffect> burnList)
     {
         if (enemy.tag == "Enemy")
         {
             EnemyBehavior e = enemy.GetComponent<EnemyBehavior>();
             if (remainingTicks > 0 && timeElapsed > duration - (remainingTicks / tickRate))
             {
+                int numBurns = 0;
+                float totalDamagePerTick = 0;
+                foreach (Burn b in burnList)
+                {
+                    totalDamagePerTick += b.damagePerTick;
+                    numBurns++;
+                }
+                Debug.Log($"{numBurns} burns being applied, total: {totalDamagePerTick}");
+
                 if (e.enemyWeight == EnemyBehavior.Weight.light)
                 {
                     //weight stuff idk
                 }
                 Debug.Log("Dealing a tick of burn damage!");
-                e.takeDamage(damagePerTick);
+                e.takeDamage(totalDamagePerTick);
                 remainingTicks--;
             }
         }

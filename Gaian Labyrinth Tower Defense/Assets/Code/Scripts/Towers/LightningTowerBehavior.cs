@@ -15,7 +15,7 @@ public class LightningTowerBehavior : TowerBehavior
     public override void Start()
     {
         base.Start();
-        chainCount = 2;
+        chainCount = 0;
     }
 
     // Update is called once per frame
@@ -45,6 +45,11 @@ public class LightningTowerBehavior : TowerBehavior
             if (e.CompareTag("Enemy"))
             {
                 e.GetComponent<EnemyBehavior>().takeDamage(damage, pulse);
+
+                //apply shock debuff
+                StatusEffects es = e.gameObject.GetComponent<StatusEffects>();
+                var shock = new Shock(2f, .1f);
+                es.ApplyStatusEffect(shock);
             }
         }
     }

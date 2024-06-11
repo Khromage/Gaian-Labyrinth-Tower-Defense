@@ -43,10 +43,15 @@ public class LightningProjBehavior : TrackingBulletBehavior
                 visualObj.transform.localScale = new Vector3(1f, 1f, vectorTowardTarget.magnitude / 2f);
                 visualObj.GetComponent<LightningArcBehavior>().SetStartAndEnd(prevTarget, target);
 
+                //apply shock debuff
+                var shock = new Shock(2f, .1f);
+                target.gameObject.GetComponent<StatusEffects>().ApplyStatusEffect(shock);
+
                 //move to and Hit target
                 transform.position = target.position;
                 prevTarget = target;
                 HitTarget(target.gameObject);
+
                 //if more to pierce, update target.
                 if (remChain > 0)
                     GetTargetInfo();

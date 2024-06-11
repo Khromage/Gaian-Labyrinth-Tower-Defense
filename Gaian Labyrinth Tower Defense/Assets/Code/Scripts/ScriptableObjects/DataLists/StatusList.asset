@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusIDs:
   - burn
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - chill
+  - shock
+  - wet
+  - vulnerability
+  - fortified
+  - frostZone
+  - mudZone
+  - whirlpoolZone
+  - soaped

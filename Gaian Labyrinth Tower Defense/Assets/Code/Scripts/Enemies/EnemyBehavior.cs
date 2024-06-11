@@ -42,7 +42,7 @@ public class EnemyBehavior : MonoBehaviour
     private int buffZones;
     public bool isBuffed;
 
-
+    public float msMulti;
     protected List<float> moveSpeedModifiers;
     protected List<float> damageModifiers;
 
@@ -72,6 +72,7 @@ public class EnemyBehavior : MonoBehaviour
     public virtual void Start()
     {
         dmgMulti = 1f;
+        msMulti = 1f;
         //change these to pull from the scriptableObject
         harm = info.harm;
         worth = info.worth;
@@ -97,6 +98,7 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
+        //msMulti = 1f;
         ApplyMovementModifiers();
         //setGravityDir();
         //updateCurrTile();
@@ -233,15 +235,29 @@ public class EnemyBehavior : MonoBehaviour
     {
         moveSpeedModifiers.Add(mod);
     }
+    //maybe this should be called in lateUpdate? Might not be necessary tho
     protected void ApplyMovementModifiers()
     {
+        //reset to default
+        //GetComponent<NavMeshAgent>().speed = moveSpeed;
+
+        //msMulti = 1f; 
         float totalModifier = 1f;
+        //take modifications
         foreach (float m in moveSpeedModifiers)
         {
             totalModifier *= m;
+            msMulti = totalModifier;
+            Debug.Log($"multiplier:{m}, totalModifier: {totalModifier}, msMulti: {msMulti}");
         }
+        //Debug.Log($"After foreach: totalModifier: {totalModifier}, msMulti: {msMulti}");
         moveSpeedModifiers.Clear();
-        GetComponent<NavMeshAgent>().speed = moveSpeed * totalModifier;
+        //Check that moveSpeedModifiers is actually being cleared out.... (make a string of all elements in it)
+        GetComponent<NavMeshAgent>().speed = moveSpeed * msMulti;
+        //Debug.Log($"final speed: {GetComponent<NavMeshAgent>().speed}");
+        
+        //It stops movement with the following line, but if I uncomment the msMulti = 1f; it doesn't again...
+        //GetComponent<NavMeshAgent>().speed = moveSpeed * totalModifier;
     }
 
     public void AddDamageModifier(float mod)
