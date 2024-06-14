@@ -12,13 +12,13 @@ public class VineLash : StatusEffect
 
     public float duration;
     public float timeElapsed;
-    public float remainingTicks;
+    //public float remainingTicks;
+    public GameObject projectilePrefab;
 
-    public VineLash(float duration, float dmgPerLash, float cooldown, float range, float width, float speedOfLash)
+    public VineLash(float duration, float dmgPerLash, float range, float width, float speedOfLash)
     {
         this.duration = duration;
         this.dmgPerLash = dmgPerLash;
-        this.cooldown = cooldown;
         this.range = range;
         this.width = width;
         this.speedOfLash = speedOfLash;
@@ -28,14 +28,20 @@ public class VineLash : StatusEffect
         //id = DebuffList.vineLashID;
     }
 
-    public virtual void Effect(GameObject tower, List<StatusEffect> allOfThisType)
+    public virtual void Effect(GameObject enemy, List<StatusEffect> allOfThisType)
     {
-        if (tower.tag == "towerbuilding")
+        if (enemy.tag == "enemies")
         {
-            TowerBehavior t = tower.GetComponent<TowerBehavior>();
+            EnemyBehavior e = enemy.GetComponent<EnemyBehavior>();
 
 
-            //play anim or summon vine
+            VineLashBehavior projectile = Instantiate(projectilePrefab, enemy.transform.position, enemy.transform.rotation).GetComponent<VineLashBehavior>();
+            projectile.damage = dmgPerLash;
+            projectile.target = enemy;
+            projectile.range = range;
+            projectile.width = width;
+            projectile.speed = speedOfLash;
+
 
             Debug.Log("Lashing Out!");
             //damage dealing might be attached to a summon lash, kinda like wave

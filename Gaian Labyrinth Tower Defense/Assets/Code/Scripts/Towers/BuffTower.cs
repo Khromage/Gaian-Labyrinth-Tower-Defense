@@ -52,13 +52,13 @@ public class BuffTower : TowerBehavior
 
     public override void Update()
     {
-        if (fireCountdown <= 0)
+        /*if (fireCountdown <= 0)
         {
             //givew a target the buff status
             fireCountdown = 1f / fireRate;
         }
 
-        fireCountdown -= Time.deltaTime;
+        fireCountdown -= Time.deltaTime;*/
     }
 
 
