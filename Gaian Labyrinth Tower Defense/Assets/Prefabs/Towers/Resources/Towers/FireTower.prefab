@@ -117,7 +117,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5460506940467439282, guid: 348358a1c08fa1a40b16b7937d20e68e, type: 3}
   firePoint: {fileID: 6788566222244839869}
   enemies: []
-  detectionZone: {fileID: 0}
+  detectionZone: {fileID: 5246249724988905885}
   placedSFX: {fileID: -7116745553795400786}
   cost: 10
   lv2_cost: 20

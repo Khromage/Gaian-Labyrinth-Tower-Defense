@@ -23,6 +23,9 @@ public class UIManager : MonoBehaviour
 
     public DefaultKeybinds defaultKeybinds;
 
+    public GameObject endScreen;
+    public GameObject MMPanel;
+
     
     // Start is called before the first frame update
     void Start()
@@ -50,15 +53,26 @@ public class UIManager : MonoBehaviour
     void OnEnable()
     {
         LevelManager.Instance.OnSceneLoaded += SetUIModule;
-
+        Level.OnWinLevel += winCurrLevel;
+        Level.OnLoseLevel += loseCurrLevel;
     }
 
     void OnDisable()
     {
         LevelManager.Instance.OnSceneLoaded -= SetUIModule;
-
+        Level.OnWinLevel -= winCurrLevel;
+        Level.OnLoseLevel -= loseCurrLevel;
     }
     
+    private void winCurrLevel()
+    {
+        LevelModule.GetComponent<LevelModule>().EndLevel(true);
+    }
+    private void loseCurrLevel()
+    {
+        LevelModule.GetComponent<LevelModule>().EndLevel(false);
+    }
+
     public void GetUserKeyOptions()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -76,9 +90,17 @@ public class UIManager : MonoBehaviour
         }
     }
     
+
+    public void ReturnToCampaignMenu()
+    {
+        LevelModule.GetComponent<LevelModule>().resetLevel();
+        endScreen.SetActive(false);
+        LevelManager.Instance.LoadCampaign();
+        CloseOptions();
+    }
     
     public void OpenOptions()
-    {
+    {   
         Debug.Log("Options Clicked");
         if(LevelModule.activeInHierarchy || CampaignMenuModule.activeInHierarchy)
         {
@@ -86,6 +108,7 @@ public class UIManager : MonoBehaviour
         }
         OptionsMenu.SetActive(true);
         OnOptionsOpened?.Invoke();
+        MMPanel.SetActive(false);
 
     }
     public void CloseOptions()
@@ -98,7 +121,7 @@ public class UIManager : MonoBehaviour
             {
                 ResumeGame();
             }
-        
+        MMPanel.SetActive(true);
     }
 
     private void PauseGame()
@@ -117,12 +140,18 @@ public class UIManager : MonoBehaviour
         {
             case 0:
                 SetMainMenuUI();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 break;
             case 1:
                 SetCampaignUI();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 break;
             case 2:
                 SetLevelUI();
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 break;
             default:
                 Debug.Log("just cry");

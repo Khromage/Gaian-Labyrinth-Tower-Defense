@@ -3,7 +3,12 @@ guid: 863d7a3bcbd5d4a488b5d4ac1be23519
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - aimTarget: {instanceID: 0}
+  - weaponInfo: {instanceID: 0}
+  - Beam: {instanceID: 0}
+  - LaserFireSFX: {instanceID: 0}
+  - dmgincrease: {fileID: 11400000, guid: f03fc394624a67e439e155b762c78a6a, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

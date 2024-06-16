@@ -2077,6 +2077,7 @@ MonoBehaviour:
   aimTarget: {fileID: 0}
   aimHitPos: {x: 0, y: 0, z: 0}
   weaponInfo: {fileID: 11400000, guid: fb63a361eb35888428bbb07f882b6286, type: 2}
+  dmgincrease: {fileID: 11400000, guid: f03fc394624a67e439e155b762c78a6a, type: 2}
   fireflyProj: {fileID: 5023416352272721925, guid: 32c7995cf0d32a44db6bb6f23a8ae433, type: 3}
   fireflySFX1: {fileID: 8202115589477042519}
   fireflySFX2: {fileID: 6521878335513366117}

@@ -5,6 +5,13 @@ using UnityEngine;
 public class Rifle : Weapon
 {
     public GameObject Bullet;
+    //public Tech dmgincrease;
+
+
+    override protected void Start()
+    {
+        base.Start();
+    }
 
     public override void Fire()
     {

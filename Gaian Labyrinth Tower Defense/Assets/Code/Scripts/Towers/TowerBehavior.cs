@@ -440,7 +440,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     }
     protected virtual void lv3_1_upgrade()
     {
-        transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
+        //transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(100, 0f, .1f, .1f));
         Debug.Log(gameObject + "lvl 3-1 upgrade");
         damage = towerInfo.Branches[0].Damage;
         range = towerInfo.Branches[0].Range;
@@ -448,7 +448,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     }
     protected virtual void lv3_2_upgrade()
     {
-        transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 100, 0, .1f));
+        //transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 100, 0, .1f));
         Debug.Log(gameObject + "lvl 3-2 upgrade");
         damage = towerInfo.Branches[1].Damage;
         range = towerInfo.Branches[1].Range;
@@ -456,7 +456,7 @@ public class TowerBehavior : MonoBehaviour, Interactable
     }
     protected virtual void lv3_3_upgrade()
     {
-        transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 100, .1f));
+        //transform.Find("UpgradeSphere").GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 100, .1f));
         Debug.Log(gameObject + "lvl 3-3 upgrade");
         damage = towerInfo.Branches[2].Damage;
         range = towerInfo.Branches[2].Range;

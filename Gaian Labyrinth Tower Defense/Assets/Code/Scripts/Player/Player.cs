@@ -718,7 +718,7 @@ public class Player : UnitBehavior
         while (elapsedTime < 1)
         {
             //transform.rotation = Quaternion.Euler(Vector3.Lerp(initRot.eulerAngles, goalRot.eulerAngles, elapsedTime * 180 / initialDiffInRotation));
-            rb.rotation = Quaternion.Slerp(initRot, gravSource.rotation, elapsedTime * 90 / initialDiffInRotation); 
+            rb.rotation = Quaternion.Slerp(initRot, gravSource.rotation, elapsedTime * 90 / Math.Clamp(initialDiffInRotation, 0.01f, 1000f)); 
             //transform.eulerAngles = Vector3.Lerp(initRotEuler, goalRotEuler, elapsedTime);
 
             //transform.RotateAround(transform.position, axisToRotateAround, 1f); //initialDiffInRotation * Time.deltaTime
@@ -781,10 +781,14 @@ public class Player : UnitBehavior
 
         //in the hierarchy, the 1st weapon was originally at: .411, .121, 0
         Transform cwt = currentWeapon.transform;
-
+        Debug.Log(currentWeapon);
         Destroy(currentWeapon);
 
         currentWeapon = Instantiate(weaponSet[currentWeaponIndex], cwt.position, cwt.rotation, weaponHolder.transform);
+        Debug.Log("PPPPPPPPPP " + currentWeapon.GetComponent<Weapon>().Damage);
+
+        // currentWeapon.GetComponent<Weapon>().DmgModifiers();
+
         OnSwapWeapon?.Invoke(currentWeaponIndex);
     }
 

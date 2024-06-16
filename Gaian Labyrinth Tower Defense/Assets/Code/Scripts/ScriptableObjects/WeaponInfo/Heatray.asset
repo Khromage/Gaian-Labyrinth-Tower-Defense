@@ -18,6 +18,7 @@ MonoBehaviour:
   <Automatic>k__BackingField: 1
   <ProjectileRange>k__BackingField: 100
   Prefab: {fileID: 540254898023021, guid: 2be78b499b0976844a9f339d7f8f9475, type: 3}
-  <Icon>k__BackingField: {fileID: 21300000, guid: 4710b3596943f214e8b34b51836bb474, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 81a2cfb6d8010a04197fd8447e9dfaec, type: 3}
   <Description>k__BackingField: Condense your fire into a scorching ray.
   <Upgrades>k__BackingField: []
+  dmgIncrease: {fileID: 11400000, guid: f03fc394624a67e439e155b762c78a6a, type: 2}
