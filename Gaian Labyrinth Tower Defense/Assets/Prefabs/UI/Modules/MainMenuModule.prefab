@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 5877724909173698567}
   - component: {fileID: 5675510689420503792}
   - component: {fileID: 4531903206156833127}
+  - component: {fileID: 7283243593582419214}
   m_Layer: 0
   m_Name: PlayButton
   m_TagString: Untagged
@@ -289,6 +290,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7283243593582419214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907192331976975480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &2472385118373004153
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,6 +677,7 @@ GameObject:
   - component: {fileID: 6164459294246525909}
   - component: {fileID: 7945050960851301302}
   - component: {fileID: 2499219469537235118}
+  - component: {fileID: 2293478395653773817}
   m_Layer: 0
   m_Name: QuitButton
   m_TagString: Untagged
@@ -766,6 +799,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2293478395653773817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3487223063208623432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3733597222871948585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,6 +1110,7 @@ GameObject:
   - component: {fileID: 3763168213689119500}
   - component: {fileID: 4225813178660700104}
   - component: {fileID: 2798631474808654074}
+  - component: {fileID: 4517610339753469148}
   m_Layer: 0
   m_Name: OptionsButton
   m_TagString: Untagged
@@ -1155,8 +1220,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 7734872303815827715}
+        m_TargetAssemblyTypeName: MainMenuModule, Assembly-CSharp
         m_MethodName: OpenOptions
         m_Mode: 1
         m_Arguments:
@@ -1167,6 +1232,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4517610339753469148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5096760761769494654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7116368684505443600
 GameObject:
   m_ObjectHideFlags: 0

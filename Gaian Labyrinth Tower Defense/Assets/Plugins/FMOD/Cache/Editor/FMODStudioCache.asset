@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638548598421935944
+  lastModified: 638548755748905251
   FileSizes: []
   Exists: 1
 --- !u!114 &11400000
@@ -34,15 +34,15 @@ MonoBehaviour:
   - {fileID: 9200317560584160957}
   - {fileID: -1660764674653846002}
   EditorEvents:
-  - {fileID: 623380930835552998}
+  - {fileID: 3155071044760063648}
   EditorParameters: []
   MasterBanks:
   - {fileID: -1660764674653846002}
   StringsBanks:
   - {fileID: 9200317560584160957}
-  cacheTime: 638548598422006065
+  cacheTime: 638548755748925405
   cacheVersion: 131618
---- !u!114 &623380930835552998
+--- !u!114 &3155071044760063648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,14 +52,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Test Event
+  m_Name: event:/UI SFX/UI Button Click
   m_EditorClassIdentifier: 
-  Path: event:/Test Event
+  Path: event:/UI SFX/UI Button Click
   Guid:
-    Data1: 1670880552
-    Data2: 1326117833
-    Data3: -1182352983
-    Data4: -789866085
+    Data1: -885558824
+    Data2: 1085308726
+    Data3: -1411085912
+    Data4: -506198308
   Banks:
   - {fileID: -1660764674653846002}
   IsStream: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 50
 --- !u!114 &9200317560584160957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,8 +84,8 @@ MonoBehaviour:
   Path: Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638548598422006065
+  lastModified: 638548755748925405
   FileSizes:
   - Name: 
-    Value: 760
+    Value: 772
   Exists: 1
