@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 638550147078064611
+  lastModified: 638558809440319764
   FileSizes: []
   Exists: 1
 --- !u!114 &-6260510377193123923
@@ -87,7 +87,7 @@ MonoBehaviour:
   Path: Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638550147077744045
+  lastModified: 638558809440333021
   FileSizes: []
   Exists: 1
 --- !u!114 &11400000
@@ -116,7 +116,7 @@ MonoBehaviour:
   - {fileID: -1660764674653846002}
   StringsBanks:
   - {fileID: 9200317560584160957}
-  cacheTime: 638550147080078019
+  cacheTime: 638558809440353563
   cacheVersion: 131618
 --- !u!114 &3867036149603600263
 MonoBehaviour:
@@ -133,7 +133,7 @@ MonoBehaviour:
   Path: Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638550147080078019
+  lastModified: 638558809440353563
   FileSizes: []
   Exists: 1
 --- !u!114 &5608821032484913520
@@ -151,7 +151,7 @@ MonoBehaviour:
   Path: Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638550147077964466
+  lastModified: 638558809440353563
   FileSizes: []
   Exists: 1
 --- !u!114 &9200317560584160957
@@ -169,7 +169,7 @@ MonoBehaviour:
   Path: Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638550147077754032
+  lastModified: 638558809440343547
   FileSizes:
   - Name: 
     Value: 962
