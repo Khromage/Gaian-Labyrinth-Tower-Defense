@@ -8,10 +8,9 @@ public class Rifle : Weapon
     //public Tech dmgincrease;
 
 
-    private void Start()
+    override protected void Start()
     {
-        //if (dmgincrease.invested == true)
-          //  Damage += 100;
+        base.Start();
     }
 
     public override void Fire()

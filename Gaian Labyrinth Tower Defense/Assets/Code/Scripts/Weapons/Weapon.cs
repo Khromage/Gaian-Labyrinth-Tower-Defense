@@ -96,6 +96,8 @@ public class Weapon : MonoBehaviour
             if ((hit.transform.tag.Equals("Enemy")))
                 aimTarget = hit.transform.gameObject;
 
+            Debug.Log("ALEX" + FirePoint.position);
+            Debug.Log("hit.point" + (hit.point - FirePoint.position));
             //don't aim too far inward
             if (Vector3.SqrMagnitude(hit.point - FirePoint.position) > 1)
                 aimHitPos = hit.point;

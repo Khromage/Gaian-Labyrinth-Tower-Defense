@@ -221,6 +221,7 @@ public class Player : UnitBehavior
         LevelModule.OnMenuClosed += ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell += UpdateCurrency;
         TowerSelectionWheel.OnTowerSelected += TowerSelected;
+        //OptionsMenu.onKeySelected += changeKeybind;
     }
 
     private void OnDisable()
@@ -233,6 +234,7 @@ public class Player : UnitBehavior
         LevelModule.OnMenuClosed -= ExitMenuMode;
         TowerBehavior.OnUpgradeOrSell -= UpdateCurrency;
         TowerSelectionWheel.OnTowerSelected -= TowerSelected;
+        //OptionsMenu.onKeySelected -= changeKeybind;
     }
 
     private void EnterMenuMode()
@@ -272,16 +274,21 @@ public class Player : UnitBehavior
     private void InitializeKeybinds()
     {
         // General
-        jumpKey = LoadoutManager.Instance.jumpKey;
-        interactKey = LoadoutManager.Instance.interactKey;
+        jumpKey = SaveManager.Instance.jumpKey;
+        interactKey = SaveManager.Instance.interactKey;
         // Combat
-        nextWeaponKey = LoadoutManager.Instance.nextWeaponKey;
-        prevWeaponKey = LoadoutManager.Instance.prevWeaponKey;
-        weaponKeys = LoadoutManager.Instance.weaponKeys;
+        nextWeaponKey = SaveManager.Instance.nextWeaponKey;
+        prevWeaponKey = SaveManager.Instance.prevWeaponKey;
+        weaponKeys = SaveManager.Instance.weaponKeys;
         //Build Mode
-        modeChangeKey = LoadoutManager.Instance.modeChangeKey;
-        towerSelectionKey = LoadoutManager.Instance.towerSelectionKey;
+        modeChangeKey = SaveManager.Instance.modeChangeKey;
+        towerSelectionKey = SaveManager.Instance.towerSelectionKey;
         updatePathKeys = defaultKeybinds.updatePathKeys;
+    }
+
+    public void changeKeybind(KeyCode pickle)
+    {
+        Debug.Log("rabbit" + pickle);
     }
 
     private void SwapMode()
@@ -711,7 +718,7 @@ public class Player : UnitBehavior
         while (elapsedTime < 1)
         {
             //transform.rotation = Quaternion.Euler(Vector3.Lerp(initRot.eulerAngles, goalRot.eulerAngles, elapsedTime * 180 / initialDiffInRotation));
-            rb.rotation = Quaternion.Slerp(initRot, gravSource.rotation, elapsedTime * 90 / initialDiffInRotation); 
+            rb.rotation = Quaternion.Slerp(initRot, gravSource.rotation, elapsedTime * 90 / Math.Clamp(initialDiffInRotation, 0.01f, 1000f)); 
             //transform.eulerAngles = Vector3.Lerp(initRotEuler, goalRotEuler, elapsedTime);
 
             //transform.RotateAround(transform.position, axisToRotateAround, 1f); //initialDiffInRotation * Time.deltaTime

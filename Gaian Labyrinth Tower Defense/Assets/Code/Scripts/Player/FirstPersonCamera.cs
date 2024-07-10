@@ -7,6 +7,7 @@ public class FirstPersonCamera : CinemachineExtension
     [SerializeField] private float horizontalSpeed = 10.0f;
     [SerializeField] private float verticalSpeed = 10.0f;
     [SerializeField] private float clampAngle = 70.0f;
+    public float mouseSpeedModifier = 0.01f;
 
     public GameObject player;
     
@@ -43,7 +44,7 @@ public class FirstPersonCamera : CinemachineExtension
                     startingRotation.y += mouseY * 800 * Time.deltaTime;
                     startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);
                     // Calculate camera rotation based on mouse input while keeping the starting rotation in mind
-                    Quaternion rotation = Quaternion.Euler(-mouseY * verticalSpeed * Time.deltaTime, mouseX * horizontalSpeed * Time.deltaTime, 0f);
+                    Quaternion rotation = Quaternion.Euler(-mouseY * (mouseSpeedModifier * verticalSpeed) * Time.deltaTime, mouseX * (mouseSpeedModifier * horizontalSpeed) * Time.deltaTime, 0f);
 
                     // Apply the rotation to the camera's current orientation
                     state.RawOrientation *= rotation;

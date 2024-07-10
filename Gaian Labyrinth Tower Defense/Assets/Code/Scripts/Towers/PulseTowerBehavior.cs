@@ -36,7 +36,7 @@ public class PulseTowerBehavior : TowerBehavior
 		
     }
 
-    void OnTriggerEnter(Collider other)
+    protected override void OnTriggerEnter(Collider other)
     {
         Debug.Log("Hello something. love, pulse tower");
         if (other.gameObject.tag == "Enemy")

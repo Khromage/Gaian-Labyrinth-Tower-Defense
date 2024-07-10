@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 7286630038998008840}
   - component: {fileID: 424291184941841206}
   - component: {fileID: 3214069984486414179}
+  - component: {fileID: 7149114630128318877}
   m_Layer: 0
   m_Name: EnemyGenericPrefab 1
   m_TagString: Enemy
@@ -271,9 +272,12 @@ MonoBehaviour:
   Grid:
     serializedVersion: 2
     m_Bits: 8
+  moveSpeed: 0
   HealthBar: {fileID: 8524468329408580060}
   currentHealth: 0
-  currentSheild: 0
+  enemyWeight: 0
+  isVulnerable: 0
+  dmgMulti: 0
   damageIndicator: {fileID: 343413993613252881, guid: a23cdce077a45494485a805769227e34, type: 3}
   worth: 0
   harm: 0
@@ -445,6 +449,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7149114630128318877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921004111766893944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e469f9eada4e1b741ad7bf9f4155542a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5907145547198309030
 GameObject:
   m_ObjectHideFlags: 0
