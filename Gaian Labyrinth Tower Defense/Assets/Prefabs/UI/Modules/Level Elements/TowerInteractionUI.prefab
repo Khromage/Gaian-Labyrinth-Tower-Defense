@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 5312382707295795688}
   - component: {fileID: 8023290617476240904}
   - component: {fileID: 3683999328934746667}
+  - component: {fileID: 2684850653591405504}
   m_Layer: 0
   m_Name: Tile 2
   m_TagString: Untagged
@@ -537,6 +538,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2684850653591405504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256538483593805669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &315720786596618425
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,6 +849,7 @@ GameObject:
   - component: {fileID: 4635971163779579503}
   - component: {fileID: 5104469817235791469}
   - component: {fileID: 9049780375250986198}
+  - component: {fileID: 8798764639864796616}
   m_Layer: 0
   m_Name: Tile 1
   m_TagString: Untagged
@@ -940,6 +973,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8798764639864796616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497768999369093179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1051551641862328856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,6 +1359,7 @@ GameObject:
   - component: {fileID: 4123398504462652806}
   - component: {fileID: 7055581000052910502}
   - component: {fileID: 7738576471219648771}
+  - component: {fileID: 9001067966483894489}
   m_Layer: 0
   m_Name: Tile 3
   m_TagString: Untagged
@@ -1418,6 +1483,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &9001067966483894489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2618373035811779071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &2976168023251840219
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,6 +2084,7 @@ GameObject:
   - component: {fileID: 4094841104373984868}
   - component: {fileID: 6157314570422362092}
   - component: {fileID: 4236684015587635865}
+  - component: {fileID: 6030218434676473223}
   m_Layer: 0
   m_Name: Sell Button
   m_TagString: Untagged
@@ -2109,6 +2206,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6030218434676473223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5209059337273748149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6087701127435794828
 GameObject:
   m_ObjectHideFlags: 0
@@ -2941,6 +3069,7 @@ GameObject:
   - component: {fileID: 1758334150153143446}
   - component: {fileID: 5430880248797503807}
   - component: {fileID: 4708061662423002155}
+  - component: {fileID: 8368369076729615003}
   m_Layer: 0
   m_Name: Exit Menu Button
   m_TagString: Untagged
@@ -3062,3 +3191,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8368369076729615003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8350551692588311454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
