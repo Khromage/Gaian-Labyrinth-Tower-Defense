@@ -130,7 +130,7 @@ public class EnemyBehavior : MonoBehaviour
             Destroy(HealthBar.gameObject);
         }
     }
-    public void takeDamage(float damage, GameObject damagerBullet)
+    public virtual void takeDamage(float damage, GameObject damagerBullet)
     {
         float finalDamage = damage;
         //if (isVulnerable || isBuffed)

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e237d18e48fbd44a1140a14d20e07c, type: 3}
+  m_Name: DryadInfo
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 2921004111766893944, guid: b9bc417dc34bc9e4bb3cbb3085ba7d62, type: 3}
+  Delay: 0
+  <Icon>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: A somewhat fast, high helthed enemy. Take him out
+    quickly or he'll charm your towers, leaving you dealing much less damage.
+  moveSpeed: 3
+  maxHealth: 50
+  worth: 20
+  harm: 0
+  currentWeight: 1
