@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ExplodingBulletBehavior : TrackingBulletBehavior
@@ -17,6 +18,7 @@ public class ExplodingBulletBehavior : TrackingBulletBehavior
         //damage = 3f;
         blastRadius = 3f;
         turnSpeed = 180f;
+        elementType = "burn";
     }
     public override void HitTarget(GameObject hitEnemy)
     {

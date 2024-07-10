@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class StatusEffects : MonoBehaviour
 {
+    //Wip for Camelion
+    public delegate void StatusEffectAppliedHandler(StatusEffect effect);
+    public event StatusEffectAppliedHandler OnStatusEffectApplied;
+
     public List<StatusEffect>[] StatusEffectList;
 
     // Start is called before the first frame update

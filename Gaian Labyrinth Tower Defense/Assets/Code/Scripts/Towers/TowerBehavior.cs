@@ -242,7 +242,11 @@ public class TowerBehavior : MonoBehaviour, Interactable
                     if(lastEnemy != null) {
                         target = lastEnemy;
                     }
-                break;
+                    break;
+                case "Charmed":
+                    //Stop the tower from being able to change modes
+                    target = enemies[0];
+                    break;
             }
         } else {
             //Debug.Log("Enemy list is empty");

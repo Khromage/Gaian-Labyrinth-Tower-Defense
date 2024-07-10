@@ -8,6 +8,9 @@ public class BulletBehavior : ProjectileBehavior
     public int pierceAMT;
     public List<EnemyBehavior> HitEnemies = new List<EnemyBehavior>();
 
+    //Maybe delete later testing for Camelion and just saving bullets Type
+    public string elementType;
+
     // Update is called once per frame
     protected virtual void Start()
     {
