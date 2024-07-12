@@ -41,7 +41,6 @@ public class OptionsMenu : MonoBehaviour
 
     void Start()
     {
-        FirstpersoncameraController = GameObject.Find("FirstPersonCam").GetComponent<FirstPersonCamera>();
         resolutions = Screen.resolutions;
         PopulateResolutionDropdown();
         SetFPS();
@@ -54,7 +53,19 @@ public class OptionsMenu : MonoBehaviour
         float maxvalue = 1.0f;
         MasterSlider.value = (minvalue + maxvalue) / 2;
         SFXSlider.value = (minvalue + maxvalue) / 2;
-        MouseSlider.value = minvalue;
+        if (FirstpersoncameraController == null)
+        {
+        GameObject cameraObject = GameObject.Find("FirstPersonCam");
+        if (cameraObject != null)
+        {
+            FirstpersoncameraController = cameraObject.GetComponent<FirstPersonCamera>();
+        }
+        }
+
+        if (FirstpersoncameraController != null)
+        {
+         MouseSlider.value = FirstpersoncameraController.mouseSpeedModifier;
+        }
         
         VSYNCToggle.isOn = false;
         
@@ -202,11 +213,20 @@ public class OptionsMenu : MonoBehaviour
     }
 
     public void SetMouseSensitivity()
+{
+    if (FirstpersoncameraController == null)
     {
-        if (FirstpersoncameraController != null)
+        GameObject cameraObject = GameObject.Find("FirstPersonCam");
+        if (cameraObject != null)
         {
-            FirstpersoncameraController.mouseSpeedModifier = Math.Clamp(MouseSlider.value, 0.01f, 10f);
+            FirstpersoncameraController = cameraObject.GetComponent<FirstPersonCamera>();
         }
     }
+
+    if (FirstpersoncameraController != null)
+    {
+        FirstpersoncameraController.mouseSpeedModifier = MouseSlider.value;
+    }
+}
 
 }

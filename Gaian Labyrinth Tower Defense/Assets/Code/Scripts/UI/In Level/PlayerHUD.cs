@@ -51,9 +51,26 @@ public class PlayerHUD : MonoBehaviour
     public int[] towerSet;
     private int[] weaponSet;
 
+    [SerializeField]
+    private Level level;
+
+    public TMP_Text leafWarriorCount;
+    public TMP_Text butterflyCount;
+    public TMP_Text centaurCount;
+    public TMP_Text centurionCount;
+    public TMP_Text elkCount;
+    public TMP_Text scoutCount;
+    public TMP_Text treantCount;
+    public TMP_Text type2EnemyCount;
+
     void Start()
     {
-  
+        level = FindObjectOfType<Level>();
+
+        if (level != null)
+        {
+            leafWarriorCount.text = level.GetEnemyCount(1).ToString();
+        }
 
     }
 
@@ -68,6 +85,15 @@ public class PlayerHUD : MonoBehaviour
         TimeText.text = timeStamp.ToString("mm':'ss");
         LivesText.text = "Lives:\n" + LevelManager.Instance.Lives.ToString();
         CurrencyText.text = "$" + LevelManager.Instance.Currency.ToString();
+        leafWarriorCount.text = level.GetEnemyCount(1).ToString();
+        butterflyCount.text = level.GetEnemyCount(2).ToString();
+        centaurCount.text = level.GetEnemyCount(3).ToString();
+        centurionCount.text = level.GetEnemyCount(4).ToString();
+        elkCount.text = level.GetEnemyCount(5).ToString();
+        scoutCount.text = level.GetEnemyCount(6).ToString();
+        treantCount.text = level.GetEnemyCount(7).ToString();
+        type2EnemyCount.text = level.GetEnemyCount(8).ToString();
+
         
         //LivesText.text = "hey " + counter;
         //counter++;

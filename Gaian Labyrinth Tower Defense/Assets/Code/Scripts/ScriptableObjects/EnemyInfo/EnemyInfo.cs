@@ -27,5 +27,8 @@ public class EnemyInfo : ScriptableObject
     public int harm;
     public Weight currentWeight;
 
+    [field: SerializeField]
+    public int enemyID;
+
     //maybe include damageIndicator and healthbar? might be more efficient to put those in here than in their behavior scripts?
 }

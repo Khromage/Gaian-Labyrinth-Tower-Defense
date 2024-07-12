@@ -51,6 +51,8 @@ public class Level : MonoBehaviour
     [SerializeField]
     private GameObject player;
 
+    private Dictionary<int, int> enemySpawnCounts = new Dictionary<int, int>();
+
     //gameMode? (difficulty?)
 
     // Start is called before the first frame update
@@ -73,6 +75,14 @@ public class Level : MonoBehaviour
         remainingLives = 25;
 
         RemainingEnemiesInWave = new int[enemyList.EnemyDataSet.Length];
+        enemySpawnCounts = new Dictionary<int, int>();
+        ResetEnemyCounts();
+
+        // Initialize the dictionary with enemy types
+        for (int i = 0; i < enemyList.EnemyDataSet.Length; i++)
+        {
+            enemySpawnCounts[i] = 0;
+        }
     }
 
     // Update is called once per frame
@@ -111,7 +121,7 @@ public class Level : MonoBehaviour
                     noEnemiesLeft = false;
             }
             if (noEnemiesLeft)
-            {
+            {   
                 OnWinLevel?.Invoke();
             }
         }
@@ -134,22 +144,33 @@ public class Level : MonoBehaviour
     }
 
     IEnumerator StartSpawning(float defaultDelay, int[] spawnSet, GameObject spawnPoint)
+{
+    for (int i = 0; i < spawnSet.Length; i++)
     {
-        for(int i = 0; i < spawnSet.Length; i++)
-        {
-            yield return new WaitForSeconds(defaultDelay);
+        yield return new WaitForSeconds(defaultDelay);
 
-            GameObject enemy = Instantiate(enemyList.GetEnemy(spawnSet[i]), spawnPoint.transform.position, spawnPoint.transform.rotation);
-            enemySpawned(enemy.GetComponent<EnemyBehavior>());
-            
-            //for nav mesh test
-            if (currentLevelInfo.Name == "NavTestScene")
-            {
-                enemy.GetComponent<NavMeshAgent>().SetDestination(goalTile.transform.position);
-            }
-            FinishedSpawnPoints++;
+        GameObject enemy = Instantiate(enemyList.GetEnemy(spawnSet[i]), spawnPoint.transform.position, spawnPoint.transform.rotation);
+        EnemyBehavior enemyBehavior = enemy.GetComponent<EnemyBehavior>();
+        enemyBehavior.OnEnemyDeath += HandleEnemyDeath;
+        enemySpawned(enemyBehavior);
+
+        int enemyID = enemyBehavior.EnemyID;
+        if (enemySpawnCounts.ContainsKey(enemyID))
+        {
+            enemySpawnCounts[enemyID]++;
         }
+        else
+        {
+            enemySpawnCounts[enemyID] = 1;
+        }
+        
+        if (currentLevelInfo.Name == "NavTestScene")
+        {
+            enemy.GetComponent<NavMeshAgent>().SetDestination(goalTile.transform.position);
+        }
+        FinishedSpawnPoints++;
     }
+}
 
     //adds group to total for current wave, stored in RemainingEnemiesInWave
     private void AddEnemiesToTotal(int[] enemyGroup)
@@ -182,6 +203,17 @@ public class Level : MonoBehaviour
         player.GetComponent<Player>().UpdateCurrency(enemy.worth);
         enemy.OnEnemyReachedGoal -= LoseLives;
         enemy.OnEnemyDeath -= gainCurrency;
+
+        int enemyId = enemy.EnemyID; // Assuming EnemyBehavior has an enemyId property
+        Debug.Log("ENEMYID" + enemyId);
+        if (enemySpawnCounts.ContainsKey(enemyId))
+        {
+            enemySpawnCounts[enemyId]--;
+            if (enemySpawnCounts[enemyId] < 0)
+            {
+                enemySpawnCounts[enemyId] = 0; // Ensure the count doesn't go below zero
+            }
+        }
     }
 
 
@@ -214,6 +246,19 @@ public class Level : MonoBehaviour
         flowFieldGenerator.GenerateField(recalcTile, recalcTile.goalDist);
     }
 
+    private void HandleEnemyDeath(EnemyBehavior enemy)
+    {
+        int enemyID = enemy.EnemyID;
+        if (enemySpawnCounts.ContainsKey(enemyID))
+        {
+            enemySpawnCounts[enemyID]--;
+            if (enemySpawnCounts[enemyID] <= 0)
+            {
+                enemySpawnCounts.Remove(enemyID);
+            }
+        }
+    }
+
 
 
     private void OnEnable()
@@ -221,6 +266,7 @@ public class Level : MonoBehaviour
 
         Player.OnTowerPlaced += recalcFlowField_NewTower;
         Player.OnTowerSold += recalcFlowField_NewTile;
+        
     }
     private void OnDisable()
     {
@@ -229,6 +275,21 @@ public class Level : MonoBehaviour
         Player.OnTowerSold -= recalcFlowField_NewTile;
 
         //SaveManager.Instance.SaveData();
+    }
+
+    public int GetEnemyCount(int enemyId)
+    {
+        if (enemySpawnCounts.ContainsKey(enemyId))
+        {
+            return enemySpawnCounts[enemyId];
+        }
+        return 0;
+    }
+
+    public void ResetEnemyCounts()
+    {
+        enemySpawnCounts.Clear();
+        Debug.Log("Reset enemy counts.");
     }
 
 }
