@@ -6526,6 +6526,7 @@ GameObject:
   - component: {fileID: 5535801802846553183}
   - component: {fileID: 8055791698029838091}
   - component: {fileID: 7345238013990680528}
+  - component: {fileID: 8972254328661970300}
   m_Layer: 0
   m_Name: Settings_But
   m_TagString: Untagged
@@ -6647,6 +6648,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8972254328661970300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2379489569889397558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &2415536044884535709
 GameObject:
   m_ObjectHideFlags: 0
@@ -18830,6 +18862,7 @@ GameObject:
   - component: {fileID: 2069285956140217392}
   - component: {fileID: 8475710379265181535}
   - component: {fileID: 2846882273893636140}
+  - component: {fileID: 1064190160844696129}
   m_Layer: 0
   m_Name: Encyclopedia_But
   m_TagString: Untagged
@@ -18951,6 +18984,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1064190160844696129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7091284577877158736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -885558824
+      Data2: 1085308726
+      Data3: -1411085912
+      Data4: -506198308
+    Path: event:/UI SFX/UI Button Click
+  Event: 
+  PlayEvent: 19
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7115945234247686689
 GameObject:
   m_ObjectHideFlags: 0
