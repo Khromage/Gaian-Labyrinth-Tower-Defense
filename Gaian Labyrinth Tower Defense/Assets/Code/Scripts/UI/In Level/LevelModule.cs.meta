@@ -3,7 +3,12 @@ guid: 56c966cc926264648b9104d3514da7dc
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - playerHUD: {instanceID: 0}
+  - towerInteractionUI: {instanceID: 0}
+  - towerSelectionWheel: {instanceID: 0}
+  - endScreen: {instanceID: 0}
+  - currentLevel: {fileID: 4127972893879109240, guid: e8a7d42257508bb4f99e4ccc732ad9c7, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

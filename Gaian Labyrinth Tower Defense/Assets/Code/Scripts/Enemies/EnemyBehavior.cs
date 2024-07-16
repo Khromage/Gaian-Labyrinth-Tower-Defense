@@ -66,6 +66,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     private EnemyInfo info;
 
+    public int EnemyID => info.enemyID;
+
     //public Vector3 posToMoveToward;
 
     // Start is called before the first frame update
@@ -92,6 +94,8 @@ public class EnemyBehavior : MonoBehaviour
 
         moveSpeedModifiers = new List<float>();
         damageModifiers = new List<float>();
+
+        enemyID = info.enemyID;
     }
 
     // Update is called once per frame
@@ -263,6 +267,12 @@ public class EnemyBehavior : MonoBehaviour
         damageModifiers.Clear();
         
         
+    }
+
+    public void Die() 
+    {
+        OnEnemyDeath?.Invoke(this);
+        Destroy(gameObject);
     }
 
 

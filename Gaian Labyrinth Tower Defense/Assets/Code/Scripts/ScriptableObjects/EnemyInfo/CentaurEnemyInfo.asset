@@ -21,3 +21,4 @@ MonoBehaviour:
   worth: 16
   harm: 2
   currentWeight: 1
+  enemyID: 3

@@ -1,13 +1,14 @@
 using UnityEngine;
 using Cinemachine;
 using Unity.VisualScripting;
+using System;
 
 public class FirstPersonCamera : CinemachineExtension
 {
     [SerializeField] private float horizontalSpeed = 10.0f;
     [SerializeField] private float verticalSpeed = 10.0f;
     [SerializeField] private float clampAngle = 70.0f;
-    public float mouseSpeedModifier = 0.01f;
+    public float mouseSpeedModifier = 0.0f;
 
     public GameObject player;
     
@@ -23,6 +24,7 @@ public class FirstPersonCamera : CinemachineExtension
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        mouseSpeedModifier = 0.1f;
     }
 
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
@@ -37,14 +39,14 @@ public class FirstPersonCamera : CinemachineExtension
                     if (startingRotation == Vector3.zero)
                         startingRotation = transform.localRotation.eulerAngles;
 
-                    float mouseX = Input.GetAxis("Mouse X");
-                    float mouseY = Input.GetAxis("Mouse Y");
+                    float mouseX = Input.GetAxis("Mouse X") * mouseSpeedModifier * horizontalSpeed;
+                    float mouseY = Input.GetAxis("Mouse Y") * mouseSpeedModifier * verticalSpeed;
                     // 800 affects sensitivity of mouse movement can change to a variable for settings adjustment later
                     startingRotation.x += mouseX * 800 * Time.deltaTime;
                     startingRotation.y += mouseY * 800 * Time.deltaTime;
                     startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);
                     // Calculate camera rotation based on mouse input while keeping the starting rotation in mind
-                    Quaternion rotation = Quaternion.Euler(-mouseY * (mouseSpeedModifier * verticalSpeed) * Time.deltaTime, mouseX * (mouseSpeedModifier * horizontalSpeed) * Time.deltaTime, 0f);
+                    Quaternion rotation = Quaternion.Euler(-mouseY * Time.deltaTime, mouseX * Time.deltaTime, 0f);
 
                     // Apply the rotation to the camera's current orientation
                     state.RawOrientation *= rotation;
